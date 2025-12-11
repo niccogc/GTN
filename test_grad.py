@@ -117,7 +117,7 @@ class Conv(GTN):
 DIM_PATCHES = xinp_train.shape[1] # 50
 DIM_PIXELS = xinp_train.shape[2]  # 17
 
-bond_dim = 2
+bond_dim = 8
 
 # Helper for init
 def init_data(*shape):
@@ -150,30 +150,6 @@ model = Conv(
     input_dims=input_labels
 ).to(device)
 
-input_labels = [
-    [0, ("0_patches", "0_pixels")],  # Node 0: Uses Input[0] with these indices
-    [0, ("1_patches", "1_pixels")],  # Node 1: Uses Input[0] with these indices
-    [0, ("2_patches", "2_pixels")]   # Node 2: Uses Input[0] with these indices
-]
-
-# --- 2. Initialize Inputs Loader ---
-loader = Inputs(
-    inputs=[xinp_train],          
-    outputs=[y_train_one_hot],    # <--- PASS ONE-HOT HERE (Batch, 10)
-    outputs_labels=["class_out"], # This label now correctly refers to dim size 10
-    input_labels=input_labels,    
-    batch_dim="s",                
-    batch_size=BATCH_SIZE
-)
-
-model_n = NTN(
-    tn=qt.TensorNetwork(patches_mps_list + pixels_mps_list), 
-    output_dims=["class_out"],
-    input_dims=["0_patches", "0_pixels", "1_patches", "1_pixels", "2_patches", "2_pixels"],
-    loss=nn.CrossEntropyLoss(), # Works with One-Hot Float targets automatically
-    data_stream=loader
-)
-
 optimizer = optim.AdamW(model.parameters(), lr=1e-3)
 criterion = nn.CrossEntropyLoss()
 
@@ -183,7 +159,6 @@ history = {'epoch': [], 'loss': [], 'accuracy': []}
 epochs = 15
 
 print(f"Model initialized on {device}. Input: {DIM_PATCHES} Patches x {DIM_PIXELS} Pixels.")
-results = model_n.fit(2, regularize=False, jitter=True, eval_metrics=CLASSIFICATION_METRICS)
 
 def evaluate(loader):
     model.eval()
