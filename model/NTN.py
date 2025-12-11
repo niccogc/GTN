@@ -1,5 +1,8 @@
+# type: ignore
 from typing import List, Dict, Optional, Tuple
 from model.builder import Inputs
+from model.utils import print_metrics, REGRESSION_METRICS
+import torch
 # from builder import Inputs # Assuming this exists in your project
 import torch.nn as nn
 import quimb.tensor as qt
@@ -701,10 +704,10 @@ class NTN():
                 
         return trainable_tags
 
-    def _batch_compute_metrics(self, inputs, y_true, tn):
+    def _batch_evaluate(self, inputs, y_true, tn, metrics):
         """
-        Calculates accumulation statistics for a single batch.
-        Returns: (sum_y, sum_yy, sum_res_sq, n_samples)
+        Runs forward pass once and applies user metric functions.
+        DEBUG version enabled.
         """
         import torch
         
@@ -715,66 +718,85 @@ class NTN():
             # Convert to torch
             y_pred_th = self._to_torch(y_pred)
             y_true_th = self._to_torch(y_true)
-            
-            # Align shapes
-            if y_pred_th.shape != y_true_th.shape:
-                y_pred_th = y_pred_th.view_as(y_true_th)
-            
-            # 2. Compute components for R2 and MSE
-            # Sum of y (for global mean calculation later)
-            sum_y = torch.sum(y_true_th)
-            
-            # Sum of y^2 (for SS_tot calculation: sum(y^2) - n*mean^2)
-            sum_yy = torch.sum(y_true_th ** 2)
-            
-            # Sum of squared residuals (for SS_res)
-            sum_res_sq = torch.sum((y_true_th - y_pred_th) ** 2)
-            
-            # Count (as a tensor so it can be summed)
-            n = torch.tensor(y_true_th.numel(), device=y_true_th.device, dtype=y_true_th.dtype)
-            
-        return sum_y, sum_yy, sum_res_sq, n
 
-    def calculate_r2(self):
+            # --- DEBUGGING PRINTS ---
+            # print(f"DEBUG Eval | Pred: {y_pred_th.shape} ({y_pred_th.dtype}) | True: {y_true_th.shape} ({y_true_th.dtype})")
+            
+            # --- CRITICAL FIX: REMOVE view_as ---
+            # Do NOT reshape y_pred here. 
+            # If Pred is (100, 10) and True is (100, 1), they have different sizes (1000 vs 100).
+            # Reshaping will crash. Let the metric function handle it.
+            
+            # Only reshape if element counts match (e.g. Regression: (100,1) vs (100,))
+            if y_pred_th.numel() == y_true_th.numel():
+                if y_pred_th.shape != y_true_th.shape:
+                    y_pred_th = y_pred_th.view_as(y_true_th)
+
+            # --- AGNOSTIC EXECUTION ---
+            results = {}
+            for name, func in metrics.items():
+                try:
+                    val = func(y_pred_th, y_true_th)
+                    results[name] = val
+                except Exception as e:
+                    print(f"Error in metric '{name}': {e}")
+                    print(f"Shapes -> Pred: {y_pred_th.shape}, True: {y_true_th.shape}")
+                    raise e
+                
+        return results
+
+    def evaluate(self, metrics: Dict[str, callable], verbose=False):
         """
-        Calculates R^2 and MSE using memory-efficient batch iteration.
-        Iterates over the data generator, accumulates stats, and computes final score.
+        Iterates over the dataset and aggregates results from user metrics.
+        
+        Args:
+            metrics: Dict mapping name -> callable(y_pred, y_true).
+                     The callable should return a summable result (e.g. (loss_sum, count)).
         """
-        # We iterate over (mu, y) tuples directly from the generator
-        # _sum_over_batches sums the returned tuples element-wise: 
-        # result = (total_sum_y, total_sum_yy, total_sum_res, total_n)
-        
-        stats = self._sum_over_batches(
-            self._batch_compute_metrics,
-            self.data.data_mu_y,  # The generator yielding (inputs_batch, y_true_batch)
-            tn=self.tn
-        )
-        
-        if stats is None:
-            return 0.0, 0.0
+        # 1. Initialize Aggregates
+        # We don't know the shape of the metric result yet, so we initialize on the first batch.
+        aggregates = {}
+
+        # 2. Iterate over Data
+        # We iterate manually to handle the dictionary aggregation
+        for i, batch_data in enumerate(self.data.data_mu_y):
+            inputs, y_true = batch_data
             
-        sum_y, sum_yy, sum_res_sq, n = stats
-        
-        # Convert total count to float
-        total_n = n.item()
-        
-        if total_n == 0:
-            return 0.0, 0.0
+            # Get dict of results for this batch
+            batch_results = self._batch_evaluate(inputs, y_true, self.tn, metrics)
             
-        # 1. MSE = Sum_Squared_Residuals / N
-        mse = (sum_res_sq / total_n).item()
-        
-        # 2. R^2 calculation
-        # SS_tot = sum((y - mean)^2) = sum(y^2) - N * mean^2
-        y_mean = sum_y / total_n
-        ss_tot = sum_yy - (total_n * (y_mean ** 2))
-        
-        if ss_tot.item() == 0:
-            r2 = 0.0
-        else:
-            r2 = 1 - (sum_res_sq / ss_tot).item()
+            # Aggregate
+            if i == 0:
+                aggregates = batch_results
+            else:
+                for name, res in batch_results.items():
+                    # Polymorphic addition: works for floats, tensors, and tuples
+                    # e.g. (loss, count) + (loss, count) = (total_loss, total_count)
+                    if isinstance(res, tuple):
+                        aggregates[name] = tuple(a + b for a, b in zip(aggregates[name], res))
+                    else:
+                        aggregates[name] += res
+
+      
+        final_scores = {}
+        for name, val in aggregates.items():
+            # If it's a tuple (value, count), auto-average it for display convenience
+            if isinstance(val, (tuple, list)) and len(val) == 2:
+                numerator, denominator = val
+                if torch.is_tensor(denominator):
+                    denominator = denominator.item()
+                if denominator != 0:
+                    final_scores[name] = (numerator / denominator).item() if torch.is_tensor(numerator) else (numerator / denominator)
+                else:
+                    final_scores[name] = 0.0
+            else:
+                # Just return the raw sum (e.g. total loss)
+                final_scores[name] = val
+
+        if verbose:
+            print(f"Evaluation: {final_scores}")
             
-        return r2, mse
+        return final_scores
 
     def update_tn_node(self, node_tag, regularize, jitter):
         # 1. Calculate the Newton Step (Delta)
@@ -795,31 +817,46 @@ class NTN():
         # 4. Update the network with the new accumulated weights
         self.update_node(new_tensor, node_tag)
 
-    def fit(self, n_epochs=1, regularize=True, jitter=1e-6, verbose=True):
+    def fit(self, n_epochs=1, regularize=True, jitter=1e-6, verbose=True, eval_metrics=None):
         """
         Main training loop (Alternating Least Squares / Newton Sweep).
+        
+        Args:
+            eval_metrics: Dict of metric functions. Defaults to REGRESSION_METRICS if None.
         """
+        # Default to Regression metrics if nothing provided
+        if eval_metrics is None:
+            eval_metrics = REGRESSION_METRICS
+
         trainable_nodes = self._get_trainable_nodes()
         
+        # Standard DMRG-style sweep: Forward -> Backward (excluding ends to avoid double update)
+        # This creates a smooth "wave" of updates: 1->2->3->2 (then 1 starts next epoch)
+        back_sweep = trainable_nodes[-2:0:-1]
+        full_sweep_order = trainable_nodes + back_sweep
+        
         if verbose:
-            print(f"Starting Fit: {n_epochs} epochs over {len(trainable_nodes)} nodes.")
-            print(f"Nodes to train: {trainable_nodes}")
+            print(f"Starting Fit: {n_epochs} epochs.")
+            print(f"Sweep Order: {full_sweep_order}")
 
-        # Initial Check
-        r2, mse = self.calculate_r2()
+        # --- Initial Evaluation ---
+        scores = self.evaluate(eval_metrics)
         if verbose:
-            print(f"Init  | R2: {r2:.5f} | MSE: {mse:.6f}")
+            print(f"Init    | ", end="")
+            print_metrics(scores)
 
-        back = trainable_nodes[-2:0:-1]
+        # --- Training Loop ---
         for epoch in range(n_epochs):
-            # Sweep over all trainable nodes
-            for node_tag in trainable_nodes + back:
+            
+            # Optimization Sweep
+            for node_tag in full_sweep_order:
                 self.update_tn_node(node_tag, regularize, jitter)
 
-            # Check performance after sweep
-            r2, mse = self.calculate_r2()
+            # Evaluation
+            scores = self.evaluate(eval_metrics)
             
             if verbose:
-                print(f"Epoch {epoch+1}/{n_epochs} | R2: {r2:.5f} | MSE: {mse:.6f}")
+                print(f"Epoch {epoch+1} | ", end="")
+                print_metrics(scores)
                 
-        return r2
+        return scores

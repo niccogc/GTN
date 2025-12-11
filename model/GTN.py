@@ -26,7 +26,6 @@ class GTN(nn.Module):
         input_nodes_list = self.construct_nodes(x)
         input_tn = qt.TensorNetwork(input_nodes_list)
 
-        # Contract: Pixels & Patches & Input
         tn = weights & input_tn
         
         # Contract and return raw data

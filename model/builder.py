@@ -1,16 +1,21 @@
 import random
-from typing import List, Dict, Any, Tuple
-import quimb.tensor as qt  # Assuming quimb.tensor is available
+from typing import List, Dict, Any, Tuple, Union
+import quimb.tensor as qt 
+import torch
+import numpy as np
 
 class Inputs:
     """
-    Input loader that pre-computes and stores batches in a list.
-    Allows efficient multiple passes (epochs) over the data.
+    Flexible Input loader.
+    
+    input_labels can be:
+    1. Tuple/String: ("p", "x") -> Auto-maps to input[i] (or input[0] if single input).
+    2. List (Explicit): [source_idx, ("p", "x")] -> Uses inputs[source_idx].
     """
-    def __init__(self, inputs: List[Any],
-                 outputs: List[Any],
+    def __init__(self, inputs: List[Any], 
+                 outputs: List[Any], 
                  outputs_labels: List[str],
-                 input_labels: List[str],
+                 input_labels: List[Union[str, Tuple[str, ...], List[Any]]], 
                  batch_dim: str = "s",
                  batch_size = None):
 
@@ -23,122 +28,119 @@ class Inputs:
         
         self.batch_size = inputs[0].shape[0] if batch_size is None else batch_size
         self.samples = outputs[0].shape[0]
-        self.repeated = (len(inputs) == 1)
         
-        # 2. Pre-compute all batches once and store them
-        # Storage format: List[Tuple(mu_tensors, prime_tensors, y_tensor)]
+        # 2. Pre-compute batches
         self.batches = self._create_batches()
 
     def _create_batches(self) -> List[Tuple[List[qt.Tensor], qt.Tensor]]:
-        """Generates and stores the list of all batches."""
         batches = []
         
         # Generator for raw data slices
+        # This yields a dict {0: batch_A, 1: batch_B} containing ALL inputs
         raw_splits = self.batch_splits(
             self.inputs_data, 
             self.outputs_data[0], 
             self.batch_size
         )
 
-        # Process into tensors
         for input_dict, y_tensor in raw_splits:
-            if self.repeated:
-                mu = self.prepare_inputs_batch_repeated(input_dict)
-            else:
-                mu = self.prepare_inputs_batch(input_dict)
-           
+            # Construct the TN inputs based on definitions
+            mu = self._prepare_batch(input_dict)
             batches.append((mu, y_tensor))
             
         return batches
 
-    # --- Properties for Iteration ---
+    # --- Properties ---
 
     @property
     def data_mu(self):
-        """Yields only mu input tensors."""
         for mu, _ in self.batches:
             yield mu
 
     @property
     def data_y(self):
-        """Yields only target (y) tensors."""
         for _, y in self.batches:
             yield y
 
     @property
     def data_mu_y(self):
-        """Yields (mu inputs, target)."""
         for mu, y in self.batches:
             yield mu, y
 
-    # --- Processing Methods ---
+    # --- Core Logic ---
 
     def batch_splits(self, xs, y, B):
-        """Generates raw dictionary/array slices."""
+        """Generates slices for ALL input tensors provided."""
         s = y.shape[0]
         for i in range(0, s, B):
+            # Target Tensor
             tensor = qt.Tensor(
                 data=y[i:i+B],
                 inds=(self.batch_dim, *self.outputs_labels),
                 tags={'output'}
             )
-            batch = {f"{j}": x[i:i+B] for j, x in zip(self.input_labels[:len(xs)], xs)}
+            
+            # Input Dict: Map index -> Data Slice
+            # We slice ALL inputs, regardless of how many labels consume them
+            batch = {idx: x[i:i+B] for idx, x in enumerate(xs)}
+            
             yield batch, tensor
 
-    def prepare_inputs_batch_repeated(self, input_data: Dict[str, Any]) -> List[qt.Tensor]:
-        input_indices = self.input_labels
-        single_key = list(input_data.keys())[0]
-        data = input_data[single_key]
-        
-        tensors = []
-        for input_idx in input_indices:
-            # Mu tensor
-            tensor = qt.Tensor(data=data, inds=(self.batch_dim, input_idx), tags={f'input_{input_idx}'})
-            tensors.append(tensor)
-        
-        return tensors
-
-    def prepare_inputs_batch(self, input_data: Dict[str, Any]) -> List[qt.Tensor]:
+    def _prepare_batch(self, input_data: Dict[int, Any]) -> List[qt.Tensor]:
         """
-        Returns:
-            tensors: List of tensors for mu network [x1, x2...]
+        Constructs the list of QT tensors for the network based on input_labels definitions.
         """
         tensors = []
-        for k, v in input_data.items():
+        
+        for i, definition in enumerate(self.input_labels):
             
-            # Mu tensor
-            tensor = qt.Tensor(data=v, inds=(self.batch_dim, k), tags={f'input_{k}'})
+            # 1. Parse Definition
+            if isinstance(definition, list):
+                # Explicit: [source_idx, (inds...)]
+                source_idx = definition[0]
+                inds_def = definition[1]
+            else:
+                # Implicit: (inds...) or "ind"
+                # If only 1 input exists, use 0. Else assume 1-to-1 mapping (i -> i)
+                source_idx = 0 if len(self.inputs_data) == 1 else i
+                inds_def = definition
+            
+            # 2. Parse Indices
+            if isinstance(inds_def, str):
+                inds = (self.batch_dim, inds_def)
+                tag_suffix = inds_def
+            else:
+                # Tuple
+                inds = (self.batch_dim, *inds_def)
+                tag_suffix = "_".join(inds_def)
+
+            # 3. Fetch Data
+            if source_idx not in input_data:
+                raise ValueError(f"Label definition {i} requests input index {source_idx}, but only {len(input_data)} inputs provided.")
+            
+            data = input_data[source_idx]
+            
+            # 4. Create Tensor
+            # Tag convention: input_{indices}
+            tensor = qt.Tensor(data=data, inds=inds, tags={f'input_{tag_suffix}'})
             tensors.append(tensor)
         
         return tensors
 
     def shuffle(self):
-        """Shuffles the internal list of batches in-place."""
         random.shuffle(self.batches)
 
     def __len__(self):
-        """Returns the number of batches."""
         return len(self.batches)
 
     def __getitem__(self, idx):
-        """
-        Returns the raw batch at the specified index.
-        
-        Returns:
-            Tuple: (mu_tensors, prime_tensors, y_tensor)
-        
-        Note: To get full sigma inputs from this, you must concatenate mu + prime.
-        """
         return self.batches[idx]
 
     def __str__(self):
-        """Summary of the loader structure."""
         if not self.batches:
             return ">>> InputLoader (Empty)"
 
-        # Peek at the first stored batch
         mu, y = self.batches[0]
-        
         mu_inds = [list(t.inds) for t in mu]
         
         header = (
@@ -149,6 +151,6 @@ class Inputs:
         )
         
         row_y = f"{'Target':<8} | {str(y.shape):<15} | {y.inds}\n"
-        row_mu = f"{'Mu':<8} | {str(mu[0].shape):<15} | {mu_inds} ... ({len(mu)} tensors)\n"
+        row_mu = f"{'Mu':<8} | {str(mu[0].shape):<15} | {mu_inds}\n"
         
         return header + row_y + row_mu
