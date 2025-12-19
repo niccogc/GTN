@@ -13,6 +13,7 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
         super().__init__(tn, begin, bsz, **kwargs)
 
     def init_non_segment(self, start, stop):
+        """Initialize non-segment part with proper dtype handling for torch/numpy."""
         self.tnc = self.tn.copy(virtual=True)
 
         if not self.segmented and not self.cyclic:
@@ -32,7 +33,10 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
         super().init_non_segment(start, stop)
 
     def _get_inds_to_keep(self, tn, active_tensors):
-        """Helper to determine correct output indices for contractions."""
+        """
+        Helper to determine correct output indices for contractions.
+        Preserves Bonds, Global Outer, Batch, and Output indices.
+        """
         active_inds = set().union(*(t.inds for t in active_tensors))
         all_inds = set().union(*(t.inds for t in tn))
         passive_inds = all_inds - active_inds 
@@ -66,9 +70,10 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
             for i in reversed(range(start, stop - 1)):
                 self.envs[i] = self.envs[i + 1].copy(virtual=True)
                 
-                neighbor_tags = self.site_tag(i)
-                self.envs[i] |= self.tnc.select(neighbor_tags)
+                # Absorb site
+                self.envs[i] |= self.tnc.select(self.site_tag(i))
                 
+                # Contract Right Boundary + Site(i+bsz)
                 tags_to_contract = ("_RIGHT", self.site_tag(i + self.bsz))
                 active_tensors = self.envs[i].select(tags_to_contract, which='any')
                 
@@ -85,9 +90,10 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
             for i in range(start + 1, stop):
                 self.envs[i] = self.envs[i - 1].copy(virtual=True)
                 
-                neighbor_tags = self.site_tag(i + self.bsz - 1)
-                self.envs[i] |= self.tnc.select(neighbor_tags)
+                # Absorb site
+                self.envs[i] |= self.tnc.select(self.site_tag(i + self.bsz - 1))
                 
+                # Contract Left Boundary + Site(i-1)
                 tags_to_contract = ("_LEFT", self.site_tag(i - 1))
                 active_tensors = self.envs[i].select(tags_to_contract, which='any')
                 
@@ -109,12 +115,16 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
 
         i0 = self.segment.start
         if i >= i0 + 1:
-            # FIX: Check if _LEFT exists before removing it to prevent KeyError
+            # === FIX: Safely Clean Stale Left Environment ===
+            # Check existence first to avoid KeyError, then remove using inverse select
             if "_LEFT" in self.envs[i].tags:
                 self.envs[i] = self.envs[i].select("_LEFT", which="!any")
 
+            # === Update Logic ===
             new_left = self.envs[i - 1].select(["_LEFT", self.site_tag(i - 1)], which="any")
             out_inds = self._get_inds_to_keep(new_left, new_left) 
+            
+            # Use 'all' contraction with explicit output indices
             contracted_left = new_left.contract(all, output_inds=out_inds)
             
             self.envs[i] |= contracted_left
@@ -132,12 +142,15 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
 
         i0 = self.segment.start
         if i < len(self.segment) + i0 - 1:
-            # FIX: Check if _RIGHT exists before removing it to prevent KeyError
+            # === FIX: Safely Clean Stale Right Environment ===
             if "_RIGHT" in self.envs[i].tags:
                 self.envs[i] = self.envs[i].select("_RIGHT", which="!any")
 
+            # === Update Logic ===
             new_right = self.envs[i + 1].select(["_RIGHT", self.site_tag(i + self.bsz)], which="any")
             out_inds = self._get_inds_to_keep(new_right, new_right)
+            
+            # Use 'all' contraction with explicit output indices
             contracted_right = new_right.contract(all, output_inds=out_inds)
             
             self.envs[i] |= contracted_right
