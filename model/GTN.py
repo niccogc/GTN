@@ -45,4 +45,3 @@ class GTN(nn.Module):
             a = qt.Tensor(x, inds=["s", f"{i}"], tags=f"Input_{i}")
             input_nodes.append(a)
         return input_nodes
-

@@ -121,8 +121,9 @@ class Inputs:
             data = input_data[source_idx]
             
             # 4. Create Tensor
-            # Tag convention: input_{indices}
-            tensor = qt.Tensor(data=data, inds=inds, tags={f'input_{tag_suffix}'})
+            # Tag convention: input_{indices} plus I{i} for site location
+            tags = {f'input_{tag_suffix}', f'I{i}'}
+            tensor = qt.Tensor(data=data, inds=inds, tags=tags)
             tensors.append(tensor)
         
         return tensors

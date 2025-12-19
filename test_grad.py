@@ -2,8 +2,6 @@
 import torch
 from model.utils import CLASSIFICATION_METRICS
 from model.GTN import GTN
-from model.NTN import NTN
-from model.builder import Inputs
 import torch.nn as nn
 import torch.optim as optim
 import torchvision
@@ -180,7 +178,6 @@ for epoch in range(epochs):
     
     for batch_idx, (data, target) in enumerate(pbar):
         data, target = data.to(device), target.to(device)
-        
         optimizer.zero_grad()
         output = model(data)
         loss = criterion(output, target)

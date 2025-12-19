@@ -179,13 +179,28 @@ class NTN():
         
         # Contract E with Node to get Prediction
         # y_pred = E @ Node
+        print("ENV")
+        print(env)
+        print("TARGET_TENSOR")
+        print(target_tensor)
+        print("OUTPUT_INDS")
+        print([self.batch_dim] + self.output_dimensions)
         y_pred = (env & target_tensor).contract(output_inds=[self.batch_dim] + self.output_dimensions)
 
         # 3. Compute Loss Derivatives (w.r.t Output)
         # dL_dy: [batch, output]
-        # d2L_dy2: [batch, output] (Diagonal approximation)
-        # d2L_dy2 is now (Batch, Out, Out) if diagonal=False
-        dL_dy, d2L_dy2 = self.get_derivatives(y_pred, y_true, return_hessian_diagonal=False)
+        # d2L_dy2: [batch, output] if diagonal, [batch, output, output_prime] if full
+        # Use the loss's preference for diagonal vs full Hessian
+        # Note: For _batch_node_derivatives we always need the FULL Hessian
+        # because we contract it with environments from both sides
+        dL_dy, d2L_dy2 = self.loss.get_derivatives(
+            y_pred, 
+            y_true,
+            backend=self.backend,
+            batch_dim=self.batch_dim,
+            output_dims=self.output_dimensions,
+            return_hessian_diagonal=False  # Always full for node derivatives
+        )
         grad_tn = env & dL_dy
         # Result indices should be just the node indices (no batch, no output)
         node_inds = target_tensor.inds
@@ -228,75 +243,21 @@ class NTN():
 
         return J, H
 
-    def get_derivatives(self, y_pred, y_true, return_hessian_diagonal=True):
-        import torch
-        # 1. Prepare Data
-        y_pred_th = self._to_torch(y_pred, requires_grad=True)
-        y_true_th = self._to_torch(y_true, requires_grad=False)
-        
-        if y_pred_th.device != y_true_th.device:
-            y_true_th = y_true_th.to(y_pred_th.device)
 
-        batch_sz = y_pred_th.shape[0]
-        y_flat = y_pred_th.view(batch_sz, -1)
-        num_outputs = y_flat.shape[1]
-
-        # 2. Compute Loss
-        loss_val = self.loss(y_pred_th, y_true_th)
-        
-        # 3. First Derivative
-        grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=True)[0]
-        grad_flat = grad_th.view(batch_sz, -1)
-        
-        # 4. Second Derivative
-        if return_hessian_diagonal:
-            hess_cols = []
-            for i in range(num_outputs):
-                grad_sum = grad_flat[:, i].sum()
-                h_i = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
-                h_i_flat = h_i.view(batch_sz, -1)
-                hess_cols.append(h_i_flat[:, i])
-            
-            hess_th = torch.stack(hess_cols, dim=1).view(y_pred_th.shape)
-            
-            # Indices match y_pred
-            hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
-
-        else:
-            # Full Per-Sample Hessian: (Batch, Out, Out)
-            hess_rows = []
-            for i in range(num_outputs):
-                grad_sum = grad_flat[:, i].sum()
-                h_row = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
-                hess_rows.append(h_row.view(batch_sz, -1))
-            
-            # (Batch, Out, Out)
-            hess_th = torch.stack(hess_rows, dim=0).permute(1, 0, 2)
-            
-            # Create proper indices for the full matrix [batch, out, out_col]
-            if isinstance(y_pred, qt.Tensor):
-                out_inds = [i for i in y_pred.inds if i != self.batch_dim]
-                out_inds_col = [i + "_col" for i in out_inds]
-                hess_inds = [self.batch_dim] + out_inds + out_inds_col
-            else:
-                hess_inds = None
-
-        # 5. Wrap back
-        if self.backend == 'numpy':
-            grad_data = grad_th.detach().numpy()
-            hess_data = hess_th.detach().numpy()
-        else:
-            grad_data = grad_th
-            hess_data = hess_th
-        
-        grad_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
-        return qt.Tensor(grad_data, inds=grad_inds), qt.Tensor(hess_data, inds=hess_inds)
 
     def _batch_get_derivatives(self, inputs: List[qt.Tensor], y_true, tn):
         """Internal worker: Runs forward pass for ONE batch, then calculates derivatives."""
         output_inds = [self.batch_dim] + self.output_dimensions
         y_pred = self._batch_forward(inputs, tn, output_inds)
-        grad, hess = self.get_derivatives(y_pred, y_true)
+        # Use the loss's preference for diagonal vs full Hessian
+        grad, hess = self.loss.get_derivatives(
+            y_pred, 
+            y_true,
+            backend=self.backend,
+            batch_dim=self.batch_dim,
+            output_dims=self.output_dimensions,
+            return_hessian_diagonal=self.loss.use_diagonal_hessian
+        )
         return grad, hess
 
     def compute_derivatives_over_dataset(self, tn: qt.TensorNetwork, input_generator):
@@ -345,6 +306,56 @@ class NTN():
                 output_inds = target_inds
             )
         return result
+
+    
+    def forward_from_environment(self, 
+                                env: qt.Tensor, 
+                                node_tag: str,
+                                node_tensor: Optional[qt.Tensor] = None,
+                                sum_over_batch: bool = False) -> qt.Tensor:
+        """
+        Compute forward pass using a pre-computed environment.
+        
+        This is the KEY computational advantage: once the environment is computed,
+        we can quickly evaluate predictions with different node values without
+        re-contracting the entire network.
+        
+        Args:
+            env: Pre-computed environment (from get_environment or _batch_environment)
+            node_tag: Tag of the node that was excluded from environment
+            node_tensor: Optional custom node tensor. If None, uses current node from self.tn
+            sum_over_batch: Whether to sum over batch dimension in output
+        
+        Returns:
+            y_pred: Predictions with shape [batch, output] or [output] if sum_over_batch
+        
+        Example:
+            # Compute environment once
+            env = model.get_environment(model.tn, 'Node2', input_gen, 
+                                       sum_over_batch=False, sum_over_output=False)
+            
+            # Fast forward passes with different node values
+            y_pred_1 = model.forward_from_environment(env, 'Node2', node_tensor=new_value_1)
+            y_pred_2 = model.forward_from_environment(env, 'Node2', node_tensor=new_value_2)
+            # Much faster than calling forward() twice!
+        """
+        # Get node tensor
+        if node_tensor is None:
+            node_tensor = self.tn[node_tag]
+        
+        # Determine output indices
+        if sum_over_batch:
+            output_inds = self.output_dimensions
+        else:
+            output_inds = [self.batch_dim] + self.output_dimensions
+        
+        # Contract environment with node
+        y_pred = (env & node_tensor).contract(output_inds=output_inds)
+        
+        if len(output_inds) > 0:
+            y_pred.transpose_(*output_inds)
+        
+        return y_pred
     
     def get_environment(self, tn: qt.TensorNetwork,
                                  target_tag: str, 
@@ -635,25 +646,35 @@ class NTN():
         matrix_data = H.to_dense(['rows'], ['cols'])
         vector = -b.to_dense(['cols'])
 
-        # 2. Regularization (Efficient Diagonal Update)
+        # 2. Proper L2 Regularization: (H + λI) * update = b + λ * old_weight
         if regularize:
             backend, lib = self.get_backend(matrix_data)
             
+            # Get current weights and fuse to match vector shape
+            current_node = self.tn[node_tag].copy()
+            current_node.fuse(map_b, inplace=True)
+            old_weight = current_node.to_dense(['cols'])
+            
+            # Add λ * I to H
             if backend == 'torch':
                 # Efficient in-place diagonal update (view)
-                # No extra memory allocation for Identity matrix
                 matrix_data.diagonal().add_(jitter)
-            
             elif backend == 'numpy':
                 # Efficient numpy diagonal update
                 rows, cols = lib.diag_indices_from(matrix_data)
                 matrix_data[rows, cols] += jitter
-                
             elif backend == 'jax':
                 # JAX is immutable, so we use .at[].add()
-                # indices for diagonal
                 d_idx = lib.arange(matrix_data.shape[0])
                 matrix_data = matrix_data.at[d_idx, d_idx].add(jitter)
+            
+            # Add λ * old_weight to b (RHS)
+            if backend == 'torch':
+                vector = vector + jitter * old_weight
+            elif backend == 'numpy':
+                vector = vector + jitter * old_weight
+            elif backend == 'jax':
+                vector = vector + jitter * old_weight
 
         # 3. Solve Linear System
         tensor_node_data = self.solve_linear_system(matrix_data, vector)
@@ -828,6 +849,8 @@ class NTN():
         if eval_metrics is None:
             eval_metrics = REGRESSION_METRICS
 
+        if not isinstance(jitter, list):
+            jitter = [jitter]*n_epochs
         trainable_nodes = self._get_trainable_nodes()
         
         # Standard DMRG-style sweep: Forward -> Backward (excluding ends to avoid double update)
@@ -850,7 +873,7 @@ class NTN():
             
             # Optimization Sweep
             for node_tag in full_sweep_order:
-                self.update_tn_node(node_tag, regularize, jitter)
+                self.update_tn_node(node_tag, regularize, jitter[epoch])
 
             # Evaluation
             scores = self.evaluate(eval_metrics)

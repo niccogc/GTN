@@ -1,3 +1,4 @@
+# type: ignore
 import torch
 import torch.nn as nn
 import numpy as np
@@ -6,6 +7,7 @@ import quimb.tensor as qt
 # Assumes your classes are in these files or pasted above
 from model.builder import Inputs
 from model.NTN import NTN
+from model.losses import MSELoss
 torch.set_default_dtype(torch.float64)
 # from ntn import NTN  <-- Assumes you import your updated NTN class here
 def test_ntn_full_batch():
@@ -51,7 +53,7 @@ def test_ntn_full_batch():
     tn_init = qt.TensorNetwork([t1, t2, t3])
 
     # 4. NTN INITIALIZATION
-    loss_fn = nn.MSELoss()
+    loss_fn = MSELoss()
     model = NTN(
         tn=tn_init,
         output_dims=["y"],
