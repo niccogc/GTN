@@ -1,7 +1,7 @@
 # type: ignore
 import quimb.tensor as qt
 from model.NTN import NTN
-from batch_moving_environment import BatchMovingEnvironment
+from model.batch_moving_environment import BatchMovingEnvironment
 
 class CMPO2_NTN(NTN):
     def __init__(self, *args, cache_environments=False, **kwargs):
@@ -34,6 +34,7 @@ class CMPO2_NTN(NTN):
             'total': total,
             'hit_rate': hit_rate
         }
+
     def _batch_environment(self, inputs, tn: qt.TensorNetwork, target_tag: str,
                            sum_over_batch: bool = False, sum_over_output: bool = False) -> qt.Tensor:
         
@@ -74,24 +75,15 @@ class CMPO2_NTN(NTN):
         site_idx = tag_to_pos[target_tag]
         env_obj.move_to(site_idx)
         
-        # 3. Get Base Environment (Excludes ALL tensors at site_idx, i.e., excludes I{site_idx})
+        # 3. Get Base Environment
+        # env_obj() returns: _LEFT + _RIGHT + SAME_SITE tensors
+        # SAME_SITE includes all tensors at this site (MPS tensors + inputs)
         base_env = env_obj() 
         
-        # 4. Reconstruct Local Context
-        # The base_env excludes the whole column (Pixel + Patch + Input).
-        # We need to ADD back the parts of the column that are NOT the target_tag.
-        
-        # Select all tensors at this site (including inputs, pixels, patches)
-        site_tags = env_obj.site_tag(site_idx) # e.g. "I0"
-        full_tn_at_site = env_obj.tn.select(site_tags)
-        # Identify the "other" tensors at this site (Context = Column - Target)
-        # We copy to avoid modifying the original TN
-        local_context = full_tn_at_site.copy()
-        local_context.delete(target_tag) # Remove ONLY the target (e.g. 0_Pi)
-        
-        # 5. Form the Final Environment
-        # Env = Base_Env (Left/Right) + Local_Context (Other parts of column)
-        final_env = base_env | local_context
+        # 4. Create hole by deleting only the target
+        # We copy to avoid modifying the cached environment
+        final_env = base_env.copy()
+        final_env.delete(target_tag)
         
         # 6. Determine Output Indices
         outer_inds = final_env.outer_inds()
@@ -116,8 +108,8 @@ class CMPO2_NTN(NTN):
                 if out_dim in inds_to_keep:
                     inds_to_keep.remove(out_dim)
         
-        # 7. Contract
-        return final_env.contract(output_inds=inds_to_keep)    
+        # 7. Contract (use 'all' for hyper-edge networks)
+        return final_env.contract(all, output_inds=inds_to_keep)    
     
     def _get_trainable_nodes(self):
         from model.NTN import NOT_TRAINABLE_TAG

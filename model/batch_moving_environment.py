@@ -1,3 +1,4 @@
+# type: ignore
 import quimb.tensor as qb
 import torch
 import numpy as np
@@ -32,23 +33,35 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
 
         super().init_non_segment(start, stop)
 
-    def _get_inds_to_keep(self, tn, active_tensors):
+    def _get_inds_to_keep(self, tn, active_tensors, site_tag=None):
         """
         Helper to determine correct output indices for contractions.
         Preserves Bonds, Global Outer, Batch, and Output indices.
+        
+        Args:
+            tn: The tensor network
+            active_tensors: Tensors being contracted
+            site_tag: Tag of the current site (to preserve bonds to it)
         """
         active_inds = set().union(*(t.inds for t in active_tensors))
         all_inds = set().union(*(t.inds for t in tn))
         passive_inds = all_inds - active_inds 
         
-        # 1. Keep bonds
+        # 1. Keep bonds (between active and other passive tensors)
         inds_to_keep = active_inds.intersection(passive_inds)
         
-        # 2. Keep global outer
+        # 2. Keep bonds to current site (critical for MovingEnvironment!)
+        if site_tag is not None:
+            site_tensors = tn.select(site_tag)
+            site_inds = set().union(*(t.inds for t in site_tensors))
+            bonds_to_site = active_inds.intersection(site_inds)
+            inds_to_keep.update(bonds_to_site)
+        
+        # 3. Keep global outer
         global_outer = set(tn.outer_inds())
         inds_to_keep.update(active_inds.intersection(global_outer))
         
-        # 3. Keep Batch and Output
+        # 4. Keep Batch and Output
         if self.batch_inds:
             inds_to_keep.update(self.batch_inds.intersection(active_inds))
         if self.output_dims:
@@ -77,7 +90,8 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
                 tags_to_contract = ("_RIGHT", self.site_tag(i + self.bsz))
                 active_tensors = self.envs[i].select(tags_to_contract, which='any')
                 
-                out_inds = self._get_inds_to_keep(self.envs[i], active_tensors)
+                # Pass site_tag so we preserve bonds to current site i
+                out_inds = self._get_inds_to_keep(self.envs[i], active_tensors, site_tag=self.site_tag(i))
                 self.envs[i].contract(tags_to_contract, output_inds=out_inds, inplace=True)
 
             self.envs[start] |= self.tnc["_LEFT"]
@@ -97,7 +111,8 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
                 tags_to_contract = ("_LEFT", self.site_tag(i - 1))
                 active_tensors = self.envs[i].select(tags_to_contract, which='any')
                 
-                out_inds = self._get_inds_to_keep(self.envs[i], active_tensors)
+                # Pass site_tag so we preserve bonds to current site i+bsz-1
+                out_inds = self._get_inds_to_keep(self.envs[i], active_tensors, site_tag=self.site_tag(i + self.bsz - 1))
                 self.envs[i].contract(tags_to_contract, output_inds=out_inds, inplace=True)
 
             self.envs[i] |= self.tnc["_RIGHT"]
@@ -122,7 +137,8 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
 
             # === Update Logic ===
             new_left = self.envs[i - 1].select(["_LEFT", self.site_tag(i - 1)], which="any")
-            out_inds = self._get_inds_to_keep(new_left, new_left) 
+            # Pass self.envs[i] so we can find site i tensors
+            out_inds = self._get_inds_to_keep(self.envs[i], new_left, site_tag=self.site_tag(i)) 
             
             # Use 'all' contraction with explicit output indices
             contracted_left = new_left.contract(all, output_inds=out_inds)
@@ -148,7 +164,8 @@ class BatchMovingEnvironment(qb.MovingEnvironment):
 
             # === Update Logic ===
             new_right = self.envs[i + 1].select(["_RIGHT", self.site_tag(i + self.bsz)], which="any")
-            out_inds = self._get_inds_to_keep(new_right, new_right)
+            # Pass self.envs[i] so we can find site i tensors
+            out_inds = self._get_inds_to_keep(self.envs[i], new_right, site_tag=self.site_tag(i))
             
             # Use 'all' contraction with explicit output indices
             contracted_right = new_right.contract(all, output_inds=out_inds)
