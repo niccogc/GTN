@@ -179,12 +179,6 @@ class NTN():
         
         # Contract E with Node to get Prediction
         # y_pred = E @ Node
-        print("ENV")
-        print(env)
-        print("TARGET_TENSOR")
-        print(target_tensor)
-        print("OUTPUT_INDS")
-        print([self.batch_dim] + self.output_dimensions)
         y_pred = (env & target_tensor).contract(output_inds=[self.batch_dim] + self.output_dimensions)
 
         # 3. Compute Loss Derivatives (w.r.t Output)

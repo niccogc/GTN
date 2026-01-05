@@ -22,8 +22,7 @@ class CMPO2_NTN(NTN):
     
     def clear_cache(self):
         self._env_cache.clear()
-        self._cache_hits = 0
-        self._cache_misses = 0
+        # Don't reset hit/miss counters - we want to track across epochs
     
     def get_cache_stats(self):
         total = self._cache_hits + self._cache_misses
@@ -52,16 +51,27 @@ class CMPO2_NTN(NTN):
         
         # 2. Get/Create Environment
         if cache_key not in self._env_cache:
-            full_tn = tn.copy()
+            # CRITICAL: Pass the ACTUAL tn (not a copy) so MovingEnvironment sees updates!
+            # Add input tensors to tn (they will persist across all batches)
+            input_tags = []
             for t in inputs:
-                full_tn.add_tensor(t)
+                # Check if this input is already in tn
+                already_in = False
+                for tag in t.tags:
+                    if tag in tn.tag_map:
+                        already_in = True
+                        break
+                if not already_in:
+                    tn.add_tensor(t)
+                    input_tags.extend(t.tags)
             
+            # Create environment with the actual TN (not a copy!)
             self._env_cache[cache_key] = BatchMovingEnvironment(
-                full_tn,
+                tn,  # Pass actual TN, not a copy!
                 begin='left',
                 bsz=1,
                 batch_inds=[self.batch_dim],
-                output_dims=set(self.output_dims) # Must pass output_dims here
+                output_dims=set(self.output_dims)
             )
             self._cache_misses += 1
         else:
@@ -178,6 +188,9 @@ class CMPO2_NTN(NTN):
                 for node_tag in columns[col_idx]:
                     self.update_tn_node(node_tag, regularize, jitter[epoch])
             
+            # Clear cache after each sweep
+            # The cached environments have stale parameter values after updates
+            # which leads to incorrect gradients and numerical instability
             self.clear_cache()
             
             scores = self.evaluate(eval_metrics)

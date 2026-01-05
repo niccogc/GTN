@@ -105,10 +105,10 @@ model = CMPO2_NTN(
 print("✓ Created CMPO2_NTN model")
 print(f"  Trainable nodes: {model._get_trainable_nodes()}")
 
-# Test one epoch of training
-print("\nTesting one epoch of training with caching...")
+# Test multiple epochs of training
+print("\nTesting 5 epochs of training with caching...")
 try:
-    metrics = model.fit(n_epochs=1, regularize=True, jitter=1e-4, verbose=True)
+    metrics = model.fit(n_epochs=5, regularize=True, jitter=1e-4, verbose=True)
     print(f"✓ Training successful!")
     print(f"  Final metrics: {metrics}")
     
