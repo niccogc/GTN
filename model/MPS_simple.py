@@ -62,25 +62,6 @@ class SimpleCMPO2_NTN(NTN):
             # Optimization Sweep
             for node_tag in full_sweep_order:
                 self.update_tn_node(node_tag, regularize, jitter[epoch])
-                
-                # Normalize after EACH node update to prevent explosion
-                # Get all _Pi tensors and normalize them as a group
-                pi_tensors = [self.tn[tag] for tag in self._get_trainable_nodes() if '_Pi' in tag]
-                if pi_tensors:
-                    total_norm_sq = sum(torch.sum(t.data ** 2).item() for t in pi_tensors)
-                    norm = total_norm_sq ** 0.5
-                    if norm > 0:
-                        for t in pi_tensors:
-                            t.modify(data=t.data / norm)
-                
-                # Get all _Pa tensors and normalize them as a group
-                pa_tensors = [self.tn[tag] for tag in self._get_trainable_nodes() if '_Pa' in tag]
-                if pa_tensors:
-                    total_norm_sq = sum(torch.sum(t.data ** 2).item() for t in pa_tensors)
-                    norm = total_norm_sq ** 0.5
-                    if norm > 0:
-                        for t in pa_tensors:
-                            t.modify(data=t.data / norm)
 
             # Evaluation
             scores = self.evaluate(eval_metrics)

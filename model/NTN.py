@@ -383,7 +383,7 @@ class NTN():
         return result
 
     def _batch_environment(self, inputs, tn: qt.TensorNetwork, target_tag: str,
-                        sum_over_batch: bool = False, sum_over_output: bool = False) -> qt.Tensor:
+                            sum_over_batch: bool = False, sum_over_output: bool = False) -> qt.Tensor:
         env_tn = tn & inputs
         env_tn.delete(target_tag)
 
