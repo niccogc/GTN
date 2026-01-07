@@ -7,9 +7,8 @@ import numpy as np
 from sklearn import datasets
 import quimb.tensor as qt
 from model.NTN import NTN
-from model.builder import Inputs
 from model.losses import MSELoss
-from model.utils import CLASSIFICATION_METRICS
+from model.utils import CLASSIFICATION_METRICS, create_inputs
 from model.MPO2_models import MPO2
 
 torch.set_default_dtype(torch.float32)
@@ -79,14 +78,14 @@ print(f"    Input labels: {mpo2.input_labels}")
 print(f"    Input dims: {mpo2.input_dims}")
 print(f"    Output dims: {mpo2.output_dims}")
 
-# Setup data loader
-loader = Inputs(
-    inputs=[X_features],  # Shape: (150, 5) - builder repeats this for each site
-    outputs=[y_onehot],  # Use one-hot for MSE loss (150, 3)
-    outputs_labels=mpo2.output_dims,
+# Setup data loader using utility function
+loader = create_inputs(
+    X=X_features,
+    y=y_onehot,
     input_labels=mpo2.input_labels,
-    batch_dim="s",
-    batch_size=BATCH_SIZE
+    output_labels=mpo2.output_dims,
+    batch_size=BATCH_SIZE,
+    batch_dim="s"
 )
 
 # Setup loss

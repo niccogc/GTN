@@ -24,7 +24,10 @@ class NTN():
         self.output_dimensions = data_stream.outputs_labels
         self.batch_dim = data_stream.batch_dim
         self.input_indices = data_stream.input_labels
-        self.data = data_stream
+        self.data = data_stream  # Backward compatibility
+        self.train_data = data_stream  # Primary data for training
+        self.val_data = None  # Optional validation data (set in fit())
+        self.test_data = None  # Optional test data (set in fit())
         
         # Tag not trainable nodes with NT tag
         not_trainable_nodes = not_trainable_nodes or []
@@ -503,6 +506,18 @@ class NTN():
             data.requires_grad_(True)
         return data
 
+    def _compute_weight_norm_squared(self):
+        """
+        Compute the squared Frobenius norm of the entire tensor network.
+        This is used for L2 regularization: ||weights||^2 = ||TN||_F^2
+        """
+        # Use quimb's built-in Frobenius norm (squared) on entire network
+        norm_sq = self.tn.norm(squared=True)
+        # Convert to scalar if needed
+        if hasattr(norm_sq, 'item'):
+            norm_sq = norm_sq.item()
+        return norm_sq
+
     def _prime_indices_tensor(self, 
                             tensor: qt.Tensor,
                             exclude_indices: Optional[List[str]] = [],
@@ -760,21 +775,26 @@ class NTN():
                 
         return results
 
-    def evaluate(self, metrics: Dict[str, callable], verbose=False):
+    def evaluate(self, metrics: Dict[str, callable], data_stream=None, verbose=False):
         """
         Iterates over the dataset and aggregates results from user metrics.
         
         Args:
             metrics: Dict mapping name -> callable(y_pred, y_true).
                      The callable should return a summable result (e.g. (loss_sum, count)).
+            data_stream: Optional Inputs object. If None, uses self.train_data.
         """
+        # Use provided data_stream or default to train_data
+        if data_stream is None:
+            data_stream = self.train_data
+        
         # 1. Initialize Aggregates
         # We don't know the shape of the metric result yet, so we initialize on the first batch.
         aggregates = {}
 
         # 2. Iterate over Data
         # We iterate manually to handle the dictionary aggregation
-        for i, batch_data in enumerate(self.data.data_mu_y):
+        for i, batch_data in enumerate(data_stream.data_mu_y):
             inputs, y_true = batch_data
             
             # Get dict of results for this batch
@@ -832,15 +852,37 @@ class NTN():
         # 4. Update the network with the new accumulated weights
         self.update_node(new_tensor, node_tag)
 
-    def fit(self, n_epochs=1, regularize=True, jitter=1e-6, verbose=True, eval_metrics=None):
+    def fit(self, n_epochs=1, regularize=True, jitter=1e-6, verbose=True, eval_metrics=None, 
+            val_data=None, test_data=None, callback_epoch=None, callback_init=None):
         """
         Main training loop (Alternating Least Squares / Newton Sweep).
         
         Args:
             eval_metrics: Dict of metric functions. Defaults to REGRESSION_METRICS if None.
+            val_data: Optional validation Inputs object for best model selection.
+                     If None, uses training data for both optimization and validation.
+            test_data: Optional test Inputs object (stored but not used in fit).
+            callback_epoch: Optional callback(epoch, scores, info) called after each epoch
+            callback_init: Optional callback(scores, info) called after initialization
+        
+        Callbacks receive:
+            - epoch: int (current epoch number, 0-indexed)
+            - scores: dict of metrics from evaluate()
+            - info: dict with additional info (jitter, best_score, etc.)
+        
+        Best model selection:
+            - Uses 'quality' metric (higher is better) on validation data
+            - For regression: quality = R²
+            - For classification: quality = accuracy
+            - Ignores NaN/inf values
         """
+        # Store validation and test data
+        self.val_data = val_data
+        self.test_data = test_data
+        
         # Default to Regression metrics if nothing provided
         if eval_metrics is None:
+            from model.utils import REGRESSION_METRICS
             eval_metrics = REGRESSION_METRICS
 
         if not isinstance(jitter, list):
@@ -855,25 +897,122 @@ class NTN():
         if verbose:
             print(f"Starting Fit: {n_epochs} epochs.")
             print(f"Sweep Order: {full_sweep_order}")
+            if self.val_data is not None:
+                print(f"Validation: Using separate validation set for best model selection")
 
         # --- Initial Evaluation ---
-        scores = self.evaluate(eval_metrics)
+        # Evaluate on training data
+        scores_train = self.evaluate(eval_metrics, data_stream=self.train_data)
+        
+        # Evaluate on validation data if provided
+        if self.val_data is not None:
+            scores_val = self.evaluate(eval_metrics, data_stream=self.val_data)
+        else:
+            scores_val = scores_train
+        
         if verbose:
-            print(f"Init    | ", end="")
-            print_metrics(scores)
+            from model.utils import print_metrics, compute_quality
+            print(f"Init    | Train: ", end="")
+            print_metrics(scores_train)
+            if self.val_data is not None:
+                print(f"        | Val:   ", end="")
+                print_metrics(scores_val)
+        
+        # Call init callback if provided
+        if callback_init is not None:
+            info = {
+                'n_epochs': n_epochs,
+                'jitter_schedule': jitter if isinstance(jitter, list) else [jitter] * n_epochs,
+                'regularize': regularize
+            }
+            callback_init(scores_train, scores_val, info)
 
+        # --- Track best model state ---
+        # Use 'quality' metric (higher is better) on VALIDATION data for best model selection
+        from model.utils import compute_quality
+        
+        best_quality = compute_quality(scores_val)
+        best_tn_state = self.tn.copy()  # Only one copy stored
+        best_scores_train = scores_train.copy()
+        best_scores_val = scores_val.copy()
+        best_epoch = -1  # Track which epoch was best
+        
         # --- Training Loop ---
         for epoch in range(n_epochs):
             
-            # Optimization Sweep
-            for node_tag in full_sweep_order:
-                self.update_tn_node(node_tag, regularize, jitter[epoch])
+            try:
+                # Optimization Sweep (on training data)
+                for node_tag in full_sweep_order:
+                    self.update_tn_node(node_tag, regularize, jitter[epoch])
 
-            # Evaluation
-            scores = self.evaluate(eval_metrics)
-            
-            if verbose:
-                print(f"Epoch {epoch+1} | ", end="")
-                print_metrics(scores)
+                # Evaluation on training data
+                scores_train = self.evaluate(eval_metrics, data_stream=self.train_data)
                 
-        return scores
+                # Evaluation on validation data
+                if self.val_data is not None:
+                    scores_val = self.evaluate(eval_metrics, data_stream=self.val_data)
+                else:
+                    scores_val = scores_train
+                
+                # Get current quality on VALIDATION data
+                current_quality = compute_quality(scores_val)
+                
+                # Compute regularized loss for tracking/logging purposes
+                current_data_loss = scores_train['loss']
+                current_reg_loss = current_data_loss
+                weight_norm_sq = None
+                if regularize and jitter[epoch] > 0:
+                    weight_norm_sq = self._compute_weight_norm_squared()
+                    current_reg_loss += jitter[epoch] * weight_norm_sq
+                
+                # Update best model if VALIDATION QUALITY is better AND finite (not NaN/inf)
+                import math
+                if current_quality is not None and math.isfinite(current_quality) and current_quality > best_quality:
+                    best_quality = current_quality
+                    best_tn_state = self.tn.copy()  # Replace old best with new best
+                    best_scores_train = scores_train.copy()
+                    best_scores_val = scores_val.copy()
+                    best_epoch = epoch
+                    is_best = True
+                else:
+                    is_best = False
+                
+                if verbose:
+                    marker = " *" if is_best else ""
+                    print(f"Epoch {epoch+1} | Train: ", end="")
+                    from model.utils import print_metrics
+                    print_metrics(scores_train)
+                    if self.val_data is not None:
+                        print(f"        | Val:   ", end="")
+                        print_metrics(scores_val)
+                        print(f"{marker}", end="")
+                    print()  # Newline
+                
+                # Call epoch callback if provided
+                if callback_epoch is not None:
+                    info = {
+                        'epoch': epoch,
+                        'jitter': jitter[epoch],
+                        'regularize': regularize,
+                        'reg_loss': current_reg_loss,
+                        'weight_norm_sq': weight_norm_sq,
+                        'best_quality': best_quality,
+                        'is_best': is_best
+                    }
+                    callback_epoch(epoch, scores_train, scores_val, info)
+                    
+            except torch.linalg.LinAlgError as e:
+                # Singular matrix error - restore best state and stop
+                if verbose:
+                    print(f"\n✗ Singular matrix at epoch {epoch+1} - stopping training")
+                    print(f"  Restoring best model from epoch {best_epoch+1} (val_quality={best_quality:.6f})")
+                
+                self.tn = best_tn_state
+                return best_scores_train, best_scores_val
+        
+        # Training completed - restore best model
+        if verbose and best_epoch >= 0:
+            print(f"\n  Restoring best model from epoch {best_epoch+1} (val_quality={best_quality:.6f})")
+        
+        self.tn = best_tn_state
+        return best_scores_train, best_scores_val
