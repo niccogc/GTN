@@ -7,6 +7,8 @@
       url = "github:niccogc/quimbflake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    opencode.url = "github:anomalyco/opencode";
+    opencode.inputs.nixpkgs.follows = "nixpkgs";
     opencode-plugins.url = "github:niccogc/opencode-plugin";
     opencode-plugins.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -16,6 +18,7 @@
     nixpkgs,
     quimb-flake,
     opencode-plugins,
+    opencode,
   }: let
     system = "x86_64-linux";
     # Define the custom Python package separately
@@ -56,7 +59,7 @@
         pandas
         torchvision
         torch
-        jedi-language-server
+        # jedi-language-server
         scipy
         matplotlib
         scikit-learn
@@ -70,14 +73,22 @@
     finalConfigData =
       rawConfig
       // {
-        plugin = [
-          "file://${opencode-plugins.packages.${system}.oh-my-opencode}/dist/index.js"
-          "file://${opencode-plugins.packages.${system}.antigravity}/dist/index.js"
-          "file://${opencode-plugins.packages.${system}.anthropic-auth}/dist/index.js"
-        ];
+        plugin = [];
+        logLevel = "DEBUG";
       };
 
     opencodecfg = pkgs.writeText "opencodecfg.jsonc" (builtins.toJSON finalConfigData);
+
+    # Plugin list: { name = "filename.js"; src = <nix-store-path>; }
+    opencodePluginList = [
+      { name = "oh-my-opencode.js"; src = "${opencode-plugins.packages.${system}.oh-my-opencode}/dist/index.js"; }
+      { name = "antigravity-auth.js"; src = "${opencode-plugins.packages.${system}.antigravity}/dist/index.js"; }
+      { name = "anthropic-auth.js"; src = "${opencode-plugins.packages.${system}.anthropic-auth}/dist/index.js"; }
+    ];
+
+    # Generate bash commands from plugin list
+    pluginLinkCmds = builtins.concatStringsSep "\n" (map (p: ''ln -sf "${p.src}" ".opencode/plugin/${p.name}"'') opencodePluginList);
+    pluginUnlinkCmds = builtins.concatStringsSep "\n" (map (p: ''rm -f ".opencode/plugin/${p.name}"'') opencodePluginList);
   in {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = [
@@ -87,7 +98,7 @@
       packages = [
         pythonWithNixPkgs
         pkgs.uv
-        pkgs.opencode
+        opencode.packages.${system}.default
       ];
 
       shellHook = ''
@@ -109,6 +120,8 @@
         fi
 
         cleanup() {
+          echo "Cleaning up opencode plugins..."
+          ${pluginUnlinkCmds}
           echo "Stopping docs-mcp-server..."
           ${pkgs.podman}/bin/podman stop "$DOCS_CONTAINER_NAME" >/dev/null 2>&1 || true
         }
@@ -147,7 +160,9 @@
           uv pip install aim
         fi
         export OPENCODE_DISABLE_DEFAULT_PLUGINS=1
-        # uv sync
+        # Link opencode plugins
+        mkdir -p .opencode/plugin
+        ${pluginLinkCmds}
         echo "✓ Environment ready!"
         echo "  Python: $(which python)"
         zsh
