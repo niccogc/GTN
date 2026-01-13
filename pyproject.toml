@@ -1,0 +1,106 @@
+[project]
+name = "tensor-network-training"
+version = "0.1.0"
+description = "Tensor Network Training Framework with NTN and GTN"
+readme = "docs/COMPREHENSIVE_GUIDE.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Tensor Network Team" }
+]
+keywords = ["tensor-networks", "machine-learning", "quantum-inspired", "mps", "mpo"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "scipy>=1.10.0",
+    "scikit-learn>=1.3.0",
+    "jax>=0.4.0",
+    "quimb>=1.4.0",
+    "cotengra>=0.5.0",
+    "autoray>=0.6.0",
+    "opt-einsum>=3.3.0",
+    "networkx>=3.0",
+    "matplotlib>=3.7.0",
+    "ucimlrepo>=0.0.7",
+    "aim>=3.17.0",
+    "optuna>=3.0.0",
+    "kahypar>=1.1.0",
+    "tqdm>=4.60.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.0.0",
+    "ipython>=8.0.0",
+]
+
+viz = [
+    "pygraphviz>=1.11",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/tensor-network-training"
+Documentation = "https://github.com/your-org/tensor-network-training/tree/main/docs"
+Repository = "https://github.com/your-org/tensor-network-training"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["model", "experiments"]
+
+[tool.setuptools.package-data]
+experiments = ["configs/*.json"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310', 'py311', 'py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+select = ["E", "F", "I"]
+ignore = ["E501", "F401"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.uv]
+managed = true

@@ -66,7 +66,7 @@ def metric_mse(y_pred, y_true):
         y_true = y_true.view_as(y_pred)
         
     return torch.sum((y_true - y_pred) ** 2), y_true.numel()
-import torch
+
 
 def metric_accuracy(y_pred, y_true):
     """

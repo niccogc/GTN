@@ -1,145 +1,93 @@
 # type: ignore
 """
 Dataset loader utility for production training scripts.
+Uses UCI ML Repository for loading datasets.
 """
 import torch
 import numpy as np
-from sklearn.preprocessing import StandardScaler
+import sys
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from model.load_ucirepo import get_ucidata, datasets as uci_datasets
 
 
-def load_dataset(dataset_name, n_samples=None, seed=0, val_split=0.2, test_split=0.2):
+def load_dataset(dataset_name, n_samples=None, seed=0, val_split=0.2, test_split=0.2, device='cpu', cap=50):
     """
-    Load a dataset by name and return standardized features and targets with train/val/test splits.
+    Load a dataset by name from UCI ML Repository.
     
     Args:
-        dataset_name: Name of dataset to load
-        n_samples: Number of samples to use (None = use all)
-        seed: Random seed for sampling and splitting
-        val_split: Fraction of data for validation (default: 0.2)
-        test_split: Fraction of data for test (default: 0.2)
+        dataset_name: Name of dataset to load (e.g., 'abalone', 'iris')
+        n_samples: Number of samples to use (None = use all) - NOT IMPLEMENTED YET
+        seed: Random seed - IGNORED (splits are handled by get_ucidata with fixed seed=42)
+        val_split: Fraction for validation - IGNORED (splits are pre-determined: 70/15/15)
+        test_split: Fraction for test - IGNORED (splits are pre-determined: 70/15/15)
+        device: Device to load tensors on (default: 'cpu')
+        cap: Maximum number of features after one-hot encoding (default: 50)
     
     Returns:
         data: dict with keys 'X_train', 'y_train', 'X_val', 'y_val', 'X_test', 'y_test'
         dataset_info: dict with metadata (includes 'task' field)
     """
+    uci_dataset_map = {name: (dataset_id, task) for name, dataset_id, task in uci_datasets}
     
-    if dataset_name == "california_housing":
-        from sklearn import datasets
-        from sklearn.model_selection import train_test_split
-        
-        housing = datasets.fetch_california_housing()
-        X = housing.data
-        y = housing.target
-        
-        # Sample subset if requested
-        if n_samples is not None and n_samples < len(X):
-            np.random.seed(seed)
-            indices = np.random.choice(len(X), n_samples, replace=False)
-            X = X[indices]
-            y = y[indices]
-        
-        # Standardize features
-        scaler = StandardScaler()
-        X = scaler.fit_transform(X)
-        
-        # Train/val/test split
-        # First split: train+val vs test
-        X_trainval, X_test, y_trainval, y_test = train_test_split(
-            X, y, test_size=test_split, random_state=seed
+    if dataset_name not in uci_dataset_map:
+        raise ValueError(
+            f"Dataset '{dataset_name}' not found. "
+            f"Available datasets: {list(uci_dataset_map.keys())}"
         )
-        
-        # Second split: train vs val
-        val_size_adjusted = val_split / (1 - test_split)  # Adjust val proportion
-        X_train, X_val, y_train, y_val = train_test_split(
-            X_trainval, y_trainval, test_size=val_size_adjusted, random_state=seed
-        )
-        
-        # Convert to torch
-        data = {
-            'X_train': torch.tensor(X_train, dtype=torch.float32),
-            'y_train': torch.tensor(y_train, dtype=torch.float32).unsqueeze(1),
-            'X_val': torch.tensor(X_val, dtype=torch.float32),
-            'y_val': torch.tensor(y_val, dtype=torch.float32).unsqueeze(1),
-            'X_test': torch.tensor(X_test, dtype=torch.float32),
-            'y_test': torch.tensor(y_test, dtype=torch.float32).unsqueeze(1)
-        }
-        
-        dataset_info = {
-            'name': 'california_housing',
-            'n_samples': len(X),
-            'n_train': len(X_train),
-            'n_val': len(X_val),
-            'n_test': len(X_test),
-            'n_features': X.shape[1],
-            'task': 'regression'
-        }
-        
-        return data, dataset_info
     
-    elif dataset_name == "iris":
-        from sklearn import datasets
-        from sklearn.model_selection import train_test_split
-        
-        iris = datasets.load_iris()
-        X = iris.data
-        y = iris.target
-        
-        # Sample subset if requested
-        if n_samples is not None and n_samples < len(X):
-            np.random.seed(seed)
-            indices = np.random.choice(len(X), n_samples, replace=False)
-            X = X[indices]
-            y = y[indices]
-        
-        # Standardize features
-        scaler = StandardScaler()
-        X = scaler.fit_transform(X)
-        
-        # Train/val/test split
-        # First split: train+val vs test
-        X_trainval, X_test, y_trainval, y_test = train_test_split(
-            X, y, test_size=test_split, random_state=seed, stratify=y
-        )
-        
-        # Second split: train vs val
-        val_size_adjusted = val_split / (1 - test_split)
-        X_train, X_val, y_train, y_val = train_test_split(
-            X_trainval, y_trainval, test_size=val_size_adjusted, random_state=seed, stratify=y_trainval
-        )
-        
-        # Convert labels to one-hot encoding for classification
-        n_classes = len(np.unique(y))
-        
-        def to_onehot(labels, n_classes):
-            onehot = np.zeros((len(labels), n_classes))
-            onehot[np.arange(len(labels)), labels] = 1
-            return onehot
-        
-        # Convert to torch
-        data = {
-            'X_train': torch.tensor(X_train, dtype=torch.float32),
-            'y_train': torch.tensor(to_onehot(y_train, n_classes), dtype=torch.float32),
-            'X_val': torch.tensor(X_val, dtype=torch.float32),
-            'y_val': torch.tensor(to_onehot(y_val, n_classes), dtype=torch.float32),
-            'X_test': torch.tensor(X_test, dtype=torch.float32),
-            'y_test': torch.tensor(to_onehot(y_test, n_classes), dtype=torch.float32)
-        }
-        
-        dataset_info = {
-            'name': 'iris',
-            'n_samples': len(X),
-            'n_train': len(X_train),
-            'n_val': len(X_val),
-            'n_test': len(X_test),
-            'n_features': X.shape[1],
-            'n_classes': n_classes,
-            'task': 'classification'
-        }
-        
-        return data, dataset_info
+    dataset_id, task = uci_dataset_map[dataset_name]
     
-    else:
-        raise NotImplementedError(
-            f"Dataset '{dataset_name}' not implemented. "
-            f"Please add loading logic in dataset_loader.py"
-        )
+    X_train, y_train, X_val, y_val, X_test, y_test = get_ucidata(
+        dataset_id=dataset_id,
+        task=task,
+        device=device,
+        cap=cap
+    )
+    
+    if task == 'regression':
+        if y_train.ndim == 1:
+            y_train = y_train.unsqueeze(1)
+        if y_val.ndim == 1:
+            y_val = y_val.unsqueeze(1)
+        if y_test.ndim == 1:
+            y_test = y_test.unsqueeze(1)
+    elif task == 'classification':
+        n_classes = len(torch.unique(y_train))
+        y_train_onehot = torch.zeros(len(y_train), n_classes, dtype=torch.float64, device=device)
+        y_train_onehot[torch.arange(len(y_train)), y_train] = 1.0
+        y_train = y_train_onehot
+        
+        y_val_onehot = torch.zeros(len(y_val), n_classes, dtype=torch.float64, device=device)
+        y_val_onehot[torch.arange(len(y_val)), y_val] = 1.0
+        y_val = y_val_onehot
+        
+        y_test_onehot = torch.zeros(len(y_test), n_classes, dtype=torch.float64, device=device)
+        y_test_onehot[torch.arange(len(y_test)), y_test] = 1.0
+        y_test = y_test_onehot
+    
+    data = {
+        'X_train': X_train,
+        'y_train': y_train,
+        'X_val': X_val,
+        'y_val': y_val,
+        'X_test': X_test,
+        'y_test': y_test
+    }
+    
+    dataset_info = {
+        'name': dataset_name,
+        'dataset_id': dataset_id,
+        'n_samples': len(X_train) + len(X_val) + len(X_test),
+        'n_train': len(X_train),
+        'n_val': len(X_val),
+        'n_test': len(X_test),
+        'n_features': X_train.shape[1],
+        'task': task
+    }
+    
+    if task == 'classification':
+        dataset_info['n_classes'] = n_classes
+    
+    return data, dataset_info

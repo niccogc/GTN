@@ -7,28 +7,56 @@
       url = "github:niccogc/quimbflake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    opencode-plugins.url = "github:niccogc/opencode-plugin";
+    opencode-plugins.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     self,
     nixpkgs,
     quimb-flake,
+    opencode-plugins,
   }: let
     system = "x86_64-linux";
-
+    # Define the custom Python package separately
     pkgs = import nixpkgs {
       inherit system;
       overlays = [quimb-flake.overlays.default];
     };
 
     python = pkgs.python312;
+    ucimlrepo = python.pkgs.buildPythonPackage {
+      pname = "ucimlrepo";
+      version = "0.0.7";
+      pyproject = true;
+
+      src = pkgs.fetchFromGitHub {
+        owner = "uci-ml-repo";
+        repo = "ucimlrepo";
+        rev = "0.0.7";
+        sha256 = "sha256-5R4/edQriufhVU1UXCY7nTfEdwRhi33e/CHdTkLf3jo=";
+      };
+
+      build-system = [
+        python.pkgs.setuptools
+        python.pkgs.wheel
+      ];
+
+      # These solve the "not installed" errors in pythonRuntimeDepsCheck
+      propagatedBuildInputs = [
+        python.pkgs.pandas
+        python.pkgs.certifi
+        python.pkgs.requests
+      ];
+    };
     pythonWithNixPkgs = python.withPackages (ps:
       with ps; [
         pygraphviz
+        ucimlrepo
         pandas
         torchvision
         torch
-        jedi-language-server
+        # jedi-language-server
         scipy
         matplotlib
         scikit-learn
@@ -37,39 +65,19 @@
         quimb
       ]);
 
-    opencodecfg = pkgs.writeText "opencodecfg.jsonc" ''
-      {
-        "$schema": "https://opencode.ai/config.json",
-        "tui": {
-          "scroll_speed": 3,
-          "scroll_acceleration": {
-            "enabled": true
-          }
-        },
-        "mcp": {
-          "serena": {
-            "type": "local",
-            "command": [
-              "${pkgs.uv}/bin/uvx",
-              "--python",
-              "${python}/bin/python",
-              "--from",
-              "git+https://github.com/oraios/serena",
-              "serena",
-              "start-mcp-server",
-              "--context",
-              "ide-assistant"
-            ],
-            "enabled": true
-          },
-          "docs-mcp": {
-            "type": "remote",
-            "url": "http://127.0.0.1:6280/sse",
-            "enabled": true
-          }
-        }
-      }
-    '';
+    rawConfig = builtins.fromJSON (builtins.readFile ./allmodels.json);
+
+    finalConfigData =
+      rawConfig
+      // {
+        plugin = [
+          "file://${opencode-plugins.packages.${system}.oh-my-opencode}/dist/index.js"
+          "file://${opencode-plugins.packages.${system}.antigravity}/dist/index.js"
+          "file://${opencode-plugins.packages.${system}.anthropic-auth}/dist/index.js"
+        ];
+      };
+
+    opencodecfg = pkgs.writeText "opencodecfg.jsonc" (builtins.toJSON finalConfigData);
   in {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = [
@@ -138,7 +146,7 @@
           echo "Installing aim via UV..."
           uv pip install aim
         fi
-
+        export OPENCODE_DISABLE_DEFAULT_PLUGINS=1
         # uv sync
         echo "✓ Environment ready!"
         echo "  Python: $(which python)"

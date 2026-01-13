@@ -1,3 +1,4 @@
+# type: ignore
 from typing import List, Dict, Optional, Tuple
 import torch.nn as nn
 import quimb.tensor as qt
@@ -5,37 +6,52 @@ import quimb.tensor as qt
 NOT_TRAINABLE_TAG = "NT"
 
 class GTN(nn.Module):
-    def __init__(self, tn, output_dims, input_dims):
+    def __init__(self, tn, output_dims, input_dims, not_trainable_tags=None):
         super().__init__()
         
+        not_trainable_tags = not_trainable_tags or []
+        all_tags_to_exclude = set(not_trainable_tags)
+        all_tags_to_exclude.add(NOT_TRAINABLE_TAG)
+        
+        trainable_mask = {}
+        for idx, tensor in enumerate(tn.tensors):
+            is_trainable = not any(tag in all_tags_to_exclude for tag in tensor.tags)
+            trainable_mask[idx] = is_trainable
+        
         params, self.skeleton_pixels = qt.pack(tn)
-
-        self.torch_params= nn.ParameterDict({
-            str(i): nn.Parameter(initial) for i, initial in params.items()
+        
+        self.torch_params = nn.ParameterDict({
+            str(i): nn.Parameter(initial) 
+            for i, initial in params.items() 
+            if trainable_mask.get(i, True)  # Default to trainable if not found
         })
+        
+        self.not_trainable_params = {
+            i: initial.clone()
+            for i, initial in params.items()
+            if not trainable_mask.get(i, True)
+        }
         
         self.input_dims = input_dims
         self.output_dims = output_dims
 
     def forward(self, x):
-        # Unpack parameters
-        tn_params= {int(i): p for i, p in self.torch_params.items()}
+        tn_params = {int(i): p for i, p in self.torch_params.items()}
+        tn_params.update(self.not_trainable_params)  # Add frozen params
         weights = qt.unpack(tn_params, self.skeleton_pixels)
         
-        # Construct Input Nodes
         input_nodes_list = self.construct_nodes(x)
         input_tn = qt.TensorNetwork(input_nodes_list)
 
         tn = weights & input_tn
         
-        # Contract and return raw data
         out = tn.contract(output_inds=self.output_dims, optimize='auto-hq')
         return out.data
 
 
     def construct_nodes(self, x):
         """
-            This depends on the model and inut dims. can be defined for each model.
+            This depends on the model and input dims. can be defined for each model.
         """
         if len(x) > 1:
             assert len(x) == len(self.input_dims)

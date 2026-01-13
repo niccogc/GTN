@@ -41,10 +41,11 @@ class FileTracker(BaseTracker):
     """Track experiments to JSON files."""
     
     def __init__(self, experiment_name: str, config: Dict[str, Any], 
-                 output_dir: str = "experiment_logs"):
+                 output_dir: str = "experiment_logs", run_name: Optional[str] = None):
         super().__init__(experiment_name, config)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.run_name = run_name
         
         # Storage
         self.hparams = {}
@@ -66,10 +67,14 @@ class FileTracker(BaseTracker):
     
     def finalize(self):
         """Save all data to JSON file."""
-        output_file = self.output_dir / f"{self.experiment_name}.json"
+        if self.run_name:
+            output_file = self.output_dir / f"{self.experiment_name}_{self.run_name}.json"
+        else:
+            output_file = self.output_dir / f"{self.experiment_name}.json"
         
         data = {
             'experiment_name': self.experiment_name,
+            'run_name': self.run_name,
             'config': self.config,
             'hparams': self.hparams,
             'metrics_log': self.metrics_log,
@@ -86,7 +91,7 @@ class AIMTracker(BaseTracker):
     """Track experiments with AIM."""
     
     def __init__(self, experiment_name: str, config: Dict[str, Any],
-                 repo: Optional[str] = None):
+                 repo: Optional[str] = None, run_name: Optional[str] = None):
         super().__init__(experiment_name, config)
         
         # Import AIM
@@ -106,6 +111,10 @@ class AIMTracker(BaseTracker):
             repo=repo,
             experiment=experiment_name
         )
+        
+        # Set run name if provided (for identifying different seeds/runs)
+        if run_name:
+            self.run.name = run_name
         
         # Log config
         self.run['config'] = config
@@ -169,34 +178,41 @@ def create_tracker(experiment_name: str, config: Dict[str, Any],
         **kwargs: Additional arguments for specific trackers
             - output_dir: For file tracker
             - repo: For AIM tracker
+            - run_name: Name for this specific run (e.g., seed_0, seed_1)
     
     Returns:
         Tracker instance
     """
+    run_name = kwargs.get('run_name', None)
+    
     if backend == 'file':
         return FileTracker(
             experiment_name, 
             config,
-            output_dir=kwargs.get('output_dir', 'experiment_logs')
+            output_dir=kwargs.get('output_dir', 'experiment_logs'),
+            run_name=run_name
         )
     
     elif backend == 'aim':
         return AIMTracker(
             experiment_name,
             config,
-            repo=kwargs.get('repo', None)
+            repo=kwargs.get('repo', None),
+            run_name=run_name
         )
     
     elif backend == 'both':
         file_tracker = FileTracker(
             experiment_name,
             config,
-            output_dir=kwargs.get('output_dir', 'experiment_logs')
+            output_dir=kwargs.get('output_dir', 'experiment_logs'),
+            run_name=run_name
         )
         aim_tracker = AIMTracker(
             experiment_name,
             config,
-            repo=kwargs.get('repo', None)
+            repo=kwargs.get('repo', None),
+            run_name=run_name
         )
         return MultiTracker([file_tracker, aim_tracker])
     

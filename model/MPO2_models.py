@@ -27,7 +27,10 @@ class MPO2:
         phys_dim: int,
         output_dim: int,
         output_site: Optional[int] = None,
-        init_strength: float = 0.1
+        init_strength: float = 0.001,
+        use_tn_normalization: bool = True,
+        tn_target_std: float = 0.1,
+        sample_inputs: Optional[qt.TensorNetwork] = None
     ):
         """
         Args:
@@ -36,7 +39,13 @@ class MPO2:
             phys_dim: Physical dimension for each site
             output_dim: Output dimension (e.g., number of classes)
             output_site: Which site gets the output dimension (default: middle site)
-            init_strength: Initialization strength for random weights
+            init_strength: Base initialization strength before normalization (default: 0.001)
+                          Only used if use_tn_normalization=False
+            use_tn_normalization: Apply TN normalization after initialization (default: True)
+                                 This eliminates seed-dependent collapses by normalizing outputs
+            tn_target_std: Target standard deviation for TN normalization (default: 0.1)
+            sample_inputs: Sample TN inputs for normalization. If None and use_tn_normalization=True,
+                          will use Frobenius norm normalization instead
         """
         self.L = L
         self.bond_dim = bond_dim
@@ -44,41 +53,44 @@ class MPO2:
         self.output_dim = output_dim
         self.output_site = output_site if output_site is not None else L // 2
         
-        # Create MPS tensors
+        base_init = 0.1 if use_tn_normalization else init_strength
+        
         tensors = []
         for i in range(L):
             if i == 0:
-                # First site: (phys, right_bond)
                 shape = (phys_dim, bond_dim)
                 inds = (f'x{i}', f'b{i}')
             elif i == L - 1:
-                # Last site: (left_bond, phys)
                 shape = (bond_dim, phys_dim)
                 inds = (f'b{i-1}', f'x{i}')
             else:
-                # Middle sites: (left_bond, phys, right_bond)
                 shape = (bond_dim, phys_dim, bond_dim)
                 inds = (f'b{i-1}', f'x{i}', f'b{i}')
             
-            # Add output dimension to the designated site
             if i == self.output_site:
                 shape = shape + (output_dim,)
                 inds = inds + ('out',)
             
-            data = torch.randn(*shape) * init_strength
+            data = torch.randn(*shape) * base_init
             tensor = qt.Tensor(data=data, inds=inds, tags={f'Node{i}'})
             tensors.append(tensor)
         
-        # Create tensor network
         self.tn = qt.TensorNetwork(tensors)
         
-        # Define input labels for builder
+        if use_tn_normalization:
+            from model.initialization import normalize_tn_output, normalize_tn_frobenius
+            if sample_inputs is not None:
+                normalize_tn_output(self.tn, sample_inputs, output_dims=['out'], 
+                                   batch_dim='s', target_std=tn_target_std)
+            else:
+                import numpy as np
+                target_norm = np.sqrt(L * bond_dim * phys_dim)
+                normalize_tn_frobenius(self.tn, target_norm=target_norm)
+        
         self.input_labels = [f"x{i}" for i in range(L)]
         
-        # Define input_dims for NTN
         self.input_dims = [f"x{i}" for i in range(L)]
         
-        # Define output dimensions
         self.output_dims = ["out"]
 
 class CMPO2:
@@ -180,59 +192,65 @@ class LMPO2:
         self,
         L: int,
         bond_dim: int,
-        input_dim: int,
+        phys_dim: int,
         reduced_dim: Optional[int] = None,
         reduction_factor: Optional[float] = None,
         output_dim: int = 1,
         output_site: Optional[int] = None,
-        init_strength: float = 0.01
+        init_strength: float = 0.001,
+        rank: Optional[int] = None,
+        use_tn_normalization: bool = True,
+        tn_target_std: float = 0.1,
+        sample_inputs: Optional[qt.TensorNetwork] = None
     ):
         """
         Args:
             L: Number of sites
             bond_dim: Bond dimension
-            input_dim: Input physical dimension
+            phys_dim: Input physical dimension
             reduced_dim: Reduced dimension after MPO (explicit value)
-            reduction_factor: Alternative to reduced_dim - fraction of input_dim to keep (e.g., 0.5 for 50%)
+            reduction_factor: Alternative to reduced_dim - fraction of phys_dim to keep (e.g., 0.5 for 50%)
             output_dim: Output dimension
             output_site: Which MPS site gets the output dimension (default: middle)
             init_strength: Initialization strength
+            rank: Alias for reduced_dim (for consistency with grid search)
             
-        Note: Specify either reduced_dim OR reduction_factor, not both.
+        Note: Specify either reduced_dim OR reduction_factor OR rank, not multiple.
         """
-        # Determine reduced dimension
-        if reduced_dim is not None and reduction_factor is not None:
-            raise ValueError("Specify either reduced_dim OR reduction_factor, not both")
+        if rank is not None:
+            reduced_dim = rank
+        
+        if reduced_dim is not None:
+            if reduction_factor is not None:
+                raise ValueError("Specify either reduced_dim/rank OR reduction_factor, not both")
         elif reduction_factor is not None:
-            reduced_dim = max(2, int(input_dim * reduction_factor))
-        elif reduced_dim is None:
-            raise ValueError("Must specify either reduced_dim or reduction_factor")
+            reduced_dim = max(2, int(phys_dim * reduction_factor))
+        else:
+            raise ValueError("Must specify either reduced_dim, rank, or reduction_factor")
         
         self.L = L
         self.bond_dim = bond_dim
-        self.input_dim = input_dim
+        self.phys_dim = phys_dim
+        self.input_dim = phys_dim
         self.reduced_dim = reduced_dim
-        self.reduction_factor = reduced_dim / input_dim  # Store actual ratio
+        self.reduction_factor = reduced_dim / phys_dim
         self.output_dim = output_dim
         self.output_site = output_site if output_site is not None else L // 2
         
-        # Create MPO for dimensionality reduction
-        # MPO has indices: (left_bond, input_phys, output_phys, right_bond)
+        base_init = 0.1 if use_tn_normalization else init_strength
+        
         self.mpo_tensors = []
         for i in range(L):
             if i == 0:
-                # First site: (input, reduced, right_bond)
-                data = torch.randn(input_dim, reduced_dim, bond_dim) * 0.1
+                data = torch.randn(phys_dim, reduced_dim, bond_dim) * base_init
                 inds = (f"{i}_in", f"{i}_reduced", f"b_mpo_{i}")
                 tags = {f"{i}_MPO"}
             elif i == L - 1:
-                # Last site: (left_bond, input, reduced)
-                data = torch.randn(bond_dim, input_dim, reduced_dim) * 0.1
+                data = torch.randn(bond_dim, phys_dim, reduced_dim) * base_init
                 inds = (f"b_mpo_{i-1}", f"{i}_in", f"{i}_reduced")
                 tags = {f"{i}_MPO"}
             else:
-                # Middle sites: (left_bond, input, reduced, right_bond)
-                data = torch.randn(bond_dim, input_dim, reduced_dim, bond_dim) * 0.1
+                data = torch.randn(bond_dim, phys_dim, reduced_dim, bond_dim) * base_init
                 inds = (f"b_mpo_{i-1}", f"{i}_in", f"{i}_reduced", f"b_mpo_{i}")
                 tags = {f"{i}_MPO"}
             
@@ -242,18 +260,15 @@ class LMPO2:
         self.mps_tensors = []
         for i in range(L):
             if i == 0:
-                # First site: (reduced, right_bond)
-                data = torch.randn(reduced_dim, bond_dim) * 0.1
+                data = torch.randn(reduced_dim, bond_dim) * base_init
                 inds = (f"{i}_reduced", f"b_mps_{i}")
                 tags = {f"{i}_MPS"}
             elif i == L - 1:
-                # Last site: (left_bond, reduced)
-                data = torch.randn(bond_dim, reduced_dim) * 0.1
+                data = torch.randn(bond_dim, reduced_dim) * base_init
                 inds = (f"b_mps_{i-1}", f"{i}_reduced")
                 tags = {f"{i}_MPS"}
             else:
-                # Middle sites: (left_bond, reduced, right_bond)
-                data = torch.randn(bond_dim, reduced_dim, bond_dim) * 0.1
+                data = torch.randn(bond_dim, reduced_dim, bond_dim) * base_init
                 inds = (f"b_mps_{i-1}", f"{i}_reduced", f"b_mps_{i}")
                 tags = {f"{i}_MPS"}
             
@@ -268,10 +283,18 @@ class LMPO2:
             inds=new_inds
         )
         
-        # Combine into tensor network
         self.tn = qt.TensorNetwork(self.mpo_tensors + self.mps_tensors)
         
-        # Define input labels for builder
+        if use_tn_normalization:
+            from model.initialization import normalize_tn_output, normalize_tn_frobenius
+            if sample_inputs is not None:
+                normalize_tn_output(self.tn, sample_inputs, output_dims=['out'], 
+                                   batch_dim='s', target_std=tn_target_std)
+            else:
+                import numpy as np
+                target_norm = np.sqrt(L * bond_dim * phys_dim)
+                normalize_tn_frobenius(self.tn, target_norm=target_norm)
+        
         self.input_labels = [f"{i}_in" for i in range(L)]
         
         # Define input_dims for NTN (must match the physical input indices!)
@@ -298,45 +321,46 @@ class MMPO2:
         self,
         L: int,
         bond_dim: int,
-        input_dim: int,
+        phys_dim: int,
         output_dim: int,
         output_site: Optional[int] = None,
-        init_strength: float = 0.01
+        init_strength: float = 0.001,
+        rank: Optional[int] = None,
+        use_tn_normalization: bool = True,
+        tn_target_std: float = 0.1,
+        sample_inputs: Optional[qt.TensorNetwork] = None
     ):
         """
         Args:
             L: Number of sites
             bond_dim: Bond dimension for MPS (NOT for mask MPO!)
-            input_dim: Input physical dimension (also mask MPO bond dimension)
+            phys_dim: Input physical dimension (also mask MPO bond dimension)
             output_dim: Output dimension
             output_site: Which MPS site gets the output dimension (default: middle)
             init_strength: Initialization strength
+            rank: Unused (for API compatibility with other models)
         """
         self.L = L
         self.bond_dim = bond_dim
-        self.input_dim = input_dim
+        self.phys_dim = phys_dim
+        self.input_dim = phys_dim
         self.output_dim = output_dim
         self.output_site = output_site if output_site is not None else L // 2
         
-        # Heaviside matrix H_{ij} = theta(j-i) = 1 if j >= i else 0
-        # This is an upper triangular matrix of ones
-        H = torch.zeros(input_dim, input_dim)
-        for i in range(input_dim):
-            for j in range(input_dim):
+        base_init = 0.1 if use_tn_normalization else init_strength
+        
+        H = torch.zeros(phys_dim, phys_dim)
+        for i in range(phys_dim):
+            for j in range(phys_dim):
                 H[i, j] = 1.0 if j >= i else 0.0
         
-        # Create MPO mask using formula: C = H * Delta
-        # Bond dimension of mask MPO = input_dim
-        mask_bond_dim = input_dim
+        mask_bond_dim = phys_dim
         self.mask_tensors = []
         
         for site_idx in range(L):
             if site_idx == 0:
-                # First site: C^{i_in, i_out}_{b_right}
-                # No left bond, so no Heaviside contraction
-                # Just delta: delta(i_in == i_out == b_right)
-                Delta = torch.zeros(input_dim, input_dim, mask_bond_dim)
-                for k in range(input_dim):
+                Delta = torch.zeros(phys_dim, phys_dim, mask_bond_dim)
+                for k in range(phys_dim):
                     Delta[k, k, k] = 1.0
                 data = Delta
                 
@@ -344,28 +368,20 @@ class MMPO2:
                 tags = {f"{site_idx}_Mask", 'NT'}
                 
             elif site_idx == L - 1:
-                # Last site: C^{i_in, i_out}_{b_left} = sum_k H[b_left, k] * Delta[k, i_in, i_out]
-                # Delta has no right bond: delta(k == i_in == i_out)
-                Delta = torch.zeros(mask_bond_dim, input_dim, input_dim)
+                Delta = torch.zeros(mask_bond_dim, phys_dim, phys_dim)
                 for k in range(mask_bond_dim):
                     Delta[k, k, k] = 1.0
                 
-                # Contract: C[b_left, i_in, i_out] = sum_k H[b_left, k] * Delta[k, i_in, i_out]
-                # Using einsum: 'bk,kio->bio'
                 data = torch.einsum('bk,kio->bio', H, Delta)
                 
                 inds = (f"b_mask_{site_idx-1}", f"{site_idx}_in", f"{site_idx}_masked")
                 tags = {f"{site_idx}_Mask", 'NT'}
                 
             else:
-                # Middle sites: C^{i_in, i_out}_{b_left, b_right} = sum_k H[b_left, k] * Delta[k, i_in, i_out, b_right]
-                # Delta: delta(k == i_in == i_out == b_right)
-                Delta = torch.zeros(mask_bond_dim, input_dim, input_dim, mask_bond_dim)
+                Delta = torch.zeros(mask_bond_dim, phys_dim, phys_dim, mask_bond_dim)
                 for k in range(mask_bond_dim):
                     Delta[k, k, k, k] = 1.0
                 
-                # Contract: C[b_left, i_in, i_out, b_right] = sum_k H[b_left, k] * Delta[k, i_in, i_out, b_right]
-                # Using einsum: 'bk,kior->bior'
                 data = torch.einsum('bk,kior->bior', H, Delta)
                 
                 inds = (f"b_mask_{site_idx-1}", f"{site_idx}_in", f"{site_idx}_masked", f"b_mask_{site_idx}")
@@ -373,22 +389,18 @@ class MMPO2:
             
             self.mask_tensors.append(qt.Tensor(data=data, inds=inds, tags=tags))
         
-        # Create trainable MPS
         self.mps_tensors = []
         for i in range(L):
             if i == 0:
-                # First site: (masked_input, right_bond)
-                data = torch.randn(input_dim, bond_dim) * 0.1
+                data = torch.randn(phys_dim, bond_dim) * base_init
                 inds = (f"{i}_masked", f"b_mps_{i}")
                 tags = {f"{i}_MPS"}
             elif i == L - 1:
-                # Last site: (left_bond, masked_input)
-                data = torch.randn(bond_dim, input_dim) * 0.1
+                data = torch.randn(bond_dim, phys_dim) * base_init
                 inds = (f"b_mps_{i-1}", f"{i}_masked")
                 tags = {f"{i}_MPS"}
             else:
-                # Middle sites: (left_bond, masked_input, right_bond)
-                data = torch.randn(bond_dim, input_dim, bond_dim) * 0.1
+                data = torch.randn(bond_dim, phys_dim, bond_dim) * base_init
                 inds = (f"b_mps_{i-1}", f"{i}_masked", f"b_mps_{i}")
                 tags = {f"{i}_MPS"}
             
@@ -403,14 +415,20 @@ class MMPO2:
             inds=new_inds
         )
         
-        # Combine into tensor network
         self.tn = qt.TensorNetwork(self.mask_tensors + self.mps_tensors)
         
-        # Define input labels for builder
+        if use_tn_normalization:
+            from model.initialization import normalize_tn_output, normalize_tn_frobenius
+            if sample_inputs is not None:
+                normalize_tn_output(self.tn, sample_inputs, output_dims=['out'], 
+                                   batch_dim='s', target_std=tn_target_std)
+            else:
+                import numpy as np
+                target_norm = np.sqrt(L * bond_dim * phys_dim)
+                normalize_tn_frobenius(self.tn, target_norm=target_norm)
+        
         self.input_labels = [f"{i}_in" for i in range(L)]
         
-        # Define input_dims for NTN
         self.input_dims = [str(i) for i in range(L)]
         
-        # Define output dimensions
         self.output_dims = ["out"]
