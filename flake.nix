@@ -56,7 +56,7 @@
         pandas
         torchvision
         torch
-        # jedi-language-server
+        jedi-language-server
         scipy
         matplotlib
         scikit-learn
@@ -65,7 +65,7 @@
         quimb
       ]);
 
-    rawConfig = builtins.fromJSON (builtins.readFile ./allmodels.json);
+    rawConfig = builtins.fromJSON (builtins.readFile ./opencodeConfig.json);
 
     finalConfigData =
       rawConfig
