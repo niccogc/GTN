@@ -1,7 +1,5 @@
 # type: ignore
-"""
-Test MPO2 Type I on Iris dataset.
-"""
+"""Test LMPO2 Type I on Iris dataset."""
 
 import torch
 import numpy as np
@@ -10,8 +8,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 from model.losses import CrossEntropyLoss
-from model.utils import create_inputs, CLASSIFICATION_METRICS
-from testing_typeI.mpo2_typeI import MPO2TypeI
+from model.utils import CLASSIFICATION_METRICS, compute_quality
+from model.typeI import LMPO2TypeI
+from model.base import NTN_Ensemble
 
 torch.set_default_dtype(torch.float64)
 
@@ -46,47 +45,44 @@ def main():
 
     loss_fn = CrossEntropyLoss()
 
-    print(f"\nCreating MPO2TypeI ensemble (max_sites=4)...")
-    ensemble = MPO2TypeI(
+    print(f"\nCreating LMPO2TypeI model builder (max_sites=4)...")
+    model = LMPO2TypeI(
         max_sites=4,
         bond_dim=2,
         phys_dim=X_train.shape[1],
+        reduced_dim=3,
         output_dim=3,
-        loss=loss_fn,
-        X_data=X_train,
-        y_data=y_train_onehot,
-        batch_size=30,
-        init_strength=0.1,
+        init_strength=0.001,
     )
 
-    print(f"Ensemble created with {len(ensemble.ntns)} NTN instances")
-    all_nodes = ensemble._get_all_trainable_nodes()
-    print(f"Total trainable nodes: {len(all_nodes)}")
+    print(f"Model created with {len(model.tns)} tensor networks")
 
-    test_loader = create_inputs(
-        X=X_test,
-        y=y_test_onehot,
-        input_labels=["x0", "x1", "x2", "x3"],
-        output_labels=["out"],
+    print(f"\nCreating NTN_Ensemble...")
+    ensemble = NTN_Ensemble(
+        tns=model.tns,
+        input_dims_list=model.input_dims_list,
+        input_labels_list=model.input_labels_list,
+        output_dims=model.output_dims,
+        loss=loss_fn,
+        X_train=X_train,
+        y_train=y_train_onehot,
+        X_val=X_test,
+        y_val=y_test_onehot,
         batch_size=30,
-        append_bias=False,
     )
 
     print("\nTraining...")
-    scores_train, scores_test = ensemble.fit(
+    scores_train, scores_val = ensemble.fit(
         n_epochs=10,
         regularize=True,
-        jitter=0.01,
+        jitter=0.1,
         eval_metrics=CLASSIFICATION_METRICS,
-        val_data=test_loader,
         verbose=True,
     )
 
-    from model.utils import compute_quality
-
     print(f"\nFinal Results:")
     print(f"  Train Quality: {compute_quality(scores_train):.4f}")
-    print(f"  Test Quality: {compute_quality(scores_test):.4f}")
+    print(f"  Val Quality: {compute_quality(scores_val):.4f}")
 
 
 if __name__ == "__main__":
