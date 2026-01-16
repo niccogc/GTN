@@ -3,6 +3,7 @@
 Grid search experiment runner for GTN (gradient-based training).
 Reads JSON configuration and runs all parameter combinations with tracking.
 """
+
 import os
 import sys
 import json
@@ -17,24 +18,25 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 
-from experiments.config_parser import (
-    load_config, 
-    create_experiment_plan, 
-    print_experiment_summary
-)
+from experiments.config_parser import load_config, create_experiment_plan, print_experiment_summary
 from experiments.dataset_loader import load_dataset
 from experiments.trackers import create_tracker
 
 from model.GTN import GTN
 from model.MPO2_models import MPO2, LMPO2, MMPO2
+from model.typeI import MPO2TypeI_GTN, LMPO2TypeI_GTN, MMPO2TypeI_GTN
 
 torch.set_default_dtype(torch.float64)
+
+from experiments.device_utils import DEVICE, move_tn_to_device
 
 
 class MPO2GTN(GTN):
     """GTN wrapper for MPO2 models."""
+
     def construct_nodes(self, x):
         import quimb.tensor as qt
+
         input_nodes = []
         for label in self.input_dims:
             a = qt.Tensor(x, inds=["s", label], tags=f"Input_{label}")
@@ -50,318 +52,364 @@ def get_result_filepath(output_dir: str, run_id: str) -> str:
 def run_already_completed(output_dir: str, run_id: str) -> bool:
     """Check if a run has already been completed."""
     result_file = get_result_filepath(output_dir, run_id)
-    
+
     if not os.path.exists(result_file):
         return False
-    
+
     try:
-        with open(result_file, 'r') as f:
+        with open(result_file, "r") as f:
             result = json.load(f)
-        return result.get('success', False) is not None
+        return result.get("success", False) is not None
     except:
         return False
 
 
 def create_model(model_name: str, params: dict, input_dim: int, output_dim: int):
     """Create model instance based on model name and parameters."""
-    
-    if model_name == 'MPO2':
+
+    if model_name == "MPO2":
         return MPO2(
-            L=params['L'],
-            bond_dim=params['bond_dim'],
+            L=params["L"],
+            bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            output_site=params.get('output_site', 1),
-            init_strength=params.get('init_strength', 0.001)
+            output_site=params.get("output_site", 1),
+            init_strength=params.get("init_strength", 0.001),
         )
-    
-    elif model_name == 'LMPO2':
+
+    elif model_name == "LMPO2":
         return LMPO2(
-            L=params['L'],
-            bond_dim=params['bond_dim'],
+            L=params["L"],
+            bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            rank=params.get('rank', 5),
-            output_site=params.get('output_site', 1),
-            init_strength=params.get('init_strength', 0.001)
+            rank=params.get("rank", 5),
+            output_site=params.get("output_site", 1),
+            init_strength=params.get("init_strength", 0.001),
         )
-    
-    elif model_name == 'MMPO2':
+
+    elif model_name == "MMPO2":
         return MMPO2(
-            L=params['L'],
-            bond_dim=params['bond_dim'],
+            L=params["L"],
+            bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            rank=params.get('rank', 5),
-            output_site=params.get('output_site', 1),
-            init_strength=params.get('init_strength', 0.001)
+            rank=params.get("rank", 5),
+            output_site=params.get("output_site", 1),
+            init_strength=params.get("init_strength", 0.001),
         )
-    
+
+    elif model_name == "MPO2TypeI_GTN":
+        return MPO2TypeI_GTN(
+            max_sites=params["L"],
+            bond_dim=params["bond_dim"],
+            phys_dim=input_dim,
+            output_dim=output_dim,
+            output_site=params.get("output_site", 1),
+            init_strength=params.get("init_strength", 0.001),
+        )
+
+    elif model_name == "LMPO2TypeI_GTN":
+        return LMPO2TypeI_GTN(
+            max_sites=params["L"],
+            bond_dim=params["bond_dim"],
+            phys_dim=input_dim,
+            reduced_dim=params.get("rank", 5),
+            output_dim=output_dim,
+            output_site=params.get("output_site", 1),
+            init_strength=params.get("init_strength", 0.001),
+        )
+
+    elif model_name == "MMPO2TypeI_GTN":
+        return MMPO2TypeI_GTN(
+            max_sites=params["L"],
+            bond_dim=params["bond_dim"],
+            phys_dim=input_dim,
+            output_dim=output_dim,
+            output_site=params.get("output_site", 1),
+            init_strength=params.get("init_strength", 0.001),
+        )
+
     else:
         raise ValueError(f"Unknown model: {model_name}")
 
 
-def run_single_experiment(experiment: dict, data: dict, input_dim: int, output_dim: int, 
-                         verbose: bool = False, tracker=None):
+def run_single_experiment(
+    experiment: dict,
+    data: dict,
+    input_dim: int,
+    output_dim: int,
+    verbose: bool = False,
+    tracker=None,
+):
     """Run a single GTN experiment with given parameters."""
-    
-    params = experiment['params']
-    seed = experiment['seed']
-    task = experiment['task']
-    
+
+    params = experiment["params"]
+    seed = experiment["seed"]
+    task = experiment["task"]
+
     torch.manual_seed(seed)
     np.random.seed(seed)
-    
+
     # Setup loss function
-    loss_fn_name = params.get('loss_fn', None)
+    loss_fn_name = params.get("loss_fn", None)
     if loss_fn_name:
-        if loss_fn_name == 'mse':
+        if loss_fn_name == "mse":
             criterion = nn.MSELoss()
-        elif loss_fn_name == 'mae':
+        elif loss_fn_name == "mae":
             criterion = nn.L1Loss()
-        elif loss_fn_name == 'huber':
+        elif loss_fn_name == "huber":
             criterion = nn.HuberLoss()
-        elif loss_fn_name == 'cross_entropy':
+        elif loss_fn_name == "cross_entropy":
             criterion = nn.CrossEntropyLoss()
         else:
             raise ValueError(f"Unknown loss function: {loss_fn_name}")
     else:
-        if task == 'regression':
+        if task == "regression":
             criterion = nn.MSELoss()
         else:
             criterion = nn.CrossEntropyLoss()
-    
+
     # Get training parameters
-    n_epochs = params.get('n_epochs', 50)
-    batch_size = params.get('batch_size', 32)
-    lr = params.get('lr', 0.001)
-    weight_decay = params.get('weight_decay', 0.01)
-    optimizer_name = params.get('optimizer', 'adam').lower()
-    
-    # Create model and wrap in GTN
-    model_name = params['model']
+    n_epochs = params.get("n_epochs", 50)
+    batch_size = params.get("batch_size", 32)
+    lr = params.get("lr", 0.001)
+    weight_decay = params.get("weight_decay", 0.01)
+    optimizer_name = params.get("optimizer", "adam").lower()
+
+    model_name = params["model"]
     base_model = create_model(model_name, params, input_dim, output_dim)
-    
-    gtn_model = MPO2GTN(
-        tn=base_model.tn,
-        output_dims=["s", "out"],
-        input_dims=base_model.input_dims
-    )
-    
+
+    if model_name.endswith("_GTN"):
+        gtn_model = base_model
+    else:
+        gtn_model = MPO2GTN(tn=base_model.tn, output_dims=["out"], input_dims=base_model.input_dims)
+
+    gtn_model = gtn_model.to(DEVICE)
+
     # Create optimizer
-    if optimizer_name == 'adam':
+    if optimizer_name == "adam":
         optimizer = optim.Adam(gtn_model.parameters(), lr=lr, weight_decay=weight_decay)
-    elif optimizer_name == 'adamw':
+    elif optimizer_name == "adamw":
         optimizer = optim.AdamW(gtn_model.parameters(), lr=lr, weight_decay=weight_decay)
-    elif optimizer_name == 'sgd':
-        optimizer = optim.SGD(gtn_model.parameters(), lr=lr, weight_decay=weight_decay, momentum=0.9)
+    elif optimizer_name == "sgd":
+        optimizer = optim.SGD(
+            gtn_model.parameters(), lr=lr, weight_decay=weight_decay, momentum=0.9
+        )
     else:
         raise ValueError(f"Unknown optimizer: {optimizer_name}")
-    
+
     # Create data loaders
     train_loader = torch.utils.data.DataLoader(
-        torch.utils.data.TensorDataset(data['X_train'], data['y_train']),
+        torch.utils.data.TensorDataset(data["X_train"], data["y_train"]),
         batch_size=batch_size,
-        shuffle=True
+        shuffle=True,
     )
     val_loader = torch.utils.data.DataLoader(
-        torch.utils.data.TensorDataset(data['X_val'], data['y_val']),
+        torch.utils.data.TensorDataset(data["X_val"], data["y_val"]),
         batch_size=batch_size,
-        shuffle=False
+        shuffle=False,
     )
     test_loader = torch.utils.data.DataLoader(
-        torch.utils.data.TensorDataset(data['X_test'], data['y_test']),
+        torch.utils.data.TensorDataset(data["X_test"], data["y_test"]),
         batch_size=batch_size,
-        shuffle=False
+        shuffle=False,
     )
-    
+
     def evaluate(loader):
-        """Evaluate model on a data loader."""
         gtn_model.eval()
         total_loss = 0
-        
-        if task == 'regression':
+
+        if task == "regression":
             all_preds, all_targets = [], []
             with torch.no_grad():
                 for batch_data, batch_target in loader:
+                    batch_data, batch_target = batch_data.to(DEVICE), batch_target.to(DEVICE)
                     output = gtn_model(batch_data)
                     loss = criterion(output, batch_target)
                     total_loss += loss.item() * batch_data.size(0)
-                    all_preds.append(output)
-                    all_targets.append(batch_target)
-            
+                    all_preds.append(output.cpu())
+                    all_targets.append(batch_target.cpu())
+
             preds = torch.cat(all_preds, dim=0)
             targets = torch.cat(all_targets, dim=0)
             ss_res = torch.sum((targets - preds) ** 2).item()
             ss_tot = torch.sum((targets - targets.mean()) ** 2).item()
-            quality = 1 - ss_res / ss_tot if ss_tot > 0 else float('-inf')
+            quality = 1 - ss_res / ss_tot if ss_tot > 0 else float("-inf")
         else:
             correct, total = 0, 0
             with torch.no_grad():
                 for batch_data, batch_target in loader:
+                    batch_data, batch_target = batch_data.to(DEVICE), batch_target.to(DEVICE)
                     output = gtn_model(batch_data)
                     loss = criterion(output, batch_target)
                     total_loss += loss.item() * batch_data.size(0)
-                    
+
                     pred = output.argmax(dim=1)
                     target_labels = batch_target.argmax(dim=1)
                     correct += (pred == target_labels).sum().item()
                     total += batch_target.size(0)
-            
+
             quality = correct / total if total > 0 else 0.0
-        
+
         avg_loss = total_loss / len(loader.dataset)
         return avg_loss, quality
-    
+
     # Log hyperparameters
     if tracker:
-        hparams = {
-            'seed': seed,
-            'model': model_name,
-            'dataset': experiment['dataset'],
-            **params
-        }
+        hparams = {"seed": seed, "model": model_name, "dataset": experiment["dataset"], **params}
         tracker.log_hparams(hparams)
-    
+
     # Training loop
-    best_val_quality = float('-inf')
+    best_val_quality = float("-inf")
     best_epoch = -1
-    
+
     for epoch in range(n_epochs):
         gtn_model.train()
         train_loss = 0.0
-        
+
         for batch_data, batch_target in train_loader:
+            batch_data, batch_target = batch_data.to(DEVICE), batch_target.to(DEVICE)
             optimizer.zero_grad()
             output = gtn_model(batch_data)
             loss = criterion(output, batch_target)
             loss.backward()
             optimizer.step()
-            
+
             train_loss += loss.item() * batch_data.size(0)
-        
+
         train_loss /= len(train_loader.dataset)
         val_loss, val_quality = evaluate(val_loader)
-        
+
         if val_quality > best_val_quality:
             best_val_quality = val_quality
             best_epoch = epoch
-        
+
         # Log metrics
         if tracker:
-            metrics = {
-                'train_loss': train_loss,
-                'val_loss': val_loss,
-                'val_quality': val_quality
-            }
+            metrics = {"train_loss": train_loss, "val_loss": val_loss, "val_quality": val_quality}
             tracker.log_metrics(metrics, step=epoch)
-        
+
         if verbose and (epoch % 10 == 0 or epoch == n_epochs - 1):
-            print(f"  Epoch {epoch+1:3d} | Train Loss: {train_loss:.4f} | Val Quality: {val_quality:.4f}")
-    
+            print(
+                f"  Epoch {epoch + 1:3d} | Train Loss: {train_loss:.4f} | Val Quality: {val_quality:.4f}"
+            )
+
     # Final evaluation on all sets
     train_loss, train_quality = evaluate(train_loader)
     test_loss, test_quality = evaluate(test_loader)
-    
+
     result = {
-        'run_id': experiment['run_id'],
-        'seed': seed,
-        'model': model_name,
-        'dataset': experiment['dataset'],
-        'task': task,
-        'params': params,
-        'train_loss': float(train_loss),
-        'train_quality': float(train_quality),
-        'val_loss': float(val_loss),
-        'val_quality': float(best_val_quality),
-        'test_loss': float(test_loss),
-        'test_quality': float(test_quality),
-        'best_epoch': best_epoch,
-        'success': True
+        "run_id": experiment["run_id"],
+        "seed": seed,
+        "model": model_name,
+        "dataset": experiment["dataset"],
+        "task": task,
+        "params": params,
+        "train_loss": float(train_loss),
+        "train_quality": float(train_quality),
+        "val_loss": float(val_loss),
+        "val_quality": float(best_val_quality),
+        "test_loss": float(test_loss),
+        "test_quality": float(test_quality),
+        "best_epoch": best_epoch,
+        "success": True,
     }
-    
+
     if tracker:
-        tracker.log_summary({
-            'test_quality': test_quality,
-            'test_loss': test_loss,
-            'best_val_quality': best_val_quality
-        })
-    
+        tracker.log_summary(
+            {
+                "test_quality": test_quality,
+                "test_loss": test_loss,
+                "best_val_quality": best_val_quality,
+            }
+        )
+
     return result
 
 
 def main():
     parser = argparse.ArgumentParser(description="Run GTN grid search experiments")
-    parser.add_argument('--config', type=str, required=True, help="Path to JSON config file")
-    parser.add_argument('--output-dir', type=str, required=True, help="Output directory for results")
-    parser.add_argument('--tracker', type=str, default='file', choices=['file', 'aim', 'both', 'none'],
-                       help="Tracking backend")
-    parser.add_argument('--tracker-dir', type=str, default='experiment_logs',
-                       help="Directory for file tracker logs")
-    parser.add_argument('--aim-repo', type=str, default=None,
-                       help="AIM repository (local path or aim://host:port)")
-    parser.add_argument('--verbose', action='store_true', help="Print detailed progress")
-    
+    parser.add_argument("--config", type=str, required=True, help="Path to JSON config file")
+    parser.add_argument(
+        "--output-dir", type=str, required=True, help="Output directory for results"
+    )
+    parser.add_argument(
+        "--tracker",
+        type=str,
+        default="file",
+        choices=["file", "aim", "both", "none"],
+        help="Tracking backend",
+    )
+    parser.add_argument(
+        "--tracker-dir", type=str, default="experiment_logs", help="Directory for file tracker logs"
+    )
+    parser.add_argument(
+        "--aim-repo", type=str, default=None, help="AIM repository (local path or aim://host:port)"
+    )
+    parser.add_argument("--verbose", action="store_true", help="Print detailed progress")
+
     args = parser.parse_args()
-    
+
     # Load configuration
     config = load_config(args.config)
     experiment_plan, metadata = create_experiment_plan(config)
-    
+
     # Create output directory
     os.makedirs(args.output_dir, exist_ok=True)
-    
+
     # Load dataset (shared across all experiments)
-    dataset_name = config['dataset']
+    dataset_name = config["dataset"]
     print(f"\nLoading dataset: {dataset_name}")
     data, dataset_info = load_dataset(dataset_name)
-    
-    input_dim = data['X_train'].shape[1]
-    
-    if config['task'] == 'regression':
+
+    input_dim = data["X_train"].shape[1]
+
+    if config["task"] == "regression":
         output_dim = 1
     else:
-        output_dim = dataset_info['n_classes']
-    
+        output_dim = dataset_info["n_classes"]
+
     print(f"  Task: {config['task']}")
     print(f"  Train: {dataset_info['n_train']} samples")
     print(f"  Val: {dataset_info['n_val']} samples")
     print(f"  Test: {dataset_info['n_test']} samples")
     print(f"  Input dim: {input_dim}")
     print(f"  Output dim: {output_dim}")
-    
+    print(f"  Device: {DEVICE}")
+
     # Print experiment summary
     print_experiment_summary(experiment_plan, metadata)
-    
+
     # Run experiments
     results = []
     completed_count = 0
     skipped_count = 0
     failed_count = 0
-    
+
     start_time = time.time()
-    
+
     for idx, experiment in enumerate(experiment_plan, 1):
-        run_id = experiment['run_id']
-        
+        run_id = experiment["run_id"]
+
         # Check if already completed
         if run_already_completed(args.output_dir, run_id):
             if args.verbose:
                 print(f"[{idx}/{len(experiment_plan)}] {run_id} - SKIPPED (already completed)")
             skipped_count += 1
             continue
-        
+
         print(f"\n[{idx}/{len(experiment_plan)}] Running: {run_id}")
-        
+
         # Create tracker
         tracker = create_tracker(
             experiment_name=dataset_name,
             config=experiment,
             backend=args.tracker,
             output_dir=args.tracker_dir,
-            repo=args.aim_repo
+            repo=args.aim_repo,
         )
-        
+
         try:
             result = run_single_experiment(
                 experiment=experiment,
@@ -369,40 +417,36 @@ def main():
                 input_dim=input_dim,
                 output_dim=output_dim,
                 verbose=args.verbose,
-                tracker=tracker
+                tracker=tracker,
             )
-            
+
             # Save individual result
             result_file = get_result_filepath(args.output_dir, run_id)
-            with open(result_file, 'w') as f:
+            with open(result_file, "w") as f:
                 json.dump(result, f, indent=2)
-            
+
             results.append(result)
             completed_count += 1
-            
-            quality_name = "R²" if config['task'] == 'regression' else "Acc"
+
+            quality_name = "R²" if config["task"] == "regression" else "Acc"
             print(f"  ✓ SUCCESS: Test {quality_name}={result['test_quality']:.4f}")
-            
+
         except Exception as e:
             print(f"  ✗ FAILED: {e}")
             failed_count += 1
-            
-            error_result = {
-                'run_id': run_id,
-                'success': False,
-                'error': str(e)
-            }
-            
+
+            error_result = {"run_id": run_id, "success": False, "error": str(e)}
+
             result_file = get_result_filepath(args.output_dir, run_id)
-            with open(result_file, 'w') as f:
+            with open(result_file, "w") as f:
                 json.dump(error_result, f, indent=2)
-        
+
         finally:
-            if tracker and hasattr(tracker, 'close'):
+            if tracker and hasattr(tracker, "close"):
                 tracker.close()
-    
+
     elapsed_time = time.time() - start_time
-    
+
     # Generate summary
     print("\n" + "=" * 70)
     print("GRID SEARCH SUMMARY")
@@ -411,41 +455,43 @@ def main():
     print(f"Completed: {completed_count}")
     print(f"Skipped: {skipped_count}")
     print(f"Failed: {failed_count}")
-    print(f"Time: {elapsed_time:.1f}s ({elapsed_time/len(experiment_plan):.1f}s per run)")
-    
+    print(f"Time: {elapsed_time:.1f}s ({elapsed_time / len(experiment_plan):.1f}s per run)")
+
     if results:
         # Sort by test quality
-        results_sorted = sorted(results, key=lambda r: r['test_quality'], reverse=True)
-        
-        quality_name = "R²" if config['task'] == 'regression' else "Accuracy"
-        multiplier = 1 if config['task'] == 'regression' else 100
-        
+        results_sorted = sorted(results, key=lambda r: r["test_quality"], reverse=True)
+
+        quality_name = "R²" if config["task"] == "regression" else "Accuracy"
+        multiplier = 1 if config["task"] == "regression" else 100
+
         print(f"\nTop 5 Configurations by Test {quality_name}:")
         for i, r in enumerate(results_sorted[:5], 1):
             print(f"\n{i}. {r['run_id']}")
-            print(f"   Test {quality_name}: {r['test_quality']*multiplier:.2f}")
+            print(f"   Test {quality_name}: {r['test_quality'] * multiplier:.2f}")
             print(f"   Model: {r['model']}, Seed: {r['seed']}")
-            print(f"   Key params: bond_dim={r['params']['bond_dim']}, " 
-                  f"lr={r['params']['lr']}, wd={r['params'].get('weight_decay', 0)}")
-        
+            print(
+                f"   Key params: bond_dim={r['params']['bond_dim']}, "
+                f"lr={r['params']['lr']}, wd={r['params'].get('weight_decay', 0)}"
+            )
+
         # Save summary
         summary = {
-            'config': config,
-            'dataset_info': dataset_info,
-            'total_runs': len(experiment_plan),
-            'completed': completed_count,
-            'skipped': skipped_count,
-            'failed': failed_count,
-            'elapsed_time': elapsed_time,
-            'top_configurations': results_sorted[:10]
+            "config": config,
+            "dataset_info": dataset_info,
+            "total_runs": len(experiment_plan),
+            "completed": completed_count,
+            "skipped": skipped_count,
+            "failed": failed_count,
+            "elapsed_time": elapsed_time,
+            "top_configurations": results_sorted[:10],
         }
-        
-        summary_file = os.path.join(args.output_dir, 'summary.json')
-        with open(summary_file, 'w') as f:
+
+        summary_file = os.path.join(args.output_dir, "summary.json")
+        with open(summary_file, "w") as f:
             json.dump(summary, f, indent=2)
-        
+
         print(f"\nSummary saved to: {summary_file}")
-    
+
     print("=" * 70)
 
 

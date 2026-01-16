@@ -21,10 +21,13 @@ from experiments.dataset_loader import load_dataset
 from experiments.trackers import create_tracker
 
 from model.base.NTN import NTN
+from model.base.NTN_Ensemble import NTN_Ensemble
 from model.losses import MSELoss, CrossEntropyLoss
 from model.utils import REGRESSION_METRICS, CLASSIFICATION_METRICS, compute_quality, create_inputs
 from model.standard import MPO2, LMPO2, MMPO2
 from model.typeI import MPO2TypeI, LMPO2TypeI, MMPO2TypeI
+
+from experiments.device_utils import DEVICE, move_tn_to_device, move_data_to_device
 
 torch.set_default_dtype(torch.float64)
 
@@ -82,13 +85,33 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             output_site=params.get("output_site", 1),
         )
 
-    elif model_name == "MMPO2":
-        return MMPO2(
-            L=params["L"],
+    elif model_name == "MPO2TypeI":
+        return MPO2TypeI(
+            max_sites=params["L"],
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            rank=params["rank"],
+            output_site=params.get("output_site", 1),
+            init_strength=params.get("init_strength", 0.1),
+        )
+
+    elif model_name == "LMPO2TypeI":
+        return LMPO2TypeI(
+            max_sites=params["L"],
+            bond_dim=params["bond_dim"],
+            phys_dim=input_dim,
+            reduced_dim=params.get("rank", 5),
+            output_dim=output_dim,
+            output_site=params.get("output_site", 1),
+            init_strength=params.get("init_strength", 0.1),
+        )
+
+    elif model_name == "MMPO2TypeI":
+        return MMPO2TypeI(
+            max_sites=params["L"],
+            bond_dim=params["bond_dim"],
+            phys_dim=input_dim,
+            output_dim=output_dim,
             output_site=params.get("output_site", 1),
             init_strength=params.get("init_strength", 0.1),
         )
@@ -114,6 +137,8 @@ def run_single_experiment(
     torch.manual_seed(seed)
     np.random.seed(seed)
 
+    data = move_data_to_device(data)
+
     if task == "regression":
         loss_fn = MSELoss()
         eval_metrics = REGRESSION_METRICS
@@ -132,41 +157,68 @@ def run_single_experiment(
 
     model_name = params["model"]
     model = create_model(model_name, params, input_dim, output_dim)
+    is_typeI = model_name.endswith("TypeI")
 
-    loader_train = create_inputs(
-        X=data["X_train"],
-        y=data["y_train"],
-        input_labels=model.input_labels,
-        output_labels=model.output_dims,
-        batch_size=params.get("batch_size", 100),
-        append_bias=False,
-    )
+    if is_typeI:
+        for tn in model.tns:
+            move_tn_to_device(tn)
+    else:
+        move_tn_to_device(model.tn)
 
-    loader_val = create_inputs(
-        X=data["X_val"],
-        y=data["y_val"],
-        input_labels=model.input_labels,
-        output_labels=model.output_dims,
-        batch_size=params.get("batch_size", 100),
-        append_bias=False,
-    )
+    if is_typeI:
+        not_trainable_tags = getattr(model, "not_trainable_tags", None)
+        ntn = NTN_Ensemble(
+            tns=model.tns,
+            input_dims_list=model.input_dims_list,
+            input_labels_list=model.input_labels_list,
+            output_dims=model.output_dims,
+            loss=loss_fn,
+            X_train=data["X_train"],
+            y_train=data["y_train"],
+            X_val=data["X_val"],
+            y_val=data["y_val"],
+            X_test=data["X_test"],
+            y_test=data["y_test"],
+            batch_size=params.get("batch_size", 100),
+            not_trainable_tags=not_trainable_tags,
+        )
+        loader_val = ntn.val_data
+        loader_test = ntn.test_data
+    else:
+        loader_train = create_inputs(
+            X=data["X_train"],
+            y=data["y_train"],
+            input_labels=model.input_labels,
+            output_labels=model.output_dims,
+            batch_size=params.get("batch_size", 100),
+            append_bias=False,
+        )
 
-    loader_test = create_inputs(
-        X=data["X_test"],
-        y=data["y_test"],
-        input_labels=model.input_labels,
-        output_labels=model.output_dims,
-        batch_size=params.get("batch_size", 100),
-        append_bias=False,
-    )
+        loader_val = create_inputs(
+            X=data["X_val"],
+            y=data["y_val"],
+            input_labels=model.input_labels,
+            output_labels=model.output_dims,
+            batch_size=params.get("batch_size", 100),
+            append_bias=False,
+        )
 
-    ntn = NTN(
-        tn=model.tn,
-        output_dims=model.output_dims,
-        input_dims=model.input_dims,
-        loss=loss_fn,
-        data_stream=loader_train,
-    )
+        loader_test = create_inputs(
+            X=data["X_test"],
+            y=data["y_test"],
+            input_labels=model.input_labels,
+            output_labels=model.output_dims,
+            batch_size=params.get("batch_size", 100),
+            append_bias=False,
+        )
+
+        ntn = NTN(
+            tn=model.tn,
+            output_dims=model.output_dims,
+            input_dims=model.input_dims,
+            loss=loss_fn,
+            data_stream=loader_train,
+        )
 
     def callback_init(scores_train, scores_val, info):
         if tracker:
@@ -317,6 +369,7 @@ def main():
     print(f"  Test: {dataset_info['n_test']} samples")
     print(f"  Features: {dataset_info['n_features']} (+1 bias = {input_dim})")
     print(f"  Task: {dataset_info['task']}")
+    print(f"  Device: {DEVICE}")
     print()
 
     if args.resume:

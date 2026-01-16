@@ -144,6 +144,9 @@
           echo "Installing aim via UV..."
           uv pip install aim
         fi
+        set -a
+        source /home/nicco/.config/sops-nix/secrets/aim
+        set +a
         echo "✓ Environment ready!"
         echo "  Python: $(which python)"
         zsh
