@@ -10,6 +10,9 @@
 #BSUB -e logs/concrete-gtn-grid_%J.err
 #BSUB -u nicci@dtu.dk
 
+export HOME=/zhome/6b/e/212868
+export AIM_REPO=$HOME/aim
+
 cd $HOME/GTN
 source .venv/bin/activate
 

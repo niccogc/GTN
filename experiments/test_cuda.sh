@@ -9,6 +9,9 @@
 #BSUB -o cuda_test_%J.out
 #BSUB -e cuda_test_%J.err
 
+export HOME=/zhome/6b/e/212868
+export AIM_REPO=$HOME/aim
+
 echo "=== CUDA Test Job ==="
 echo "Job ID: $LSB_JOBID"
 echo "Host: $(hostname)"
