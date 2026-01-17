@@ -53,13 +53,12 @@ JOB_TEMPLATE = """#!/bin/sh
 #BSUB -u nicci@dtu.dk
 
 export HOME=/zhome/6b/e/212868
-export AIM_REPO=$HOME/aim
 
 cd $HOME/GTN
 source .venv/bin/activate
 
 set -a
-source $HOME/.ssh/aim
+source $HOME/aim
 set +a
 
 python experiments/{runner} --config experiments/configs/{config_file} {extra_args}

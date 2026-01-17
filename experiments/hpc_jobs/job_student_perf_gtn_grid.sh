@@ -11,13 +11,12 @@
 #BSUB -u nicci@dtu.dk
 
 export HOME=/zhome/6b/e/212868
-export AIM_REPO=$HOME/aim
 
 cd $HOME/GTN
 source .venv/bin/activate
 
 set -a
-source $HOME/.ssh/aim
+source $HOME/aim
 set +a
 
 python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_student_perf.json --output-dir results/student_perf_gtn_grid
