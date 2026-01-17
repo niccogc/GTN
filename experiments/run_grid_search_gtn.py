@@ -49,19 +49,26 @@ def get_result_filepath(output_dir: str, run_id: str) -> str:
     return os.path.join(output_dir, f"{run_id}.json")
 
 
-def run_already_completed(output_dir: str, run_id: str) -> bool:
-    """Check if a run has already been completed."""
+def run_already_completed(output_dir: str, run_id: str) -> tuple[bool, bool, str | None]:
+    """
+    Check if a run has already been attempted.
+
+    Returns:
+        (was_attempted, was_successful, error_message)
+    """
     result_file = get_result_filepath(output_dir, run_id)
 
     if not os.path.exists(result_file):
-        return False
+        return False, False, None
 
     try:
         with open(result_file, "r") as f:
             result = json.load(f)
-        return result.get("success", False) is not None
+        success = result.get("success", False)
+        error = result.get("error", None)
+        return True, success, error
     except:
-        return False
+        return False, False, None
 
 
 def create_model(model_name: str, params: dict, input_dim: int, output_dim: int):
@@ -392,10 +399,14 @@ def main():
     for idx, experiment in enumerate(experiment_plan, 1):
         run_id = experiment["run_id"]
 
-        # Check if already completed
-        if run_already_completed(args.output_dir, run_id):
-            if args.verbose:
-                print(f"[{idx}/{len(experiment_plan)}] {run_id} - SKIPPED (already completed)")
+        was_attempted, was_successful, error = run_already_completed(args.output_dir, run_id)
+        if was_attempted:
+            if was_successful:
+                if args.verbose:
+                    print(f"[{idx}/{len(experiment_plan)}] {run_id} - SKIPPED (success)")
+            else:
+                err_short = (error[:80] + "...") if error and len(error) > 80 else error
+                print(f"[{idx}/{len(experiment_plan)}] {run_id} - SKIPPED (failed: {err_short})")
             skipped_count += 1
             continue
 
@@ -432,10 +443,19 @@ def main():
             print(f"  ✓ SUCCESS: Test {quality_name}={result['test_quality']:.4f}")
 
         except Exception as e:
-            print(f"  ✗ FAILED: {e}")
+            import traceback
+
+            error_tb = traceback.format_exc()
+            error_short = str(e)[:200]
+            print(f"  ✗ FAILED: {error_short}")
             failed_count += 1
 
-            error_result = {"run_id": run_id, "success": False, "error": str(e)}
+            error_result = {
+                "run_id": run_id,
+                "success": False,
+                "error": str(e),
+                "traceback": error_tb,
+            }
 
             result_file = get_result_filepath(args.output_dir, run_id)
             with open(result_file, "w") as f:

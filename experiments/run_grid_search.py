@@ -37,19 +37,26 @@ def get_result_filepath(output_dir: str, run_id: str) -> str:
     return os.path.join(output_dir, f"{run_id}.json")
 
 
-def run_already_completed(output_dir: str, run_id: str) -> bool:
-    """Check if a run has already been completed."""
+def run_already_completed(output_dir: str, run_id: str) -> tuple[bool, bool, str | None]:
+    """
+    Check if a run has already been attempted.
+
+    Returns:
+        (was_attempted, was_successful, error_message)
+    """
     result_file = get_result_filepath(output_dir, run_id)
 
     if not os.path.exists(result_file):
-        return False
+        return False, False, None
 
     try:
         with open(result_file, "r") as f:
             result = json.load(f)
-        return result.get("success", False) is not None
+        success = result.get("success", False)
+        error = result.get("error", None)
+        return True, success, error
     except:
-        return False
+        return False, False, None
 
 
 def create_model(model_name: str, params: dict, input_dim: int, output_dim: int):
@@ -302,6 +309,8 @@ def run_single_experiment(
         return result
 
     except Exception as e:
+        import traceback
+
         result = {
             "run_id": experiment["run_id"],
             "seed": seed,
@@ -315,6 +324,7 @@ def run_single_experiment(
             "test_quality": None,
             "success": False,
             "error": str(e),
+            "traceback": traceback.format_exc(),
         }
 
         if tracker:
@@ -373,11 +383,21 @@ def main():
     print()
 
     if args.resume:
-        completed = [exp for exp in experiments if run_already_completed(output_dir, exp["run_id"])]
-        experiments = [
-            exp for exp in experiments if not run_already_completed(output_dir, exp["run_id"])
-        ]
-        print(f"Resume mode: Skipping {len(completed)} completed runs")
+        remaining = []
+        skipped_success = 0
+        skipped_failed = 0
+        for exp in experiments:
+            was_attempted, was_successful, error = run_already_completed(output_dir, exp["run_id"])
+            if was_attempted:
+                if was_successful:
+                    skipped_success += 1
+                else:
+                    skipped_failed += 1
+                    print(f"  [SKIP-FAILED] {exp['run_id']}: {error}")
+            else:
+                remaining.append(exp)
+        experiments = remaining
+        print(f"Resume mode: Skipping {skipped_success} successful, {skipped_failed} failed runs")
         print(f"Remaining: {len(experiments)} experiments to run")
         print()
 

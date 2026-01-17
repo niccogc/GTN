@@ -3,17 +3,16 @@
 Generate experiment config files for all UCI datasets.
 
 This script creates:
-1. NTN configs for standard models (MPO2, LMPO2, MMPO2)
+1. NTN configs for standard models (MPO2, LMPO2, MMPO2) + TypeI variants
 2. GTN configs for gradient-based training
 
 Grid search parameters:
 - L (num sites): 2, 3, 4
 - bond_dim: 4, 6, 8, 10
-- For LMPO2: reduction_factor: 0.1, 0.3, 0.5
-- NTN regularization (jitter_start): 5, 1, 0.1 with decay
-- GTN regularization (weight_decay): 5, 1, 0.1
-- GTN learning rate: 0.01, 0.001, 0.0001
-- epochs: 10, patience: 4
+- reduction_factor: 0.1, 0.3, 0.5 (applied only to LMPO2/LMPO2TypeI models)
+- init_strength: 1.0, 0.1, 0.01
+- NTN: jitter_start: 5, 1, 0.1 with decay, epochs: 10, patience: 4
+- GTN: weight_decay: 5, 1, 0.1, lr: 0.01, 0.001, 0.0001, epochs: 200, patience: 20
 
 MMPO2 is excluded for datasets with >50 features (cap limit).
 """
@@ -75,10 +74,11 @@ def create_ntn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
             "L": [2, 3, 4],
             "bond_dim": [4, 6, 8, 10],
             "jitter_start": [5.0, 1.0, 0.1],
+            "reduction_factor": [0.1, 0.3, 0.5],
+            "init_strength": [1.0, 0.1, 0.01],
         },
         "fixed_params": {
             "output_site": 1,
-            "init_strength": 0.001,
             "batch_size": 100,
             "n_epochs": 10,
             "jitter_decay": 0.95,
@@ -105,48 +105,6 @@ def create_ntn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
     return config
 
 
-def create_ntn_lmpo2_reduction_config(dataset_name: str, task: str) -> dict:
-    """Create NTN config specifically for LMPO2 reduction factor grid search."""
-
-    config = {
-        "experiment_name": f"{dataset_name}_ntn_lmpo2_reduction",
-        "dataset": dataset_name,
-        "task": task,
-        "parameter_grid": {
-            "model": ["LMPO2"],
-            "L": [2, 3, 4],
-            "bond_dim": [4, 6, 8, 10],
-            "jitter_start": [5.0, 1.0, 0.1],
-            "reduction_factor": [0.1, 0.3, 0.5],
-        },
-        "fixed_params": {
-            "output_site": 1,
-            "init_strength": 0.001,
-            "batch_size": 100,
-            "n_epochs": 10,
-            "jitter_decay": 0.95,
-            "jitter_min": 0.001,
-            "adaptive_jitter": True,
-            "patience": 4,
-            "min_delta": 0.001,
-            "train_selection": True,
-            "seeds": [42, 7, 123, 256, 999],
-        },
-        "tracker": {
-            "backend": "both",
-            "tracker_dir": "experiment_logs",
-            "aim_repo": "aim://aimtracking.kosmon.org:443",
-        },
-        "output": {
-            "results_dir": f"results/{dataset_name}_ntn_lmpo2_reduction",
-            "save_models": False,
-            "save_individual_runs": True,
-        },
-    }
-
-    return config
-
-
 def create_gtn_config(dataset_name: str, task: str, include_mmpo2: bool = True) -> dict:
     models = ["MPO2", "LMPO2", "MMPO2", "MPO2TypeI_GTN", "LMPO2TypeI_GTN", "MMPO2TypeI_GTN"]
 
@@ -160,12 +118,14 @@ def create_gtn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
             "bond_dim": [4, 6, 8, 10],
             "weight_decay": [5.0, 1.0, 0.1],
             "lr": [0.01, 0.001, 0.0001],
+            "reduction_factor": [0.1, 0.3, 0.5],
+            "init_strength": [1.0, 0.1, 0.01],
         },
         "fixed_params": {
             "output_site": 1,
-            "init_strength": 0.001,
             "batch_size": 32,
-            "n_epochs": 10,
+            "n_epochs": 200,
+            "patience": 20,
             "optimizer": "adamw",
             "rank": 5,
             "seeds": [42, 7, 123, 256, 999],
@@ -177,44 +137,6 @@ def create_gtn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
         },
         "output": {
             "results_dir": f"results/{dataset_name}_gtn_grid",
-            "save_models": False,
-            "save_individual_runs": True,
-        },
-    }
-
-    return config
-
-
-def create_gtn_lmpo2_reduction_config(dataset_name: str, task: str) -> dict:
-    """Create GTN config specifically for LMPO2 reduction factor grid search."""
-
-    config = {
-        "experiment_name": f"{dataset_name}_gtn_lmpo2_reduction",
-        "dataset": dataset_name,
-        "task": task,
-        "parameter_grid": {
-            "model": ["LMPO2"],
-            "L": [2, 3, 4],
-            "bond_dim": [4, 6, 8, 10],
-            "weight_decay": [5.0, 1.0, 0.1],
-            "lr": [0.01, 0.001, 0.0001],
-            "reduction_factor": [0.1, 0.3, 0.5],
-        },
-        "fixed_params": {
-            "output_site": 1,
-            "init_strength": 0.001,
-            "batch_size": 32,
-            "n_epochs": 10,
-            "optimizer": "adamw",
-            "seeds": [42, 7, 123, 256, 999],
-        },
-        "tracker": {
-            "backend": "both",
-            "tracker_dir": "experiment_logs",
-            "aim_repo": "aim://aimtracking.kosmon.org:443",
-        },
-        "output": {
-            "results_dir": f"results/{dataset_name}_gtn_lmpo2_reduction",
             "save_models": False,
             "save_individual_runs": True,
         },
@@ -244,16 +166,6 @@ def main():
         ntn_configs.append(ntn_filename)
         print(f"Created: {ntn_filename}")
 
-        ntn_lmpo2_config = create_ntn_lmpo2_reduction_config(dataset_name, task)
-        ntn_lmpo2_filename = f"uci_ntn_lmpo2_{dataset_name}.json"
-        ntn_lmpo2_filepath = os.path.join(output_dir, ntn_lmpo2_filename)
-
-        with open(ntn_lmpo2_filepath, "w") as f:
-            json.dump(ntn_lmpo2_config, f, indent=2)
-
-        ntn_configs.append(ntn_lmpo2_filename)
-        print(f"Created: {ntn_lmpo2_filename}")
-
         gtn_config = create_gtn_config(dataset_name, task, include_mmpo2=True)
         gtn_filename = f"uci_gtn_{dataset_name}.json"
         gtn_filepath = os.path.join(output_dir, gtn_filename)
@@ -264,22 +176,14 @@ def main():
         gtn_configs.append(gtn_filename)
         print(f"Created: {gtn_filename}")
 
-        # GTN LMPO2 reduction config
-        gtn_lmpo2_config = create_gtn_lmpo2_reduction_config(dataset_name, task)
-        gtn_lmpo2_filename = f"uci_gtn_lmpo2_{dataset_name}.json"
-        gtn_lmpo2_filepath = os.path.join(output_dir, gtn_lmpo2_filename)
-
-        with open(gtn_lmpo2_filepath, "w") as f:
-            json.dump(gtn_lmpo2_config, f, indent=2)
-
-        gtn_configs.append(gtn_lmpo2_filename)
-        print(f"Created: {gtn_lmpo2_filename}")
-
     print(f"\n{'=' * 60}")
     print(f"Generated {len(ntn_configs)} NTN configs")
     print(f"Generated {len(gtn_configs)} GTN configs")
     print(f"Total: {len(ntn_configs) + len(gtn_configs)} config files")
     print(f"\nDatasets with MMPO2 excluded in NTN (>50 features): {HIGH_FEATURE_DATASETS}")
+    print(
+        f"\nNote: reduction_factor is now included in main configs (only applied to LMPO2/LMPO2TypeI models)"
+    )
 
 
 if __name__ == "__main__":
