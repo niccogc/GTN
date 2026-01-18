@@ -11,7 +11,7 @@ Grid search parameters:
 - bond_dim: 4, 6, 8, 10
 - reduction_factor: 0.1, 0.3, 0.5 (applied only to LMPO2/LMPO2TypeI models)
 - init_strength: 1.0, 0.1, 0.01
-- NTN: jitter_start: 5, 1, 0.1 with decay, epochs: 10, patience: 4
+- NTN: jitter_start: 5, 1, 0.1, jitter_decay: 0.25, adaptive_jitter: False, epochs: 10, patience: 4
 - GTN: weight_decay: 5, 1, 0.1, lr: 0.01, 0.001, 0.0001, epochs: 200, patience: 20
 
 MMPO2 is excluded for datasets with >50 features (cap limit).
@@ -66,7 +66,7 @@ def create_ntn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
         models.extend(["MMPO2", "MMPO2TypeI"])
 
     config = {
-        "experiment_name": f"{dataset_name}_ntn_grid",
+        "experiment_name": f"ntn_{dataset_name}",
         "dataset": dataset_name,
         "task": task,
         "parameter_grid": {
@@ -81,9 +81,8 @@ def create_ntn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
             "output_site": 1,
             "batch_size": 100,
             "n_epochs": 10,
-            "jitter_decay": 0.95,
-            "jitter_min": 0.001,
-            "adaptive_jitter": True,
+            "jitter_decay": 0.25,
+            "adaptive_jitter": False,
             "patience": 4,
             "min_delta": 0.001,
             "train_selection": True,
@@ -96,7 +95,7 @@ def create_ntn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
             "aim_repo": "aim://aimtracking.kosmon.org:443",
         },
         "output": {
-            "results_dir": f"results/{dataset_name}_ntn_grid",
+            "results_dir": f"results/ntn_{dataset_name}",
             "save_models": False,
             "save_individual_runs": True,
         },
@@ -109,7 +108,7 @@ def create_gtn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
     models = ["MPO2", "LMPO2", "MMPO2", "MPO2TypeI_GTN", "LMPO2TypeI_GTN", "MMPO2TypeI_GTN"]
 
     config = {
-        "experiment_name": f"{dataset_name}_gtn_grid",
+        "experiment_name": f"gtn_{dataset_name}",
         "dataset": dataset_name,
         "task": task,
         "parameter_grid": {
@@ -136,7 +135,7 @@ def create_gtn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
             "aim_repo": "aim://aimtracking.kosmon.org:443",
         },
         "output": {
-            "results_dir": f"results/{dataset_name}_gtn_grid",
+            "results_dir": f"results/gtn_{dataset_name}",
             "save_models": False,
             "save_individual_runs": True,
         },
