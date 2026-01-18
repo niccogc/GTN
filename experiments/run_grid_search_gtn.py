@@ -412,9 +412,8 @@ def main():
 
         print(f"\n[{idx}/{len(experiment_plan)}] Running: {run_id}")
 
-        # Create tracker
         tracker = create_tracker(
-            experiment_name=dataset_name,
+            experiment_name=config["experiment_name"],
             config=experiment,
             backend=args.tracker,
             output_dir=args.tracker_dir,
