@@ -255,7 +255,7 @@ def create_experiment_plan(config: Dict[str, Any]) -> Tuple[List[Dict[str, Any]]
                 continue
 
             experiment = {
-                "experiment_name": config["dataset"],
+                "experiment_name": config["experiment_name"],
                 "dataset": config["dataset"],
                 "task": config.get("task", "regression"),
                 "params": full_params,
