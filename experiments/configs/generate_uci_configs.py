@@ -115,7 +115,7 @@ def create_gtn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
             "model": models,
             "L": [2, 3, 4],
             "bond_dim": [4, 6, 8, 10],
-            "weight_decay": [1.0, 0.1, 0.01],
+            "weight_decay": [0.1, 0.01],
             "lr": [0.01, 0.001, 0.0001],
             "reduction_factor": [0.1, 0.3, 0.5],
             "init_strength": [1.0, 0.1, 0.01],
