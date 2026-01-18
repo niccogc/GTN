@@ -291,6 +291,7 @@ def run_single_experiment(
             train_loss += loss.item() * batch_data.size(0)
 
         train_loss /= len(train_loader.dataset)
+        _, train_quality = evaluate(train_loader)
         val_loss, val_quality = evaluate(val_loader)
 
         # Early stopping based on train loss
@@ -319,6 +320,7 @@ def run_single_experiment(
         if tracker:
             metrics = {
                 "train_loss": train_loss,
+                "train_quality": train_quality,
                 "val_loss": val_loss,
                 "val_quality": val_quality,
                 "patience_counter": patience_counter,
@@ -327,7 +329,7 @@ def run_single_experiment(
 
         if verbose and (epoch % 10 == 0 or epoch == n_epochs - 1):
             print(
-                f"  Epoch {epoch + 1:3d} | Train Loss: {train_loss:.4f} | Val Quality: {val_quality:.4f} | Patience: {patience_counter}"
+                f"  Epoch {epoch + 1:3d} | Train Loss: {train_loss:.4f} | Train Quality: {train_quality:.4f} | Val Quality: {val_quality:.4f} | Patience: {patience_counter}"
             )
 
     # Final evaluation on all sets
