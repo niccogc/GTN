@@ -392,6 +392,14 @@ def main():
     config = load_config(args.config)
     experiment_plan, metadata = create_experiment_plan(config)
 
+    # Override tracker settings from config if not specified via command line
+    if args.tracker == "file" and "tracker" in config:
+        args.tracker = config["tracker"].get("backend", "file")
+    if args.tracker_dir == "experiment_logs" and "tracker" in config:
+        args.tracker_dir = config["tracker"].get("tracker_dir", "experiment_logs")
+    if args.aim_repo is None and "tracker" in config:
+        args.aim_repo = config["tracker"].get("aim_repo", None)
+
     # Create output directory
     os.makedirs(args.output_dir, exist_ok=True)
 
@@ -442,12 +450,20 @@ def main():
 
         print(f"\n[{idx}/{len(experiment_plan)}] Running: {run_id}")
 
+        # Set up AIM repo with fallback logic like NTN script
+        aim_repo = (
+            args.aim_repo
+            or os.getenv("AIM_REPO")
+            or config["tracker"].get("aim_repo")
+            or "aim://aimtracking.kosmon.org:443"
+        )
+
         tracker = create_tracker(
             experiment_name=config["experiment_name"],
             config=experiment,
             backend=args.tracker,
             output_dir=args.tracker_dir,
-            repo=args.aim_repo,
+            repo=aim_repo,
         )
 
         try:
