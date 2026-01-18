@@ -123,8 +123,9 @@ def create_gtn_config(dataset_name: str, task: str, include_mmpo2: bool = True) 
         "fixed_params": {
             "output_site": 1,
             "batch_size": 32,
-            "n_epochs": 200,
+            "n_epochs": 1000,
             "patience": 20,
+            "min_delta": 0.000001,
             "optimizer": "adamw",
             "rank": 5,
             "seeds": [42, 7, 123, 256, 999],

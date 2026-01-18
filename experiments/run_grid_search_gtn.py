@@ -183,6 +183,8 @@ def run_single_experiment(
     lr = params.get("lr", 0.001)
     weight_decay = params.get("weight_decay", 0.01)
     optimizer_name = params.get("optimizer", "adam").lower()
+    patience = params.get("patience", None)
+    min_delta = params.get("min_delta", 0.0)
 
     model_name = params["model"]
     base_model = create_model(model_name, params, input_dim, output_dim)
@@ -269,7 +271,10 @@ def run_single_experiment(
 
     # Training loop
     best_val_quality = float("-inf")
+    best_train_loss = float("inf")
     best_epoch = -1
+    patience_counter = 0
+    stopped_early = False
 
     for epoch in range(n_epochs):
         gtn_model.train()
@@ -288,18 +293,41 @@ def run_single_experiment(
         train_loss /= len(train_loader.dataset)
         val_loss, val_quality = evaluate(val_loader)
 
+        # Early stopping based on train loss
+        if train_loss < best_train_loss - min_delta:
+            best_train_loss = train_loss
+            patience_counter = 0
+        else:
+            patience_counter += 1
+
         if val_quality > best_val_quality:
             best_val_quality = val_quality
             best_epoch = epoch
 
+        # Early stopping check
+        if patience is not None and patience_counter >= patience:
+            if verbose:
+                print(f"\n⏸ Early stopping triggered at epoch {epoch + 1}")
+                print(
+                    f"  No improvement in train loss for {patience} epochs (min_delta={min_delta})"
+                )
+                print(f"  Best train loss: {best_train_loss:.6f}")
+            stopped_early = True
+            break
+
         # Log metrics
         if tracker:
-            metrics = {"train_loss": train_loss, "val_loss": val_loss, "val_quality": val_quality}
+            metrics = {
+                "train_loss": train_loss,
+                "val_loss": val_loss,
+                "val_quality": val_quality,
+                "patience_counter": patience_counter,
+            }
             tracker.log_metrics(metrics, step=epoch)
 
         if verbose and (epoch % 10 == 0 or epoch == n_epochs - 1):
             print(
-                f"  Epoch {epoch + 1:3d} | Train Loss: {train_loss:.4f} | Val Quality: {val_quality:.4f}"
+                f"  Epoch {epoch + 1:3d} | Train Loss: {train_loss:.4f} | Val Quality: {val_quality:.4f} | Patience: {patience_counter}"
             )
 
     # Final evaluation on all sets
@@ -320,6 +348,8 @@ def run_single_experiment(
         "test_loss": float(test_loss),
         "test_quality": float(test_quality),
         "best_epoch": best_epoch,
+        "stopped_early": stopped_early,
+        "patience_counter": patience_counter,
         "success": True,
     }
 
