@@ -450,11 +450,11 @@ def main():
 
         print(f"\n[{idx}/{len(experiment_plan)}] Running: {run_id}")
 
-        # Set up AIM repo with fallback logic like NTN script
+        # Set up AIM repo with config file having priority over environment
         aim_repo = (
             args.aim_repo
-            or os.getenv("AIM_REPO")
             or config["tracker"].get("aim_repo")
+            or os.getenv("AIM_REPO")
             or "aim://aimtracking.kosmon.org:443"
         )
 
@@ -464,6 +464,7 @@ def main():
             backend=args.tracker,
             output_dir=args.tracker_dir,
             repo=aim_repo,
+            run_name=experiment["run_name"],
         )
 
         try:
