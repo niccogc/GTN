@@ -18,7 +18,7 @@ import numpy as np
 
 from experiments.config_parser import load_config, create_experiment_plan, print_experiment_summary
 from experiments.dataset_loader import load_dataset
-from experiments.trackers import create_tracker
+from experiments.trackers import create_tracker, TrackerError
 
 from model.base.NTN import NTN
 from model.base.NTN_Ensemble import NTN_Ensemble
@@ -307,6 +307,10 @@ def run_single_experiment(
             tracker.log_summary(result)
 
         return result
+
+    except TrackerError:
+        # Re-raise tracker errors - these should stop the experiment
+        raise
 
     except Exception as e:
         import traceback

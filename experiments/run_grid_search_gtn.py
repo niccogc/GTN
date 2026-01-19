@@ -20,7 +20,7 @@ import numpy as np
 
 from experiments.config_parser import load_config, create_experiment_plan, print_experiment_summary
 from experiments.dataset_loader import load_dataset
-from experiments.trackers import create_tracker
+from experiments.trackers import create_tracker, TrackerError
 
 from model.GTN import GTN
 from model.MPO2_models import MPO2, LMPO2, MMPO2
@@ -489,6 +489,9 @@ def main():
 
             quality_name = "R²" if config["task"] == "regression" else "Acc"
             print(f"  ✓ SUCCESS: Test {quality_name}={result['test_quality']:.4f}")
+
+        except TrackerError:
+            raise
 
         except Exception as e:
             import traceback

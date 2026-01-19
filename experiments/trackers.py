@@ -14,6 +14,15 @@ from typing import Dict, Any, Optional, List
 from pathlib import Path
 
 
+
+class TrackerError(Exception):
+    """Exception raised when tracker operations fail.
+    
+    This exception is meant to be fatal - when raised, experiments should stop
+    rather than continuing with broken tracking.
+    """
+    pass
+
 class BaseTracker:
     """Base class for all trackers."""
 
@@ -94,7 +103,12 @@ class FileTracker(BaseTracker):
 
 
 class AIMTracker(BaseTracker):
-    """Track experiments with AIM."""
+    """Track experiments with AIM.
+    
+    All tracking operations are wrapped to raise TrackerError on failure,
+    ensuring experiments stop when tracking fails rather than continuing
+    with broken tracking.
+    """
 
     def __init__(
         self,
@@ -113,27 +127,42 @@ class AIMTracker(BaseTracker):
         if repo is None:
             repo = os.getenv("AIM_REPO", ".aim")
 
-        self.run = Run(repo=repo, experiment=experiment_name, log_system_params=True)
+        try:
+            self.run = Run(repo=repo, experiment=experiment_name, log_system_params=True)
 
-        if run_name:
-            self.run.name = run_name
+            if run_name:
+                self.run.name = run_name
 
-        self.run["config"] = config
-        print(f"  AIM run started: {self.run.hash}")
+            self.run["config"] = config
+            print(f"  AIM run started: {self.run.hash}")
+        except Exception as e:
+            raise TrackerError(f"Failed to initialize AIM run: {e}") from e
 
     def log_hparams(self, hparams: Dict[str, Any]):
-        self.run["hparams"] = hparams
+        try:
+            self.run["hparams"] = hparams
+        except Exception as e:
+            raise TrackerError(f"Failed to log hparams to AIM: {e}") from e
 
     def log_metrics(self, metrics: Dict[str, float], step: int):
-        for key, value in metrics.items():
-            self.run.track(value, name=key, step=step)
+        try:
+            for key, value in metrics.items():
+                self.run.track(value, name=key, step=step)
+        except Exception as e:
+            raise TrackerError(f"Failed to log metrics to AIM at step {step}: {e}") from e
 
     def log_summary(self, summary: Dict[str, Any]):
-        self.run["summary"] = summary
+        try:
+            self.run["summary"] = summary
+        except Exception as e:
+            raise TrackerError(f"Failed to log summary to AIM: {e}") from e
 
     def finalize(self):
-        self.run.close()
-        print(f"  AIM run finalized: {self.run.hash}")
+        try:
+            self.run.close()
+            print(f"  AIM run finalized: {self.run.hash}")
+        except Exception as e:
+            raise TrackerError(f"Failed to finalize AIM run: {e}") from e
 
 
 class MultiTracker(BaseTracker):
