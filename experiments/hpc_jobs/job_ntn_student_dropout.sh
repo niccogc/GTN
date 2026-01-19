@@ -4,7 +4,7 @@
 #BSUB -W 24:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "rusage[mem=64GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/ntn-student-dropout_%J.out
 #BSUB -e logs/ntn-student-dropout_%J.err

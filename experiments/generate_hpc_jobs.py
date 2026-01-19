@@ -24,7 +24,7 @@ DATASET_SIZES = {
     "winequalityc": "medium",
     "obesity": "medium",
     "bike": "medium",
-    "ai4i": "medium",
+    "ai4i": "large",
     "seoulBike": "medium",
     "appliances": "large",
     "popularity": "large",
@@ -91,6 +91,11 @@ def generate_job_script(
 
     is_gtn = "gtn" in config_file.lower()
     runner_script = "run_grid_search_gtn.py" if is_gtn else "run_grid_search.py"
+
+    # For NTN configs, double the memory allocation
+    if not is_gtn:
+        mem_value = int(queue_config["mem"].replace("GB", ""))
+        queue_config["mem"] = f"{mem_value * 2}GB"
 
     extra_args = ""
     if is_gtn:

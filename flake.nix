@@ -85,7 +85,8 @@
       packages = [
         pythonWithNixPkgs
         pkgs.uv
-        opencode.packages.${system}.default
+        # opencode.packages.${system}.default
+        pkgs.opencode
       ];
 
       shellHook = ''
