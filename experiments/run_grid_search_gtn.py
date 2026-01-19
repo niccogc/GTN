@@ -45,30 +45,31 @@ class MPO2GTN(GTN):
 
 
 def get_result_filepath(output_dir: str, run_id: str) -> str:
-    """Get filepath for individual run result."""
     return os.path.join(output_dir, f"{run_id}.json")
 
 
-def run_already_completed(output_dir: str, run_id: str) -> tuple[bool, bool, str | None]:
+def run_already_completed(output_dir: str, run_id: str) -> tuple[bool, bool, bool, str | None]:
     """
     Check if a run has already been attempted.
 
     Returns:
-        (was_attempted, was_successful, error_message)
+        (was_attempted, was_successful, is_singular, error_message)
+        - is_singular: True if failed due to singular matrix (should skip permanently)
     """
     result_file = get_result_filepath(output_dir, run_id)
 
     if not os.path.exists(result_file):
-        return False, False, None
+        return False, False, False, None
 
     try:
         with open(result_file, "r") as f:
             result = json.load(f)
         success = result.get("success", False)
+        singular = result.get("singular", False)
         error = result.get("error", None)
-        return True, success, error
+        return True, success, singular, error
     except:
-        return False, False, None
+        return False, False, False, None
 
 
 def create_model(model_name: str, params: dict, input_dim: int, output_dim: int):
@@ -439,16 +440,22 @@ def main():
     for idx, experiment in enumerate(experiment_plan, 1):
         run_id = experiment["run_id"]
 
-        was_attempted, was_successful, error = run_already_completed(args.output_dir, run_id)
+        was_attempted, was_successful, is_singular, error = run_already_completed(
+            args.output_dir, run_id
+        )
         if was_attempted:
             if was_successful:
                 if args.verbose:
                     print(f"[{idx}/{len(experiment_plan)}] {run_id} - SKIPPED (success)")
+                skipped_count += 1
+                continue
+            elif is_singular:
+                print(f"[{idx}/{len(experiment_plan)}] {run_id} - SKIPPED (singular matrix)")
+                skipped_count += 1
+                continue
             else:
                 err_short = (error[:80] + "...") if error and len(error) > 80 else error
-                print(f"[{idx}/{len(experiment_plan)}] {run_id} - SKIPPED (failed: {err_short})")
-            skipped_count += 1
-            continue
+                print(f"[{idx}/{len(experiment_plan)}] {run_id} - RETRYING ({err_short})")
 
         print(f"\n[{idx}/{len(experiment_plan)}] Running: {run_id}")
 
@@ -497,14 +504,17 @@ def main():
             import traceback
 
             error_tb = traceback.format_exc()
-            error_short = str(e)[:200]
+            error_str = str(e)
+            error_short = error_str[:200]
+
             print(f"  ✗ FAILED: {error_short}")
             failed_count += 1
 
             error_result = {
                 "run_id": run_id,
                 "success": False,
-                "error": str(e),
+                "singular": False,
+                "error": error_str,
                 "traceback": error_tb,
             }
 

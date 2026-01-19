@@ -33,30 +33,31 @@ torch.set_default_dtype(torch.float64)
 
 
 def get_result_filepath(output_dir: str, run_id: str) -> str:
-    """Get filepath for individual run result."""
     return os.path.join(output_dir, f"{run_id}.json")
 
 
-def run_already_completed(output_dir: str, run_id: str) -> tuple[bool, bool, str | None]:
+def run_already_completed(output_dir: str, run_id: str) -> tuple[bool, bool, bool, str | None]:
     """
     Check if a run has already been attempted.
 
     Returns:
-        (was_attempted, was_successful, error_message)
+        (was_attempted, was_successful, is_singular, error_message)
+        - is_singular: True if failed due to singular matrix (should skip permanently)
     """
     result_file = get_result_filepath(output_dir, run_id)
 
     if not os.path.exists(result_file):
-        return False, False, None
+        return False, False, False, None
 
     try:
         with open(result_file, "r") as f:
             result = json.load(f)
         success = result.get("success", False)
+        singular = result.get("singular", False)
         error = result.get("error", None)
-        return True, success, error
+        return True, success, singular, error
     except:
-        return False, False, None
+        return False, False, False, None
 
 
 def create_model(model_name: str, params: dict, input_dim: int, output_dim: int):
@@ -301,6 +302,7 @@ def run_single_experiment(
             "test_loss": float(test_loss),
             "test_quality": float(test_quality),
             "success": success,
+            "singular": ntn.singular_encountered,
         }
 
         if tracker:
@@ -309,7 +311,6 @@ def run_single_experiment(
         return result
 
     except TrackerError:
-        # Re-raise tracker errors - these should stop the experiment
         raise
 
     except Exception as e:
@@ -327,6 +328,7 @@ def run_single_experiment(
             "test_loss": None,
             "test_quality": None,
             "success": False,
+            "singular": False,
             "error": str(e),
             "traceback": traceback.format_exc(),
         }
@@ -340,9 +342,6 @@ def run_single_experiment(
 def main():
     parser = argparse.ArgumentParser(description="Run grid search experiments")
     parser.add_argument("--config", type=str, required=True, help="Path to JSON configuration file")
-    parser.add_argument(
-        "--resume", action="store_true", help="Resume experiment (skip completed runs)"
-    )
     parser.add_argument(
         "--dry-run", action="store_true", help="Show experiment plan without running"
     )
@@ -386,26 +385,8 @@ def main():
     print(f"  Device: {DEVICE}")
     print()
 
-    if args.resume:
-        remaining = []
-        skipped_success = 0
-        skipped_failed = 0
-        for exp in experiments:
-            was_attempted, was_successful, error = run_already_completed(output_dir, exp["run_id"])
-            if was_attempted:
-                if was_successful:
-                    skipped_success += 1
-                else:
-                    skipped_failed += 1
-                    print(f"  [SKIP-FAILED] {exp['run_id']}: {error}")
-            else:
-                remaining.append(exp)
-        experiments = remaining
-        print(f"Resume mode: Skipping {skipped_success} successful, {skipped_failed} failed runs")
-        print(f"Remaining: {len(experiments)} experiments to run")
-        print()
-
     results = []
+    skipped_count = 0
     start_time = time.time()
 
     aim_repo = (
@@ -416,7 +397,26 @@ def main():
     )
 
     for i, experiment in enumerate(experiments):
-        print(f"\n[{i + 1}/{len(experiments)}] Running: {experiment['run_id']}")
+        run_id = experiment["run_id"]
+
+        was_attempted, was_successful, is_singular, error = run_already_completed(
+            output_dir, run_id
+        )
+        if was_attempted:
+            if was_successful:
+                if args.verbose:
+                    print(f"[{i + 1}/{len(experiments)}] {run_id} - SKIPPED (success)")
+                skipped_count += 1
+                continue
+            elif is_singular:
+                print(f"[{i + 1}/{len(experiments)}] {run_id} - SKIPPED (singular matrix)")
+                skipped_count += 1
+                continue
+            else:
+                err_short = (error[:80] + "...") if error and len(error) > 80 else error
+                print(f"[{i + 1}/{len(experiments)}] {run_id} - RETRYING ({err_short})")
+
+        print(f"\n[{i + 1}/{len(experiments)}] Running: {run_id}")
 
         if config["tracker"]["backend"] != "none":
             tracker = create_tracker(
@@ -460,13 +460,15 @@ def main():
     print("\n" + "=" * 70)
     print("GRID SEARCH COMPLETE")
     print("=" * 70)
-    print(f"Total runs: {len(results)}")
-    print(f"Successful runs: {len(successful_results)}")
-    print(f"Failed runs: {len(results) - len(successful_results)}")
+    print(f"Total experiments: {len(experiments)}")
+    print(f"Skipped: {skipped_count}")
+    print(f"Ran: {len(results)}")
+    print(f"Successful: {len(successful_results)}")
+    print(f"Failed: {len(results) - len(successful_results)}")
     if len(results) > 0:
         print(f"Time elapsed: {elapsed_time:.1f}s ({elapsed_time / len(results):.1f}s per run)")
     else:
-        print(f"Time elapsed: {elapsed_time:.1f}s (all runs already completed)")
+        print(f"Time elapsed: {elapsed_time:.1f}s")
     print()
 
     if successful_results:
@@ -482,7 +484,7 @@ def main():
             print(f"   Val {quality_name}: {result['val_quality']:.4f}")
             print(f"   Params: {result['grid_params']}")
             print()
-    elif len(results) == 0 and args.resume:
+    elif len(results) == 0:
         print("All experiments already completed. Check results directory for existing results.")
         print()
 

@@ -45,6 +45,7 @@ class NTN:
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.loss = loss
+        self.singular_encountered = False
 
     def _concat_over_batches(self, batch_operation, data_iterator, *args, **kwargs):
         """
@@ -995,6 +996,7 @@ class NTN:
                     return best_scores_train, best_scores_val
 
             except torch.linalg.LinAlgError as e:
+                self.singular_encountered = True
                 if verbose:
                     print(f"\n✗ Singular matrix at epoch {epoch + 1} - stopping training")
                     print(

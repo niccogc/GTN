@@ -10,18 +10,39 @@ Supported backends:
 
 import os
 import json
+import time
 from typing import Dict, Any, Optional, List
 from pathlib import Path
 
+MAX_RETRIES = 3
+RETRY_DELAY = 10
+
+
+def _with_retry(operation, error_msg: str):
+    last_error = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            return operation()
+        except Exception as e:
+            last_error = e
+            if attempt < MAX_RETRIES - 1:
+                print(f"  AIM error (attempt {attempt + 1}/{MAX_RETRIES}): {e}")
+                print(f"  Retrying in {RETRY_DELAY}s...")
+                time.sleep(RETRY_DELAY)
+            else:
+                raise TrackerError(f"{error_msg}: {e}") from e
+    raise TrackerError(f"{error_msg}: {last_error}") from last_error
 
 
 class TrackerError(Exception):
     """Exception raised when tracker operations fail.
-    
+
     This exception is meant to be fatal - when raised, experiments should stop
     rather than continuing with broken tracking.
     """
+
     pass
+
 
 class BaseTracker:
     """Base class for all trackers."""
@@ -104,10 +125,10 @@ class FileTracker(BaseTracker):
 
 class AIMTracker(BaseTracker):
     """Track experiments with AIM.
-    
-    All tracking operations are wrapped to raise TrackerError on failure,
-    ensuring experiments stop when tracking fails rather than continuing
-    with broken tracking.
+
+    All tracking operations retry up to 3 times on transient errors
+    (e.g., "resource temporarily unavailable") with 10s delay between attempts.
+    After all retries fail, raises TrackerError to stop the experiment.
     """
 
     def __init__(
@@ -127,42 +148,44 @@ class AIMTracker(BaseTracker):
         if repo is None:
             repo = os.getenv("AIM_REPO", ".aim")
 
-        try:
-            self.run = Run(repo=repo, experiment=experiment_name, log_system_params=True)
+        self._Run = Run
+        self._repo = repo
+        self._run_name = run_name
 
+        def init_run():
+            self.run = Run(repo=repo, experiment=experiment_name, log_system_params=True)
             if run_name:
                 self.run.name = run_name
-
             self.run["config"] = config
             print(f"  AIM run started: {self.run.hash}")
-        except Exception as e:
-            raise TrackerError(f"Failed to initialize AIM run: {e}") from e
+
+        _with_retry(init_run, "Failed to initialize AIM run")
 
     def log_hparams(self, hparams: Dict[str, Any]):
-        try:
+        def op():
             self.run["hparams"] = hparams
-        except Exception as e:
-            raise TrackerError(f"Failed to log hparams to AIM: {e}") from e
+
+        _with_retry(op, "Failed to log hparams to AIM")
 
     def log_metrics(self, metrics: Dict[str, float], step: int):
-        try:
+        def op():
             for key, value in metrics.items():
                 self.run.track(value, name=key, step=step)
-        except Exception as e:
-            raise TrackerError(f"Failed to log metrics to AIM at step {step}: {e}") from e
+
+        _with_retry(op, f"Failed to log metrics to AIM at step {step}")
 
     def log_summary(self, summary: Dict[str, Any]):
-        try:
+        def op():
             self.run["summary"] = summary
-        except Exception as e:
-            raise TrackerError(f"Failed to log summary to AIM: {e}") from e
+
+        _with_retry(op, "Failed to log summary to AIM")
 
     def finalize(self):
-        try:
+        def op():
             self.run.close()
             print(f"  AIM run finalized: {self.run.hash}")
-        except Exception as e:
-            raise TrackerError(f"Failed to finalize AIM run: {e}") from e
+
+        _with_retry(op, "Failed to finalize AIM run")
 
 
 class MultiTracker(BaseTracker):
