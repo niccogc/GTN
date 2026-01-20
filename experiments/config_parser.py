@@ -161,6 +161,36 @@ def generate_run_id(grid_params: Dict[str, Any], seed: int) -> str:
     return "-".join(parts)
 
 
+MODEL_RELEVANT_PARAMS = {
+    "MPO2": ["L", "bond_dim", "output_site", "init_strength"],
+    "LMPO2": ["L", "bond_dim", "output_site", "init_strength", "rank", "reduction_factor"],
+    "MMPO2": ["L", "bond_dim", "output_site", "init_strength", "rank"],
+    "MPO2TypeI": ["L", "bond_dim", "output_site", "init_strength"],
+    "LMPO2TypeI": ["L", "bond_dim", "output_site", "init_strength", "rank", "reduction_factor"],
+    "MMPO2TypeI": ["L", "bond_dim", "output_site", "init_strength"],
+    "MPO2TypeI_GTN": ["L", "bond_dim", "output_site", "init_strength"],
+    "LMPO2TypeI_GTN": ["L", "bond_dim", "output_site", "init_strength", "rank", "reduction_factor"],
+    "MMPO2TypeI_GTN": ["L", "bond_dim", "output_site", "init_strength"],
+}
+
+MODEL_REQUIRED_PARAMS = {
+    "MPO2": [],
+    "LMPO2": ["rank", "reduction_factor"],
+    "MMPO2": ["rank"],
+    "MPO2TypeI": [],
+    "LMPO2TypeI": ["rank", "reduction_factor"],
+    "MMPO2TypeI": [],
+    "MPO2TypeI_GTN": [],
+    "LMPO2TypeI_GTN": ["rank", "reduction_factor"],
+    "MMPO2TypeI_GTN": [],
+}
+
+
+def get_relevant_params_for_model(model: str) -> List[str]:
+    """Get list of parameters that actually affect this model."""
+    return MODEL_RELEVANT_PARAMS.get(model, [])
+
+
 def validate_model_params(model: str, params: Dict[str, Any]) -> None:
     """
     Validate that model-specific parameters are present.
@@ -168,31 +198,18 @@ def validate_model_params(model: str, params: Dict[str, Any]) -> None:
     Raises:
         ValueError: If required parameters for model are missing
     """
-    # Common required parameters for all models
     common_required = ["L", "bond_dim", "output_site"]
 
-    model_specific = {
-        "MPO2": [],
-        "LMPO2": ["rank", "reduction_factor"],
-        "MMPO2": ["rank"],
-        "MPO2TypeI": [],
-        "LMPO2TypeI": ["rank", "reduction_factor"],
-        "MMPO2TypeI": [],
-        "MPO2TypeI_GTN": [],
-        "LMPO2TypeI_GTN": ["rank", "reduction_factor"],
-        "MMPO2TypeI_GTN": [],
-    }
+    if model not in MODEL_REQUIRED_PARAMS:
+        raise ValueError(
+            f"Unknown model: {model}. Valid models: {list(MODEL_REQUIRED_PARAMS.keys())}"
+        )
 
-    if model not in model_specific:
-        raise ValueError(f"Unknown model: {model}. Valid models: {list(model_specific.keys())}")
-
-    # Check common required parameters
     missing = [p for p in common_required if p not in params]
     if missing:
         raise ValueError(f"Missing required parameters for {model}: {missing}")
 
-    # Check model-specific parameters
-    missing = [p for p in model_specific[model] if p not in params]
+    missing = [p for p in MODEL_REQUIRED_PARAMS[model] if p not in params]
     if missing:
         raise ValueError(f"Missing required parameters for {model}: {missing}")
 
