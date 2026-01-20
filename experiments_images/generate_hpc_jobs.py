@@ -16,9 +16,9 @@ DATASET_SIZES = {
 }
 
 QUEUE_CONFIG = {
-    "small": {"queue": "gpuv100", "time": "4:00", "mem": "8GB", "gpu": 1},
-    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "16GB", "gpu": 1},
-    "large": {"queue": "gpua100", "time": "24:00", "mem": "32GB", "gpu": 1},
+    "small": {"queue": "gpuv100", "time": "4:00", "mem": "16GB", "gpu": 1},
+    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "32GB", "gpu": 1},
+    "large": {"queue": "gpua100", "time": "24:00", "mem": "64GB", "gpu": 1},
 }
 
 JOB_TEMPLATE = """#!/bin/sh

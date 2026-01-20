@@ -28,16 +28,14 @@
     };
 
     python = pkgs.python312;
-    ucimlrepo = python.pkgs.buildPythonPackage {
+    ucimlrepo = python.pkgs.buildPythonPackage rec {
       pname = "ucimlrepo";
       version = "0.0.7";
       pyproject = true;
 
-      src = pkgs.fetchFromGitHub {
-        owner = "uci-ml-repo";
-        repo = "ucimlrepo";
-        rev = "0.0.7";
-        sha256 = "sha256-5R4/edQriufhVU1UXCY7nTfEdwRhi33e/CHdTkLf3jo=";
+      src = pkgs.fetchPypi {
+        inherit pname version;
+        hash = "sha256-TP8/noFDZ91glW2pmazkcxlyN7n85MB+mmied7T/tZo=";
       };
 
       build-system = [
@@ -45,7 +43,6 @@
         python.pkgs.wheel
       ];
 
-      # These solve the "not installed" errors in pythonRuntimeDepsCheck
       propagatedBuildInputs = [
         python.pkgs.pandas
         python.pkgs.certifi

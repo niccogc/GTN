@@ -35,23 +35,23 @@ BASE_OUTPUT = {
 
 CMPO2_GRID = {
     "n_patches": None,
-    "n_sites": [2, 3, 4],
-    "rank_pixel": [4, 8, 16],
-    "rank_patch": [4, 8, 16],
-    "lr": [0.01, 0.001, 0.0001],
-    "weight_decay": [0.1, 0.01],
-    "init_strength": [0.1, 0.01],
+    "n_sites": [3, 4],
+    "rank_pixel": [8, 16, 32],
+    "rank_patch": [8, 16, 32],
+    "lr": [0.0001],
+    "weight_decay": [0.01],
+    "init_strength": [0.01],
 }
 
 CMPO3_GRID = {
     "n_patches": None,
-    "n_sites": [2, 3, 4],
-    "rank_channel": [4, 8],
-    "rank_pixel": [4, 8, 16, 32],
-    "rank_patch": [4, 8, 16, 32],
-    "lr": [0.01, 0.001, 0.0001],
-    "weight_decay": [0.1, 0.01],
-    "init_strength": [0.1, 0.01],
+    "n_sites": [3, 4],
+    "rank_channel": [3],
+    "rank_pixel": [8, 16, 32],
+    "rank_patch": [8, 16, 32],
+    "lr": [0.0001],
+    "weight_decay": [0.01],
+    "init_strength": [0.01],
 }
 
 FIXED_PARAMS = {
@@ -72,7 +72,8 @@ def generate_config(
     experiment_name = f"{model_type}_{dataset.lower()}"
 
     grid = CMPO3_GRID.copy() if model_type == "cmpo3" else CMPO2_GRID.copy()
-    grid["n_patches"] = VALID_N_PATCHES[dataset]
+    all_patches = VALID_N_PATCHES[dataset]
+    grid["n_patches"] = all_patches[::2]
 
     config = {
         "experiment_name": experiment_name,

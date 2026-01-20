@@ -217,9 +217,9 @@ def run_single_experiment(
         if tracker:
             metrics = {
                 "train_loss": train_loss,
-                "train_accuracy": train_accuracy,
+                "train_quality": train_accuracy,
                 "val_loss": val_loss,
-                "val_accuracy": val_accuracy,
+                "val_quality": val_accuracy,
                 "patience_counter": patience_counter,
             }
             tracker.log_metrics(metrics, step=epoch)
@@ -256,9 +256,9 @@ def run_single_experiment(
     if tracker:
         tracker.log_summary(
             {
-                "test_accuracy": test_accuracy,
+                "test_quality": test_accuracy,
                 "test_loss": test_loss,
-                "best_val_accuracy": best_val_accuracy,
+                "best_val_quality": best_val_accuracy,
                 "n_parameters": n_parameters,
             }
         )
