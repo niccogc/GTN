@@ -249,16 +249,17 @@ def create_tracker(
         return AIMTracker(experiment_name, config, repo=kwargs.get("repo", None), run_name=run_name)
 
     elif backend == "both":
+        # AIM first - if it fails, we don't want partial file tracking
+        aim_tracker = AIMTracker(
+            experiment_name, config, repo=kwargs.get("repo", None), run_name=run_name
+        )
         file_tracker = FileTracker(
             experiment_name,
             config,
             output_dir=kwargs.get("output_dir", "experiment_logs"),
             run_name=run_name,
         )
-        aim_tracker = AIMTracker(
-            experiment_name, config, repo=kwargs.get("repo", None), run_name=run_name
-        )
-        return MultiTracker([file_tracker, aim_tracker])
+        return MultiTracker([aim_tracker, file_tracker])
 
     elif backend == "none":
         return NoOpTracker(experiment_name, config)
