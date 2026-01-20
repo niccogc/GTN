@@ -265,9 +265,16 @@ def run_single_experiment(
         avg_loss = total_loss / len(loader.dataset)
         return avg_loss, quality
 
-    # Log hyperparameters
+    n_parameters = sum(p.numel() for p in gtn_model.parameters())
+
     if tracker:
-        hparams = {"seed": seed, "model": model_name, "dataset": experiment["dataset"], **params}
+        hparams = {
+            "seed": seed,
+            "model": model_name,
+            "dataset": experiment["dataset"],
+            "n_parameters": n_parameters,
+            **params,
+        }
         tracker.log_hparams(hparams)
 
     # Training loop
@@ -344,6 +351,7 @@ def run_single_experiment(
         "dataset": experiment["dataset"],
         "task": task,
         "params": params,
+        "n_parameters": n_parameters,
         "train_loss": float(train_loss),
         "train_quality": float(train_quality),
         "val_loss": float(val_loss),
@@ -362,6 +370,7 @@ def run_single_experiment(
                 "test_quality": test_quality,
                 "test_loss": test_loss,
                 "best_val_quality": best_val_quality,
+                "n_parameters": n_parameters,
             }
         )
 
@@ -577,4 +586,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except TrackerError as e:
+        print(f"\n[FATAL] Tracker error - terminating job: {e}", file=sys.stderr)
+        sys.stderr.flush()
+        sys.stdout.flush()
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\n[INTERRUPTED] Job cancelled by user", file=sys.stderr)
+        sys.exit(130)

@@ -228,12 +228,18 @@ def run_single_experiment(
             data_stream=loader_train,
         )
 
+    if is_typeI:
+        n_parameters = sum(t.data.numel() for tn in model.tns for t in tn.tensors)
+    else:
+        n_parameters = sum(t.data.numel() for t in model.tn.tensors)
+
     def callback_init(scores_train, scores_val, info):
         if tracker:
             hparams = {
                 "seed": seed,
                 "model": model_name,
                 "dataset": experiment["dataset"],
+                "n_parameters": n_parameters,
                 **params,
             }
             tracker.log_hparams(hparams)
@@ -295,6 +301,7 @@ def run_single_experiment(
             "seed": seed,
             "model": model_name,
             "grid_params": experiment["grid_params"],
+            "n_parameters": n_parameters,
             "train_loss": float(train_loss),
             "train_quality": float(train_quality),
             "val_loss": float(val_loss),
@@ -306,7 +313,8 @@ def run_single_experiment(
         }
 
         if tracker:
-            tracker.log_summary(result)
+            summary = {**result, "n_parameters": n_parameters}
+            tracker.log_summary(summary)
 
         return result
 
@@ -511,4 +519,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except TrackerError as e:
+        print(f"\n[FATAL] Tracker error - terminating job: {e}", file=sys.stderr)
+        sys.stderr.flush()
+        sys.stdout.flush()
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\n[INTERRUPTED] Job cancelled by user", file=sys.stderr)
+        sys.exit(130)  # Standard exit code for SIGINT
