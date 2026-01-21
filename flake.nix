@@ -126,15 +126,17 @@
         # Get the Nix Python site-packages path
         export NIX_PYTHON_SITE_PACKAGES="${pythonWithNixPkgs}/${pythonWithNixPkgs.sitePackages}"
 
-        # Create UV venv if it doesn't exist
+        # Create or Repair the UV venv symlinks
         if [ ! -d .venv ]; then
           echo "Creating UV virtual environment..."
+          uv venv --python ${python}/bin/python
+        elif ! .venv/bin/python --version >/dev/null 2>&1; then
+          echo "🔗 Nix store path changed. Re-linking .venv interpreter..."
           uv venv --python ${python}/bin/python
         fi
 
         # Activate the venv
         source .venv/bin/activate
-
         # Add Nix packages to PYTHONPATH so they're available in the venv
         export PYTHONPATH="$NIX_PYTHON_SITE_PACKAGES:$PYTHONPATH"
         # Install aim if not already installed
