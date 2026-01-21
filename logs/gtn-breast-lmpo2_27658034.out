@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27658034: <gtn-breast-lmpo2> in cluster <dcc> Exited
+
+Job <gtn-breast-lmpo2> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Jan 20 13:27:26 2026
+Job was executed on host(s) <8*n-62-20-11>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Tue Jan 20 13:31:27 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Jan 20 13:31:27 2026
+Terminated at Tue Jan 20 16:33:01 2026
+Results reported at Tue Jan 20 16:33:01 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-breast-lmpo2
+#BSUB -W 3:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-breast-lmpo2_%J.out
+#BSUB -e logs/gtn-breast-lmpo2_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_breast_lmpo2.json --output-dir results/gtn_breast_lmpo2
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   1080.00 sec.
+    Max Memory :                                 907 MB
+    Average Memory :                             872.64 MB
+    Total Requested Memory :                     65536.00 MB
+    Delta Memory :                               64629.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                17
+    Run time :                                   10911 sec.
+    Turnaround time :                            11135 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-breast-lmpo2_27658034.err> for stderr output of this job.
+
