@@ -321,6 +321,9 @@ def run_single_experiment(
     except TrackerError:
         raise
 
+    except torch.cuda.OutOfMemoryError:
+        raise
+
     except Exception as e:
         import traceback
 
@@ -528,4 +531,9 @@ if __name__ == "__main__":
         sys.exit(1)
     except KeyboardInterrupt:
         print("\n[INTERRUPTED] Job cancelled by user", file=sys.stderr)
-        sys.exit(130)  # Standard exit code for SIGINT
+        sys.exit(130)
+    except torch.cuda.OutOfMemoryError as e:
+        print(f"\n[FATAL] CUDA out of memory - terminating job: {e}", file=sys.stderr)
+        sys.stderr.flush()
+        sys.stdout.flush()
+        sys.exit(137)
