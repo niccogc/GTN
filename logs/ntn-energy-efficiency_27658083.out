@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27658083: <ntn-energy-efficiency> in cluster <dcc> Exited
+
+Job <ntn-energy-efficiency> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Jan 20 13:27:39 2026
+Job was executed on host(s) <8*n-62-20-3>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Wed Jan 21 16:07:20 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Wed Jan 21 16:07:20 2026
+Terminated at Wed Jan 21 17:33:19 2026
+Results reported at Wed Jan 21 17:33:19 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-energy-efficiency
+#BSUB -W 3:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-energy-efficiency_%J.out
+#BSUB -e logs/ntn-energy-efficiency_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_energy_efficiency.json 
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   45.00 sec.
+    Max Memory :                                 952 MB
+    Average Memory :                             914.62 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               130120.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                13
+    Run time :                                   5160 sec.
+    Turnaround time :                            101140 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-energy-efficiency_27658083.err> for stderr output of this job.
+
