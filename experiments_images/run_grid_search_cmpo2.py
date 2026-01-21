@@ -478,6 +478,9 @@ def main():
         except TrackerError:
             raise
 
+        except torch.cuda.OutOfMemoryError:
+            raise
+
         except Exception as e:
             import traceback
 
@@ -545,4 +548,18 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except TrackerError as e:
+        print(f"\n[FATAL] Tracker error - terminating job: {e}", file=sys.stderr)
+        sys.stderr.flush()
+        sys.stdout.flush()
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\n[INTERRUPTED] Job cancelled by user", file=sys.stderr)
+        sys.exit(130)
+    except torch.cuda.OutOfMemoryError as e:
+        print(f"\n[FATAL] CUDA out of memory - terminating job: {e}", file=sys.stderr)
+        sys.stderr.flush()
+        sys.stdout.flush()
+        sys.exit(137)
