@@ -1,0 +1,120 @@
+
+Loading dataset: abalone
+  Task: regression
+  Train: 2923 samples
+  Val: 627 samples
+  Test: 627 samples
+  Input dim: 11
+  Output dim: 1
+  Device: cuda
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 540
+Grid combinations: 108
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI_GTN', 'MMPO2', 'MMPO2TypeI_GTN'] (n=4)
+  L: [2, 3, 4] (n=3)
+  bond_dim: [4, 6, 8] (n=3)
+  lr: [0.01, 0.001, 0.0001] (n=3)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 32
+  n_epochs: 1000
+  patience: 40
+  min_delta: 1e-08
+  optimizer: adamw
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. MPO2-L2-d4-seed42
+  2. MPO2-L2-d4-seed7
+  3. MPO2-L2-d4-seed123
+  4. MPO2-L2-d4-seed256
+  5. MPO2-L2-d4-seed999
+  ... (535 more)
+
+
+[1/540] Running: MPO2-L2-d4-seed42
+  AIM run started: da8867dbf2084b7d91a82611
+  ✓ SUCCESS: Test R²=0.5866
+
+[2/540] Running: MPO2-L2-d4-seed7
+  AIM run started: c9c53dbd7f444eebb8f3024b
+  ✓ SUCCESS: Test R²=0.4752
+
+[3/540] Running: MPO2-L2-d4-seed123
+  AIM run started: 51983ef3269d484580b1e2d3
+  ✓ SUCCESS: Test R²=0.6003
+
+[4/540] Running: MPO2-L2-d4-seed256
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27657885: <gtn-abalone> in cluster <dcc> Exited
+
+Job <gtn-abalone> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Jan 20 13:20:19 2026
+Job was executed on host(s) <8*n-62-20-11>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Tue Jan 20 13:20:20 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Jan 20 13:20:20 2026
+Terminated at Tue Jan 20 13:23:06 2026
+Results reported at Tue Jan 20 13:23:06 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-abalone
+#BSUB -W 12:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-abalone_%J.out
+#BSUB -e logs/gtn-abalone_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_abalone.json --output-dir results/gtn_abalone
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   94.00 sec.
+    Max Memory :                                 706 MB
+    Average Memory :                             533.50 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               130366.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                16
+    Run time :                                   197 sec.
+    Turnaround time :                            167 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-abalone_27657885.err> for stderr output of this job.
+

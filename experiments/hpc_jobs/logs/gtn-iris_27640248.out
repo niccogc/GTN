@@ -1,0 +1,122 @@
+
+Loading dataset: iris
+  Task: classification
+  Train: 105 samples
+  Val: 22 samples
+  Test: 23 samples
+  Input dim: 4
+  Output dim: 3
+  Device: cuda
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 29160
+Grid combinations: 5832
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'LMPO2', 'MMPO2', 'MPO2TypeI_GTN', 'LMPO2TypeI_GTN', 'MMPO2TypeI_GTN'] (n=6)
+  L: [2, 3, 4] (n=3)
+  bond_dim: [4, 6, 8, 10] (n=4)
+  weight_decay: [1.0, 0.1, 0.01] (n=3)
+  lr: [0.01, 0.001, 0.0001] (n=3)
+  reduction_factor: [0.1, 0.3, 0.5] (n=3)
+  init_strength: [1.0, 0.1, 0.01] (n=3)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 32
+  n_epochs: 1000
+  patience: 20
+  min_delta: 1e-06
+  optimizer: adamw
+  rank: 5
+
+Example runs (first 5):
+  1. MPO2-L2-d4-init1-rf0.1-seed42
+  2. MPO2-L2-d4-init1-rf0.1-seed7
+  3. MPO2-L2-d4-init1-rf0.1-seed123
+  4. MPO2-L2-d4-init1-rf0.1-seed256
+  5. MPO2-L2-d4-init1-rf0.1-seed999
+  ... (29155 more)
+
+
+[1/29160] Running: MPO2-L2-d4-init1-rf0.1-seed42
+  AIM run started: 8cb49e52a66748c889d9bf54
+  ✓ SUCCESS: Test Acc=0.5217
+
+[2/29160] Running: MPO2-L2-d4-init1-rf0.1-seed7
+  AIM run started: e64961e8156d4bdb943de3ff
+  ✓ SUCCESS: Test Acc=0.6957
+
+[3/29160] Running: MPO2-L2-d4-init1-rf0.1-seed123
+  AIM run started: 622d16a7e2f5433b83148d21
+  ✓ SUCCESS: Test Acc=0.6087
+
+[4/29160] Running: MPO2-L2-d4-init1-rf0.1-seed256
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27640248: <gtn-iris> in cluster <dcc> Exited
+
+Job <gtn-iris> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Jan 18 17:48:26 2026
+Job was executed on host(s) <8*n-62-20-15>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Sun Jan 18 17:48:27 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN/experiments/hpc_jobs> was used as the working directory.
+Started at Sun Jan 18 17:48:27 2026
+Terminated at Sun Jan 18 17:50:49 2026
+Results reported at Sun Jan 18 17:50:49 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-iris
+#BSUB -W 3:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-iris_%J.out
+#BSUB -e logs/gtn-iris_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_iris.json --output-dir results/gtn_iris
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   17.20 sec.
+    Max Memory :                                 772 MB
+    Average Memory :                             689.67 MB
+    Total Requested Memory :                     65536.00 MB
+    Delta Memory :                               64764.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                15
+    Run time :                                   234 sec.
+    Turnaround time :                            143 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-iris_27640248.err> for stderr output of this job.
+
