@@ -1,10 +1,10 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -J gtn-hearth
-#BSUB -W 3:00
+#BSUB -W 12:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "rusage[mem=16GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-hearth_%J.out
 #BSUB -e logs/gtn-hearth_%J.err

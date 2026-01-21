@@ -1,10 +1,10 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -J ntn-student-perf-lmpo2
-#BSUB -W 3:00
+#BSUB -W 12:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=32GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/ntn-student-perf-lmpo2_%J.out
 #BSUB -e logs/ntn-student-perf-lmpo2_%J.err
