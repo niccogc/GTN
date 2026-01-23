@@ -146,7 +146,7 @@ def main():
         f.write("# Submit all image experiment jobs\n\n")
         f.write("mkdir -p logs\n\n")
         for script in scripts:
-            f.write(f"bsub < {script.name}\n")
+            f.write(f"bsub < {script}\n")
     os.chmod(submit_all, 0o755)
 
     print(f"\nGenerated {len(scripts)} job scripts in {output_dir}")
