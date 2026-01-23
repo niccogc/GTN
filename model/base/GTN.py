@@ -36,6 +36,18 @@ class GTN(nn.Module):
         self.input_dims = input_dims
         self.output_dims = output_dims
 
+    def to(self, *args, **kwargs):
+        # Move the module to device
+        super().to(*args, **kwargs)
+        # Also move non-trainable parameters
+        device = args[0] if args else kwargs.get("device", None)
+        if device is not None:
+            self.not_trainable_params = {
+                k: v.to(device) if hasattr(v, "to") else v
+                for k, v in self.not_trainable_params.items()
+            }
+        return self
+
     def forward(self, x):
         tn_params = {int(i): p for i, p in self.torch_params.items()}
         tn_params.update(self.not_trainable_params)  # Add frozen params
