@@ -4,7 +4,7 @@
 #BSUB -W 12:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=32GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/cmpo2-mnist_%J.out
 #BSUB -e logs/cmpo2-mnist_%J.err

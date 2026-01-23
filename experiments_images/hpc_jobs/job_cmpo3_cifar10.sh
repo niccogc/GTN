@@ -4,7 +4,7 @@
 #BSUB -W 24:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=48GB]"
+#BSUB -R "rusage[mem=96GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/cmpo3-cifar10_%J.out
 #BSUB -e logs/cmpo3-cifar10_%J.err
