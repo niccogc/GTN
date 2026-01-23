@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27666429: <gtn-realstate-lmpo2> in cluster <dcc> Exited
+
+Job <gtn-realstate-lmpo2> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 22 09:21:33 2026
+Job was executed on host(s) <8*n-62-20-10>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Fri Jan 23 05:57:29 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri Jan 23 05:57:29 2026
+Terminated at Fri Jan 23 08:58:56 2026
+Results reported at Fri Jan 23 08:58:56 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-realstate-lmpo2
+#BSUB -W 3:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-realstate-lmpo2_%J.out
+#BSUB -e logs/gtn-realstate-lmpo2_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_realstate_lmpo2.json --output-dir results/gtn_realstate_lmpo2
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   172.00 sec.
+    Max Memory :                                 814 MB
+    Average Memory :                             756.55 MB
+    Total Requested Memory :                     65536.00 MB
+    Delta Memory :                               64722.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                16
+    Run time :                                   10888 sec.
+    Turnaround time :                            85043 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-realstate-lmpo2_27666429.err> for stderr output of this job.
+

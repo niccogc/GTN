@@ -1,0 +1,117 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 360
+Grid combinations: 72
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['LMPO2', 'LMPO2TypeI'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+  reduction_factor: [0.1, 0.3, 0.5] (n=3)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. LMPO2-L3-d8-jit5-rf0.1-seed42
+  2. LMPO2-L3-d8-jit5-rf0.1-seed7
+  3. LMPO2-L3-d8-jit5-rf0.1-seed123
+  4. LMPO2-L3-d8-jit5-rf0.1-seed256
+  5. LMPO2-L3-d8-jit5-rf0.1-seed999
+  ... (355 more)
+
+Loading dataset: bank...
+  Dataset: bank
+  Train: 31647 samples
+  Val: 6782 samples
+  Test: 6782 samples
+  Features: 33 (+1 bias = 33)
+  Task: classification
+  Device: cuda
+
+
+[1/360] Running: LMPO2-L3-d8-jit5-rf0.1-seed42
+  AIM run started: befb4d240c8a4660b453ceb8
+  AIM run finalized: befb4d240c8a4660b453ceb8
+  Experiment log saved to: experiment_logs/ntn_bank_lmpo2_LMPO2_L3_d8_j5_s42.json
+  ✓ Test: Acc=0.2852 | Val: Acc=0.2927
+
+[2/360] Running: LMPO2-L3-d8-jit5-rf0.1-seed7
+  AIM run started: 27cebc62d37a485e9caa0f95
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27666449: <ntn-bank-lmpo2> in cluster <dcc> Exited
+
+Job <ntn-bank-lmpo2> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 22 09:21:38 2026
+Job was executed on host(s) <8*n-62-18-12>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Fri Jan 23 04:43:18 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri Jan 23 04:43:18 2026
+Terminated at Fri Jan 23 04:43:50 2026
+Results reported at Fri Jan 23 04:43:50 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J ntn-bank-lmpo2
+#BSUB -W 24:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=64GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-bank-lmpo2_%J.out
+#BSUB -e logs/ntn-bank-lmpo2_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_bank_lmpo2.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   15.32 sec.
+    Max Memory :                                 784 MB
+    Average Memory :                             681.33 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               523504.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                14
+    Run time :                                   32 sec.
+    Turnaround time :                            69732 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-bank-lmpo2_27666449.err> for stderr output of this job.
+

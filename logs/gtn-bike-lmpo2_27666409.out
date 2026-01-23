@@ -1,0 +1,116 @@
+
+Loading dataset: bike
+  Task: regression
+  Train: 12165 samples
+  Val: 2607 samples
+  Test: 2607 samples
+  Input dim: 12
+  Output dim: 1
+  Device: cuda
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 540
+Grid combinations: 108
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['LMPO2', 'LMPO2TypeI_GTN'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  lr: [0.01, 0.001, 0.0001] (n=3)
+  reduction_factor: [0.1, 0.3, 0.5] (n=3)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 64
+  n_epochs: 1000
+  patience: 40
+  min_delta: 1e-08
+  optimizer: adamw
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. LMPO2-L3-d8-rf0.1-seed42
+  2. LMPO2-L3-d8-rf0.1-seed7
+  3. LMPO2-L3-d8-rf0.1-seed123
+  4. LMPO2-L3-d8-rf0.1-seed256
+  5. LMPO2-L3-d8-rf0.1-seed999
+  ... (535 more)
+
+
+======================================================================
+GRID SEARCH SUMMARY
+======================================================================
+Total runs: 540
+Completed: 0
+Skipped: 540
+Failed: 0
+Time: 0.4s (0.0s per run)
+======================================================================
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27666409: <gtn-bike-lmpo2> in cluster <dcc> Done
+
+Job <gtn-bike-lmpo2> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 22 09:21:28 2026
+Job was executed on host(s) <8*n-62-20-15>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Thu Jan 22 12:34:58 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Jan 22 12:34:58 2026
+Terminated at Thu Jan 22 12:35:20 2026
+Results reported at Thu Jan 22 12:35:20 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-bike-lmpo2
+#BSUB -W 12:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-bike-lmpo2_%J.out
+#BSUB -e logs/gtn-bike-lmpo2_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_bike_lmpo2.json --output-dir results/gtn_bike_lmpo2
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   4.62 sec.
+    Max Memory :                                 304 MB
+    Average Memory :                             304.00 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               130768.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   22 sec.
+    Turnaround time :                            11632 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-bike-lmpo2_27666409.err> for stderr output of this job.
+

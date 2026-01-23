@@ -1,0 +1,122 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 240
+Grid combinations: 48
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI', 'MMPO2', 'MMPO2TypeI'] (n=4)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. MPO2-L3-d8-jit5-seed42
+  2. MPO2-L3-d8-jit5-seed7
+  3. MPO2-L3-d8-jit5-seed123
+  4. MPO2-L3-d8-jit5-seed256
+  5. MPO2-L3-d8-jit5-seed999
+  ... (235 more)
+
+Loading dataset: abalone...
+  Dataset: abalone
+  Train: 2923 samples
+  Val: 627 samples
+  Test: 627 samples
+  Features: 11 (+1 bias = 11)
+  Task: regression
+  Device: cuda
+
+
+[16/240] Running: MPO2-L3-d12-jit0.1-seed42
+[AIM_AUTH] ERROR: Server returned non-JSON response during connect
+[AIM_AUTH] This usually means authentication failed or server is unreachable
+[AIM_AUTH] Check CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET are set correctly
+  AIM error (attempt 1/3): Expecting value: line 1 column 1 (char 0)
+  Retrying in 10s...
+[AIM_AUTH] ERROR: Server returned non-JSON response during connect
+[AIM_AUTH] This usually means authentication failed or server is unreachable
+[AIM_AUTH] Check CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET are set correctly
+  AIM error (attempt 2/3): Expecting value: line 1 column 1 (char 0)
+  Retrying in 10s...
+[AIM_AUTH] ERROR: Server returned non-JSON response during connect
+[AIM_AUTH] This usually means authentication failed or server is unreachable
+[AIM_AUTH] Check CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET are set correctly
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27666440: <ntn-abalone> in cluster <dcc> Exited
+
+Job <ntn-abalone> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 22 09:21:36 2026
+Job was executed on host(s) <8*n-62-20-13>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Fri Jan 23 07:28:48 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri Jan 23 07:28:48 2026
+Terminated at Fri Jan 23 07:30:18 2026
+Results reported at Fri Jan 23 07:30:18 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-abalone
+#BSUB -W 12:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-abalone_%J.out
+#BSUB -e logs/ntn-abalone_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_abalone.json 
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   5.47 sec.
+    Max Memory :                                 443 MB
+    Average Memory :                             443.00 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               261701.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   132 sec.
+    Turnaround time :                            79722 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-abalone_27666440.err> for stderr output of this job.
+
