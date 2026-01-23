@@ -36,9 +36,9 @@ BASE_OUTPUT = {
 CMPO2_GRID = {
     "n_patches": None,
     "n_sites": [3, 4],
-    "rank_pixel": [8, 16, 32],
-    "rank_patch": [8, 16, 32],
-    "lr": [0.0001],
+    "rank_pixel": [64],
+    "rank_patch": [64],
+    "lr": [0.001],
     "weight_decay": [0.01],
     "init_strength": [0.01],
 }
@@ -47,9 +47,9 @@ CMPO3_GRID = {
     "n_patches": None,
     "n_sites": [3, 4],
     "rank_channel": [3],
-    "rank_pixel": [8, 16, 32],
-    "rank_patch": [8, 16, 32],
-    "lr": [0.0001],
+    "rank_pixel": [64],
+    "rank_patch": [64],
+    "lr": [0.001],
     "weight_decay": [0.01],
     "init_strength": [0.01],
 }
