@@ -346,6 +346,17 @@ def create_experiment_plan_cmpo2(config: dict):
     return experiments, metadata
 
 
+def is_grid_complete(output_dir: str) -> bool:
+    complete_file = os.path.join(output_dir, ".complete")
+    return os.path.exists(complete_file)
+
+
+def mark_grid_complete(output_dir: str) -> None:
+    complete_file = os.path.join(output_dir, ".complete")
+    with open(complete_file, "w") as f:
+        f.write("")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run CMPO2_GTN grid search on image datasets")
     parser.add_argument("--config", type=str, required=True, help="Path to JSON config file")
@@ -372,6 +383,11 @@ def main():
         args.aim_repo = config["tracker"].get("aim_repo", None)
 
     os.makedirs(args.output_dir, exist_ok=True)
+
+    if is_grid_complete(args.output_dir):
+        print(f"Grid search already complete. Found .complete file in {args.output_dir}")
+        print("Delete .complete file to re-run experiments.")
+        return
 
     dataset_name = config["dataset"]
     model_type = config.get("model_type", "cmpo2")
@@ -544,6 +560,8 @@ def main():
 
         print(f"\nSummary saved to: {summary_file}")
 
+    mark_grid_complete(args.output_dir)
+    print("Grid search complete. Marked as .complete")
     print("=" * 70)
 
 

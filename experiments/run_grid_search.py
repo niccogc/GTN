@@ -350,6 +350,19 @@ def run_single_experiment(
         return result
 
 
+def is_grid_complete(output_dir: str) -> bool:
+    """Check if grid search was already completed."""
+    complete_file = os.path.join(output_dir, ".complete")
+    return os.path.exists(complete_file)
+
+
+def mark_grid_complete(output_dir: str) -> None:
+    """Mark grid search as complete by creating .complete file."""
+    complete_file = os.path.join(output_dir, ".complete")
+    with open(complete_file, "w") as f:
+        f.write("")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run grid search experiments")
     parser.add_argument("--config", type=str, required=True, help="Path to JSON configuration file")
@@ -380,6 +393,11 @@ def main():
 
     output_dir = config["output"]["results_dir"]
     os.makedirs(output_dir, exist_ok=True)
+
+    if is_grid_complete(output_dir):
+        print(f"Grid search already complete. Found .complete file in {output_dir}")
+        print("Delete .complete file to re-run experiments.")
+        return
 
     print(f"Loading dataset: {config['dataset']}...")
     data, dataset_info = load_dataset(config["dataset"])
@@ -518,6 +536,9 @@ def main():
 
     print(f"Results saved to: {output_dir}")
     print(f"Summary: {summary_file}")
+
+    mark_grid_complete(output_dir)
+    print("Grid search complete. Marked as .complete")
     print("=" * 70)
 
 

@@ -377,6 +377,19 @@ def run_single_experiment(
     return result
 
 
+def is_grid_complete(output_dir: str) -> bool:
+    """Check if grid search was already completed."""
+    complete_file = os.path.join(output_dir, ".complete")
+    return os.path.exists(complete_file)
+
+
+def mark_grid_complete(output_dir: str) -> None:
+    """Mark grid search as complete by creating .complete file."""
+    complete_file = os.path.join(output_dir, ".complete")
+    with open(complete_file, "w") as f:
+        f.write("")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run GTN grid search experiments")
     parser.add_argument("--config", type=str, required=True, help="Path to JSON config file")
@@ -400,11 +413,9 @@ def main():
 
     args = parser.parse_args()
 
-    # Load configuration
     config = load_config(args.config)
     experiment_plan, metadata = create_experiment_plan(config)
 
-    # Override tracker settings from config if not specified via command line
     if args.tracker == "file" and "tracker" in config:
         args.tracker = config["tracker"].get("backend", "file")
     if args.tracker_dir == "experiment_logs" and "tracker" in config:
@@ -412,8 +423,12 @@ def main():
     if args.aim_repo is None and "tracker" in config:
         args.aim_repo = config["tracker"].get("aim_repo", None)
 
-    # Create output directory
     os.makedirs(args.output_dir, exist_ok=True)
+
+    if is_grid_complete(args.output_dir):
+        print(f"Grid search already complete. Found .complete file in {args.output_dir}")
+        print("Delete .complete file to re-run experiments.")
+        return
 
     # Load dataset (shared across all experiments)
     dataset_name = config["dataset"]
@@ -585,6 +600,8 @@ def main():
 
         print(f"\nSummary saved to: {summary_file}")
 
+    mark_grid_complete(args.output_dir)
+    print("Grid search complete. Marked as .complete")
     print("=" * 70)
 
 
