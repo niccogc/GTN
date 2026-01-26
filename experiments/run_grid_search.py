@@ -384,10 +384,23 @@ def main():
     parser = argparse.ArgumentParser(description="Run grid search experiments")
     parser.add_argument("--config", type=str, required=True, help="Path to JSON configuration file")
     parser.add_argument(
-        "--dry-run", action="store_true", help="Show experiment plan without running"
+        "--output-dir",
+        type=str,
+        default=None,
+        help="Output directory for results (overrides config)",
     )
     parser.add_argument(
-        "--verbose", action="store_true", help="Print training progress for each run"
+        "--tracker",
+        type=str,
+        default=None,
+        choices=["file", "aim", "both", "none"],
+        help="Tracking backend (overrides config)",
+    )
+    parser.add_argument(
+        "--tracker-dir",
+        type=str,
+        default=None,
+        help="Directory for file tracker logs (overrides config)",
     )
     parser.add_argument(
         "--aim-repo",
@@ -395,10 +408,23 @@ def main():
         default=None,
         help="AIM repository URL (e.g., aim://192.168.5.5:5800 for VPN, aim://aimtracking.kosmon.org:443 for non-VPN)",
     )
+    parser.add_argument(
+        "--dry-run", action="store_true", help="Show experiment plan without running"
+    )
+    parser.add_argument(
+        "--verbose", action="store_true", help="Print training progress for each run"
+    )
 
     args = parser.parse_args()
 
     config = load_config(args.config)
+
+    if args.output_dir:
+        config["output"]["results_dir"] = args.output_dir
+    if args.tracker:
+        config["tracker"]["backend"] = args.tracker
+    if args.tracker_dir:
+        config["tracker"]["tracker_dir"] = args.tracker_dir
 
     experiments, metadata = create_experiment_plan(config)
 
@@ -435,6 +461,8 @@ def main():
     skipped_count = 0
     start_time = time.time()
 
+    tracker_backend = config["tracker"]["backend"]
+    tracker_dir = config["tracker"].get("tracker_dir", "experiment_logs")
     aim_repo = (
         args.aim_repo
         or os.getenv("AIM_REPO")
@@ -464,12 +492,12 @@ def main():
 
         print(f"\n[{i + 1}/{len(experiments)}] Running: {run_id}")
 
-        if config["tracker"]["backend"] != "none":
+        if tracker_backend != "none":
             tracker = create_tracker(
                 experiment_name=experiment["experiment_name"],
                 config=experiment["params"],
-                backend=config["tracker"]["backend"],
-                output_dir=config["tracker"].get("tracker_dir", "experiment_logs"),
+                backend=tracker_backend,
+                output_dir=tracker_dir,
                 repo=aim_repo,
                 run_name=experiment["run_name"],
             )

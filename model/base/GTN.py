@@ -1,5 +1,6 @@
 # type: ignore
 from typing import List, Dict, Optional, Tuple
+import torch
 import torch.nn as nn
 import quimb.tensor as qt
 
@@ -37,16 +38,27 @@ class GTN(nn.Module):
         self.output_dims = output_dims
 
     def to(self, *args, **kwargs):
-        # Move the module to device
-        super().to(*args, **kwargs)
-        # Also move non-trainable parameters
-        device = args[0] if args else kwargs.get("device", None)
-        if device is not None:
+        result = super().to(*args, **kwargs)
+
+        device = None
+        dtype = None
+        if args:
+            for arg in args:
+                if isinstance(arg, (str, torch.device)):
+                    device = arg
+                elif isinstance(arg, torch.dtype):
+                    dtype = arg
+        if "device" in kwargs:
+            device = kwargs["device"]
+        if "dtype" in kwargs:
+            dtype = kwargs["dtype"]
+
+        if device is not None or dtype is not None:
             self.not_trainable_params = {
-                k: v.to(device) if hasattr(v, "to") else v
+                k: v.to(device=device, dtype=dtype) if hasattr(v, "to") else v
                 for k, v in self.not_trainable_params.items()
             }
-        return self
+        return result
 
     def forward(self, x):
         tn_params = {int(i): p for i, p in self.torch_params.items()}
