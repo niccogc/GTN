@@ -12,3 +12,7 @@ So remove all error catching for specific error, all errors must stop the script
 We need also with a python code a way to remove from results ALL saved results where the error is different than the singular matrix error.
 
 and to remove them from AIM too.
+
+**OUTPUT INDICES**
+
+For all models the default output index label should be on the LAST L-1 block!!
