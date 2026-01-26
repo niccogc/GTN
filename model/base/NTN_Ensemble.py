@@ -12,6 +12,7 @@ import quimb.tensor as qt
 from typing import List, Dict, Optional, Callable
 from model.base.NTN import NTN, NOT_TRAINABLE_TAG
 from model.builder import Inputs
+from model.exceptions import SingularMatrixError
 
 
 class NTN_TypeI(NTN):
@@ -127,6 +128,7 @@ class NTN_Ensemble:
         self.output_dims = output_dims
         self.batch_dim = "s"
         self.loss = loss
+        self.singular_encountered = False
 
         self.ntns: List[NTN_TypeI] = []
         self._forward_cache: Dict[int, List] = {}
@@ -430,21 +432,37 @@ class NTN_Ensemble:
         best_tn_states = [ntn.tn.copy() for ntn in self.ntns]
 
         for epoch in range(n_epochs):
-            self._cache_all_forwards()
+            try:
+                self._cache_all_forwards()
 
-            current_ntn_idx = None
-            for ntn_idx, node_tag in all_nodes:
-                ntn = self.ntns[ntn_idx]
+                current_ntn_idx = None
+                for ntn_idx, node_tag in all_nodes:
+                    ntn = self.ntns[ntn_idx]
 
-                if current_ntn_idx is not None and ntn_idx != current_ntn_idx:
+                    if current_ntn_idx is not None and ntn_idx != current_ntn_idx:
+                        self._invalidate_cache(current_ntn_idx)
+
+                    ntn.reset_batch_idx()
+                    ntn.update_tn_node(
+                        node_tag, regularize, jitter_schedule[epoch], adaptive_jitter
+                    )
+                    current_ntn_idx = ntn_idx
+
+                if current_ntn_idx is not None:
                     self._invalidate_cache(current_ntn_idx)
-
-                ntn.reset_batch_idx()
-                ntn.update_tn_node(node_tag, regularize, jitter_schedule[epoch], adaptive_jitter)
-                current_ntn_idx = ntn_idx
-
-            if current_ntn_idx is not None:
-                self._invalidate_cache(current_ntn_idx)
+            except torch.linalg.LinAlgError as e:
+                self.singular_encountered = True
+                for ntn, best_state in zip(self.ntns, best_tn_states):
+                    ntn.tn = best_state
+                if verbose:
+                    print(f"\n✗ Singular matrix at epoch {epoch + 1} - stopping training")
+                    print(
+                        f"  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
+                    )
+                raise SingularMatrixError(
+                    message="Singular matrix encountered during NTN_Ensemble optimization",
+                    epoch=epoch + 1,
+                )
 
             scores_train = self.evaluate(eval_metrics, split="train")
 

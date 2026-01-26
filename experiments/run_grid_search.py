@@ -26,6 +26,7 @@ from model.losses import MSELoss, CrossEntropyLoss
 from model.utils import REGRESSION_METRICS, CLASSIFICATION_METRICS, compute_quality, create_inputs
 from model.standard import MPO2, LMPO2, MMPO2
 from model.typeI import MPO2TypeI, LMPO2TypeI, MMPO2TypeI
+from model.exceptions import SingularMatrixError
 
 from experiments.device_utils import DEVICE, move_tn_to_device, move_data_to_device
 
@@ -69,18 +70,25 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.1),
         )
 
     elif model_name == "LMPO2":
+        if "reduced_dim" in params:
+            reduced_dim = params["reduced_dim"]
+        elif "reduction_factor" in params:
+            reduced_dim = max(2, int(input_dim * params["reduction_factor"]))
+        else:
+            raise ValueError("LMPO2 requires either reduced_dim or reduction_factor")
         return LMPO2(
             L=params["L"],
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            rank=params.get("rank", 5),
-            output_site=params.get("output_site", 1),
+            reduced_dim=reduced_dim,
+            output_site=params.get("output_site"),
+            bond_dim_mpo=params.get("bond_dim_mpo", 2),
         )
 
     elif model_name == "MMPO2":
@@ -89,8 +97,7 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            rank=params.get("rank", 5),
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
         )
 
     elif model_name == "MPO2TypeI":
@@ -99,18 +106,24 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.1),
         )
 
     elif model_name == "LMPO2TypeI":
+        if "reduced_dim" in params:
+            reduced_dim = params["reduced_dim"]
+        elif "reduction_factor" in params:
+            reduced_dim = max(2, int(input_dim * params["reduction_factor"]))
+        else:
+            raise ValueError("LMPO2TypeI requires either reduced_dim or reduction_factor")
         return LMPO2TypeI(
             max_sites=params["L"],
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
-            reduced_dim=params.get("rank", 5),
+            reduced_dim=reduced_dim,
             output_dim=output_dim,
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.1),
         )
 
@@ -120,7 +133,7 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.1),
         )
 
@@ -318,34 +331,38 @@ def run_single_experiment(
 
         return result
 
-    except TrackerError:
-        raise
+    except SingularMatrixError as e:
+        scores_test = ntn.evaluate(eval_metrics, data_stream=loader_test)
 
-    except torch.cuda.OutOfMemoryError:
-        raise
+        train_loss = scores_train["loss"] if "scores_train" in dir() else None
+        train_quality = compute_quality(scores_train) if "scores_train" in dir() else None
+        val_loss = scores_val["loss"] if "scores_val" in dir() else None
+        val_quality = compute_quality(scores_val) if "scores_val" in dir() else None
+        test_loss = scores_test["loss"]
+        test_quality = compute_quality(scores_test)
 
-    except Exception as e:
-        import traceback
+        success = test_quality is not None and test_quality > 0
 
         result = {
             "run_id": experiment["run_id"],
             "seed": seed,
             "model": model_name,
             "grid_params": experiment["grid_params"],
-            "train_loss": None,
-            "train_quality": None,
-            "val_loss": None,
-            "val_quality": None,
-            "test_loss": None,
-            "test_quality": None,
-            "success": False,
-            "singular": False,
-            "error": str(e),
-            "traceback": traceback.format_exc(),
+            "n_parameters": n_parameters,
+            "train_loss": float(train_loss) if train_loss is not None else None,
+            "train_quality": float(train_quality) if train_quality is not None else None,
+            "val_loss": float(val_loss) if val_loss is not None else None,
+            "val_quality": float(val_quality) if val_quality is not None else None,
+            "test_loss": float(test_loss),
+            "test_quality": float(test_quality) if test_quality is not None else None,
+            "success": success,
+            "singular": True,
+            "singular_epoch": e.epoch,
         }
 
         if tracker:
-            tracker.log_summary(result)
+            summary = {**result, "n_parameters": n_parameters}
+            tracker.log_summary(summary)
 
         return result
 

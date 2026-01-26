@@ -52,7 +52,7 @@ class MPO2:
         self.bond_dim = bond_dim
         self.phys_dim = phys_dim
         self.output_dim = output_dim
-        self.output_site = output_site if output_site is not None else L // 2
+        self.output_site = output_site if output_site is not None else L - 1
 
         base_init = 0.1 if use_tn_normalization else init_strength
 
@@ -137,7 +137,7 @@ class CMPO2:
         self.phys_dim_pixels = phys_dim_pixels
         self.phys_dim_patches = phys_dim_patches
         self.output_dim = output_dim
-        self.output_site = output_site if output_site is not None else L // 2
+        self.output_site = output_site if output_site is not None else L - 1
 
         # Create pixel MPS
         self.psi = qt.MPS_rand_state(L, bond_dim=bond_dim, phys_dim=phys_dim_pixels)
@@ -201,64 +201,39 @@ class LMPO2:
         L: int,
         bond_dim: int,
         phys_dim: int,
-        reduced_dim: Optional[int] = None,
-        reduction_factor: Optional[float] = None,
+        reduced_dim: int,
         output_dim: int = 1,
         output_site: Optional[int] = None,
         init_strength: float = 0.001,
-        rank: Optional[int] = None,
+        bond_dim_mpo: int = 2,
         use_tn_normalization: bool = True,
         tn_target_std: float = 0.1,
         sample_inputs: Optional[qt.TensorNetwork] = None,
     ):
-        """
-        Args:
-            L: Number of sites
-            bond_dim: Bond dimension
-            phys_dim: Input physical dimension
-            reduced_dim: Reduced dimension after MPO (explicit value)
-            reduction_factor: Alternative to reduced_dim - fraction of phys_dim to keep (e.g., 0.5 for 50%)
-            output_dim: Output dimension
-            output_site: Which MPS site gets the output dimension (default: middle)
-            init_strength: Initialization strength
-            rank: Alias for reduced_dim (for consistency with grid search)
-
-        Note: Specify either reduced_dim OR reduction_factor OR rank, not multiple.
-        """
-        if rank is not None:
-            reduced_dim = rank
-
-        if reduced_dim is not None:
-            if reduction_factor is not None:
-                raise ValueError("Specify either reduced_dim/rank OR reduction_factor, not both")
-        elif reduction_factor is not None:
-            reduced_dim = max(2, int(phys_dim * reduction_factor))
-        else:
-            raise ValueError("Must specify either reduced_dim, rank, or reduction_factor")
-
         self.L = L
         self.bond_dim = bond_dim
+        self.bond_dim_mpo = bond_dim_mpo
         self.phys_dim = phys_dim
         self.input_dim = phys_dim
         self.reduced_dim = reduced_dim
         self.reduction_factor = reduced_dim / phys_dim
         self.output_dim = output_dim
-        self.output_site = output_site if output_site is not None else L // 2
+        self.output_site = output_site if output_site is not None else L - 1
 
         base_init = 0.1 if use_tn_normalization else init_strength
 
         self.mpo_tensors = []
         for i in range(L):
             if i == 0:
-                data = torch.randn(phys_dim, reduced_dim, bond_dim) * base_init
+                data = torch.randn(phys_dim, reduced_dim, bond_dim_mpo) * base_init
                 inds = (f"{i}_in", f"{i}_reduced", f"b_mpo_{i}")
                 tags = {f"{i}_MPO"}
             elif i == L - 1:
-                data = torch.randn(bond_dim, phys_dim, reduced_dim) * base_init
+                data = torch.randn(bond_dim_mpo, phys_dim, reduced_dim) * base_init
                 inds = (f"b_mpo_{i - 1}", f"{i}_in", f"{i}_reduced")
                 tags = {f"{i}_MPO"}
             else:
-                data = torch.randn(bond_dim, phys_dim, reduced_dim, bond_dim) * base_init
+                data = torch.randn(bond_dim_mpo, phys_dim, reduced_dim, bond_dim_mpo) * base_init
                 inds = (f"b_mpo_{i - 1}", f"{i}_in", f"{i}_reduced", f"b_mpo_{i}")
                 tags = {f"{i}_MPO"}
 
@@ -337,27 +312,16 @@ class MMPO2:
         output_dim: int,
         output_site: Optional[int] = None,
         init_strength: float = 0.001,
-        rank: Optional[int] = None,
         use_tn_normalization: bool = True,
         tn_target_std: float = 0.1,
         sample_inputs: Optional[qt.TensorNetwork] = None,
     ):
-        """
-        Args:
-            L: Number of sites
-            bond_dim: Bond dimension for MPS (NOT for mask MPO!)
-            phys_dim: Input physical dimension (also mask MPO bond dimension)
-            output_dim: Output dimension
-            output_site: Which MPS site gets the output dimension (default: middle)
-            init_strength: Initialization strength
-            rank: Unused (for API compatibility with other models)
-        """
         self.L = L
         self.bond_dim = bond_dim
         self.phys_dim = phys_dim
         self.input_dim = phys_dim
         self.output_dim = output_dim
-        self.output_site = output_site if output_site is not None else L // 2
+        self.output_site = output_site if output_site is not None else L - 1
 
         base_init = 0.1 if use_tn_normalization else init_strength
 

@@ -108,8 +108,8 @@ def generate_run_id(grid_params: Dict[str, Any], seed: int) -> str:
     """
     Generate a unique, filesystem-safe run ID from grid parameters and seed.
 
-    Format: model-L{L}-d{bond_dim}-init{init}-jit{jitter}-sweep{sweeps}-rank{rank}-seed{seed}
-    Example: MPO2-L3-d6-init0.1-jit0.01-sweep10-rank5-seed0
+    Format: model-L{L}-d{bond_dim}-init{init}-jit{jitter}-rd{reduced_dim}-seed{seed}
+    Example: MPO2-L3-d6-init0.1-jit0.01-rd5-seed0
 
     This is used for:
     - Result file naming
@@ -149,11 +149,11 @@ def generate_run_id(grid_params: Dict[str, Any], seed: int) -> str:
         parts.append(f"sweep{grid_params['max_sweeps']}")
 
     # Model-specific parameters
-    if "rank" in grid_params:
-        parts.append(f"rank{grid_params['rank']}")
+    if "reduced_dim" in grid_params:
+        parts.append(f"rd{grid_params['reduced_dim']}")
     if "reduction_factor" in grid_params:
-        rf_val = grid_params["reduction_factor"]
-        parts.append(f"rf{rf_val:.2f}".rstrip("0").rstrip("."))
+        rf = grid_params["reduction_factor"]
+        parts.append(f"rf{rf:.2f}".rstrip("0").rstrip("."))
 
     # Always include seed last
     parts.append(f"seed{seed}")
@@ -162,26 +162,26 @@ def generate_run_id(grid_params: Dict[str, Any], seed: int) -> str:
 
 
 MODEL_RELEVANT_PARAMS = {
-    "MPO2": ["L", "bond_dim", "output_site", "init_strength"],
-    "LMPO2": ["L", "bond_dim", "output_site", "init_strength", "rank", "reduction_factor"],
-    "MMPO2": ["L", "bond_dim", "output_site", "init_strength", "rank"],
-    "MPO2TypeI": ["L", "bond_dim", "output_site", "init_strength"],
-    "LMPO2TypeI": ["L", "bond_dim", "output_site", "init_strength", "rank", "reduction_factor"],
-    "MMPO2TypeI": ["L", "bond_dim", "output_site", "init_strength"],
-    "MPO2TypeI_GTN": ["L", "bond_dim", "output_site", "init_strength"],
-    "LMPO2TypeI_GTN": ["L", "bond_dim", "output_site", "init_strength", "rank", "reduction_factor"],
-    "MMPO2TypeI_GTN": ["L", "bond_dim", "output_site", "init_strength"],
+    "MPO2": ["L", "bond_dim", "init_strength"],
+    "LMPO2": ["L", "bond_dim", "init_strength", "reduced_dim", "reduction_factor", "bond_dim_mpo"],
+    "MMPO2": ["L", "bond_dim", "init_strength"],
+    "MPO2TypeI": ["L", "bond_dim", "init_strength"],
+    "LMPO2TypeI": ["L", "bond_dim", "init_strength", "reduced_dim", "reduction_factor"],
+    "MMPO2TypeI": ["L", "bond_dim", "init_strength"],
+    "MPO2TypeI_GTN": ["L", "bond_dim", "init_strength"],
+    "LMPO2TypeI_GTN": ["L", "bond_dim", "init_strength", "reduced_dim", "reduction_factor"],
+    "MMPO2TypeI_GTN": ["L", "bond_dim", "init_strength"],
 }
 
 MODEL_REQUIRED_PARAMS = {
     "MPO2": [],
-    "LMPO2": ["rank", "reduction_factor"],
-    "MMPO2": ["rank"],
+    "LMPO2": [],
+    "MMPO2": [],
     "MPO2TypeI": [],
-    "LMPO2TypeI": ["rank", "reduction_factor"],
+    "LMPO2TypeI": [],
     "MMPO2TypeI": [],
     "MPO2TypeI_GTN": [],
-    "LMPO2TypeI_GTN": ["rank", "reduction_factor"],
+    "LMPO2TypeI_GTN": [],
     "MMPO2TypeI_GTN": [],
 }
 
@@ -198,7 +198,7 @@ def validate_model_params(model: str, params: Dict[str, Any]) -> None:
     Raises:
         ValueError: If required parameters for model are missing
     """
-    common_required = ["L", "bond_dim", "output_site"]
+    common_required = ["L", "bond_dim"]
 
     if model not in MODEL_REQUIRED_PARAMS:
         raise ValueError(
@@ -218,35 +218,24 @@ def get_default_params_for_model(model: str) -> Dict[str, Any]:
     """
     Get default parameters for a specific model.
     These are reasonable defaults if not specified in config.
+    Note: output_site is NOT set here - models default to L-1 (last node).
     """
     defaults = {
-        "MPO2": {"output_site": 1, "init_strength": 0.1},
-        "LMPO2": {"output_site": 1, "init_strength": 0.1, "reduction_factor": 0.5, "rank": 5},
-        "MMPO2": {"output_site": 1, "init_strength": 0.1, "rank": 5},
-        "MPO2TypeI": {"output_site": 1, "init_strength": 0.1},
-        "LMPO2TypeI": {"output_site": 1, "init_strength": 0.1, "reduction_factor": 0.5, "rank": 5},
-        "MMPO2TypeI": {"output_site": 1, "init_strength": 0.1},
-        "MPO2TypeI_GTN": {"output_site": 1, "init_strength": 0.1},
-        "LMPO2TypeI_GTN": {
-            "output_site": 1,
-            "init_strength": 0.1,
-            "reduction_factor": 0.5,
-            "rank": 5,
-        },
-        "MMPO2TypeI_GTN": {"output_site": 1, "init_strength": 0.1},
+        "MPO2": {"init_strength": 0.1},
+        "LMPO2": {"init_strength": 0.1, "bond_dim_mpo": 2},
+        "MMPO2": {"init_strength": 0.1},
+        "MPO2TypeI": {"init_strength": 0.1},
+        "LMPO2TypeI": {"init_strength": 0.1},
+        "MMPO2TypeI": {"init_strength": 0.1},
+        "MPO2TypeI_GTN": {"init_strength": 0.1},
+        "LMPO2TypeI_GTN": {"init_strength": 0.1},
+        "MMPO2TypeI_GTN": {"init_strength": 0.1},
     }
 
     return defaults.get(model, {})
 
 
 def create_experiment_plan(config: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    """
-    Create complete experiment plan from config.
-
-    Returns:
-        experiments: List of experiment configs (one per grid combination × seed)
-        metadata: Dict with experiment metadata (total count, grid size, etc.)
-    """
     grid_combinations = expand_parameter_grid(config["parameter_grid"])
 
     seeds = config["fixed_params"].get("seeds", [0])

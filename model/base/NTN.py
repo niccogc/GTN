@@ -2,6 +2,7 @@
 from typing import List, Dict, Optional, Tuple
 from model.builder import Inputs
 from model.utils import print_metrics, REGRESSION_METRICS
+from model.exceptions import SingularMatrixError
 import torch
 import torch.nn as nn
 import quimb.tensor as qt
@@ -996,15 +997,18 @@ class NTN:
                     return best_scores_train, best_scores_val
 
             except torch.linalg.LinAlgError as e:
+                # Singular matrix encountered - restore best state and raise SingularMatrixError
                 self.singular_encountered = True
+                self.tn = best_tn_state
                 if verbose:
                     print(f"\n✗ Singular matrix at epoch {epoch + 1} - stopping training")
                     print(
                         f"  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
                     )
-
-                self.tn = best_tn_state
-                return best_scores_train, best_scores_val
+                # Raise SingularMatrixError so caller can handle it appropriately
+                raise SingularMatrixError(
+                    message="Singular matrix encountered during NTN optimization", epoch=epoch + 1
+                )
 
         if verbose and best_epoch >= 0:
             print(

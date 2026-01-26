@@ -81,18 +81,25 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.001),
         )
 
     elif model_name == "LMPO2":
+        if "reduced_dim" in params:
+            reduced_dim = params["reduced_dim"]
+        elif "reduction_factor" in params:
+            reduced_dim = max(2, int(input_dim * params["reduction_factor"]))
+        else:
+            raise ValueError("LMPO2 requires either reduced_dim or reduction_factor")
         return LMPO2(
             L=params["L"],
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            rank=params.get("rank", 5),
-            output_site=params.get("output_site", 1),
+            reduced_dim=reduced_dim,
+            output_site=params.get("output_site"),
+            bond_dim_mpo=params.get("bond_dim_mpo", 2),
             init_strength=params.get("init_strength", 0.001),
         )
 
@@ -102,8 +109,7 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            rank=params.get("rank", 5),
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.001),
         )
 
@@ -113,18 +119,24 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.001),
         )
 
     elif model_name == "LMPO2TypeI_GTN":
+        if "reduced_dim" in params:
+            reduced_dim = params["reduced_dim"]
+        elif "reduction_factor" in params:
+            reduced_dim = max(2, int(input_dim * params["reduction_factor"]))
+        else:
+            raise ValueError("LMPO2TypeI_GTN requires either reduced_dim or reduction_factor")
         return LMPO2TypeI_GTN(
             max_sites=params["L"],
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
-            reduced_dim=params.get("rank", 5),
+            reduced_dim=reduced_dim,
             output_dim=output_dim,
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.001),
         )
 
@@ -134,7 +146,7 @@ def create_model(model_name: str, params: dict, input_dim: int, output_dim: int)
             bond_dim=params["bond_dim"],
             phys_dim=input_dim,
             output_dim=output_dim,
-            output_site=params.get("output_site", 1),
+            output_site=params.get("output_site"),
             init_strength=params.get("init_strength", 0.001),
         )
 
