@@ -15,4 +15,4 @@ and to remove them from AIM too.
 
 **OUTPUT INDICES**
 
-For all models the default output index label should be on the LAST L-1 block!!
+For all models the default output index label should be on the LAST L-1 block!! See if that what has been used in all grid search experiments.
