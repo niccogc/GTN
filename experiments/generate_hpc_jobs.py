@@ -11,16 +11,16 @@ import argparse
 from pathlib import Path
 
 DATASET_SIZES = {
-    "iris": "small",
-    "wine": "small",
-    "breast": "small",
+    "iris": "medium",
+    "wine": "medium",
+    "breast": "medium",
     "hearth": "medium",
     "car_evaluation": "medium",
     "student_perf": "medium",
-    "realstate": "small",
+    "realstate": "medium",
     "concrete": "medium",
-    "energy_efficiency": "small",
-    "abalone": "medium",
+    "energy_efficiency": "medium",
+    "abalone": "large",
     "winequalityc": "medium",
     "obesity": "medium",
     "bike": "medium",
