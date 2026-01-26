@@ -1,0 +1,134 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 240
+Grid combinations: 48
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI', 'MMPO2', 'MMPO2TypeI'] (n=4)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. MPO2-L3-d8-jit5-seed42
+  2. MPO2-L3-d8-jit5-seed7
+  3. MPO2-L3-d8-jit5-seed123
+  4. MPO2-L3-d8-jit5-seed256
+  5. MPO2-L3-d8-jit5-seed999
+  ... (235 more)
+
+Loading dataset: seoulBike...
+  Dataset: seoulBike
+  Train: 6132 samples
+  Val: 1314 samples
+  Test: 1314 samples
+  Features: 18 (+1 bias = 18)
+  Task: regression
+  Device: cuda
+
+
+[10/240] Running: MPO2-L3-d8-jit0.1-seed999
+  AIM run started: 48491a0dedfe40058775e822
+  AIM run finalized: 48491a0dedfe40058775e822
+  Experiment log saved to: experiment_logs/ntn_seoulBike_MPO2_L3_d8_j0.1_s999.json
+  ✓ Test: R²=0.6269 | Val: R²=0.4298
+
+[11/240] Running: MPO2-L3-d12-jit5-seed42
+  AIM run started: 74c1054a025244b0b7bb0b13
+  AIM run finalized: 74c1054a025244b0b7bb0b13
+  Experiment log saved to: experiment_logs/ntn_seoulBike_MPO2_L3_d12_j5_s42.json
+  ✓ Test: R²=0.5783 | Val: R²=0.5254
+
+[12/240] Running: MPO2-L3-d12-jit5-seed7
+  AIM run started: ba2b93223f3f485e965cccb7
+  AIM run finalized: ba2b93223f3f485e965cccb7
+  Experiment log saved to: experiment_logs/ntn_seoulBike_MPO2_L3_d12_j5_s7.json
+  ✓ Test: R²=0.6009 | Val: R²=0.5397
+
+[13/240] Running: MPO2-L3-d12-jit5-seed123
+  AIM run started: e4620f9ad0094f6b8d08dfaa
+  AIM run finalized: e4620f9ad0094f6b8d08dfaa
+  Experiment log saved to: experiment_logs/ntn_seoulBike_MPO2_L3_d12_j5_s123.json
+  ✓ Test: R²=0.5894 | Val: R²=0.5145
+
+[14/240] Running: MPO2-L3-d12-jit5-seed256
+  AIM run started: f2457fae3533482ab210a973
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27685655: <ntn-seoulBike> in cluster <dcc> Exited
+
+Job <ntn-seoulBike> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Jan 25 14:08:12 2026
+Job was executed on host(s) <8*n-62-11-14>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Sun Jan 25 21:00:43 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sun Jan 25 21:00:43 2026
+Terminated at Sun Jan 25 21:01:59 2026
+Results reported at Sun Jan 25 21:01:59 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-seoulBike
+#BSUB -W 12:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-seoulBike_%J.out
+#BSUB -e logs/ntn-seoulBike_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_seoulBike.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   15.60 sec.
+    Max Memory :                                 442 MB
+    Average Memory :                             166.67 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               261702.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   76 sec.
+    Turnaround time :                            24827 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-seoulBike_27685655.err> for stderr output of this job.
+

@@ -57,6 +57,51 @@
       "train_quality": 0.580952380952381,
       "val_loss": 1.093926341600498,
       "val_quality": 0.5
+    },
+    {
+      "step": 0,
+      "train_loss": 0.6065937055791819,
+      "train_quality": 0.8190476190476191,
+      "val_loss": 0.31678014723787146,
+      "val_quality": 0.8636363636363636,
+      "reg_loss": 0.6065937055791819,
+      "jitter": 5.0
+    },
+    {
+      "step": 1,
+      "train_loss": 0.2950781689480437,
+      "train_quality": 0.9047619047619049,
+      "val_loss": 0.1621352344060016,
+      "val_quality": 0.9545454545454546,
+      "reg_loss": 0.2950781689480437,
+      "jitter": 1.25
+    },
+    {
+      "step": 2,
+      "train_loss": 1408.021940690878,
+      "train_quality": 0.39047619047619053,
+      "val_loss": 991.84407661027,
+      "val_quality": 0.2272727272727273,
+      "reg_loss": 1408.021940690878,
+      "jitter": 0.3125
+    },
+    {
+      "step": 3,
+      "train_loss": 2.921296724649209e+38,
+      "train_quality": 0.4190476190476191,
+      "val_loss": 2.2184013753831368e+38,
+      "val_quality": 0.5909090909090909,
+      "reg_loss": 2.921296724649209e+38,
+      "jitter": 0.078125
+    },
+    {
+      "step": 4,
+      "train_loss": 7.902773205396393e+266,
+      "train_quality": 0.34285714285714286,
+      "val_loss": 1.479182275309054e+267,
+      "val_quality": 0.2727272727272727,
+      "reg_loss": 7.902773205396393e+266,
+      "jitter": 0.01953125
     }
   ],
   "summary": {
@@ -77,7 +122,7 @@
     "test_quality": null,
     "success": false,
     "singular": false,
-    "error": "CUDA out of memory. Tried to allocate 24.00 MiB. GPU 0 has a total capacity of 31.73 GiB of which 8.25 MiB is free. Including non-PyTorch memory, this process has 31.72 GiB memory in use. Of the allocated memory 30.84 GiB is allocated by PyTorch, and 494.09 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
-    "traceback": "Traceback (most recent call last):\n  File \"/zhome/6b/e/212868/GTN/experiments/run_grid_search.py\", line 272, in run_single_experiment\n    scores_train, scores_val = ntn.fit(\n                               ^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN_Ensemble.py\", line 443, in fit\n    ntn.update_tn_node(node_tag, regularize, jitter_schedule[epoch], adaptive_jitter)\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 755, in update_tn_node\n    delta_tensor = self._get_node_update(\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 557, in _get_node_update\n    b, H = self._compute_H_b(node_tag)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 179, in _compute_H_b\n    J, H = self.compute_node_derivatives(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 124, in compute_node_derivatives\n    return self._sum_over_batches(\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 97, in _sum_over_batches\n    batch_result = batch_operation(*inputs, *args, **kwargs)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN_Ensemble.py\", line 48, in _batch_node_derivatives\n    result = super()._batch_node_derivatives(inputs, y_true, node_tag)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 171, in _batch_node_derivatives\n    node_hess = hess_tn.contract(output_inds=hess_out_inds)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/tensor_core.py\", line 9354, in contract\n    return tensor_contract(\n           ^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/.local/share/uv/python/cpython-3.12.11-linux-x86_64-gnu/lib/python3.12/functools.py\", line 912, in wrapper\n    return dispatch(args[0].__class__)(*args, **kw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/tensor_core.py\", line 310, in tensor_contract\n    data_out = array_contract(\n               ^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/contraction.py\", line 285, in array_contract\n    return ctg.array_contract(\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/cotengra/interface.py\", line 864, in array_contract\n    return expr(*arrays, backend=backend)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/cotengra/contract.py\", line 784, in __call__\n    p_array = _tensordot(l_array, r_array, arg)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/autoray/autoray.py\", line 2388, in numpy_like\n    return fn(a, b, dims=axes)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/torch/functional.py\", line 1333, in tensordot\n    return _VF.tensordot(a, b, dims_a, dims_b)  # type: ignore[attr-defined]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntorch.OutOfMemoryError: CUDA out of memory. Tried to allocate 24.00 MiB. GPU 0 has a total capacity of 31.73 GiB of which 8.25 MiB is free. Including non-PyTorch memory, this process has 31.72 GiB memory in use. Of the allocated memory 30.84 GiB is allocated by PyTorch, and 494.09 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)\n"
+    "error": "torch.linalg.solve: The solver failed because the input matrix is singular.",
+    "traceback": "Traceback (most recent call last):\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 484, in cholesky_solve_helper\n    L = lib.linalg.cholesky(matrix)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntorch._C._LinAlgError: linalg.cholesky: The factorization could not be completed because the input is not positive-definite (the leading minor of order 1 is not positive-definite).\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/zhome/6b/e/212868/GTN/experiments/run_grid_search.py\", line 272, in run_single_experiment\n    scores_train, scores_val = ntn.fit(\n                               ^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN_Ensemble.py\", line 443, in fit\n    ntn.update_tn_node(node_tag, regularize, jitter_schedule[epoch], adaptive_jitter)\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 755, in update_tn_node\n    delta_tensor = self._get_node_update(\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 637, in _get_node_update\n    tensor_node_data = self.solve_linear_system(matrix_data, -gradient_vector)\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 539, in solve_linear_system\n    result_data = self.cholesky_solve_helper(matrix_data, vector_data, backend_name, lib)\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 489, in cholesky_solve_helper\n    lib.linalg.solve(matrix, b).squeeze(-1)\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntorch._C._LinAlgError: torch.linalg.solve: The solver failed because the input matrix is singular.\n"
   }
 }

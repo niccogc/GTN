@@ -1,0 +1,110 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 120
+Grid combinations: 24
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. MPO2-L3-d8-jit5-seed42
+  2. MPO2-L3-d8-jit5-seed7
+  3. MPO2-L3-d8-jit5-seed123
+  4. MPO2-L3-d8-jit5-seed256
+  5. MPO2-L3-d8-jit5-seed999
+  ... (115 more)
+
+Loading dataset: student_dropout...
+  Dataset: student_dropout
+  Train: 3096 samples
+  Val: 664 samples
+  Test: 664 samples
+  Features: 36 (+1 bias = 36)
+  Task: classification
+  Device: cuda
+
+
+[21/120] Running: MPO2-L3-d16-jit5-seed42
+  AIM run started: bd2a88d168ef4c769e00c272
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27685657: <ntn-student-dropout> in cluster <dcc> Exited
+
+Job <ntn-student-dropout> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Jan 25 14:08:13 2026
+Job was executed on host(s) <8*n-62-12-21>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Sun Jan 25 14:22:01 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sun Jan 25 14:22:01 2026
+Terminated at Sun Jan 25 14:22:18 2026
+Results reported at Sun Jan 25 14:22:18 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J ntn-student-dropout
+#BSUB -W 24:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=64GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-student-dropout_%J.out
+#BSUB -e logs/ntn-student-dropout_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_student_dropout.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   7.54 sec.
+    Max Memory :                                 747 MB
+    Average Memory :                             747.00 MB
+    Total Requested Memory :                     524288.00 MB
+    Delta Memory :                               523541.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                15
+    Run time :                                   17 sec.
+    Turnaround time :                            845 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-student-dropout_27685657.err> for stderr output of this job.
+

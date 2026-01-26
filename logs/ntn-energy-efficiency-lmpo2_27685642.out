@@ -1,0 +1,147 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 360
+Grid combinations: 72
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['LMPO2', 'LMPO2TypeI'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+  reduction_factor: [0.1, 0.3, 0.5] (n=3)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. LMPO2-L3-d8-jit5-rf0.1-seed42
+  2. LMPO2-L3-d8-jit5-rf0.1-seed7
+  3. LMPO2-L3-d8-jit5-rf0.1-seed123
+  4. LMPO2-L3-d8-jit5-rf0.1-seed256
+  5. LMPO2-L3-d8-jit5-rf0.1-seed999
+  ... (355 more)
+
+Loading dataset: energy_efficiency...
+  Dataset: energy_efficiency
+  Train: 537 samples
+  Val: 115 samples
+  Test: 116 samples
+  Features: 8 (+1 bias = 8)
+  Task: regression
+  Device: cuda
+
+
+[4/360] Running: LMPO2-L3-d8-jit5-rf0.1-seed256
+  AIM run started: 34bc18a4be3f4acda59ed828
+  AIM run finalized: 34bc18a4be3f4acda59ed828
+  Experiment log saved to: experiment_logs/ntn_energy_efficiency_lmpo2_LMPO2_L3_d8_j5_s256.json
+  ✓ Test: R²=0.9916 | Val: R²=0.9938
+
+[5/360] Running: LMPO2-L3-d8-jit5-rf0.1-seed999
+  AIM run started: 57e8566a16404fbe8458e42a
+  AIM run finalized: 57e8566a16404fbe8458e42a
+  Experiment log saved to: experiment_logs/ntn_energy_efficiency_lmpo2_LMPO2_L3_d8_j5_s999.json
+  ✓ Test: R²=0.9915 | Val: R²=0.9941
+
+[6/360] Running: LMPO2-L3-d8-jit5-rf0.3-seed42
+  AIM run started: beb1a2c1a2d64ae1b804c081
+  AIM run finalized: beb1a2c1a2d64ae1b804c081
+  Experiment log saved to: experiment_logs/ntn_energy_efficiency_lmpo2_LMPO2_L3_d8_j5_s42.json
+  ✓ Test: R²=0.9899 | Val: R²=0.9927
+
+[7/360] Running: LMPO2-L3-d8-jit5-rf0.3-seed7
+  AIM run started: dcc8cc67d5b548ae979a39a7
+  AIM run finalized: dcc8cc67d5b548ae979a39a7
+  Experiment log saved to: experiment_logs/ntn_energy_efficiency_lmpo2_LMPO2_L3_d8_j5_s7.json
+  ✓ Test: R²=0.9912 | Val: R²=0.9943
+
+[8/360] Running: LMPO2-L3-d8-jit5-rf0.3-seed123
+  AIM run started: f04e7056fdef41d18de0e0fa
+  AIM run finalized: f04e7056fdef41d18de0e0fa
+  Experiment log saved to: experiment_logs/ntn_energy_efficiency_lmpo2_LMPO2_L3_d8_j5_s123.json
+  ✓ Test: R²=0.9908 | Val: R²=0.9933
+
+[9/360] Running: LMPO2-L3-d8-jit5-rf0.3-seed256
+  AIM run started: 80a347754ea84f53af1fa1ab
+  AIM run finalized: 80a347754ea84f53af1fa1ab
+  Experiment log saved to: experiment_logs/ntn_energy_efficiency_lmpo2_LMPO2_L3_d8_j5_s256.json
+  ✓ Test: R²=0.9916 | Val: R²=0.9938
+
+[10/360] Running: LMPO2-L3-d8-jit5-rf0.3-seed999
+  AIM run started: 64ec681dae9347a9a518c8f9
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27685642: <ntn-energy-efficiency-lmpo2> in cluster <dcc> Exited
+
+Job <ntn-energy-efficiency-lmpo2> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Jan 25 14:08:05 2026
+Job was executed on host(s) <8*n-62-20-11>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Sun Jan 25 19:37:51 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sun Jan 25 19:37:51 2026
+Terminated at Sun Jan 25 19:41:46 2026
+Results reported at Sun Jan 25 19:41:46 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-energy-efficiency-lmpo2
+#BSUB -W 3:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-energy-efficiency-lmpo2_%J.out
+#BSUB -e logs/ntn-energy-efficiency-lmpo2_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_energy_efficiency_lmpo2.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   18.00 sec.
+    Max Memory :                                 828 MB
+    Average Memory :                             732.25 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               130244.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                15
+    Run time :                                   236 sec.
+    Turnaround time :                            20021 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-energy-efficiency-lmpo2_27685642.err> for stderr output of this job.
+

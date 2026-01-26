@@ -1,0 +1,146 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 240
+Grid combinations: 48
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI', 'MMPO2', 'MMPO2TypeI'] (n=4)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. MPO2-L3-d8-jit5-seed42
+  2. MPO2-L3-d8-jit5-seed7
+  3. MPO2-L3-d8-jit5-seed123
+  4. MPO2-L3-d8-jit5-seed256
+  5. MPO2-L3-d8-jit5-seed999
+  ... (235 more)
+
+Loading dataset: winequalityc...
+  Dataset: winequalityc
+  Train: 4547 samples
+  Val: 975 samples
+  Test: 975 samples
+  Features: 11 (+1 bias = 11)
+  Task: classification
+  Device: cuda
+
+
+[4/240] Running: MPO2-L3-d8-jit5-seed256
+  AIM run started: e068d2a578de4102ab3315eb
+  AIM run finalized: e068d2a578de4102ab3315eb
+  Experiment log saved to: experiment_logs/ntn_winequalityc_MPO2_L3_d8_j5_s256.json
+  ✓ Test: Acc=0.3138 | Val: Acc=0.2913
+
+[5/240] Running: MPO2-L3-d8-jit5-seed999
+  AIM run started: 48f021e907464f1d9498d189
+  AIM run finalized: 48f021e907464f1d9498d189
+  Experiment log saved to: experiment_logs/ntn_winequalityc_MPO2_L3_d8_j5_s999.json
+  ✓ Test: Acc=0.1928 | Val: Acc=0.2041
+
+[6/240] Running: MPO2-L3-d8-jit0.1-seed42
+  AIM run started: 75fe6fa2009541be9fae0e43
+  AIM run finalized: 75fe6fa2009541be9fae0e43
+  Experiment log saved to: experiment_logs/ntn_winequalityc_MPO2_L3_d8_j0.1_s42.json
+  ✓ Test: Acc=0.2410 | Val: Acc=0.2133
+
+[7/240] Running: MPO2-L3-d8-jit0.1-seed7
+  AIM run started: fa1414f6672948f9a6370a18
+  AIM run finalized: fa1414f6672948f9a6370a18
+  Experiment log saved to: experiment_logs/ntn_winequalityc_MPO2_L3_d8_j0.1_s7.json
+  ✓ Test: Acc=0.4369 | Val: Acc=0.4595
+
+[8/240] Running: MPO2-L3-d8-jit0.1-seed123
+  AIM run started: 3e45596a3b9a4751a03edf80
+  AIM run finalized: 3e45596a3b9a4751a03edf80
+  Experiment log saved to: experiment_logs/ntn_winequalityc_MPO2_L3_d8_j0.1_s123.json
+  ✓ Test: Acc=0.4544 | Val: Acc=0.4697
+
+[9/240] Running: MPO2-L3-d8-jit0.1-seed256
+  AIM run started: 83c31e75356042e48ea8c0ae
+  AIM run finalized: 83c31e75356042e48ea8c0ae
+  Experiment log saved to: experiment_logs/ntn_winequalityc_MPO2_L3_d8_j0.1_s256.json
+  ✓ Test: Acc=0.2369 | Val: Acc=0.2564
+
+[10/240] Running: MPO2-L3-d8-jit0.1-seed999
+  AIM run started: 9e45d3f86a784ecfafca6e84
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27685663: <ntn-winequalityc> in cluster <dcc> Exited
+
+Job <ntn-winequalityc> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Jan 25 14:08:14 2026
+Job was executed on host(s) <8*n-62-11-14>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Sun Jan 25 21:08:00 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sun Jan 25 21:08:00 2026
+Terminated at Sun Jan 25 21:09:43 2026
+Results reported at Sun Jan 25 21:09:43 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-winequalityc
+#BSUB -W 12:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-winequalityc_%J.out
+#BSUB -e logs/ntn-winequalityc_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_winequalityc.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   18.06 sec.
+    Max Memory :                                 441 MB
+    Average Memory :                             441.00 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               261703.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   104 sec.
+    Turnaround time :                            25289 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-winequalityc_27685663.err> for stderr output of this job.
+

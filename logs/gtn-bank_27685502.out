@@ -1,0 +1,116 @@
+
+Loading dataset: bank
+  Task: classification
+  Train: 31647 samples
+  Val: 6782 samples
+  Test: 6782 samples
+  Input dim: 33
+  Output dim: 2
+  Device: cuda
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 180
+Grid combinations: 36
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI_GTN'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  lr: [0.01, 0.001, 0.0001] (n=3)
+
+Fixed Parameters:
+  output_site: 1
+  batch_size: 64
+  n_epochs: 1000
+  patience: 40
+  min_delta: 1e-08
+  optimizer: adamw
+  init_strength: 0.01
+  rank: 5
+
+Example runs (first 5):
+  1. MPO2-L3-d8-seed42
+  2. MPO2-L3-d8-seed7
+  3. MPO2-L3-d8-seed123
+  4. MPO2-L3-d8-seed256
+  5. MPO2-L3-d8-seed999
+  ... (175 more)
+
+
+======================================================================
+GRID SEARCH SUMMARY
+======================================================================
+Total runs: 180
+Completed: 0
+Skipped: 180
+Failed: 0
+Time: 0.1s (0.0s per run)
+Grid search complete. Marked as .complete
+======================================================================
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27685502: <gtn-bank> in cluster <dcc> Done
+
+Job <gtn-bank> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Jan 25 14:04:48 2026
+Job was executed on host(s) <8*n-62-12-23>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Sun Jan 25 14:06:21 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sun Jan 25 14:06:21 2026
+Terminated at Sun Jan 25 14:06:30 2026
+Results reported at Sun Jan 25 14:06:30 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J gtn-bank
+#BSUB -W 24:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-bank_%J.out
+#BSUB -e logs/gtn-bank_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_bank.json --output-dir results/gtn_bank
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   4.16 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   9 sec.
+    Turnaround time :                            102 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-bank_27685502.err> for stderr output of this job.
+

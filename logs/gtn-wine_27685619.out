@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27685619: <gtn-wine> in cluster <dcc> Exited
+
+Job <gtn-wine> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Jan 25 14:07:56 2026
+Job was executed on host(s) <8*n-62-20-11>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Sun Jan 25 16:12:01 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sun Jan 25 16:12:01 2026
+Terminated at Sun Jan 25 19:13:11 2026
+Results reported at Sun Jan 25 19:13:11 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-wine
+#BSUB -W 3:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-wine_%J.out
+#BSUB -e logs/gtn-wine_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_wine.json --output-dir results/gtn_wine
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   368.00 sec.
+    Max Memory :                                 939 MB
+    Average Memory :                             926.28 MB
+    Total Requested Memory :                     65536.00 MB
+    Delta Memory :                               64597.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                16
+    Run time :                                   10878 sec.
+    Turnaround time :                            18315 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-wine_27685619.err> for stderr output of this job.
+

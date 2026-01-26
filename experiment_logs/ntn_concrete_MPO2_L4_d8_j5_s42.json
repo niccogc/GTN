@@ -117,6 +117,36 @@
       "reg_loss": 211.8888986166502,
       "jitter": 0.0048828125,
       "weight_norm_sq": 1617.17929845134
+    },
+    {
+      "step": 6,
+      "train_loss": 161.63328158403317,
+      "train_quality": 0.4267657789364504,
+      "val_loss": 584.3948596064,
+      "val_quality": -1.0263541141463235,
+      "reg_loss": 167.22981551297016,
+      "jitter": 0.001220703125,
+      "weight_norm_sq": 4584.680594585179
+    },
+    {
+      "step": 7,
+      "train_loss": 148.472783531391,
+      "train_quality": 0.47343963085656093,
+      "val_loss": 541.8907795661621,
+      "val_quality": -0.878973766695031,
+      "reg_loss": 154.77308340286461,
+      "jitter": 0.001,
+      "weight_norm_sq": 6300.299871473614
+    },
+    {
+      "step": 8,
+      "train_loss": 141.10139642491794,
+      "train_quality": 0.4995823367691433,
+      "val_loss": 463.41950441691927,
+      "val_quality": -0.6068793281024794,
+      "reg_loss": 147.8393467226677,
+      "jitter": 0.001,
+      "weight_norm_sq": 6737.950297749756
     }
   ],
   "summary": {
@@ -129,15 +159,14 @@
       "bond_dim": 8,
       "jitter_start": 5.0
     },
-    "train_loss": null,
-    "train_quality": null,
-    "val_loss": null,
-    "val_quality": null,
-    "test_loss": null,
-    "test_quality": null,
+    "n_parameters": 1152,
+    "train_loss": 282.7572700554133,
+    "train_quality": -0.0028017860047095944,
+    "val_loss": 410.92456986784896,
+    "val_quality": -0.42485629205627795,
+    "test_loss": 397.32767449996203,
+    "test_quality": -0.587533690455313,
     "success": false,
-    "singular": false,
-    "error": "CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 15.77 GiB of which 8.25 MiB is free. Including non-PyTorch memory, this process has 15.75 GiB memory in use. Of the allocated memory 14.69 GiB is allocated by PyTorch, and 677.17 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
-    "traceback": "Traceback (most recent call last):\n  File \"/zhome/6b/e/212868/GTN/experiments/run_grid_search.py\", line 272, in run_single_experiment\n    scores_train, scores_val = ntn.fit(\n                               ^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 876, in fit\n    self.update_tn_node(\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 755, in update_tn_node\n    delta_tensor = self._get_node_update(\n                   ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 557, in _get_node_update\n    b, H = self._compute_H_b(node_tag)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 179, in _compute_H_b\n    J, H = self.compute_node_derivatives(\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 124, in compute_node_derivatives\n    return self._sum_over_batches(\n           ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 97, in _sum_over_batches\n    batch_result = batch_operation(*inputs, *args, **kwargs)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/model/base/NTN.py\", line 171, in _batch_node_derivatives\n    node_hess = hess_tn.contract(output_inds=hess_out_inds)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/tensor_core.py\", line 9354, in contract\n    return tensor_contract(\n           ^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/.local/share/uv/python/cpython-3.12.11-linux-x86_64-gnu/lib/python3.12/functools.py\", line 912, in wrapper\n    return dispatch(args[0].__class__)(*args, **kw)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/tensor_core.py\", line 310, in tensor_contract\n    data_out = array_contract(\n               ^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/contraction.py\", line 285, in array_contract\n    return ctg.array_contract(\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/cotengra/interface.py\", line 864, in array_contract\n    return expr(*arrays, backend=backend)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/cotengra/contract.py\", line 788, in __call__\n    p_array = _einsum(arg, l_array, r_array)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/torch/functional.py\", line 373, in einsum\n    return _VF.einsum(equation, operands)  # type: ignore[attr-defined]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntorch.OutOfMemoryError: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 15.77 GiB of which 8.25 MiB is free. Including non-PyTorch memory, this process has 15.75 GiB memory in use. Of the allocated memory 14.69 GiB is allocated by PyTorch, and 677.17 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)\n"
+    "singular": false
   }
 }
