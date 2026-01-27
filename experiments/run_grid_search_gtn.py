@@ -612,8 +612,12 @@ def main():
 
         print(f"\nSummary saved to: {summary_file}")
 
-    mark_grid_complete(args.output_dir)
-    print("Grid search complete. Marked as .complete")
+    if failed_count == 0:
+        mark_grid_complete(args.output_dir)
+        print("Grid search complete. Marked as .complete")
+    else:
+        print(f"Grid search has {failed_count} failures. NOT marked as .complete")
+        print("Fix failures and re-run to complete.")
     print("=" * 70)
 
 
