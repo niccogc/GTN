@@ -23,7 +23,7 @@ from experiments.dataset_loader import load_dataset
 from experiments.trackers import create_tracker, TrackerError
 
 from model.GTN import GTN
-from model.MPO2_models import MPO2, LMPO2, MMPO2
+from model.standard.MPO2_models import MPO2, LMPO2, MMPO2
 from model.typeI import MPO2TypeI_GTN, LMPO2TypeI_GTN, MMPO2TypeI_GTN
 
 torch.set_default_dtype(torch.float64)
