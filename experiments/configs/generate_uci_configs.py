@@ -138,7 +138,7 @@ def create_gtn_base_config(dataset_name: str, task: str, include_mmpo2: bool = T
             "model": models,
             "L": [3, 4],
             "bond_dim": [8, 12, 16],
-            "lr": [0.01, 0.001, 0.0001],
+            "lr": [0.001, 0.0001],
         },
         "fixed_params": {
             "batch_size": 64,
@@ -171,7 +171,7 @@ def create_gtn_lmpo2_config(dataset_name: str, task: str) -> dict:
             "model": ["LMPO2", "LMPO2TypeI_GTN"],
             "L": [3, 4],
             "bond_dim": [8, 12, 16],
-            "lr": [0.01, 0.001, 0.0001],
+            "lr": [0.001, 0.0001],
             "reduction_factor": [0.1, 0.3, 0.5],
         },
         "fixed_params": {
