@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search.py --config experiments/configs/uci_ntn_mushrooms.json 
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_mushrooms_lmpo2.json 

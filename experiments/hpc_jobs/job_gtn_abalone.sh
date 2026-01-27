@@ -1,10 +1,10 @@
 #!/bin/sh
-#BSUB -q gpuv100
+#BSUB -q gpua100
 #BSUB -J gtn-abalone
-#BSUB -W 12:00
+#BSUB -W 24:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=32GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-abalone_%J.out
 #BSUB -e logs/gtn-abalone_%J.err
@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_abalone.json --output-dir results/gtn_abalone
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_abalone_lmpo2.json --output-dir results/gtn_abalone

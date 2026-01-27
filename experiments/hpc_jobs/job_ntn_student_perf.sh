@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search.py --config experiments/configs/uci_ntn_student_perf.json 
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_student_perf_lmpo2.json 

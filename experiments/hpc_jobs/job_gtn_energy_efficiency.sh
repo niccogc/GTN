@@ -1,10 +1,10 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -J gtn-energy-efficiency
-#BSUB -W 3:00
+#BSUB -W 12:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "rusage[mem=16GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-energy-efficiency_%J.out
 #BSUB -e logs/gtn-energy-efficiency_%J.err
@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_energy_efficiency.json --output-dir results/gtn_energy_efficiency
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_energy_efficiency_lmpo2.json --output-dir results/gtn_energy_efficiency

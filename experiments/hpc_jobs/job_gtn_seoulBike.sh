@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_seoulBike.json --output-dir results/gtn_seoulBike
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_seoulBike_lmpo2.json --output-dir results/gtn_seoulBike
