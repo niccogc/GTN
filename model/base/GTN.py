@@ -37,28 +37,14 @@ class GTN(nn.Module):
         self.input_dims = input_dims
         self.output_dims = output_dims
 
-    def to(self, *args, **kwargs):
-        result = super().to(*args, **kwargs)
-
-        device = None
-        dtype = None
-        if args:
-            for arg in args:
-                if isinstance(arg, (str, torch.device)):
-                    device = arg
-                elif isinstance(arg, torch.dtype):
-                    dtype = arg
-        if "device" in kwargs:
-            device = kwargs["device"]
-        if "dtype" in kwargs:
-            dtype = kwargs["dtype"]
-
-        if device is not None or dtype is not None:
-            self.not_trainable_params = {
-                k: v.to(device=device, dtype=dtype) if hasattr(v, "to") else v
-                for k, v in self.not_trainable_params.items()
-            }
-        return result
+    def _apply(self, fn):
+        """Override _apply to also move not_trainable_params."""
+        super()._apply(fn)
+        self.not_trainable_params = {
+            k: fn(v) if isinstance(v, torch.Tensor) else v
+            for k, v in self.not_trainable_params.items()
+        }
+        return self
 
     def forward(self, x):
         tn_params = {int(i): p for i, p in self.torch_params.items()}
