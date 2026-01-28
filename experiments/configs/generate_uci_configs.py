@@ -118,7 +118,7 @@ def create_ntn_lmpo2_config(dataset_name: str, task: str) -> dict:
             "aim_repo": "aim://aimtracking.kosmon.org:443",
         },
         "output": {
-            "results_dir": f"results/ntn_{dataset_name}",
+            "results_dir": f"results/ntn_{dataset_name}_lmpo2",
             "save_models": False,
             "save_individual_runs": True,
         },
@@ -190,7 +190,7 @@ def create_gtn_lmpo2_config(dataset_name: str, task: str) -> dict:
             "aim_repo": "aim://aimtracking.kosmon.org:443",
         },
         "output": {
-            "results_dir": f"results/gtn_{dataset_name}",
+            "results_dir": f"results/gtn_{dataset_name}_lmpo2",
             "save_models": False,
             "save_individual_runs": True,
         },
