@@ -2,9 +2,9 @@
 #BSUB -q gpua100
 #BSUB -J gtn-appliances
 #BSUB -W 24:00
-#BSUB -n 1
+#BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=4GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-appliances_%J.out
 #BSUB -e logs/gtn-appliances_%J.err

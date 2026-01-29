@@ -2,9 +2,9 @@
 #BSUB -q gpuv100
 #BSUB -J ntn-energy-efficiency
 #BSUB -W 12:00
-#BSUB -n 1
+#BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=12GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/ntn-energy-efficiency_%J.out
 #BSUB -e logs/ntn-energy-efficiency_%J.err

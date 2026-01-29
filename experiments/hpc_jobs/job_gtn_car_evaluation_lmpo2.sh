@@ -2,9 +2,9 @@
 #BSUB -q gpuv100
 #BSUB -J gtn-car-evaluation
 #BSUB -W 12:00
-#BSUB -n 1
+#BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "rusage[mem=4GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-car-evaluation_%J.out
 #BSUB -e logs/gtn-car-evaluation_%J.err

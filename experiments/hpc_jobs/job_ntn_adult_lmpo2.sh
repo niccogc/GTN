@@ -2,9 +2,9 @@
 #BSUB -q gpua100
 #BSUB -J ntn-adult
 #BSUB -W 24:00
-#BSUB -n 1
+#BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "rusage[mem=16GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/ntn-adult_%J.out
 #BSUB -e logs/ntn-adult_%J.err

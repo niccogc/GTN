@@ -36,15 +36,15 @@ DATASET_SIZES = {
 
 QUEUE_CONFIG = {
     "small": {"queue": "gpuv100", "time": "3:00", "mem": "4GB", "gpu": 1},
-    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "8GB", "gpu": 1},
-    "large": {"queue": "gpua100", "time": "24:00", "mem": "16GB", "gpu": 1},
+    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "4GB", "gpu": 1},
+    "large": {"queue": "gpua100", "time": "24:00", "mem": "4GB", "gpu": 1},
 }
 
 JOB_TEMPLATE = """#!/bin/sh
 #BSUB -q {queue}
 #BSUB -J {job_name}
 #BSUB -W {time}
-#BSUB -n 1
+#BSUB -n 4
 #BSUB -gpu "num={gpu}:mode=exclusive_process"
 #BSUB -R "rusage[mem={mem}]"
 #BSUB -R "span[hosts=1]"
@@ -97,8 +97,14 @@ def generate_job_script(
 
     # For NTN configs, double the memory allocation
     if not is_gtn:
+        if size == "small":
+            mem = 2
+        elif size == "medium":
+            mem = 3
+        elif size == "large":
+            mem = 4
         mem_value = int(queue_config["mem"].replace("GB", ""))
-        queue_config["mem"] = f"{mem_value * 2}GB"
+        queue_config["mem"] = f"{mem_value * mem}GB"
 
     extra_args = ""
     if is_gtn:

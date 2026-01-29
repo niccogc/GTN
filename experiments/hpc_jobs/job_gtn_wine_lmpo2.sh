@@ -2,7 +2,7 @@
 #BSUB -q gpuv100
 #BSUB -J gtn-wine
 #BSUB -W 3:00
-#BSUB -n 1
+#BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -R "rusage[mem=4GB]"
 #BSUB -R "span[hosts=1]"
