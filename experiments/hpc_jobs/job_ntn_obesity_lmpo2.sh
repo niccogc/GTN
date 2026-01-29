@@ -1,13 +1,13 @@
 #!/bin/sh
 #BSUB -q gpuv100
-#BSUB -J ntn-obesity-lmpo2
+#BSUB -J ntn-obesity
 #BSUB -W 12:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -R "rusage[mem=32GB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/ntn-obesity-lmpo2_%J.out
-#BSUB -e logs/ntn-obesity-lmpo2_%J.err
+#BSUB -o logs/ntn-obesity_%J.out
+#BSUB -e logs/ntn-obesity_%J.err
 #BSUB -u nicci@dtu.dk
 
 export HOME=/zhome/6b/e/212868

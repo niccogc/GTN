@@ -1,13 +1,13 @@
 #!/bin/sh
-#BSUB -q gpuv100
-#BSUB -J gtn-abalone-lmpo2
-#BSUB -W 12:00
+#BSUB -q gpua100
+#BSUB -J gtn-abalone
+#BSUB -W 24:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=32GB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/gtn-abalone-lmpo2_%J.out
-#BSUB -e logs/gtn-abalone-lmpo2_%J.err
+#BSUB -o logs/gtn-abalone_%J.out
+#BSUB -e logs/gtn-abalone_%J.err
 #BSUB -u nicci@dtu.dk
 
 export HOME=/zhome/6b/e/212868

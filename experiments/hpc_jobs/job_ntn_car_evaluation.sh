@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search.py --config experiments/configs/uci_ntn_car_evaluation_lmpo2.json 
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_car_evaluation.json 

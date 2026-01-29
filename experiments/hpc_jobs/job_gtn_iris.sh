@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_iris_lmpo2.json --output-dir results/gtn_iris
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_iris.json --output-dir results/gtn_iris

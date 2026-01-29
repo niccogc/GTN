@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_realstate_lmpo2.json --output-dir results/gtn_realstate
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_realstate.json --output-dir results/gtn_realstate

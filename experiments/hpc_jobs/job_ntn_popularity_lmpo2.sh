@@ -1,13 +1,13 @@
 #!/bin/sh
 #BSUB -q gpua100
-#BSUB -J ntn-popularity-lmpo2
+#BSUB -J ntn-popularity
 #BSUB -W 24:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -R "rusage[mem=64GB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/ntn-popularity-lmpo2_%J.out
-#BSUB -e logs/ntn-popularity-lmpo2_%J.err
+#BSUB -o logs/ntn-popularity_%J.out
+#BSUB -e logs/ntn-popularity_%J.err
 #BSUB -u nicci@dtu.dk
 
 export HOME=/zhome/6b/e/212868

@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_energy_efficiency_lmpo2.json --output-dir results/gtn_energy_efficiency
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_energy_efficiency.json --output-dir results/gtn_energy_efficiency

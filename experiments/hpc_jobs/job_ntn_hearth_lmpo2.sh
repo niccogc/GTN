@@ -1,13 +1,13 @@
 #!/bin/sh
 #BSUB -q gpuv100
-#BSUB -J ntn-hearth-lmpo2
+#BSUB -J ntn-hearth
 #BSUB -W 12:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -R "rusage[mem=32GB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/ntn-hearth-lmpo2_%J.out
-#BSUB -e logs/ntn-hearth-lmpo2_%J.err
+#BSUB -o logs/ntn-hearth_%J.out
+#BSUB -e logs/ntn-hearth_%J.err
 #BSUB -u nicci@dtu.dk
 
 export HOME=/zhome/6b/e/212868

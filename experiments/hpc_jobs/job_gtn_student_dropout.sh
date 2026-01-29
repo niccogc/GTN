@@ -19,4 +19,4 @@ set -a
 source $HOME/aim
 set +a
 
-python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_student_dropout_lmpo2.json --output-dir results/gtn_student_dropout
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_student_dropout.json --output-dir results/gtn_student_dropout

@@ -1,13 +1,13 @@
 #!/bin/sh
 #BSUB -q gpuv100
-#BSUB -J gtn-student-perf-lmpo2
+#BSUB -J gtn-student-perf
 #BSUB -W 12:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -R "rusage[mem=16GB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/gtn-student-perf-lmpo2_%J.out
-#BSUB -e logs/gtn-student-perf-lmpo2_%J.err
+#BSUB -o logs/gtn-student-perf_%J.out
+#BSUB -e logs/gtn-student-perf_%J.err
 #BSUB -u nicci@dtu.dk
 
 export HOME=/zhome/6b/e/212868

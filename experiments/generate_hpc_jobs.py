@@ -78,7 +78,10 @@ def generate_job_script(
 ) -> Path:
     with open(config_file) as f:
         config = json.load(f)
-
+    print(config_file)
+    append = ""
+    if config_file[-10:-5] == "lmpo2":
+        append = "_lmpo2"
     dataset = config["dataset"]
     experiment_name = config["experiment_name"]
     size = get_dataset_size(dataset)
@@ -99,7 +102,7 @@ def generate_job_script(
 
     extra_args = ""
     if is_gtn:
-        extra_args = f"--output-dir results/{experiment_name}"
+        extra_args = f"--output-dir results/{experiment_name}{append}"
 
     job_name = experiment_name.replace("_", "-")
 
@@ -114,7 +117,7 @@ def generate_job_script(
         extra_args=extra_args,
     )
 
-    script_name = f"job_{experiment_name}.sh"
+    script_name = f"job_{experiment_name}{append}.sh"
     script_path = output_dir / script_name
 
     with open(script_path, "w") as f:

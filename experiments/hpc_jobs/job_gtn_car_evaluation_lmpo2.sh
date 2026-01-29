@@ -1,13 +1,13 @@
 #!/bin/sh
 #BSUB -q gpuv100
-#BSUB -J gtn-car-evaluation-lmpo2
+#BSUB -J gtn-car-evaluation
 #BSUB -W 12:00
 #BSUB -n 8
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -R "rusage[mem=16GB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/gtn-car-evaluation-lmpo2_%J.out
-#BSUB -e logs/gtn-car-evaluation-lmpo2_%J.err
+#BSUB -o logs/gtn-car-evaluation_%J.out
+#BSUB -e logs/gtn-car-evaluation_%J.err
 #BSUB -u nicci@dtu.dk
 
 export HOME=/zhome/6b/e/212868
