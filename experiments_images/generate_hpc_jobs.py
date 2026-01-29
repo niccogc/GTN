@@ -17,15 +17,15 @@ DATASET_SIZES = {
 
 QUEUE_CONFIG = {
     "small": {"queue": "gpuv100", "time": "4:00", "mem": "16GB", "gpu": 1},
-    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "32GB", "gpu": 1},
-    "large": {"queue": "gpua100", "time": "24:00", "mem": "64GB", "gpu": 1},
+    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "1GB", "gpu": 1},
+    "large": {"queue": "gpua100", "time": "24:00", "mem": "1GB", "gpu": 1},
 }
 
 JOB_TEMPLATE = """#!/bin/sh
 #BSUB -q {queue}
 #BSUB -J {job_name}
 #BSUB -W {time}
-#BSUB -n 8
+#BSUB -n 4
 #BSUB -gpu "num={gpu}:mode=exclusive_process"
 #BSUB -R "rusage[mem={mem}]"
 #BSUB -R "span[hosts=1]"
