@@ -1,7 +1,7 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -J ntn-breast
-#BSUB -W 3:00
+#BSUB -W 6:00
 #BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -R "rusage[mem=8GB]"

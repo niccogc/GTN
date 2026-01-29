@@ -4,7 +4,7 @@
 #BSUB -W 12:00
 #BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=4GB]"
+#BSUB -R "rusage[mem=2GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-winequalityc_%J.out
 #BSUB -e logs/gtn-winequalityc_%J.err

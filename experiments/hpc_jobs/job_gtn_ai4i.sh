@@ -4,7 +4,7 @@
 #BSUB -W 24:00
 #BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=4GB]"
+#BSUB -R "rusage[mem=2GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-ai4i_%J.out
 #BSUB -e logs/gtn-ai4i_%J.err

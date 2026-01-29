@@ -35,9 +35,9 @@ DATASET_SIZES = {
 }
 
 QUEUE_CONFIG = {
-    "small": {"queue": "gpuv100", "time": "3:00", "mem": "4GB", "gpu": 1},
-    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "4GB", "gpu": 1},
-    "large": {"queue": "gpua100", "time": "24:00", "mem": "4GB", "gpu": 1},
+    "small": {"queue": "gpuv100", "time": "6:00", "mem": "2GB", "gpu": 1},
+    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "2GB", "gpu": 1},
+    "large": {"queue": "gpua100", "time": "24:00", "mem": "2GB", "gpu": 1},
 }
 
 JOB_TEMPLATE = """#!/bin/sh
@@ -98,11 +98,11 @@ def generate_job_script(
     # For NTN configs, double the memory allocation
     if not is_gtn:
         if size == "small":
-            mem = 2
-        elif size == "medium":
-            mem = 3
-        elif size == "large":
             mem = 4
+        elif size == "medium":
+            mem = 6
+        elif size == "large":
+            mem = 8
         mem_value = int(queue_config["mem"].replace("GB", ""))
         queue_config["mem"] = f"{mem_value * mem}GB"
 
