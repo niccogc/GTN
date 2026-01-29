@@ -4,7 +4,7 @@
 #BSUB -W 24:00
 #BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "rusage[mem=300MB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-bank_%J.out
 #BSUB -e logs/gtn-bank_%J.err

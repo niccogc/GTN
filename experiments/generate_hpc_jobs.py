@@ -35,9 +35,9 @@ DATASET_SIZES = {
 }
 
 QUEUE_CONFIG = {
-    "small": {"queue": "gpuv100", "time": "6:00", "mem": "1GB", "gpu": 1},
-    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "1GB", "gpu": 1},
-    "large": {"queue": "gpua100", "time": "24:00", "mem": "1GB", "gpu": 1},
+    "small": {"queue": "gpuv100", "time": "6:00", "mem": "300MB", "gpu": 1},
+    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "300MB", "gpu": 1},
+    "large": {"queue": "gpua100", "time": "24:00", "mem": "300MB", "gpu": 1},
 }
 
 JOB_TEMPLATE = """#!/bin/sh
@@ -94,10 +94,6 @@ def generate_job_script(
 
     is_gtn = "gtn" in config_file.lower()
     runner_script = "run_grid_search_gtn.py" if is_gtn else "run_grid_search.py"
-
-    # For NTN configs, double the memory allocation
-    mem_value = int(queue_config["mem"].replace("GB", ""))
-    queue_config["mem"] = f"{mem_value}GB"
 
     extra_args = ""
     if is_gtn:
