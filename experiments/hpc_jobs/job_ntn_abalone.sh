@@ -4,7 +4,7 @@
 #BSUB -W 24:00
 #BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=1GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/ntn-abalone_%J.out
 #BSUB -e logs/ntn-abalone_%J.err
