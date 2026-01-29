@@ -1,10 +1,10 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -J ntn-breast
-#BSUB -W 12:00
-#BSUB -n 8
+#BSUB -W 3:00
+#BSUB -n 1
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "rusage[mem=8GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/ntn-breast_%J.out
 #BSUB -e logs/ntn-breast_%J.err

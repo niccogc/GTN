@@ -2,9 +2,9 @@
 #BSUB -q gpua100
 #BSUB -J gtn-student-dropout
 #BSUB -W 24:00
-#BSUB -n 8
+#BSUB -n 1
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "rusage[mem=16GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-student-dropout_%J.out
 #BSUB -e logs/gtn-student-dropout_%J.err

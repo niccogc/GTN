@@ -2,9 +2,9 @@
 #BSUB -q gpuv100
 #BSUB -J gtn-winequalityc
 #BSUB -W 12:00
-#BSUB -n 8
+#BSUB -n 1
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=8GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-winequalityc_%J.out
 #BSUB -e logs/gtn-winequalityc_%J.err

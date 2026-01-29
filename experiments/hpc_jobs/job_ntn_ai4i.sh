@@ -2,9 +2,9 @@
 #BSUB -q gpua100
 #BSUB -J ntn-ai4i
 #BSUB -W 24:00
-#BSUB -n 8
+#BSUB -n 1
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=64GB]"
+#BSUB -R "rusage[mem=32GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/ntn-ai4i_%J.out
 #BSUB -e logs/ntn-ai4i_%J.err

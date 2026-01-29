@@ -11,10 +11,10 @@ import argparse
 from pathlib import Path
 
 DATASET_SIZES = {
-    "iris": "medium",
-    "wine": "medium",
-    "breast": "medium",
-    "hearth": "medium",
+    "iris": "small",
+    "wine": "small",
+    "breast": "small",
+    "hearth": "small",
     "car_evaluation": "medium",
     "student_perf": "medium",
     "realstate": "medium",
@@ -35,16 +35,16 @@ DATASET_SIZES = {
 }
 
 QUEUE_CONFIG = {
-    "small": {"queue": "gpuv100", "time": "3:00", "mem": "8GB", "gpu": 1},
-    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "16GB", "gpu": 1},
-    "large": {"queue": "gpua100", "time": "24:00", "mem": "32GB", "gpu": 1},
+    "small": {"queue": "gpuv100", "time": "3:00", "mem": "4GB", "gpu": 1},
+    "medium": {"queue": "gpuv100", "time": "12:00", "mem": "8GB", "gpu": 1},
+    "large": {"queue": "gpua100", "time": "24:00", "mem": "16GB", "gpu": 1},
 }
 
 JOB_TEMPLATE = """#!/bin/sh
 #BSUB -q {queue}
 #BSUB -J {job_name}
 #BSUB -W {time}
-#BSUB -n 8
+#BSUB -n 1
 #BSUB -gpu "num={gpu}:mode=exclusive_process"
 #BSUB -R "rusage[mem={mem}]"
 #BSUB -R "span[hosts=1]"

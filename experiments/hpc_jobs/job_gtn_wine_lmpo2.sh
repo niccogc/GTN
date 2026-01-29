@@ -1,10 +1,10 @@
 #!/bin/sh
 #BSUB -q gpuv100
 #BSUB -J gtn-wine
-#BSUB -W 12:00
-#BSUB -n 8
+#BSUB -W 3:00
+#BSUB -n 1
 #BSUB -gpu "num=1:mode=exclusive_process"
-#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "rusage[mem=4GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/gtn-wine_%J.out
 #BSUB -e logs/gtn-wine_%J.err
