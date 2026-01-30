@@ -1,0 +1,126 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 240
+Grid combinations: 48
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI', 'MMPO2', 'MMPO2TypeI'] (n=4)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+
+Fixed Parameters:
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+
+Example runs (first 5):
+  1. MPO2-L3-d8-jit5-seed42
+  2. MPO2-L3-d8-jit5-seed7
+  3. MPO2-L3-d8-jit5-seed123
+  4. MPO2-L3-d8-jit5-seed256
+  5. MPO2-L3-d8-jit5-seed999
+  ... (235 more)
+
+Loading dataset: bike...
+  Dataset: bike
+  Train: 12165 samples
+  Val: 2607 samples
+  Test: 2607 samples
+  Features: 12 (+1 bias = 12)
+  Task: regression
+  Device: cuda
+
+
+[1/240] Running: MPO2-L3-d8-jit5-seed42
+  AIM run started: d79a4728cb57485580eda983
+  AIM run finalized: d79a4728cb57485580eda983
+  Experiment log saved to: experiment_logs/ntn_bike_MPO2_L3_d8_j5_s42.json
+  ✓ Test: R²=0.4900 | Val: R²=0.5072
+
+[2/240] Running: MPO2-L3-d8-jit5-seed7
+  AIM run started: 49d2060b76d24b5b936b0730
+  AIM run finalized: 49d2060b76d24b5b936b0730
+  Experiment log saved to: experiment_logs/ntn_bike_MPO2_L3_d8_j5_s7.json
+  ✓ Test: R²=0.4900 | Val: R²=0.5071
+
+[3/240] Running: MPO2-L3-d8-jit5-seed123
+  AIM run started: 99ac1dc314114e99af716bf5
+  AIM run finalized: 99ac1dc314114e99af716bf5
+  Experiment log saved to: experiment_logs/ntn_bike_MPO2_L3_d8_j5_s123.json
+  ✓ Test: R²=0.4890 | Val: R²=0.5060
+
+[4/240] Running: MPO2-L3-d8-jit5-seed256
+  AIM run started: 2d82e8d94a0341bd87d72f35
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27708149: <ntn-bike> in cluster <dcc> Exited
+
+Job <ntn-bike> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 29 15:09:54 2026
+Job was executed on host(s) <4*n-62-20-10>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Thu Jan 29 21:17:27 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Jan 29 21:17:27 2026
+Terminated at Thu Jan 29 21:18:29 2026
+Results reported at Thu Jan 29 21:18:29 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-bike
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=300MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-bike_%J.out
+#BSUB -e logs/ntn-bike_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_bike.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   19.00 sec.
+    Max Memory :                                 406 MB
+    Average Memory :                             406.00 MB
+    Total Requested Memory :                     1200.00 MB
+    Delta Memory :                               794.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   90 sec.
+    Turnaround time :                            22115 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-bike_27708149.err> for stderr output of this job.
+

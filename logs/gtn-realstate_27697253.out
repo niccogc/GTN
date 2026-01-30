@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27697253: <gtn-realstate> in cluster <dcc> Exited
+
+Job <gtn-realstate> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Jan 27 14:46:04 2026
+Job was executed on host(s) <8*n-62-20-15>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Wed Jan 28 17:51:19 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Wed Jan 28 17:51:19 2026
+Terminated at Thu Jan 29 05:52:05 2026
+Results reported at Thu Jan 29 05:52:05 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-realstate
+#BSUB -W 12:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-realstate_%J.out
+#BSUB -e logs/gtn-realstate_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_realstate_lmpo2.json --output-dir results/gtn_realstate
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   5535.00 sec.
+    Max Memory :                                 898 MB
+    Average Memory :                             867.97 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               130174.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                15
+    Run time :                                   43246 sec.
+    Turnaround time :                            140761 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-realstate_27697253.err> for stderr output of this job.
+

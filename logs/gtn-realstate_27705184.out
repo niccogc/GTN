@@ -1,0 +1,122 @@
+
+Loading dataset: realstate
+  Task: regression
+  Train: 289 samples
+  Val: 62 samples
+  Test: 63 samples
+  Input dim: 6
+  Output dim: 1
+  Device: cuda
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 240
+Grid combinations: 48
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI_GTN', 'MMPO2', 'MMPO2TypeI_GTN'] (n=4)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  lr: [0.001, 0.0001] (n=2)
+
+Fixed Parameters:
+  batch_size: 64
+  n_epochs: 1000
+  patience: 40
+  min_delta: 1e-08
+  optimizer: adamw
+  init_strength: 0.01
+
+Example runs (first 5):
+  1. MPO2-L3-d8-seed42
+  2. MPO2-L3-d8-seed7
+  3. MPO2-L3-d8-seed123
+  4. MPO2-L3-d8-seed256
+  5. MPO2-L3-d8-seed999
+  ... (235 more)
+
+
+[1/240] Running: MPO2-L3-d8-seed42
+  AIM run started: d739db73bd3145a7bc507094
+  ✓ SUCCESS: Test R²=-2.5881
+
+[2/240] Running: MPO2-L3-d8-seed7
+  AIM run started: 533bb7b803c3467a950bef43
+  ✓ SUCCESS: Test R²=-6.8953
+
+[3/240] Running: MPO2-L3-d8-seed123
+  AIM run started: b5931c56145b4e02b88f1457
+  ✓ SUCCESS: Test R²=-4.3690
+
+[4/240] Running: MPO2-L3-d8-seed256
+  AIM run started: 37fd48c1731a4ee19b554361
+  ✓ SUCCESS: Test R²=-5.0480
+
+[5/240] Running: MPO2-L3-d8-seed999
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27705184: <gtn-realstate> in cluster <dcc> Exited
+
+Job <gtn-realstate> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 29 08:39:40 2026
+Job was executed on host(s) <8*n-62-20-10>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Thu Jan 29 14:19:48 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Jan 29 14:19:48 2026
+Terminated at Thu Jan 29 14:36:39 2026
+Results reported at Thu Jan 29 14:36:39 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-realstate
+#BSUB -W 12:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=16GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-realstate_%J.out
+#BSUB -e logs/gtn-realstate_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_realstate.json --output-dir results/gtn_realstate
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   94.00 sec.
+    Max Memory :                                 845 MB
+    Average Memory :                             791.22 MB
+    Total Requested Memory :                     131072.00 MB
+    Delta Memory :                               130227.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                16
+    Run time :                                   1039 sec.
+    Turnaround time :                            21419 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-realstate_27705184.err> for stderr output of this job.
+

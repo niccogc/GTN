@@ -1,0 +1,139 @@
+
+Loading dataset: appliances
+  Task: regression
+  Train: 13814 samples
+  Val: 2960 samples
+  Test: 2961 samples
+  Input dim: 27
+  Output dim: 1
+  Device: cuda
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 240
+Grid combinations: 48
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI_GTN', 'MMPO2', 'MMPO2TypeI_GTN'] (n=4)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  lr: [0.001, 0.0001] (n=2)
+
+Fixed Parameters:
+  batch_size: 64
+  n_epochs: 1000
+  patience: 40
+  min_delta: 1e-08
+  optimizer: adamw
+  init_strength: 0.01
+
+Example runs (first 5):
+  1. MPO2-L3-d8-seed42
+  2. MPO2-L3-d8-seed7
+  3. MPO2-L3-d8-seed123
+  4. MPO2-L3-d8-seed256
+  5. MPO2-L3-d8-seed999
+  ... (235 more)
+
+
+[1/240] Running: MPO2-L3-d8-seed42
+  AIM run started: f6ddbb219e964a9fa9843a8a
+  ✓ SUCCESS: Test R²=0.2580
+
+[2/240] Running: MPO2-L3-d8-seed7
+  AIM run started: 96bea54889cf4afb8ada5a47
+  ✓ SUCCESS: Test R²=0.2601
+
+[3/240] Running: MPO2-L3-d8-seed123
+  AIM run started: f28579c53cdb4239ae383a88
+  ✓ SUCCESS: Test R²=0.2446
+
+[4/240] Running: MPO2-L3-d8-seed256
+  AIM run started: 854b68a0354c44348ffc405b
+  ✓ SUCCESS: Test R²=0.2632
+
+[5/240] Running: MPO2-L3-d8-seed999
+  AIM run started: c60f18cc748f4bcfb22557eb
+  ✓ SUCCESS: Test R²=0.2549
+
+[11/240] Running: MPO2-L3-d12-seed42
+  AIM run started: e3226bd046ba4dc6a27ec95a
+  ✓ SUCCESS: Test R²=0.3121
+
+[12/240] Running: MPO2-L3-d12-seed7
+  AIM run started: 0c9b7e41776847809bc0921a
+  ✓ SUCCESS: Test R²=0.3131
+
+[13/240] Running: MPO2-L3-d12-seed123
+  AIM run started: dccc93d968ae4276a0611a46
+  ✓ SUCCESS: Test R²=0.3177
+
+[14/240] Running: MPO2-L3-d12-seed256
+  AIM run started: 150c6fda84be474a8d8cd9b1
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27705160: <gtn-appliances> in cluster <dcc> Exited
+
+Job <gtn-appliances> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 29 08:39:34 2026
+Job was executed on host(s) <8*n-62-18-11>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Thu Jan 29 12:44:44 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Jan 29 12:44:44 2026
+Terminated at Thu Jan 29 14:36:36 2026
+Results reported at Thu Jan 29 14:36:36 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J gtn-appliances
+#BSUB -W 24:00
+#BSUB -n 8
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=32GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-appliances_%J.out
+#BSUB -e logs/gtn-appliances_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_appliances.json --output-dir results/gtn_appliances
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   6685.44 sec.
+    Max Memory :                                 824 MB
+    Average Memory :                             796.96 MB
+    Total Requested Memory :                     262144.00 MB
+    Delta Memory :                               261320.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                15
+    Run time :                                   6803 sec.
+    Turnaround time :                            21422 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-appliances_27705160.err> for stderr output of this job.
+

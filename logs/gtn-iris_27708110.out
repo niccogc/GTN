@@ -1,0 +1,67 @@
+Grid search already complete. Found .complete file in results/gtn_iris_lmpo2
+Delete .complete file to re-run experiments.
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27708110: <gtn-iris> in cluster <dcc> Done
+
+Job <gtn-iris> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 29 15:09:44 2026
+Job was executed on host(s) <4*n-62-20-4>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Thu Jan 29 16:28:07 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Jan 29 16:28:07 2026
+Terminated at Thu Jan 29 16:28:35 2026
+Results reported at Thu Jan 29 16:28:35 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-iris
+#BSUB -W 6:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=300MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-iris_%J.out
+#BSUB -e logs/gtn-iris_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_iris_lmpo2.json --output-dir results/gtn_iris_lmpo2
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   4.60 sec.
+    Max Memory :                                 409 MB
+    Average Memory :                             409.00 MB
+    Total Requested Memory :                     1200.00 MB
+    Delta Memory :                               791.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                6
+    Run time :                                   65 sec.
+    Turnaround time :                            4731 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-iris_27708110.err> for stderr output of this job.
+

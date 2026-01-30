@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27708170: <ntn-realstate> in cluster <dcc> Exited
+
+Job <ntn-realstate> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 29 15:10:00 2026
+Job was executed on host(s) <4*n-62-20-12>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Thu Jan 29 21:48:35 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Jan 29 21:48:35 2026
+Terminated at Thu Jan 29 21:55:13 2026
+Results reported at Thu Jan 29 21:55:13 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-realstate
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=300MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-realstate_%J.out
+#BSUB -e logs/ntn-realstate_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_realstate_lmpo2.json 
+
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   55.00 sec.
+    Max Memory :                                 1200 MB
+    Average Memory :                             942.20 MB
+    Total Requested Memory :                     1200.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                16
+    Run time :                                   416 sec.
+    Turnaround time :                            24313 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-realstate_27708170.err> for stderr output of this job.
+
