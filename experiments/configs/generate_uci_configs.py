@@ -48,7 +48,6 @@ HIGH_FEATURE_DATASETS = [
     "ai4i",
 ]
 
-
 def create_ntn_base_config(dataset_name: str, task: str, include_mmpo2: bool = True) -> dict:
     models = ["MPO2", "MPO2TypeI"]
     if include_mmpo2:

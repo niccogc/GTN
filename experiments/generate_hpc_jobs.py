@@ -40,6 +40,9 @@ QUEUE_CONFIG = {
     "large": {"queue": "gpua100", "time": "24:00", "mem": "300MB", "gpu": 1},
 }
 
+GTN_COMPLETE = ["abalone", "ai4i", "hearth", "winequalityc", "student_perf", "concrete", "breast", "car_evaluation", "realstate", "energy_efficiency"]
+NTN_COMPLETE = []
+
 JOB_TEMPLATE = """#!/bin/sh
 #BSUB -q {queue}
 #BSUB -J {job_name}
@@ -78,7 +81,6 @@ def generate_job_script(
 ) -> Path:
     with open(config_file) as f:
         config = json.load(f)
-    print(config_file)
     append = ""
     if config_file[-10:-5] == "lmpo2":
         append = "_lmpo2"
@@ -87,12 +89,20 @@ def generate_job_script(
     size = get_dataset_size(dataset)
     queue_config = QUEUE_CONFIG[size].copy()
 
+    is_gtn = "gtn" in config_file.lower()
+    bhu = "gtn" if is_gtn else "ntn"
+    if is_gtn:
+        completed = (dataset in GTN_COMPLETE)
+    else:
+        completed = (dataset in NTN_COMPLETE)
+    if completed:
+        print(f"{dataset} has been skipped for {bhu}")
+        return output_dir
     if queue_override:
         queue_config["queue"] = queue_override
     if time_override:
         queue_config["time"] = time_override
 
-    is_gtn = "gtn" in config_file.lower()
     runner_script = "run_grid_search_gtn.py" if is_gtn else "run_grid_search.py"
 
     extra_args = ""
@@ -155,8 +165,9 @@ def main():
             args.queue,
             args.time,
         )
-        scripts.append(script_path)
-        print(f"  Created: {script_path.name}")
+        if script_path != output_dir:
+            scripts.append(script_path)
+            print(f"  Created: {script_path.name}")
 
     submit_all = output_dir / "submit_all.sh"
     with open(submit_all, "w") as f:
