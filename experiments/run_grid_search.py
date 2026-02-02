@@ -520,8 +520,13 @@ def main():
 
         if result["success"]:
             quality_name = "R²" if experiment["task"] == "regression" else "Acc"
+            test_q = result["test_quality"]
+            val_q = result["val_quality"]
+            test_str = f"{test_q:.4f}" if test_q is not None else "N/A"
+            val_str = f"{val_q:.4f}" if val_q is not None else "N/A"
+            singular_marker = " (singular)" if result.get("singular") else ""
             print(
-                f"  ✓ Test: {quality_name}={result['test_quality']:.4f} | Val: {quality_name}={result['val_quality']:.4f}"
+                f"  ✓ Test: {quality_name}={test_str} | Val: {quality_name}={val_str}{singular_marker}"
             )
         else:
             error_msg = result.get("error", "Unknown error")
@@ -548,14 +553,20 @@ def main():
     if successful_results:
         quality_name = "R²" if config.get("task", "regression") == "regression" else "Accuracy"
 
-        results_sorted = sorted(successful_results, key=lambda x: x["test_quality"], reverse=True)
+        sortable_results = [r for r in successful_results if r["test_quality"] is not None]
+        results_sorted = sorted(sortable_results, key=lambda x: x["test_quality"], reverse=True)
 
         print(f"Top 5 Runs (by test {quality_name}):")
         print()
         for i, result in enumerate(results_sorted[:5]):
-            print(f"{i + 1}. {result['run_id']}")
-            print(f"   Test {quality_name}: {result['test_quality']:.4f}")
-            print(f"   Val {quality_name}: {result['val_quality']:.4f}")
+            test_q = result["test_quality"]
+            val_q = result["val_quality"]
+            test_str = f"{test_q:.4f}" if test_q is not None else "N/A"
+            val_str = f"{val_q:.4f}" if val_q is not None else "N/A"
+            singular_marker = " (singular)" if result.get("singular") else ""
+            print(f"{i + 1}. {result['run_id']}{singular_marker}")
+            print(f"   Test {quality_name}: {test_str}")
+            print(f"   Val {quality_name}: {val_str}")
             print(f"   Params: {result['grid_params']}")
             print()
     elif len(results) == 0:
