@@ -85,11 +85,11 @@ def generate_job_script(
     if config_file[-10:-5] == "lmpo2":
         append = "_lmpo2"
     dataset = config["dataset"]
+    is_gtn = "gtn" in config_file.lower()
     experiment_name = config["experiment_name"]
-    size = get_dataset_size(dataset)
+    size = get_dataset_size(dataset) if is_gtn else "large"
     queue_config = QUEUE_CONFIG[size].copy()
 
-    is_gtn = "gtn" in config_file.lower()
     bhu = "gtn" if is_gtn else "ntn"
     if is_gtn:
         completed = (dataset in GTN_COMPLETE)
