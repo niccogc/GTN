@@ -38,7 +38,6 @@ MIN_DELTA = 1e-6
 def run_mpo2(data, input_dim, bond_dim, seed):
     torch.manual_seed(seed)
     np.random.seed(seed)
-
     model = MPO2(L=3, bond_dim=bond_dim, phys_dim=input_dim, output_dim=1)
     n_params = sum(t.size for t in model.tn.tensors)
 
@@ -146,6 +145,7 @@ def main():
     max_rank = 10
     seed = 42
 
+    print(DEVICE)
     print("=" * 70)
     print(f"MPO2 vs PartitionRank3 Comparison on '{dataset_name}'")
     print("=" * 70)
