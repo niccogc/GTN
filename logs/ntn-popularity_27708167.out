@@ -1,0 +1,120 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 120
+Grid combinations: 24
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+
+Fixed Parameters:
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+
+Example runs (first 5):
+  1. MPO2-L3-d8-jit5-seed42
+  2. MPO2-L3-d8-jit5-seed7
+  3. MPO2-L3-d8-jit5-seed123
+  4. MPO2-L3-d8-jit5-seed256
+  5. MPO2-L3-d8-jit5-seed999
+  ... (115 more)
+
+Loading dataset: popularity...
+  Dataset: popularity
+  Train: 27750 samples
+  Val: 5947 samples
+  Test: 5947 samples
+  Features: 58 (+1 bias = 58)
+  Task: regression
+  Device: cuda
+
+
+[1/120] Running: MPO2-L3-d8-jit5-seed42
+  AIM run started: 9add31ae46a049d285af9df1
+  AIM run finalized: 9add31ae46a049d285af9df1
+  Experiment log saved to: experiment_logs/ntn_popularity_MPO2_L3_d8_j5_s42.json
+  ✗ FAILED: Unknown error
+
+[2/120] Running: MPO2-L3-d8-jit5-seed7
+  AIM run started: 93ae4c6dc9eb4a65a8884bb8
+  AIM run finalized: 93ae4c6dc9eb4a65a8884bb8
+  Experiment log saved to: experiment_logs/ntn_popularity_MPO2_L3_d8_j5_s7.json
+  ✗ FAILED: Unknown error
+
+[3/120] Running: MPO2-L3-d8-jit5-seed123
+  AIM run started: b8b4bf811c974b98a7023b45
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27708167: <ntn-popularity> in cluster <dcc> Exited
+
+Job <ntn-popularity> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 29 15:09:59 2026
+Job was executed on host(s) <4*n-62-18-9>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Mon Feb  2 07:15:26 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon Feb  2 07:15:26 2026
+Terminated at Mon Feb  2 07:15:57 2026
+Results reported at Mon Feb  2 07:15:57 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J ntn-popularity
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=300MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-popularity_%J.out
+#BSUB -e logs/ntn-popularity_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_popularity.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   11.50 sec.
+    Max Memory :                                 539 MB
+    Average Memory :                             539.00 MB
+    Total Requested Memory :                     1200.00 MB
+    Delta Memory :                               661.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   36 sec.
+    Turnaround time :                            317158 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-popularity_27708167.err> for stderr output of this job.
+

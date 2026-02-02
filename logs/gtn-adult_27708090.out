@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27708090: <gtn-adult> in cluster <dcc> Exited
+
+Job <gtn-adult> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Jan 29 15:09:38 2026
+Job was executed on host(s) <4*n-62-12-21>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Thu Jan 29 15:09:46 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Jan 29 15:09:46 2026
+Terminated at Fri Jan 30 15:11:43 2026
+Results reported at Fri Jan 30 15:11:43 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J gtn-adult
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=300MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-adult_%J.out
+#BSUB -e logs/gtn-adult_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_adult_lmpo2.json --output-dir results/gtn_adult_lmpo2
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   86430.00 sec.
+    Max Memory :                                 934 MB
+    Average Memory :                             918.25 MB
+    Total Requested Memory :                     1200.00 MB
+    Delta Memory :                               266.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                16
+    Run time :                                   86517 sec.
+    Turnaround time :                            86525 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-adult_27708090.err> for stderr output of this job.
+
