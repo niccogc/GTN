@@ -22,6 +22,8 @@ from model.utils import REGRESSION_METRICS, compute_quality, create_inputs
 from model.standard import MPO2
 from model.partition_rank import PartitionRank3
 
+from experiments.device_utils import DEVICE, move_tn_to_device, move_data_to_device
+
 torch.set_default_dtype(torch.float64)
 
 JITTER_START = 5.0
@@ -39,6 +41,9 @@ def run_mpo2(data, input_dim, bond_dim, seed):
 
     model = MPO2(L=3, bond_dim=bond_dim, phys_dim=input_dim, output_dim=1)
     n_params = sum(t.size for t in model.tn.tensors)
+
+    move_tn_to_device(model.tn)
+    data = move_data_to_device(data)
 
     loader_train = create_inputs(
         X=data["X_train"],
@@ -96,7 +101,9 @@ def run_partition_rank(data, input_dim, partition_rank, seed):
 
     model = PartitionRank3(phys_dim=input_dim, output_dim=1, partition_rank=partition_rank)
     n_params = model.count_parameters()
-
+    for tn in model.tns:
+        move_tn_to_device(tn)
+    data = move_data_to_device(data)
     ntn = NTN_Ensemble(
         tns=model.tns,
         input_dims_list=model.input_dims_list,
