@@ -1,37 +1,46 @@
 import torch
-from ucimlrepo import fetch_ucirepo 
+from ucimlrepo import fetch_ucirepo
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import QuantileTransformer, StandardScaler
 
+# NOTE: obesity (544) has categorical target but UCI lists it as Classification/Regression/Clustering.
+# We use it as ordinal regression (category codes 0-6).
+# NOTE: seoulBike (560) has wrong target in UCI metadata ("Functioning Day" instead of "Rented Bike Count").
+# We fix this via DATASETS_WITH_TARGET_FIX.
 datasets = [
-  ('student_perf', 320, 'regression'),
-  ('abalone', 1, 'regression'),
-  ('obesity', 544, 'regression'),
-  ('bike', 275, 'regression'),
-  ('realstate', 477, 'regression'),
-  ('energy_efficiency', 242, 'regression'),
-  ('concrete', 165, 'regression'),
-  ('ai4i', 601, 'regression'),
-  ('appliances', 374, 'regression'),
-  ('popularity', 332, 'regression'),
-  ('iris', 53, 'classification'),
-  ('hearth', 45, 'classification'),
-  ('winequalityc', 186, 'classification'),
-  ('breast', 17, 'classification'),
-  ('adult', 2, 'classification'),
-  ('bank', 222, 'classification'),
-  ('wine', 109, 'classification'),
-  ('car_evaluation', 19, 'classification'),
-  ('student_dropout', 697, 'classification'),
-  ('mushrooms', 73, 'classification'),
-  ('seoulBike', 560, 'regression'),
+    ("student_perf", 320, "regression"),
+    ("abalone", 1, "regression"),
+    ("obesity", 544, "regression"),
+    ("bike", 275, "regression"),
+    ("realstate", 477, "regression"),
+    ("energy_efficiency", 242, "regression"),
+    ("concrete", 165, "regression"),
+    ("ai4i", 601, "regression"),
+    ("appliances", 374, "regression"),
+    ("popularity", 332, "regression"),
+    ("iris", 53, "classification"),
+    ("hearth", 45, "classification"),
+    ("winequalityc", 186, "classification"),
+    ("breast", 17, "classification"),
+    ("adult", 2, "classification"),
+    ("bank", 222, "classification"),
+    ("wine", 109, "classification"),
+    ("car_evaluation", 19, "classification"),
+    ("student_dropout", 697, "classification"),
+    ("mushrooms", 73, "classification"),
+    ("seoulBike", 560, "regression"),
 ]
+
+DATASETS_WITH_TARGET_FIX = {
+    560: "Rented Bike Count",
+}
+
 
 def one_hot_with_cap(X, cap=100):
     # Separate numeric and categorical
-    num_X = X.select_dtypes(exclude=['object', 'category'])
-    cat_cols = X.select_dtypes(include=['object', 'category']).columns.tolist()
+    num_X = X.select_dtypes(exclude=["object", "category"])
+    cat_cols = X.select_dtypes(include=["object", "category"]).columns.tolist()
 
     # How many feature slots are available for one-hot columns
     available = cap - num_X.shape[1]
@@ -76,15 +85,18 @@ def one_hot_with_cap(X, cap=100):
 
     return out, num_X.columns.tolist(), dummy_cols
 
-def get_ucidata(dataset_id, task, device='cuda', cap=50):
-    # fetch dataset
+
+def get_ucidata(dataset_id, task, device="cuda", cap=50):
     dataset = fetch_ucirepo(id=dataset_id)
 
-    # data (as pandas dataframes)
     X = dataset.data.features
     y = dataset.data.targets
 
-    # Drop columns with missing values dynamically
+    if dataset_id in DATASETS_WITH_TARGET_FIX:
+        target_col = DATASETS_WITH_TARGET_FIX[dataset_id]
+        y = X[[target_col]]
+        X = X.drop(columns=[target_col])
+
     X = X.dropna(axis=1)
 
     # One-hot with bookkeeping of which columns are numeric vs one-hot
@@ -93,20 +105,24 @@ def get_ucidata(dataset_id, task, device='cuda', cap=50):
     # If y is categorical, convert to category codes
     if isinstance(y, pd.DataFrame):
         y = y.iloc[:, 0]
-    if y.dtype == 'object' or y.dtype.name == 'category':
-        y = y.astype('category').cat.codes
+    if y.dtype == "object" or y.dtype.name == "category":
+        y = y.astype("category").cat.codes
 
     # Baseline the categories to be 0, 1, ..., num_classes-1
-    if task == 'classification':
+    if task == "classification":
         class_dict = {old: new for new, old in enumerate(sorted(y.unique()))}
         y = y.map(class_dict)
 
     # Split into train, val, test on the already encoded features
-    X_train_df, X_temp_df, y_train, y_temp = train_test_split(X_all, y, test_size=0.3, random_state=42)
-    X_val_df, X_test_df, y_val, y_test = train_test_split(X_temp_df, y_temp, test_size=0.5, random_state=42)
+    X_train_df, X_temp_df, y_train, y_temp = train_test_split(
+        X_all, y, test_size=0.3, random_state=42
+    )
+    X_val_df, X_test_df, y_val, y_test = train_test_split(
+        X_temp_df, y_temp, test_size=0.5, random_state=42
+    )
 
     # Fit StandardScaler on training numeric columns only
-    scaler = StandardScaler()#
+    scaler = StandardScaler()  #
     # Some datasets may have zero numeric columns after preprocessing
     if len(orig_num_cols) > 0:
         scaler.fit(X_train_df[orig_num_cols])
@@ -123,12 +139,18 @@ def get_ucidata(dataset_id, task, device='cuda', cap=50):
 
     # Convert to tensors
     X_train = torch.tensor(X_train_df.values, dtype=torch.float64, device=device)
-    y_train = torch.tensor(y_train.values, dtype=torch.float64 if task == 'regression' else torch.long, device=device)
+    y_train = torch.tensor(
+        y_train.values, dtype=torch.float64 if task == "regression" else torch.long, device=device
+    )
 
     X_val = torch.tensor(X_val_df.values, dtype=torch.float64, device=device)
-    y_val = torch.tensor(y_val.values, dtype=torch.float64 if task == 'regression' else torch.long, device=device)
+    y_val = torch.tensor(
+        y_val.values, dtype=torch.float64 if task == "regression" else torch.long, device=device
+    )
 
     X_test = torch.tensor(X_test_df.values, dtype=torch.float64, device=device)
-    y_test = torch.tensor(y_test.values, dtype=torch.float64 if task == 'regression' else torch.long, device=device)
+    y_test = torch.tensor(
+        y_test.values, dtype=torch.float64 if task == "regression" else torch.long, device=device
+    )
 
     return X_train, y_train, X_val, y_val, X_test, y_test
