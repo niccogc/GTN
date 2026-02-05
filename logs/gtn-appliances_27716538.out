@@ -1,0 +1,181 @@
+
+Loading dataset: appliances
+  Task: regression
+  Train: 13814 samples
+  Val: 2960 samples
+  Test: 2961 samples
+  Input dim: 27
+  Output dim: 1
+  Device: cuda
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 360
+Grid combinations: 72
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['LMPO2', 'LMPO2TypeI_GTN'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  lr: [0.001, 0.0001] (n=2)
+  reduction_factor: [0.1, 0.3, 0.5] (n=3)
+
+Fixed Parameters:
+  batch_size: 64
+  n_epochs: 1000
+  patience: 40
+  min_delta: 1e-08
+  optimizer: adamw
+  init_strength: 0.01
+  bond_dim_mpo: 2
+
+Example runs (first 5):
+  1. LMPO2-L3-d8-rf0.1-seed42
+  2. LMPO2-L3-d8-rf0.1-seed7
+  3. LMPO2-L3-d8-rf0.1-seed123
+  4. LMPO2-L3-d8-rf0.1-seed256
+  5. LMPO2-L3-d8-rf0.1-seed999
+  ... (355 more)
+
+
+[337/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.3-seed7
+  AIM run started: d4a8f97afb794841abc553f8
+  ✓ SUCCESS: Test R²=0.3696
+
+[338/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.3-seed123
+  AIM run started: 37b0c4783aac4a18835c20dc
+  ✓ SUCCESS: Test R²=0.3753
+
+[339/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.3-seed256
+  AIM run started: f90a38ef271b4854b7d514b1
+  ✓ SUCCESS: Test R²=0.4232
+
+[340/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.3-seed999
+  AIM run started: 97895015ec8241c698b6a58e
+  ✓ SUCCESS: Test R²=0.4131
+
+[341/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.5-seed42
+  AIM run started: cb6ac7ff6245487d862c921d
+  ✓ SUCCESS: Test R²=0.3816
+
+[342/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.5-seed7
+  AIM run started: 8c40e17367f8470fbeb1611d
+  ✓ SUCCESS: Test R²=0.4076
+
+[343/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.5-seed123
+  AIM run started: e5cf4fac79084a19b0a813aa
+  ✓ SUCCESS: Test R²=0.4232
+
+[344/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.5-seed256
+  AIM run started: acb2fe7deb3e42ea8fe9f576
+  ✓ SUCCESS: Test R²=0.4199
+
+[345/360] Running: LMPO2TypeI_GTN-L4-d16-rf0.5-seed999
+  AIM run started: c4afc8d8b4f0437f853f4bf3
+  ✓ SUCCESS: Test R²=0.4004
+
+======================================================================
+GRID SEARCH SUMMARY
+======================================================================
+Total runs: 360
+Completed: 9
+Skipped: 351
+Failed: 0
+Time: 13476.8s (37.4s per run)
+
+Top 5 Configurations by Test R²:
+
+1. LMPO2TypeI_GTN-L4-d16-rf0.5-seed123
+   Test R²: 0.42
+   Model: LMPO2TypeI_GTN, Seed: 123
+   Key params: bond_dim=16, lr=0.001, wd=0
+
+2. LMPO2TypeI_GTN-L4-d16-rf0.3-seed256
+   Test R²: 0.42
+   Model: LMPO2TypeI_GTN, Seed: 256
+   Key params: bond_dim=16, lr=0.001, wd=0
+
+3. LMPO2TypeI_GTN-L4-d16-rf0.5-seed256
+   Test R²: 0.42
+   Model: LMPO2TypeI_GTN, Seed: 256
+   Key params: bond_dim=16, lr=0.001, wd=0
+
+4. LMPO2TypeI_GTN-L4-d16-rf0.3-seed999
+   Test R²: 0.41
+   Model: LMPO2TypeI_GTN, Seed: 999
+   Key params: bond_dim=16, lr=0.001, wd=0
+
+5. LMPO2TypeI_GTN-L4-d16-rf0.5-seed7
+   Test R²: 0.41
+   Model: LMPO2TypeI_GTN, Seed: 7
+   Key params: bond_dim=16, lr=0.001, wd=0
+
+Summary saved to: results/gtn_appliances_lmpo2/summary.json
+Grid search complete. Marked as .complete
+======================================================================
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27716538: <gtn-appliances> in cluster <dcc> Done
+
+Job <gtn-appliances> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon Feb  2 09:45:07 2026
+Job was executed on host(s) <4*n-62-18-8>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Tue Feb  3 08:54:04 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Feb  3 08:54:04 2026
+Terminated at Tue Feb  3 12:39:07 2026
+Results reported at Tue Feb  3 12:39:07 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J gtn-appliances
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-appliances_%J.out
+#BSUB -e logs/gtn-appliances_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_appliances_lmpo2.json --output-dir results/gtn_appliances_lmpo2
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   13452.22 sec.
+    Max Memory :                                 871 MB
+    Average Memory :                             860.93 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               1129.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                16
+    Run time :                                   13505 sec.
+    Turnaround time :                            96840 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-appliances_27716538.err> for stderr output of this job.
+

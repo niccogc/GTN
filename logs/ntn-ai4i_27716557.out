@@ -1,0 +1,126 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 120
+Grid combinations: 24
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+
+Fixed Parameters:
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+
+Example runs (first 5):
+  1. MPO2-L3-d8-jit5-seed42
+  2. MPO2-L3-d8-jit5-seed7
+  3. MPO2-L3-d8-jit5-seed123
+  4. MPO2-L3-d8-jit5-seed256
+  5. MPO2-L3-d8-jit5-seed999
+  ... (115 more)
+
+Loading dataset: ai4i...
+  Dataset: ai4i
+  Train: 7000 samples
+  Val: 1500 samples
+  Test: 1500 samples
+  Features: 9 (+1 bias = 9)
+  Task: regression
+  Device: cuda
+
+
+[21/120] Running: MPO2-L3-d16-jit5-seed42
+  AIM run started: 7fe4a059654f42a0aa462e49
+  AIM run finalized: 7fe4a059654f42a0aa462e49
+  Experiment log saved to: experiment_logs/ntn_ai4i_MPO2_L3_d16_j5_s42.json
+  ✓ Test: R²=0.4020 | Val: R²=0.3582
+
+[22/120] Running: MPO2-L3-d16-jit5-seed7
+  AIM run started: 43c7cc443178493f94318c25
+  AIM run finalized: 43c7cc443178493f94318c25
+  Experiment log saved to: experiment_logs/ntn_ai4i_MPO2_L3_d16_j5_s7.json
+  ✓ Test: R²=0.4133 | Val: R²=0.3518
+
+[23/120] Running: MPO2-L3-d16-jit5-seed123
+  AIM run started: 2f34fb74ccc8451c86a6460a
+  AIM run finalized: 2f34fb74ccc8451c86a6460a
+  Experiment log saved to: experiment_logs/ntn_ai4i_MPO2_L3_d16_j5_s123.json
+  ✓ Test: R²=0.4137 | Val: R²=0.3496
+
+[24/120] Running: MPO2-L3-d16-jit5-seed256
+  AIM run started: 7b4a93e8d59544cdbeb9d583
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27716557: <ntn-ai4i> in cluster <dcc> Exited
+
+Job <ntn-ai4i> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon Feb  2 09:45:12 2026
+Job was executed on host(s) <4*n-62-12-23>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Wed Feb  4 03:51:58 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Wed Feb  4 03:51:58 2026
+Terminated at Wed Feb  4 03:52:36 2026
+Results reported at Wed Feb  4 03:52:36 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J ntn-ai4i
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-ai4i_%J.out
+#BSUB -e logs/ntn-ai4i_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_ai4i.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   11.01 sec.
+    Max Memory :                                 776 MB
+    Average Memory :                             776.00 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               1224.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                14
+    Run time :                                   66 sec.
+    Turnaround time :                            151644 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-ai4i_27716557.err> for stderr output of this job.
+
