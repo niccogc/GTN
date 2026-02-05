@@ -93,8 +93,6 @@ def generate_job_script(
     experiment_name = config["experiment_name"]
     size = get_dataset_size(dataset) if is_gtn else "large"
     queue_config = QUEUE_CONFIG[size].copy()
-    if not is_gtn:
-        queue_config["queue"] = "p1"
 
     full_experiment_name = f"{experiment_name}{append}"
     if is_experiment_complete(full_experiment_name, results_dir):

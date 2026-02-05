@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q p1
+#BSUB -q gpua100
 #BSUB -J ntn-mushrooms
 #BSUB -W 24:00
 #BSUB -n 4
