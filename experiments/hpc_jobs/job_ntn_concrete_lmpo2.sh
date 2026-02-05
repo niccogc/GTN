@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q gpua100
+#BSUB -q p1
 #BSUB -J ntn-concrete
 #BSUB -W 24:00
 #BSUB -n 4

@@ -3,24 +3,13 @@
 
 mkdir -p logs
 
-bsub < experiments/hpc_jobs/job_gtn_adult.sh
 bsub < experiments/hpc_jobs/job_gtn_adult_lmpo2.sh
-bsub < experiments/hpc_jobs/job_gtn_appliances.sh
-bsub < experiments/hpc_jobs/job_gtn_appliances_lmpo2.sh
-bsub < experiments/hpc_jobs/job_gtn_bank.sh
 bsub < experiments/hpc_jobs/job_gtn_bank_lmpo2.sh
-bsub < experiments/hpc_jobs/job_gtn_bike.sh
-bsub < experiments/hpc_jobs/job_gtn_bike_lmpo2.sh
-bsub < experiments/hpc_jobs/job_gtn_iris.sh
-bsub < experiments/hpc_jobs/job_gtn_iris_lmpo2.sh
 bsub < experiments/hpc_jobs/job_gtn_obesity.sh
 bsub < experiments/hpc_jobs/job_gtn_obesity_lmpo2.sh
-bsub < experiments/hpc_jobs/job_gtn_popularity.sh
 bsub < experiments/hpc_jobs/job_gtn_popularity_lmpo2.sh
 bsub < experiments/hpc_jobs/job_gtn_seoulBike.sh
 bsub < experiments/hpc_jobs/job_gtn_seoulBike_lmpo2.sh
-bsub < experiments/hpc_jobs/job_gtn_wine.sh
-bsub < experiments/hpc_jobs/job_gtn_wine_lmpo2.sh
 bsub < experiments/hpc_jobs/job_ntn_abalone.sh
 bsub < experiments/hpc_jobs/job_ntn_abalone_lmpo2.sh
 bsub < experiments/hpc_jobs/job_ntn_adult.sh
