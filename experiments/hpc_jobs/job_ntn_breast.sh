@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q gpua100
+#BSUB -q gpuv100
 #BSUB -J ntn-breast
 #BSUB -W 24:00
 #BSUB -n 4

@@ -9,7 +9,7 @@ Handles coordination of multiple NTN instances with proper ensemble derivatives:
 
 import torch
 import quimb.tensor as qt
-from typing import List, Dict, Optional, Callable
+from typing import List, Optional, Callable
 from model.base.NTN import NTN, NOT_TRAINABLE_TAG
 from model.builder import Inputs
 from model.exceptions import SingularMatrixError
@@ -18,11 +18,12 @@ from model.exceptions import SingularMatrixError
 class NTN_TypeI(NTN):
     """NTN that computes ensemble y_pred = f_self + sum(f_others) for proper derivative computation."""
 
-    def __init__(self, get_others_cached_output_fn: Callable, ntn_index: int, *args, **kwargs):
+    def __init__(self, get_others_output_fn: Callable, ntn_index: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.get_others_cached_output_fn = get_others_cached_output_fn
+        self.get_others_output_fn = get_others_output_fn
         self.ntn_index = ntn_index
         self._batch_idx = 0
+        self._others_outputs: List = []
 
     def _batch_node_derivatives(self, inputs, y_true, node_tag):
         result = super()._batch_node_derivatives(inputs, y_true, node_tag)
@@ -31,40 +32,28 @@ class NTN_TypeI(NTN):
 
     def forward_from_environment(self, env, node_tag=None, node_tensor=None, sum_over_batch=False):
         y_pred_self = super().forward_from_environment(env, node_tag, node_tensor, sum_over_batch)
-        y_pred_others = self.get_others_cached_output_fn(self.ntn_index, self._batch_idx)
-        if y_pred_others is not None:
-            if hasattr(y_pred_others, "inds") and hasattr(y_pred_self, "inds"):
-                if set(y_pred_others.inds) != set(y_pred_self.inds):
-                    reindex_map = dict(zip(y_pred_others.inds, y_pred_self.inds))
-                    y_pred_others = y_pred_others.reindex(reindex_map)
-            result = y_pred_self + y_pred_others
-            result.modify(inds=y_pred_self.inds)
-            return result
+        if self._batch_idx < len(self._others_outputs):
+            y_pred_others = self._others_outputs[self._batch_idx]
+            if y_pred_others is not None:
+                if hasattr(y_pred_others, "inds") and hasattr(y_pred_self, "inds"):
+                    if set(y_pred_others.inds) != set(y_pred_self.inds):
+                        reindex_map = dict(zip(y_pred_others.inds, y_pred_self.inds))
+                        y_pred_others = y_pred_others.reindex(reindex_map)
+                result = y_pred_self + y_pred_others
+                result.modify(inds=y_pred_self.inds)
+                return result
         return y_pred_self
 
     def reset_batch_idx(self):
         self._batch_idx = 0
 
-    def _batch_node_derivatives(self, inputs, y_true, node_tag):
-        result = super()._batch_node_derivatives(inputs, y_true, node_tag)
-        self._batch_idx += 1
-        return result
+    def precompute_others_outputs(self):
+        """Precompute sum of other models' outputs for all batches before node updates."""
+        self._others_outputs = self.get_others_output_fn(self.ntn_index)
 
-    def forward_from_environment(self, env, node_tag=None, node_tensor=None, sum_over_batch=False):
-        y_pred_self = super().forward_from_environment(env, node_tag, node_tensor, sum_over_batch)
-        y_pred_others = self.get_others_cached_output_fn(self.ntn_index, self._batch_idx)
-        if y_pred_others is not None:
-            if hasattr(y_pred_others, "inds") and hasattr(y_pred_self, "inds"):
-                if set(y_pred_others.inds) != set(y_pred_self.inds):
-                    reindex_map = dict(zip(y_pred_others.inds, y_pred_self.inds))
-                    y_pred_others = y_pred_others.reindex(reindex_map)
-            result = y_pred_self + y_pred_others
-            result.modify(inds=y_pred_self.inds)
-            return result
-        return y_pred_self
-
-    def reset_batch_idx(self):
-        self._batch_idx = 0
+    def clear_others_outputs(self):
+        """Clear precomputed outputs to free memory."""
+        self._others_outputs = []
 
 
 class NTN_Ensemble:
@@ -131,9 +120,6 @@ class NTN_Ensemble:
         self.singular_encountered = False
 
         self.ntns: List[NTN_TypeI] = []
-        self._forward_cache: Dict[int, List] = {}
-        self._forward_cache_val: Dict[int, List] = {}
-        self._forward_cache_test: Dict[int, List] = {}
 
         not_trainable_tags = not_trainable_tags or []
 
@@ -150,7 +136,7 @@ class NTN_Ensemble:
             )
 
             ntn = NTN_TypeI(
-                get_others_cached_output_fn=self._get_others_cached_output,
+                get_others_output_fn=self._compute_others_outputs_for_model,
                 ntn_index=idx,
                 tn=tn,
                 output_dims=output_dims,
@@ -189,52 +175,28 @@ class NTN_Ensemble:
         self.val_data = self.ntns[0].val_data if X_val is not None else None
         self.test_data = self.ntns[0].test_data if X_test is not None else None
 
-    def _cache_forwards_for_data(self, data_attr: str, cache_dict: dict):
-        """Cache forward outputs for all models using specified data attribute."""
-        cache_dict.clear()
-        for ntn_idx, ntn in enumerate(self.ntns):
-            data_stream = getattr(ntn, data_attr, None)
-            if data_stream is None:
-                continue
-            batch_outputs = []
-            for inputs in data_stream.data_mu:
-                y_pred = ntn._batch_forward(inputs, ntn.tn, [self.batch_dim] + self.output_dims)
-                batch_outputs.append(y_pred)
-            cache_dict[ntn_idx] = batch_outputs
+    def _compute_others_outputs_for_model(self, exclude_idx: int) -> List:
+        """Compute sum of other models' outputs for each batch (not concatenated)."""
+        ntn = self.ntns[exclude_idx]
+        n_batches = len(ntn.data.batches)
 
-    def _cache_all_forwards(self):
-        """Cache forward outputs for training data."""
-        self._cache_forwards_for_data("data", self._forward_cache)
-
-    def _cache_val_forwards(self):
-        """Cache forward outputs for validation data."""
-        self._cache_forwards_for_data("val_data", self._forward_cache_val)
-
-    def _cache_test_forwards(self):
-        """Cache forward outputs for test data."""
-        self._cache_forwards_for_data("test_data", self._forward_cache_test)
-
-    def _invalidate_cache(self, ntn_idx: int):
-        """Recompute cache for a specific model after its nodes are updated."""
-        ntn = self.ntns[ntn_idx]
-        batch_outputs = []
-        for inputs in ntn.data.data_mu:
-            y_pred = ntn._batch_forward(inputs, ntn.tn, [self.batch_dim] + self.output_dims)
-            batch_outputs.append(y_pred)
-        self._forward_cache[ntn_idx] = batch_outputs
-
-    def _get_others_cached_output(self, exclude_idx: int, batch_idx: int):
-        """Get sum of cached outputs from all models except exclude_idx for given batch."""
-        total = None
-        for ntn_idx, batch_outputs in self._forward_cache.items():
-            if ntn_idx == exclude_idx:
-                continue
-            if batch_idx < len(batch_outputs):
-                if total is None:
-                    total = batch_outputs[batch_idx]
-                else:
-                    total = total + batch_outputs[batch_idx]
-        return total
+        others_outputs = []
+        with torch.no_grad():
+            for batch_idx in range(n_batches):
+                total = None
+                for ntn_idx, other_ntn in enumerate(self.ntns):
+                    if ntn_idx == exclude_idx:
+                        continue
+                    inputs = other_ntn.data.batches[batch_idx][0]
+                    y_pred = other_ntn._batch_forward(
+                        inputs, other_ntn.tn, [self.batch_dim] + self.output_dims
+                    )
+                    if total is None:
+                        total = y_pred
+                    else:
+                        total = total + y_pred
+                others_outputs.append(total)
+        return others_outputs
 
     def _get_all_trainable_nodes(self) -> List[tuple]:
         """Get all trainable nodes as (ntn_idx, node_tag) tuples."""
@@ -263,15 +225,17 @@ class NTN_Ensemble:
             return x.data
         return x
 
-    def _batch_evaluate(self, batch_idx, y_true, metrics, cache_dict):
-        """Evaluate one batch using ensemble forward from cached outputs."""
+    def _batch_evaluate(self, inputs_list: List, y_true, metrics):
+        """Evaluate one batch using ensemble forward."""
         y_pred = None
-        for ntn_idx, batch_outputs in cache_dict.items():
-            if batch_idx < len(batch_outputs):
+        with torch.no_grad():
+            for ntn_idx, ntn in enumerate(self.ntns):
+                inputs = inputs_list[ntn_idx]
+                batch_pred = ntn._batch_forward(inputs, ntn.tn, [self.batch_dim] + self.output_dims)
                 if y_pred is None:
-                    y_pred = batch_outputs[batch_idx]
+                    y_pred = batch_pred
                 else:
-                    y_pred = y_pred + batch_outputs[batch_idx]
+                    y_pred = y_pred + batch_pred
 
         y_pred_th = self._to_torch(y_pred)
         y_true_th = self._to_torch(y_true)
@@ -321,28 +285,26 @@ class NTN_Ensemble:
                 split = "train"
 
         if split == "train":
-            self._cache_all_forwards()
-            cache_dict = self._forward_cache
             data_attr = "data"
         elif split == "val":
-            self._cache_val_forwards()
-            cache_dict = self._forward_cache_val
             data_attr = "val_data"
         elif split == "test":
-            self._cache_test_forwards()
-            cache_dict = self._forward_cache_test
             data_attr = "test_data"
         else:
             raise ValueError(f"Unknown split: {split}")
 
-        ntn = self.ntns[0]
-        data_stream_obj = getattr(ntn, data_attr, None)
-        if data_stream_obj is None:
+        data_streams = [getattr(ntn, data_attr, None) for ntn in self.ntns]
+        if data_streams[0] is None:
             return {}
 
         aggregates = {}
-        for i, (_, y_true) in enumerate(data_stream_obj.data_mu_y):
-            batch_results = self._batch_evaluate(i, y_true, metrics, cache_dict)
+        batch_iterators = [ds.data_mu_y for ds in data_streams]
+
+        for i, batches in enumerate(zip(*batch_iterators)):
+            inputs_list = [batch[0] for batch in batches]
+            y_true = batches[0][1]
+
+            batch_results = self._batch_evaluate(inputs_list, y_true, metrics)
 
             if i == 0:
                 aggregates = batch_results
@@ -433,23 +395,23 @@ class NTN_Ensemble:
 
         for epoch in range(n_epochs):
             try:
-                self._cache_all_forwards()
-
                 current_ntn_idx = None
                 for ntn_idx, node_tag in all_nodes:
                     ntn = self.ntns[ntn_idx]
 
-                    if current_ntn_idx is not None and ntn_idx != current_ntn_idx:
-                        self._invalidate_cache(current_ntn_idx)
+                    if current_ntn_idx != ntn_idx:
+                        if current_ntn_idx is not None:
+                            self.ntns[current_ntn_idx].clear_others_outputs()
+                        ntn.precompute_others_outputs()
+                        current_ntn_idx = ntn_idx
 
                     ntn.reset_batch_idx()
                     ntn.update_tn_node(
                         node_tag, regularize, jitter_schedule[epoch], adaptive_jitter
                     )
-                    current_ntn_idx = ntn_idx
 
                 if current_ntn_idx is not None:
-                    self._invalidate_cache(current_ntn_idx)
+                    self.ntns[current_ntn_idx].clear_others_outputs()
             except torch.linalg.LinAlgError as e:
                 self.singular_encountered = True
                 for ntn, best_state in zip(self.ntns, best_tn_states):

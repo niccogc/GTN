@@ -7,7 +7,6 @@ bsub < experiments/hpc_jobs/job_gtn_adult_lmpo2.sh
 bsub < experiments/hpc_jobs/job_gtn_bank_lmpo2.sh
 bsub < experiments/hpc_jobs/job_gtn_obesity.sh
 bsub < experiments/hpc_jobs/job_gtn_obesity_lmpo2.sh
-bsub < experiments/hpc_jobs/job_gtn_popularity_lmpo2.sh
 bsub < experiments/hpc_jobs/job_gtn_seoulBike.sh
 bsub < experiments/hpc_jobs/job_gtn_seoulBike_lmpo2.sh
 bsub < experiments/hpc_jobs/job_ntn_abalone.sh

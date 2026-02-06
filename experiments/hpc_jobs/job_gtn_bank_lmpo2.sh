@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q gpua100
+#BSUB -q gpuv100
 #BSUB -J gtn-bank
 #BSUB -W 24:00
 #BSUB -n 4
