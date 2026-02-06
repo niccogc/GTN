@@ -1,0 +1,146 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 360
+Grid combinations: 72
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['LMPO2', 'LMPO2TypeI'] (n=2)
+  L: [3, 4] (n=2)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0, 0.1] (n=2)
+  reduction_factor: [0.1, 0.3, 0.5] (n=3)
+
+Fixed Parameters:
+  batch_size: 1024
+  n_epochs: 15
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 4
+  min_delta: 1e-06
+  train_selection: True
+  init_strength: 0.01
+  bond_dim_mpo: 2
+
+Example runs (first 5):
+  1. LMPO2-L3-d8-jit5-rf0.1-seed42
+  2. LMPO2-L3-d8-jit5-rf0.1-seed7
+  3. LMPO2-L3-d8-jit5-rf0.1-seed123
+  4. LMPO2-L3-d8-jit5-rf0.1-seed256
+  5. LMPO2-L3-d8-jit5-rf0.1-seed999
+  ... (355 more)
+
+Loading dataset: car_evaluation...
+  Dataset: car_evaluation
+  Train: 1209 samples
+  Val: 259 samples
+  Test: 260 samples
+  Features: 27 (+1 bias = 27)
+  Task: classification
+  Device: cuda
+
+
+[9/360] Running: LMPO2-L3-d8-jit5-rf0.3-seed256
+  AIM run started: 947c43475dd74a22a85380df
+  AIM run finalized: 947c43475dd74a22a85380df
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_LMPO2_L3_d8_j5_s256.json
+  ✓ Test: Acc=0.9654 | Val: Acc=N/A (singular)
+
+[10/360] Running: LMPO2-L3-d8-jit5-rf0.3-seed999
+  AIM run started: c2ec326525f74cf3ad712ae2
+  AIM run finalized: c2ec326525f74cf3ad712ae2
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_LMPO2_L3_d8_j5_s999.json
+  ✓ Test: Acc=0.9692 | Val: Acc=N/A (singular)
+
+[11/360] Running: LMPO2-L3-d8-jit5-rf0.5-seed42
+  AIM run started: e949538203ff4ad9915f2eb7
+  AIM run finalized: e949538203ff4ad9915f2eb7
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_LMPO2_L3_d8_j5_s42.json
+  ✓ Test: Acc=0.9846 | Val: Acc=N/A (singular)
+
+[12/360] Running: LMPO2-L3-d8-jit5-rf0.5-seed7
+  AIM run started: 604840d7e9a945f9a52295ee
+  AIM run finalized: 604840d7e9a945f9a52295ee
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_LMPO2_L3_d8_j5_s7.json
+  ✓ Test: Acc=0.9538 | Val: Acc=N/A (singular)
+
+[13/360] Running: LMPO2-L3-d8-jit5-rf0.5-seed123
+  AIM run started: ef350abca1d04837afec4371
+  AIM run finalized: ef350abca1d04837afec4371
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_LMPO2_L3_d8_j5_s123.json
+  ✓ Test: Acc=0.9615 | Val: Acc=N/A (singular)
+
+[14/360] Running: LMPO2-L3-d8-jit5-rf0.5-seed256
+  AIM run started: df3a63818ac84c538343e212
+  AIM run finalized: df3a63818ac84c538343e212
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_LMPO2_L3_d8_j5_s256.json
+  ✓ Test: Acc=0.9692 | Val: Acc=N/A (singular)
+
+[15/360] Running: LMPO2-L3-d8-jit5-rf0.5-seed999
+  AIM run started: b5edf5cf35ce4e8e82143c69
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27741915: <ntn-car-evaluation> in cluster <dcc> Exited
+
+Job <ntn-car-evaluation> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri Feb  6 09:12:34 2026
+Job was executed on host(s) <4*n-62-12-23>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Fri Feb  6 09:22:03 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri Feb  6 09:22:03 2026
+Terminated at Fri Feb  6 09:23:02 2026
+Results reported at Fri Feb  6 09:23:02 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J ntn-car-evaluation
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-car-evaluation_%J.out
+#BSUB -e logs/ntn-car-evaluation_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_car_evaluation_lmpo2.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   13.52 sec.
+    Max Memory :                                 803 MB
+    Average Memory :                             803.00 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               1197.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                14
+    Run time :                                   59 sec.
+    Turnaround time :                            628 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-car-evaluation_27741915.err> for stderr output of this job.
+

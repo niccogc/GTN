@@ -1,0 +1,138 @@
+======================================================================
+EXPERIMENT PLAN SUMMARY
+======================================================================
+Total experiments: 60
+Grid combinations: 12
+Seeds per combination: 5
+
+Parameter Grid:
+  model: ['MPO2', 'MPO2TypeI', 'MMPO2', 'MMPO2TypeI'] (n=4)
+  L: [3] (n=1)
+  bond_dim: [8, 12, 16] (n=3)
+  jitter_start: [5.0] (n=1)
+
+Fixed Parameters:
+  batch_size: 512
+  n_epochs: 100
+  jitter_decay: 0.25
+  adaptive_jitter: False
+  patience: 10
+  min_delta: 1e-05
+  train_selection: True
+  init_strength: 0.01
+
+Example runs (first 5):
+  1. MPO2-L3-d8-jit5-seed42
+  2. MPO2-L3-d8-jit5-seed7
+  3. MPO2-L3-d8-jit5-seed123
+  4. MPO2-L3-d8-jit5-seed256
+  5. MPO2-L3-d8-jit5-seed999
+  ... (55 more)
+
+Loading dataset: car_evaluation...
+  Dataset: car_evaluation
+  Train: 1209 samples
+  Val: 259 samples
+  Test: 260 samples
+  Features: 27 (+1 bias = 27)
+  Task: classification
+  Device: cuda
+
+
+[16/60] Running: MPO2TypeI-L3-d8-jit5-seed42
+  AIM run started: 10d3b4ab95354270ba899950
+  AIM run finalized: 10d3b4ab95354270ba899950
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_MPO2TypeI_L3_d8_j5_s42.json
+  ✓ Test: Acc=0.9769 | Val: Acc=N/A (singular)
+
+[17/60] Running: MPO2TypeI-L3-d8-jit5-seed7
+  AIM run started: 10688a6fa8ef4a93bdb7da4a
+  AIM run finalized: 10688a6fa8ef4a93bdb7da4a
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_MPO2TypeI_L3_d8_j5_s7.json
+  ✓ Test: Acc=0.9769 | Val: Acc=0.9846
+
+[18/60] Running: MPO2TypeI-L3-d8-jit5-seed123
+  AIM run started: 90d06a092fda478bb823cf84
+  AIM run finalized: 90d06a092fda478bb823cf84
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_MPO2TypeI_L3_d8_j5_s123.json
+  ✓ Test: Acc=0.9769 | Val: Acc=N/A (singular)
+
+[19/60] Running: MPO2TypeI-L3-d8-jit5-seed256
+  AIM run started: 124143be8d284db7965441e3
+  AIM run finalized: 124143be8d284db7965441e3
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_MPO2TypeI_L3_d8_j5_s256.json
+  ✓ Test: Acc=0.9769 | Val: Acc=0.9807
+
+[20/60] Running: MPO2TypeI-L3-d8-jit5-seed999
+  AIM run started: 5472090e0ebb49b4bc92d050
+  AIM run finalized: 5472090e0ebb49b4bc92d050
+  Experiment log saved to: experiment_logs/ntn_car_evaluation_MPO2TypeI_L3_d8_j5_s999.json
+  ✓ Test: Acc=0.9769 | Val: Acc=N/A (singular)
+
+[21/60] Running: MPO2TypeI-L3-d12-jit5-seed42
+  AIM run started: 3a46b31660db4cb7989a6dd0
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27742028: <ntn-car-evaluation> in cluster <dcc> Exited
+
+Job <ntn-car-evaluation> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri Feb  6 09:30:08 2026
+Job was executed on host(s) <4*n-62-20-11>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Fri Feb  6 09:41:28 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri Feb  6 09:41:28 2026
+Terminated at Fri Feb  6 09:42:27 2026
+Results reported at Fri Feb  6 09:42:27 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-car-evaluation
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-car-evaluation_%J.out
+#BSUB -e logs/ntn-car-evaluation_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search.py --config experiments/configs/uci_ntn_car_evaluation.json 
+
+------------------------------------------------------------
+
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   18.00 sec.
+    Max Memory :                                 735 MB
+    Average Memory :                             735.00 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               1265.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                16
+    Run time :                                   59 sec.
+    Turnaround time :                            739 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-car-evaluation_27742028.err> for stderr output of this job.
+
