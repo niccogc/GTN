@@ -37,7 +37,7 @@ DATASET_SIZES = {
 QUEUE_CONFIG = {
     "small": {"queue": "gpuv100", "time": "6:00", "mem": "500MB", "gpu": 1},
     "medium": {"queue": "gpuv100", "time": "12:00", "mem": "500MB", "gpu": 1},
-    "large": {"queue": "gpuv100", "time": "24:00", "mem": "500MB", "gpu": 1},
+    "large": {"queue": "gpua100", "time": "24:00", "mem": "500MB", "gpu": 1},
 }
 
 JOB_TEMPLATE = """#!/bin/sh
@@ -93,8 +93,8 @@ def generate_job_script(
     experiment_name = config["experiment_name"]
     size = get_dataset_size(dataset) if is_gtn else "large"
     queue_config = QUEUE_CONFIG[size].copy()
-    if not is_gtn:
-        queue_config["queue"] = "gpua100"
+    if is_gtn:
+        queue_config["queue"] = "gpuv100"
     full_experiment_name = f"{experiment_name}{append}"
     if is_experiment_complete(full_experiment_name, results_dir):
         print(f"  Skipping {full_experiment_name} (already complete)")
