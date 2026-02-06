@@ -1,5 +1,5 @@
 #!/bin/sh
-#BSUB -q gpuv100
+#BSUB -q gpua100
 #BSUB -J ntn-student-perf
 #BSUB -W 24:00
 #BSUB -n 4

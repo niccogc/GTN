@@ -10,7 +10,7 @@ Handles coordination of multiple NTN instances with proper ensemble derivatives:
 import torch
 import quimb.tensor as qt
 from typing import List, Optional, Callable
-from model.base.NTN import NTN, NOT_TRAINABLE_TAG
+from model.base.NTN import NTN
 from model.builder import Inputs
 from model.exceptions import SingularMatrixError
 
