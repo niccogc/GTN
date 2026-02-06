@@ -1,0 +1,66 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27736123: <gtn-seoulBike> in cluster <dcc> Exited
+
+Job <gtn-seoulBike> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Feb  5 11:18:58 2026
+Job was executed on host(s) <4*n-62-20-2>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Thu Feb  5 12:36:17 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Feb  5 12:36:17 2026
+Terminated at Fri Feb  6 00:37:25 2026
+Results reported at Fri Feb  6 00:37:25 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-seoulBike
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-seoulBike_%J.out
+#BSUB -e logs/gtn-seoulBike_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_seoulBike_lmpo2.json --output-dir results/gtn_seoulBike_lmpo2
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   40690.00 sec.
+    Max Memory :                                 928 MB
+    Average Memory :                             827.90 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               1072.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                15
+    Run time :                                   43269 sec.
+    Turnaround time :                            47907 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-seoulBike_27736123.err> for stderr output of this job.
+

@@ -1,0 +1,67 @@
+
+Loading dataset: obesity
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 27736090: <gtn-obesity> in cluster <dcc> Exited
+
+Job <gtn-obesity> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Feb  5 11:17:13 2026
+Job was executed on host(s) <4*n-62-20-5>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Thu Feb  5 11:17:20 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Feb  5 11:17:20 2026
+Terminated at Thu Feb  5 11:18:30 2026
+Results reported at Thu Feb  5 11:18:30 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J gtn-obesity
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/gtn-obesity_%J.out
+#BSUB -e logs/gtn-obesity_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a
+source $HOME/aim
+set +a
+
+python experiments/run_grid_search_gtn.py --config experiments/configs/uci_gtn_obesity.json --output-dir results/gtn_obesity
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   4.66 sec.
+    Max Memory :                                 127 MB
+    Average Memory :                             127.00 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               1873.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   71 sec.
+    Turnaround time :                            77 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/gtn-obesity_27736090.err> for stderr output of this job.
+
