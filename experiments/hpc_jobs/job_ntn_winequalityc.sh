@@ -1,7 +1,7 @@
 #!/bin/sh
-#BSUB -q gpua100
+#BSUB -q gpuv100
 #BSUB -J ntn-winequalityc
-#BSUB -W 24:00
+#BSUB -W 12:00
 #BSUB -n 4
 #BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -R "rusage[mem=500MB]"

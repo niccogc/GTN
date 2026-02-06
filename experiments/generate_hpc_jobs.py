@@ -91,7 +91,7 @@ def generate_job_script(
     dataset = config["dataset"]
     is_gtn = "gtn" in config_file.lower()
     experiment_name = config["experiment_name"]
-    size = get_dataset_size(dataset) if is_gtn else "large"
+    size = get_dataset_size(dataset)
     queue_config = QUEUE_CONFIG[size].copy()
     if is_gtn:
         queue_config["queue"] = "gpuv100"
