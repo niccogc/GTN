@@ -59,7 +59,7 @@ def create_ntn_base_config(dataset_name: str, task: str, include_mmpo2: bool = T
         "task": task,
         "parameter_grid": {
             "model": models,
-            "L": [3],
+            "L": [3, 4],
             "bond_dim": [8, 12, 16],
             "jitter_start": [5.0],
         },
