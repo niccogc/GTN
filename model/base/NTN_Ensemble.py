@@ -93,26 +93,10 @@ class NTN_Ensemble:
         y_train: torch.Tensor,
         X_val: Optional[torch.Tensor] = None,
         y_val: Optional[torch.Tensor] = None,
-        X_test: Optional[torch.Tensor] = None,
-        y_test: Optional[torch.Tensor] = None,
         batch_size: int = 32,
         method: str = "cholesky",
         not_trainable_tags: List[str] = None,
     ):
-        """
-        Args:
-            tns: List of tensor networks (one per ensemble member)
-            input_dims_list: List of input_dims for each TN
-            input_labels_list: List of input_labels for each TN
-            output_dims: Output dimensions (same for all TNs)
-            loss: Loss function
-            X_train, y_train: Training data
-            X_val, y_val: Optional validation data
-            X_test, y_test: Optional test data
-            batch_size: Batch size for data loaders
-            method: Solver method ('cholesky' or 'standard')
-            not_trainable_tags: List of tags to mark as non-trainable
-        """
         self.n_models = len(tns)
         self.output_dims = output_dims
         self.batch_dim = "s"
@@ -158,22 +142,10 @@ class NTN_Ensemble:
                 )
                 ntn.val_data = val_loader
 
-            if X_test is not None and y_test is not None:
-                test_loader = Inputs(
-                    inputs=[X_test],
-                    outputs=[y_test],
-                    outputs_labels=output_dims,
-                    input_labels=input_labels,
-                    batch_dim=self.batch_dim,
-                    batch_size=batch_size,
-                )
-                ntn.test_data = test_loader
-
             self.ntns.append(ntn)
 
         self.train_data = self.ntns[0].train_data
         self.val_data = self.ntns[0].val_data if X_val is not None else None
-        self.test_data = self.ntns[0].test_data if X_test is not None else None
 
     def _compute_others_outputs_for_model(self, exclude_idx: int) -> List:
         """Compute sum of other models' outputs for each batch (not concatenated)."""
@@ -391,8 +363,6 @@ class NTN_Ensemble:
         best_epoch = -1
         patience_counter = 0
 
-        best_tn_states = [ntn.tn.copy() for ntn in self.ntns]
-
         for epoch in range(n_epochs):
             try:
                 current_ntn_idx = None
@@ -414,13 +384,8 @@ class NTN_Ensemble:
                     self.ntns[current_ntn_idx].clear_others_outputs()
             except torch.linalg.LinAlgError as e:
                 self.singular_encountered = True
-                for ntn, best_state in zip(self.ntns, best_tn_states):
-                    ntn.tn = best_state
                 if verbose:
                     print(f"\n✗ Singular matrix at epoch {epoch + 1} - stopping training")
-                    print(
-                        f"  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
-                    )
                 raise SingularMatrixError(
                     message="Singular matrix encountered during NTN_Ensemble optimization",
                     epoch=epoch + 1,
@@ -458,7 +423,6 @@ class NTN_Ensemble:
                 if val_improved or (val_same and train_improved):
                     best_val_quality = current_val_quality
                     best_train_quality = current_train_quality
-                    best_tn_states = [ntn.tn.copy() for ntn in self.ntns]
                     best_scores_train = scores_train.copy()
                     best_scores_val = scores_val.copy()
                     best_epoch = epoch
@@ -475,7 +439,6 @@ class NTN_Ensemble:
                 ):
                     best_val_quality = current_val_quality
                     best_train_quality = current_train_quality
-                    best_tn_states = [ntn.tn.copy() for ntn in self.ntns]
                     best_scores_train = scores_train.copy()
                     best_scores_val = scores_val.copy()
                     best_epoch = epoch
@@ -510,16 +473,12 @@ class NTN_Ensemble:
 
             if patience and patience_counter >= patience:
                 if verbose:
-                    print(f"\nEarly stopping at epoch {epoch + 1}")
-                    print(f"  Restoring best model from epoch {best_epoch + 1}")
+                    print(
+                        f"\nEarly stopping at epoch {epoch + 1} (best was epoch {best_epoch + 1})"
+                    )
                 break
 
-        for ntn, best_state in zip(self.ntns, best_tn_states):
-            ntn.tn = best_state
-
         if verbose and best_epoch >= 0:
-            print(
-                f"\nRestoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
-            )
+            print(f"\nBest epoch: {best_epoch + 1} (val_quality={best_val_quality:.6f})")
 
         return best_scores_train, best_scores_val

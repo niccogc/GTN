@@ -33,7 +33,6 @@ class NTN:
         self.data = data_stream
         self.train_data = data_stream
         self.val_data = None
-        self.test_data = None
 
         self.tn = tn
         not_trainable_nodes = not_trainable_nodes or []
@@ -813,7 +812,6 @@ class NTN:
             - Improvement is defined as: new_quality > best_quality + min_delta
         """
         self.val_data = val_data
-        self.test_data = test_data
 
         if eval_metrics is None:
             from model.utils import REGRESSION_METRICS
@@ -863,13 +861,11 @@ class NTN:
 
         best_val_quality = compute_quality(scores_val)
         best_train_quality = compute_quality(scores_train)
-        best_tn_state = self.tn.copy()
         best_scores_train = scores_train.copy()
         best_scores_val = scores_val.copy()
         best_epoch = -1
 
         patience_counter = 0
-        val_plateau_counter = 0
 
         for epoch in range(n_epochs):
             try:
@@ -917,7 +913,6 @@ class NTN:
                     if val_improved:
                         best_val_quality = current_val_quality
                         best_train_quality = current_train_quality
-                        best_tn_state = self.tn.copy()
                         best_scores_train = scores_train.copy()
                         best_scores_val = scores_val.copy()
                         best_epoch = epoch
@@ -925,7 +920,6 @@ class NTN:
                         patience_counter = 0
                     elif val_same and train_improved:
                         best_train_quality = current_train_quality
-                        best_tn_state = self.tn.copy()
                         best_scores_train = scores_train.copy()
                         best_scores_val = scores_val.copy()
                         best_epoch = epoch
@@ -933,10 +927,7 @@ class NTN:
                         patience_counter = 0
                     else:
                         is_best = False
-                        if val_improved or (val_same and train_improved):
-                            patience_counter = 0
-                        else:
-                            patience_counter += 1
+                        patience_counter += 1
                 else:
                     if (
                         current_val_quality is not None
@@ -945,7 +936,6 @@ class NTN:
                     ):
                         best_val_quality = current_val_quality
                         best_train_quality = current_train_quality
-                        best_tn_state = self.tn.copy()
                         best_scores_train = scores_train.copy()
                         best_scores_val = scores_val.copy()
                         best_epoch = epoch
@@ -990,28 +980,20 @@ class NTN:
                         else:
                             print(f"  No improvement for {patience} epochs (min_delta={min_delta})")
                         print(
-                            f"  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
+                            f"  Best was epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
                         )
 
-                    self.tn = best_tn_state
                     return best_scores_train, best_scores_val
 
             except torch.linalg.LinAlgError as e:
                 self.singular_encountered = True
-                self.tn = best_tn_state
                 if verbose:
                     print(f"\n✗ Singular matrix at epoch {epoch + 1} - stopping training")
-                    print(
-                        f"  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
-                    )
                 raise SingularMatrixError(
                     message="Singular matrix encountered during NTN optimization", epoch=epoch + 1
                 )
 
         if verbose and best_epoch >= 0:
-            print(
-                f"\n  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
-            )
+            print(f"\nBest epoch: {best_epoch + 1} (val_quality={best_val_quality:.6f})")
 
-        self.tn = best_tn_state
         return best_scores_train, best_scores_val

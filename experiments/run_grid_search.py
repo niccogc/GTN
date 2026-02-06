@@ -198,13 +198,10 @@ def run_single_experiment(
             y_train=data["y_train"],
             X_val=data["X_val"],
             y_val=data["y_val"],
-            X_test=data["X_test"],
-            y_test=data["y_test"],
             batch_size=params.get("batch_size", 100),
             not_trainable_tags=not_trainable_tags,
         )
         loader_val = ntn.val_data
-        loader_test = ntn.test_data
     else:
         loader_train = create_inputs(
             X=data["X_train"],
@@ -218,15 +215,6 @@ def run_single_experiment(
         loader_val = create_inputs(
             X=data["X_val"],
             y=data["y_val"],
-            input_labels=model.input_labels,
-            output_labels=model.output_dims,
-            batch_size=params.get("batch_size", 100),
-            append_bias=False,
-        )
-
-        loader_test = create_inputs(
-            X=data["X_test"],
-            y=data["y_test"],
             input_labels=model.input_labels,
             output_labels=model.output_dims,
             batch_size=params.get("batch_size", 100),
@@ -288,7 +276,6 @@ def run_single_experiment(
             jitter=jitter_schedule,
             eval_metrics=eval_metrics,
             val_data=loader_val,
-            test_data=loader_test,
             verbose=verbose,
             callback_init=callback_init,
             callback_epoch=callback_epoch,
@@ -298,16 +285,12 @@ def run_single_experiment(
             train_selection=params.get("train_selection", False),
         )
 
-        scores_test = ntn.evaluate(eval_metrics, data_stream=loader_test)
-
         train_loss = scores_train["loss"]
         train_quality = compute_quality(scores_train)
         val_loss = scores_val["loss"]
         val_quality = compute_quality(scores_val)
-        test_loss = scores_test["loss"]
-        test_quality = compute_quality(scores_test)
 
-        success = test_quality is not None and test_quality > 0
+        success = val_quality is not None and val_quality > 0
 
         result = {
             "run_id": experiment["run_id"],
@@ -319,8 +302,6 @@ def run_single_experiment(
             "train_quality": float(train_quality),
             "val_loss": float(val_loss),
             "val_quality": float(val_quality),
-            "test_loss": float(test_loss),
-            "test_quality": float(test_quality),
             "success": success,
             "singular": ntn.singular_encountered,
         }
@@ -332,16 +313,12 @@ def run_single_experiment(
         return result
 
     except SingularMatrixError as e:
-        scores_test = ntn.evaluate(eval_metrics, data_stream=loader_test)
-
         train_loss = scores_train["loss"] if "scores_train" in dir() else None
         train_quality = compute_quality(scores_train) if "scores_train" in dir() else None
         val_loss = scores_val["loss"] if "scores_val" in dir() else None
         val_quality = compute_quality(scores_val) if "scores_val" in dir() else None
-        test_loss = scores_test["loss"]
-        test_quality = compute_quality(scores_test)
 
-        success = test_quality is not None and test_quality > 0
+        success = val_quality is not None and val_quality > 0
 
         result = {
             "run_id": experiment["run_id"],
@@ -353,8 +330,6 @@ def run_single_experiment(
             "train_quality": float(train_quality) if train_quality is not None else None,
             "val_loss": float(val_loss) if val_loss is not None else None,
             "val_quality": float(val_quality) if val_quality is not None else None,
-            "test_loss": float(test_loss),
-            "test_quality": float(test_quality) if test_quality is not None else None,
             "success": success,
             "singular": True,
             "singular_epoch": e.epoch,
@@ -520,13 +495,13 @@ def main():
 
         if result["success"]:
             quality_name = "R²" if experiment["task"] == "regression" else "Acc"
-            test_q = result["test_quality"]
+            train_q = result["train_quality"]
             val_q = result["val_quality"]
-            test_str = f"{test_q:.4f}" if test_q is not None else "N/A"
+            train_str = f"{train_q:.4f}" if train_q is not None else "N/A"
             val_str = f"{val_q:.4f}" if val_q is not None else "N/A"
             singular_marker = " (singular)" if result.get("singular") else ""
             print(
-                f"  ✓ Test: {quality_name}={test_str} | Val: {quality_name}={val_str}{singular_marker}"
+                f"  ✓ Train: {quality_name}={train_str} | Val: {quality_name}={val_str}{singular_marker}"
             )
         else:
             error_msg = result.get("error", "Unknown error")
@@ -553,19 +528,19 @@ def main():
     if successful_results:
         quality_name = "R²" if config.get("task", "regression") == "regression" else "Accuracy"
 
-        sortable_results = [r for r in successful_results if r["test_quality"] is not None]
-        results_sorted = sorted(sortable_results, key=lambda x: x["test_quality"], reverse=True)
+        sortable_results = [r for r in successful_results if r["val_quality"] is not None]
+        results_sorted = sorted(sortable_results, key=lambda x: x["val_quality"], reverse=True)
 
-        print(f"Top 5 Runs (by test {quality_name}):")
+        print(f"Top 5 Runs (by val {quality_name}):")
         print()
         for i, result in enumerate(results_sorted[:5]):
-            test_q = result["test_quality"]
+            train_q = result["train_quality"]
             val_q = result["val_quality"]
-            test_str = f"{test_q:.4f}" if test_q is not None else "N/A"
+            train_str = f"{train_q:.4f}" if train_q is not None else "N/A"
             val_str = f"{val_q:.4f}" if val_q is not None else "N/A"
             singular_marker = " (singular)" if result.get("singular") else ""
             print(f"{i + 1}. {result['run_id']}{singular_marker}")
-            print(f"   Test {quality_name}: {test_str}")
+            print(f"   Train {quality_name}: {train_str}")
             print(f"   Val {quality_name}: {val_str}")
             print(f"   Params: {result['grid_params']}")
             print()

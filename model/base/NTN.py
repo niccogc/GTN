@@ -863,13 +863,11 @@ class NTN:
 
         best_val_quality = compute_quality(scores_val)
         best_train_quality = compute_quality(scores_train)
-        best_tn_state = self.tn.copy()
         best_scores_train = scores_train.copy()
         best_scores_val = scores_val.copy()
         best_epoch = -1
 
         patience_counter = 0
-        val_plateau_counter = 0
 
         for epoch in range(n_epochs):
             try:
@@ -914,18 +912,9 @@ class NTN:
                         and abs(current_val_quality - best_val_quality) < min_delta
                     )
 
-                    if val_improved:
+                    if val_improved or (val_same and train_improved):
                         best_val_quality = current_val_quality
                         best_train_quality = current_train_quality
-                        best_tn_state = self.tn.copy()
-                        best_scores_train = scores_train.copy()
-                        best_scores_val = scores_val.copy()
-                        best_epoch = epoch
-                        is_best = True
-                        patience_counter = 0
-                    elif val_same and train_improved:
-                        best_train_quality = current_train_quality
-                        best_tn_state = self.tn.copy()
                         best_scores_train = scores_train.copy()
                         best_scores_val = scores_val.copy()
                         best_epoch = epoch
@@ -933,10 +922,7 @@ class NTN:
                         patience_counter = 0
                     else:
                         is_best = False
-                        if val_improved or (val_same and train_improved):
-                            patience_counter = 0
-                        else:
-                            patience_counter += 1
+                        patience_counter += 1
                 else:
                     if (
                         current_val_quality is not None
@@ -945,7 +931,6 @@ class NTN:
                     ):
                         best_val_quality = current_val_quality
                         best_train_quality = current_train_quality
-                        best_tn_state = self.tn.copy()
                         best_scores_train = scores_train.copy()
                         best_scores_val = scores_val.copy()
                         best_epoch = epoch
@@ -982,38 +967,20 @@ class NTN:
 
                 if patience is not None and patience_counter >= patience:
                     if verbose:
-                        print(f"\n⏸ Early stopping triggered at epoch {epoch + 1}")
-                        if train_selection:
-                            print(
-                                f"  No val or train improvement for {patience} epochs (min_delta={min_delta})"
-                            )
-                        else:
-                            print(f"  No improvement for {patience} epochs (min_delta={min_delta})")
                         print(
-                            f"  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
+                            f"\n⏸ Early stopping at epoch {epoch + 1} (best was epoch {best_epoch + 1})"
                         )
-
-                    self.tn = best_tn_state
                     return best_scores_train, best_scores_val
 
             except torch.linalg.LinAlgError as e:
-                # Singular matrix encountered - restore best state and raise SingularMatrixError
                 self.singular_encountered = True
-                self.tn = best_tn_state
                 if verbose:
                     print(f"\n✗ Singular matrix at epoch {epoch + 1} - stopping training")
-                    print(
-                        f"  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
-                    )
-                # Raise SingularMatrixError so caller can handle it appropriately
                 raise SingularMatrixError(
                     message="Singular matrix encountered during NTN optimization", epoch=epoch + 1
                 )
 
         if verbose and best_epoch >= 0:
-            print(
-                f"\n  Restoring best model from epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
-            )
+            print(f"\nBest epoch: {best_epoch + 1} (val_quality={best_val_quality:.6f})")
 
-        self.tn = best_tn_state
         return best_scores_train, best_scores_val
