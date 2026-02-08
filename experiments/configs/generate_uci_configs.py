@@ -60,7 +60,7 @@ def create_ntn_base_config(dataset_name: str, task: str, include_mmpo2: bool = T
         "parameter_grid": {
             "model": models,
             "L": [3, 4],
-            "bond_dim": [8, 12, 16],
+            "bond_dim": [8, 12],
             "jitter_start": [5.0],
         },
         "fixed_params": {
@@ -95,7 +95,7 @@ def create_ntn_lmpo2_config(dataset_name: str, task: str) -> dict:
         "parameter_grid": {
             "model": ["LMPO2", "LMPO2TypeI"],
             "L": [3, 4],
-            "bond_dim": [8, 12, 16],
+            "bond_dim": [8, 12],
             "jitter_start": [5.0],
             "reduction_factor": [0.1, 0.3, 0.5],
         },

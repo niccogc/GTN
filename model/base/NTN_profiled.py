@@ -8,10 +8,32 @@ import torch.nn as nn
 import quimb.tensor as qt
 import importlib
 import numpy as np
-
-DEBUG = True
+from contextlib import contextmanager
 
 NOT_TRAINABLE_TAG = "NT"
+PROFILE = True
+
+
+@contextmanager
+def profile_region(name):
+    if not PROFILE or not torch.cuda.is_available():
+        yield
+        return
+    torch.cuda.synchronize()
+    torch.cuda.reset_peak_memory_stats()
+    mem_before = torch.cuda.memory_allocated()
+    start = torch.cuda.Event(enable_timing=True)
+    end = torch.cuda.Event(enable_timing=True)
+    start.record()
+    yield
+    end.record()
+    torch.cuda.synchronize()
+    mem_after = torch.cuda.memory_allocated()
+    peak = torch.cuda.max_memory_allocated()
+    ms = start.elapsed_time(end)
+    print(
+        f"[PROFILE] {name}: {ms:.1f}ms | mem: {mem_before / 1024**2:.1f}->{mem_after / 1024**2:.1f}MB | peak: {peak / 1024**2:.1f}MB"
+    )
 
 
 class NTN:
@@ -35,6 +57,7 @@ class NTN:
         self.data = data_stream
         self.train_data = data_stream
         self.val_data = None
+        self.test_data = None
 
         self.tn = tn
         not_trainable_nodes = not_trainable_nodes or []
@@ -92,13 +115,11 @@ class NTN:
         Handles both single Tensors and Tuples of Tensors (e.g. Grad, Hess).
         """
         result = None
-        batch_count = 0
 
         for batch_data in data_iterator:
             inputs = batch_data if isinstance(batch_data, tuple) else (batch_data,)
 
             batch_result = batch_operation(*inputs, *args, **kwargs)
-            batch_count += 1
 
             if result is None:
                 result = batch_result
@@ -134,46 +155,36 @@ class NTN:
             )
 
     def _batch_node_derivatives(self, inputs, y_true, node_tag):
+        """
+        Worker for a single batch: Returns (Node_Grad, Node_Hess)
+        """
         tn = self.tn
-        env = self._batch_environment(
-            inputs, tn, target_tag=node_tag, sum_over_batch=False, sum_over_output=False
-        )
+
+        with profile_region(f"env_{node_tag}"):
+            env = self._batch_environment(
+                inputs, tn, target_tag=node_tag, sum_over_batch=False, sum_over_output=False
+            )
         target_tensor = tn[node_tag]
 
-        if DEBUG:
-            print(f"\n=== _batch_node_derivatives for {node_tag} ===")
-            print(f"env.inds: {env.inds}, env.shape: {env.shape}")
+        with profile_region(f"forward_{node_tag}"):
+            y_pred = self.forward_from_environment(
+                env, node_tag=node_tag, node_tensor=target_tensor, sum_over_batch=False
+            )
 
-        y_pred = self.forward_from_environment(
-            env, node_tag=node_tag, node_tensor=target_tensor, sum_over_batch=False
-        )
+        with profile_region(f"loss_derivs_{node_tag}"):
+            dL_dy, d2L_dy2 = self.loss.get_derivatives(
+                y_pred,
+                y_true,
+                backend=self.backend,
+                batch_dim=self.batch_dim,
+                output_dims=self.output_dimensions,
+                return_hessian_diagonal=False,
+            )
 
-        if DEBUG:
-            print(f"y_pred.inds: {y_pred.inds}, y_pred.shape: {y_pred.shape}")
-
-        dL_dy, d2L_dy2 = self.loss.get_derivatives(
-            y_pred,
-            y_true,
-            backend=self.backend,
-            batch_dim=self.batch_dim,
-            output_dims=self.output_dimensions,
-            return_hessian_diagonal=False,
-        )
-
-        if DEBUG:
-            print(f"dL_dy.inds: {dL_dy.inds}, dL_dy.shape: {dL_dy.shape}")
-            print(f"d2L_dy2.inds: {d2L_dy2.inds}, d2L_dy2.shape: {d2L_dy2.shape}")
-
-        grad_tn = env & dL_dy
-        node_inds = target_tensor.inds
-
-        if DEBUG:
-            print(f"node_inds: {node_inds}")
-
-        node_grad = grad_tn.contract(output_inds=node_inds)
-
-        if DEBUG:
-            print(f"node_grad.inds: {node_grad.inds}, node_grad.shape: {node_grad.shape}")
+        with profile_region(f"grad_contract_{node_tag}"):
+            grad_tn = env & dL_dy
+            node_inds = target_tensor.inds
+            node_grad = grad_tn.contract(output_inds=node_inds)
 
         out_inds = self.output_dimensions
         out_row_inds = out_inds
@@ -182,26 +193,14 @@ class NTN:
         d2L_tensor = qt.Tensor(d2L_dy2.data, inds=[self.batch_dim] + out_row_inds + out_col_inds)
         env_right = self._prime_indices_tensor(env, exclude_indices=[self.batch_dim])
 
-        if DEBUG:
-            print(f"d2L_tensor.inds: {d2L_tensor.inds}, d2L_tensor.shape: {d2L_tensor.shape}")
-            print(f"env_right.inds: {env_right.inds}, env_right.shape: {env_right.shape}")
-
-        hess_tn = env & d2L_tensor & env_right
+        with profile_region(f"hess_tn_build_{node_tag}"):
+            hess_tn = env & d2L_tensor & env_right
 
         node_inds = target_tensor.inds
         hess_out_inds = list(node_inds) + [f"{x}_prime" for x in node_inds]
 
-        if DEBUG:
-            print(f"hess_out_inds: {hess_out_inds}")
-            print(
-                f"batch_dim '{self.batch_dim}' in hess_out_inds: {self.batch_dim in hess_out_inds}"
-            )
-
-        node_hess = hess_tn.contract(output_inds=hess_out_inds)
-
-        if DEBUG:
-            print(f"node_hess.inds: {node_hess.inds}, node_hess.shape: {node_hess.shape}")
-            print(f"=== END ===\n")
+        with profile_region(f"hess_contract_{node_tag}"):
+            node_hess = hess_tn.contract(output_inds=hess_out_inds)
 
         return node_grad, node_hess
 
@@ -587,7 +586,8 @@ class NTN:
     def _get_node_update(
         self, node_tag, regularize=True, jitter=1e-6, adaptive_jitter=False, max_jitter=0.1
     ):
-        b, H = self._compute_H_b(node_tag)
+        with profile_region(f"compute_H_b_{node_tag}"):
+            b, H = self._compute_H_b(node_tag)
 
         variational_ind = b.inds
         map_H = {"rows": variational_ind, "cols": [i + "_prime" for i in variational_ind]}
@@ -596,11 +596,13 @@ class NTN:
         var_sizes = tuple(self.tn[node_tag].ind_size(i) for i in variational_ind)
         shape_map = {"cols": var_sizes}
 
-        H.fuse(map_H, inplace=True)
-        b.fuse(map_b, inplace=True)
+        with profile_region(f"fuse_{node_tag}"):
+            H.fuse(map_H, inplace=True)
+            b.fuse(map_b, inplace=True)
 
-        matrix_data = H.to_dense(["rows"], ["cols"])
-        gradient_vector = b.to_dense(["cols"])
+        with profile_region(f"to_dense_{node_tag}"):
+            matrix_data = H.to_dense(["rows"], ["cols"])
+            gradient_vector = b.to_dense(["cols"])
 
         backend, lib = self.get_backend(matrix_data)
         if backend == "torch":
@@ -667,7 +669,8 @@ class NTN:
                 matrix_data = matrix_data.at[d_idx, d_idx].add(scaled_jitter)
                 gradient_vector = gradient_vector + scaled_jitter * old_weight
 
-        tensor_node_data = self.solve_linear_system(matrix_data, -gradient_vector)
+        with profile_region(f"solve_{node_tag}"):
+            tensor_node_data = self.solve_linear_system(matrix_data, -gradient_vector)
 
         update_node = qt.Tensor(tensor_node_data, inds=["cols"], tags=self.tn[node_tag].tags)
 
@@ -845,6 +848,7 @@ class NTN:
             - Improvement is defined as: new_quality > best_quality + min_delta
         """
         self.val_data = val_data
+        self.test_data = test_data
 
         if eval_metrics is None:
             from model.utils import REGRESSION_METRICS
@@ -943,15 +947,8 @@ class NTN:
                         and abs(current_val_quality - best_val_quality) < min_delta
                     )
 
-                    if val_improved:
+                    if val_improved or (val_same and train_improved):
                         best_val_quality = current_val_quality
-                        best_train_quality = current_train_quality
-                        best_scores_train = scores_train.copy()
-                        best_scores_val = scores_val.copy()
-                        best_epoch = epoch
-                        is_best = True
-                        patience_counter = 0
-                    elif val_same and train_improved:
                         best_train_quality = current_train_quality
                         best_scores_train = scores_train.copy()
                         best_scores_val = scores_val.copy()
@@ -1005,17 +1002,9 @@ class NTN:
 
                 if patience is not None and patience_counter >= patience:
                     if verbose:
-                        print(f"\n⏸ Early stopping triggered at epoch {epoch + 1}")
-                        if train_selection:
-                            print(
-                                f"  No val or train improvement for {patience} epochs (min_delta={min_delta})"
-                            )
-                        else:
-                            print(f"  No improvement for {patience} epochs (min_delta={min_delta})")
                         print(
-                            f"  Best was epoch {best_epoch + 1} (val_quality={best_val_quality:.6f})"
+                            f"\n⏸ Early stopping at epoch {epoch + 1} (best was epoch {best_epoch + 1})"
                         )
-
                     return best_scores_train, best_scores_val
 
             except torch.linalg.LinAlgError as e:
