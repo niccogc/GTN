@@ -7,6 +7,7 @@
       url = "github:niccogc/quimbflake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     opencode.url = "github:anomalyco/opencode";
     opencode.inputs.nixpkgs.follows = "nixpkgs";
     opencode-plugins.url = "github:niccogc/opencode-plugin";

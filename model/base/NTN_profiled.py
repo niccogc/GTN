@@ -202,6 +202,10 @@ class NTN:
         with profile_region(f"hess_contract_{node_tag}"):
             node_hess = hess_tn.contract(output_inds=hess_out_inds)
 
+        del env, env_right, d2L_tensor, hess_tn, grad_tn, y_pred, dL_dy, d2L_dy2
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
         return node_grad, node_hess
 
     def _compute_H_b(self, node_tag):
@@ -676,6 +680,11 @@ class NTN:
 
         update_node.unfuse({"cols": variational_ind}, shape_map=shape_map, inplace=True)
         update_node.modify(tags=[node_tag])
+
+        del H, b, matrix_data, gradient_vector
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
         return update_node
 
     def update_node(self, tensor, node_tag):
