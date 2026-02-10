@@ -9,6 +9,7 @@ import sys
 import json
 import argparse
 import time
+import gc
 from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -310,6 +311,12 @@ def run_single_experiment(
             summary = {**result, "n_parameters": n_parameters}
             tracker.log_summary(summary)
 
+        del ntn, model
+        if "loader_train" in dir():
+            del loader_train
+        if "loader_val" in dir():
+            del loader_val
+
         return result
 
     except SingularMatrixError as e:
@@ -487,6 +494,14 @@ def main():
             tracker.finalize()
 
         results.append(result)
+
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
+        from model.base.NTN_profiled import flush_profile_data
+
+        flush_profile_data()
 
         if config["output"]["save_individual_runs"]:
             result_file = get_result_filepath(output_dir, experiment["run_id"])

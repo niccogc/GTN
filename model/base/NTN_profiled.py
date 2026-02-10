@@ -9,9 +9,47 @@ import quimb.tensor as qt
 import importlib
 import numpy as np
 from contextlib import contextmanager
+import csv
+import os
+from datetime import datetime
 
 NOT_TRAINABLE_TAG = "NT"
 PROFILE = True
+PROFILE_CSV = "profile_log.csv"
+
+# Global profile data collector
+_profile_data = []
+_profile_initialized = False
+
+
+def init_profile_csv():
+    """Initialize the CSV file with headers."""
+    global _profile_initialized
+    if not _profile_initialized:
+        with open(PROFILE_CSV, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(
+                [
+                    "timestamp",
+                    "region",
+                    "time_ms",
+                    "mem_before_mb",
+                    "mem_after_mb",
+                    "mem_delta_mb",
+                    "peak_mb",
+                ]
+            )
+        _profile_initialized = True
+
+
+def flush_profile_data():
+    """Flush accumulated profile data to CSV."""
+    global _profile_data
+    if _profile_data:
+        with open(PROFILE_CSV, "a", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerows(_profile_data)
+        _profile_data = []
 
 
 @contextmanager
@@ -19,6 +57,9 @@ def profile_region(name):
     if not PROFILE or not torch.cuda.is_available():
         yield
         return
+
+    init_profile_csv()
+
     torch.cuda.synchronize()
     torch.cuda.reset_peak_memory_stats()
     mem_before = torch.cuda.memory_allocated()
@@ -31,9 +72,23 @@ def profile_region(name):
     mem_after = torch.cuda.memory_allocated()
     peak = torch.cuda.max_memory_allocated()
     ms = start.elapsed_time(end)
-    print(
-        f"[PROFILE] {name}: {ms:.1f}ms | mem: {mem_before / 1024**2:.1f}->{mem_after / 1024**2:.1f}MB | peak: {peak / 1024**2:.1f}MB"
+
+    # Store data for CSV
+    _profile_data.append(
+        [
+            datetime.now().isoformat(),
+            name,
+            round(ms, 2),
+            round(mem_before / 1024**2, 2),
+            round(mem_after / 1024**2, 2),
+            round((mem_after - mem_before) / 1024**2, 2),
+            round(peak / 1024**2, 2),
+        ]
     )
+
+    # Flush every 100 entries to avoid memory buildup
+    if len(_profile_data) >= 100:
+        flush_profile_data()
 
 
 class NTN:
