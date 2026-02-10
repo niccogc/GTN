@@ -3,7 +3,7 @@ import time
 
 torch.set_default_dtype(torch.float64)
 m = 10000
-n = 122
+n = 10
 # vectors = [torch.rand(m) for _ in range(n)]  # list of column vectors
 r = 8  # desired rank
 U_basis, _ = torch.linalg.qr(torch.randn(m, r))  # r orthonormal basis vectors
