@@ -129,55 +129,36 @@ class MSELoss(nn.MSELoss, TNLoss):
         
         
         # 1. Prepare Data
-        y_pred_th = self._to_torch(y_pred, requires_grad=True)
+        y_pred_th = self._to_torch(y_pred, requires_grad=False)
         y_true_th = self._to_torch(y_true, requires_grad=False)
-        if y_pred_th.device != y_true_th.device:
-            y_true_th = y_true_th.to(y_pred_th.device)
+        # if y_pred_th.device != y_true_th.device:
+        #     y_true_th = y_true_th.to(y_pred_th.device)
 
         batch_sz = y_pred_th.shape[0]
         y_flat = y_pred_th.view(batch_sz, -1)
         num_outputs = y_flat.shape[1]
-
-        # 2. Compute Loss
-        loss_val = nn.MSELoss.__call__(self, y_pred_th, y_true_th)
+        grad_th = (y_pred_th - y_true_th)*2
+        # # 2. Compute Loss
+        # loss_val = nn.MSELoss.__call__(self, y_pred_th, y_true_th)
         
-        # 3. First Derivative (Gradient)
-        grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=True)[0]
+        # # 3. First Derivative (Gradient)
+        # grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=True)[0]
         grad_flat = grad_th.view(batch_sz, -1)
         
         # 4. Second Derivative (Hessian)
         if return_hessian_diagonal:
-            # Diagonal Hessian: compute d²L/dy_i² for each output dimension
-            hess_cols = []
-            for i in range(num_outputs):
-                grad_sum = grad_flat[:, i].sum()
-                h_i = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
-                h_i_flat = h_i.view(batch_sz, -1)
-                hess_cols.append(h_i_flat[:, i])
-            
-            hess_th = torch.stack(hess_cols, dim=1).view(y_pred_th.shape)
-            
             # Indices match y_pred for diagonal
             hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
 
         else:
-            # Full Per-Sample Hessian: (Batch, Out, Out)
-            hess_rows = []
-            for i in range(num_outputs):
-                grad_sum = grad_flat[:, i].sum()
-                h_row = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
-                hess_rows.append(h_row.view(batch_sz, -1))
-            
-            # Shape: (Batch, Out, Out)
-            hess_th = torch.stack(hess_rows, dim=0).permute(1, 0, 2)
-            
-            # Create proper indices for the full matrix [batch, out, out_prime]
             if isinstance(y_pred, qt.Tensor):
                 out_inds = [i for i in y_pred.inds if i != batch_dim]
                 out_inds_prime = [i + "_prime" for i in out_inds]
                 hess_inds = [batch_dim] + out_inds + out_inds_prime
             else:
                 hess_inds = None
+
+        hess_th = torch.ones(batch_sz, 1, 1) *2        
 
         # 5. Convert to target backend
         if backend == 'numpy':
@@ -189,7 +170,9 @@ class MSELoss(nn.MSELoss, TNLoss):
         
         # 6. Wrap in quimb tensors with proper indices
         grad_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
-        return qt.Tensor(grad_data, inds=grad_inds), qt.Tensor(hess_data, inds=hess_inds)  # type: ignore
+        # print(hess_data.shape)
+        hess_data = torch.ones_like(hess_data) * 2
+        return qt.Tensor(grad_data, inds=grad_inds), qt.Tensor(hess_data, inds=hess_inds)
 
 
 class MAELoss(nn.L1Loss, TNLoss):
@@ -199,7 +182,7 @@ class MAELoss(nn.L1Loss, TNLoss):
     For MAE: L = (1/N) * sum(|y_pred - y_true|)
     
     Gradient: dL/dy_pred = sign(y_pred - y_true) / N
-    Hessian: d²L/dy_pred² ≈ 0 (undefined at y_pred = y_true, approximated as small constant)
+    Hessian: d²L/dy_pred² ≈ 0 (undefined at y_pred = y_true, approximated as small consta
     
     Note: MAE has a diagonal Hessian (outputs are independent).
     """

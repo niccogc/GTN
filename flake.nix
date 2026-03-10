@@ -7,19 +7,12 @@
       url = "github:niccogc/quimbflake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    opencode.url = "github:anomalyco/opencode";
-    opencode.inputs.nixpkgs.follows = "nixpkgs";
-    opencode-plugins.url = "github:niccogc/opencode-plugin";
-    opencode-plugins.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     self,
     nixpkgs,
     quimb-flake,
-    opencode-plugins,
-    opencode,
   }: let
     system = "x86_64-linux";
     # Define the custom Python package separately
@@ -54,26 +47,14 @@
       with ps; [
         pygraphviz
         ucimlrepo
-        pandas
         torchvision
         torch
         scipy
         matplotlib
         scikit-learn
         pytest
-        jax
         quimb
       ]);
-
-    rawConfig = builtins.fromJSON (builtins.readFile ./opencodeConfig.json);
-
-    finalConfigData =
-      rawConfig
-      // {
-        plugin = [];
-      };
-
-    opencodecfg = pkgs.writeText "opencodecfg.jsonc" (builtins.toJSON finalConfigData);
   in {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = [
@@ -83,13 +64,10 @@
       packages = [
         pythonWithNixPkgs
         pkgs.uv
-        # opencode.packages.${system}.default
-        pkgs.opencode
       ];
 
       shellHook = ''
         export LD_LIBRARY_PATH="${pkgs.lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib pkgs.zlib]}"
-        export OPENCODE_CONFIG=${opencodecfg}
         export PROJECT_DIR=$PWD
         # --- PODMAN SERVICE ---
         DOCS_CONTAINER_NAME="docs-mcp-server-dev"

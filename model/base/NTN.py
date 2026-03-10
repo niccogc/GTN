@@ -552,6 +552,87 @@ class NTN:
 
         return result_data
 
+    def _get_node_optimum_regression(
+        self, node_tag, regularize=True, jitter=1e-6, adaptive_jitter=False, max_jitter=0.1, y_all = None
+    ):
+        """
+        Compute the optimal node value directly using least squares.
+        
+        Unlike _get_node_update which returns a delta, this returns the optimal
+        node value that minimizes ||env @ w - y||^2 + jitter * ||w||^2.
+        
+        This is specifically for regression with a single output dimension.
+        
+        Args:
+            node_tag: Tag of the node to optimize
+            regularize: Whether to apply L2 regularization
+            jitter: Regularization strength (lambda in ridge regression)
+            adaptive_jitter: Not used (kept for API compatibility)
+            max_jitter: Not used (kept for API compatibility)
+            
+        Returns:
+            qt.Tensor: The optimal node tensor (not an update)
+        """
+        target_tensor = self.tn[node_tag]
+        node_inds = list(target_tensor.inds)
+        node_shape = target_tensor.shape
+        n_params = int(np.prod(node_shape))
+        
+        env = self.get_environment(
+            self.tn,
+            node_tag,
+            self.train_data.data_mu,
+            copy=False,
+            sum_over_batch=False,
+            sum_over_output=True,
+        )
+        y_all = self.train_data.outputs_data[0]
+        # print(y_all[0].)
+    #     y_batches = []
+    #     for y_batch in self.train_data.data_y:
+    #         y_data = y_batch.data if isinstance(y_batch, qt.Tensor) else y_batch
+    #         y_batches.append(y_data)
+    
+    #     if torch.is_tensor(y_batches[0]):
+    #         y_all = torch.cat(y_batches, dim=0)
+    #     else:
+    #         y_all = torch.tensor(np.concatenate(y_batches, axis=0), dtype=torch.float64)
+    
+        if y_all.ndim > 1:
+            y_all = y_all.squeeze(-1)
+        
+        env_data = env.data
+        if not torch.is_tensor(env_data):
+            env_data = torch.tensor(env_data, dtype=torch.float64)
+        
+        n_samples = env_data.shape[0]
+        env_matrix = env_data.reshape(n_samples, n_params)
+        jitter = jitter
+        # print(n_samples)
+        if regularize and jitter > 0:
+            sqrt_jitter = np.sqrt(jitter)
+            reg_matrix = sqrt_jitter * torch.eye(n_params, dtype=env_matrix.dtype, device=env_matrix.device)
+            reg_y = torch.zeros(n_params, dtype=y_all.dtype, device=y_all.device)
+            
+            env_aug = torch.cat([env_matrix, reg_matrix], dim=0)
+            y_aug = torch.cat([y_all, reg_y], dim=0)
+        else:
+            env_aug = env_matrix
+            y_aug = y_all
+        
+        result = torch.linalg.lstsq(env_aug, y_aug)
+        solution = result.solution
+        
+        solution_reshaped = solution.reshape(node_shape)
+        
+        optimal_node = qt.Tensor(
+            data=solution_reshaped,
+            inds=node_inds,
+            tags=target_tensor.tags
+        )
+        
+        return optimal_node
+
     def _get_node_update(
         self, node_tag, regularize=True, jitter=1e-6, adaptive_jitter=False, max_jitter=0.1
     ):
@@ -583,36 +664,6 @@ class NTN:
             scale = 1.0
 
         effective_jitter = jitter
-        if adaptive_jitter and regularize:
-            backend, lib = self.get_backend(matrix_data)
-
-            try:
-                if backend == "torch":
-                    eigs = lib.linalg.eigvalsh(matrix_data)
-                    min_eig = eigs.min().item()
-                    max_eig = eigs.max().item()
-                elif backend == "numpy":
-                    eigs = lib.linalg.eigvalsh(matrix_data)
-                    min_eig = eigs.min()
-                    max_eig = eigs.max()
-                else:
-                    min_eig = None
-                    max_eig = None
-
-                if min_eig is not None and max_eig is not None:
-                    if min_eig <= 0:
-                        effective_jitter = max(effective_jitter, abs(min_eig) * 1.1)
-
-                    if max_eig > 0 and min_eig > 0:
-                        cond_number = max_eig / min_eig
-                        if cond_number > 1e10:
-                            effective_jitter = min(
-                                max_jitter, max(effective_jitter, jitter * (cond_number / 1e10))
-                            )
-
-                    effective_jitter = min(effective_jitter, max_jitter)
-            except:
-                pass
 
         if regularize:
             backend, lib = self.get_backend(matrix_data)
@@ -621,7 +672,7 @@ class NTN:
             current_node.fuse(map_b, inplace=True)
             old_weight = current_node.to_dense(["cols"])
 
-            scaled_jitter = 2 * effective_jitter * scale
+            scaled_jitter = 2 * effective_jitter  # removed scale factor
 
             if backend == "torch":
                 matrix_data.diagonal().add_(scaled_jitter)
@@ -767,6 +818,22 @@ class NTN:
 
         self.update_node(new_tensor, node_tag)
 
+    def update_tn_node_optimum(self, node_tag, regularize, jitter):
+        """
+        Update a node by directly computing its optimal value using least squares.
+        
+        Unlike update_tn_node which computes a delta and adds it to the current value,
+        this method directly solves for the optimal node value.
+        
+        This approach is specific to regression tasks with a single output dimension.
+        """
+        optimal_tensor = self._get_node_optimum_regression(
+            node_tag,
+            regularize=regularize,
+            jitter=jitter,
+        )
+        self.update_node(optimal_tensor, node_tag)
+
     def fit(
         self,
         n_epochs=1,
@@ -782,6 +849,7 @@ class NTN:
         min_delta=0.0,
         adaptive_jitter=False,
         train_selection=False,
+        use_lstsq=False,
     ):
         """
         Main training loop (Alternating Least Squares / Newton Sweep).
@@ -814,6 +882,15 @@ class NTN:
         """
         self.val_data = val_data
         self.test_data = test_data
+
+        # use_lstsq only works for regression (MSELoss, MAELoss, HuberLoss)
+        if use_lstsq:
+            from model.losses import MSELoss, MAELoss, HuberLoss
+            if not isinstance(self.loss, (MSELoss, MAELoss, HuberLoss)):
+                raise ValueError(
+                    f"use_lstsq=True only supported for regression losses (MSELoss, MAELoss, HuberLoss), "
+                    f"got {type(self.loss).__name__}"
+                )
 
         if eval_metrics is None:
             from model.utils import REGRESSION_METRICS
@@ -872,9 +949,12 @@ class NTN:
         for epoch in range(n_epochs):
             try:
                 for node_tag in full_sweep_order:
-                    self.update_tn_node(
-                        node_tag, regularize, jitter[epoch], adaptive_jitter=adaptive_jitter
-                    )
+                    if use_lstsq:
+                        self.update_tn_node_optimum(node_tag, regularize, jitter[epoch])
+                    else:
+                        self.update_tn_node(
+                            node_tag, regularize, jitter[epoch], adaptive_jitter=adaptive_jitter
+                        )
 
                 scores_train = self.evaluate(eval_metrics, data_stream=self.train_data)
 
