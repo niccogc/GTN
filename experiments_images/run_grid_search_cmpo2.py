@@ -17,16 +17,16 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 
-from experiments.config_parser import load_config, create_experiment_plan, print_experiment_summary
+from experiments.utils.config_parser import load_config, create_experiment_plan, print_experiment_summary
 from experiments_images.image_dataset_loader import load_image_dataset
-from experiments.trackers import create_tracker, TrackerError
+from experiments.utils.trackers import create_tracker, TrackerError
 
 from testing.CMPO2_models import CMPO2, CMPO2_GTN
 from testing.CMPO3_models import CMPO3, CMPO3_GTN
 
 torch.set_default_dtype(torch.float64)
 
-from experiments.device_utils import DEVICE
+from experiments.utils.device_utils import DEVICE
 
 
 def get_result_filepath(output_dir: str, run_id: str) -> str:
@@ -303,7 +303,7 @@ def generate_run_name(grid_params: dict, seed: int, model_type: str = "cmpo2") -
 
 
 def create_experiment_plan_cmpo2(config: dict):
-    from experiments.config_parser import expand_parameter_grid
+    from experiments.utils.config_parser import expand_parameter_grid
 
     grid_combinations = expand_parameter_grid(config["parameter_grid"])
     model_type = config.get("model_type", "cmpo2")

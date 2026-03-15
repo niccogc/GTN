@@ -587,17 +587,7 @@ class NTN:
             sum_over_output=True,
         )
         y_all = self.train_data.outputs_data[0]
-        # print(y_all[0].)
-    #     y_batches = []
-    #     for y_batch in self.train_data.data_y:
-    #         y_data = y_batch.data if isinstance(y_batch, qt.Tensor) else y_batch
-    #         y_batches.append(y_data)
-    
-    #     if torch.is_tensor(y_batches[0]):
-    #         y_all = torch.cat(y_batches, dim=0)
-    #     else:
-    #         y_all = torch.tensor(np.concatenate(y_batches, axis=0), dtype=torch.float64)
-    
+
         if y_all.ndim > 1:
             y_all = y_all.squeeze(-1)
         

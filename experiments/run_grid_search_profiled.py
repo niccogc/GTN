@@ -17,9 +17,9 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import torch
 import numpy as np
 
-from experiments.config_parser import load_config, create_experiment_plan, print_experiment_summary
-from experiments.dataset_loader import load_dataset
-from experiments.trackers import create_tracker, TrackerError
+from experiments.utils.config_parser import load_config, create_experiment_plan, print_experiment_summary
+from experiments.utils.dataset_loader import load_dataset
+from experiments.utils.trackers import create_tracker, TrackerError
 
 from model.base.NTN_profiled import NTN
 from model.base.NTN_Ensemble import NTN_Ensemble
@@ -29,7 +29,7 @@ from model.standard import MPO2, LMPO2, MMPO2
 from model.typeI import MPO2TypeI, LMPO2TypeI, MMPO2TypeI
 from model.exceptions import SingularMatrixError
 
-from experiments.device_utils import DEVICE, move_tn_to_device, move_data_to_device
+from experiments.utils.device_utils import DEVICE, move_tn_to_device, move_data_to_device
 
 torch.set_default_dtype(torch.float64)
 

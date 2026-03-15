@@ -1,6 +1,6 @@
 # type: ignore
 import quimb.tensor as qt
-from model.NTN import NTN
+from model.base.NTN import NTN
 from model.batch_moving_environment import BatchMovingEnvironment
 
 class CMPO2_NTN(NTN):
@@ -122,7 +122,7 @@ class CMPO2_NTN(NTN):
         return final_env.contract(all, output_inds=inds_to_keep)    
     
     def _get_trainable_nodes(self):
-        from model.NTN import NOT_TRAINABLE_TAG
+        from model.base.NTN import NOT_TRAINABLE_TAG
         
         trainable_tags = []
         for tensor in self.tn:
@@ -156,7 +156,7 @@ class CMPO2_NTN(NTN):
             return super().fit(n_epochs=n_epochs, regularize=regularize, 
                              jitter=jitter, verbose=verbose, eval_metrics=eval_metrics)
         
-        from model.NTN import REGRESSION_METRICS, print_metrics
+        from model.base.NTN import REGRESSION_METRICS, print_metrics
         
         if eval_metrics is None:
             eval_metrics = REGRESSION_METRICS

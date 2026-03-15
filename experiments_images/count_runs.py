@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from experiments.config_parser import expand_parameter_grid
+from experiments.utils.config_parser import expand_parameter_grid
 
 
 def count_runs_for_config(config_path: Path) -> dict:

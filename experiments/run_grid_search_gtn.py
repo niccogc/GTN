@@ -18,17 +18,17 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 
-from experiments.config_parser import load_config, create_experiment_plan, print_experiment_summary
-from experiments.dataset_loader import load_dataset
-from experiments.trackers import create_tracker, TrackerError
+from experiments.utils.config_parser import load_config, create_experiment_plan, print_experiment_summary
+from experiments.utils.dataset_loader import load_dataset
+from experiments.utils.trackers import create_tracker, TrackerError
 
-from model.GTN import GTN
+from model.base.GTN import GTN
 from model.standard.MPO2_models import MPO2, LMPO2, MMPO2
 from model.typeI import MPO2TypeI_GTN, LMPO2TypeI_GTN, MMPO2TypeI_GTN
 
 torch.set_default_dtype(torch.float64)
 
-from experiments.device_utils import DEVICE, move_tn_to_device
+from experiments.utils.device_utils import DEVICE, move_tn_to_device
 
 
 class MPO2GTN(GTN):

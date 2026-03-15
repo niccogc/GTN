@@ -98,7 +98,7 @@ def test_gtn_cuda():
     print_header("Test 3: GTN Model on CUDA")
 
     try:
-        from model.GTN import GTN
+        from model.base.GTN import GTN
         from model.MPO2_models import MPO2
 
         # Create a small MPO2 model
@@ -215,7 +215,7 @@ def test_ntn_cuda():
         from model.base.NTN import NTN
         from model.losses import MSELoss
         from model.utils import create_inputs
-        from experiments.device_utils import move_tn_to_device
+        from experiments.utils.device_utils import move_tn_to_device
 
         L = 3
         bond_dim = 4
