@@ -1,0 +1,34 @@
+#!/bin/bash
+# Sanity check: Run all models on small configs to verify everything works
+set -e
+
+cd "$(dirname "$0")"
+
+echo "=============================================="
+echo "  GTN/NTN Sanity Check - All Models"
+echo "=============================================="
+
+# Clean previous results
+rm -rf configs/sanity_check/
+
+echo ""
+echo "[1/4] NTN + Concrete (regression)"
+python run_grid_search.py --config configs/test_ntn_concrete.json
+
+echo ""
+echo "[2/4] NTN + Iris (classification)"
+python run_grid_search.py --config configs/test_ntn_iris.json
+
+echo ""
+echo "[3/4] GTN + Concrete (regression)"
+python run_grid_search_gtn.py --config configs/test_gtn_concrete.json
+
+echo ""
+echo "[4/4] GTN + Iris (classification)"
+python run_grid_search_gtn.py --config configs/test_gtn_iris.json
+
+echo ""
+echo "=============================================="
+echo "  Sanity Check Complete!"
+echo "=============================================="
+echo "Results in: experiments/configs/sanity_check/"
