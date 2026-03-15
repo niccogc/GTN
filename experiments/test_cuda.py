@@ -99,7 +99,7 @@ def test_gtn_cuda():
 
     try:
         from model.base.GTN import GTN
-        from model.MPO2_models import MPO2
+        from model.standard.MPO2_models import MPO2
 
         # Create a small MPO2 model
         L = 3

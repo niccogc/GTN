@@ -146,11 +146,17 @@ class MSELoss(nn.MSELoss, TNLoss):
         grad_flat = grad_th.view(batch_sz, -1)
         
         # 4. Second Derivative (Hessian)
+        # MSE has constant Hessian = 2 for each output
         if return_hessian_diagonal:
-            # Indices match y_pred for diagonal
+            # Diagonal: same shape as y_pred, constant value 2
+            hess_th = torch.ones_like(y_pred_th) * 2
             hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
-
         else:
+            # Full Hessian: (batch, out, out_prime) - diagonal matrix with 2s
+            out_size = num_outputs
+            hess_th = torch.zeros(batch_sz, out_size, out_size, device=y_pred_th.device, dtype=y_pred_th.dtype)
+            for i in range(out_size):
+                hess_th[:, i, i] = 2.0
             if isinstance(y_pred, qt.Tensor):
                 out_inds = [i for i in y_pred.inds if i != batch_dim]
                 out_inds_prime = [i + "_prime" for i in out_inds]
@@ -158,20 +164,16 @@ class MSELoss(nn.MSELoss, TNLoss):
             else:
                 hess_inds = None
 
-        hess_th = torch.ones(batch_sz, 1, 1) *2        
-
         # 5. Convert to target backend
         if backend == 'numpy':
-            grad_data = grad_th.detach().numpy()
-            hess_data = hess_th.detach().numpy()
-        else:  # torch or jax
+            grad_data = grad_th.detach().cpu().numpy()
+            hess_data = hess_th.detach().cpu().numpy()
+        else:  # torch
             grad_data = grad_th
             hess_data = hess_th
         
         # 6. Wrap in quimb tensors with proper indices
         grad_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
-        # print(hess_data.shape)
-        hess_data = torch.ones_like(hess_data) * 2
         return qt.Tensor(grad_data, inds=grad_inds), qt.Tensor(hess_data, inds=hess_inds)
 
 
