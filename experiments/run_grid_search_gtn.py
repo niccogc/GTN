@@ -406,7 +406,7 @@ def main():
     parser = argparse.ArgumentParser(description="Run GTN grid search experiments")
     parser.add_argument("--config", type=str, required=True, help="Path to JSON config file")
     parser.add_argument(
-        "--output-dir", type=str, required=True, help="Output directory for results"
+        "--output-dir", type=str, default=None, help="Output directory for results (overrides config)"
     )
     parser.add_argument(
         "--tracker",
@@ -428,17 +428,20 @@ def main():
     config = load_config(args.config)
     experiment_plan, metadata = create_experiment_plan(config)
 
-    if args.tracker == "file" and "tracker" in config:
-        args.tracker = config["tracker"].get("backend", "file")
-    if args.tracker_dir == "experiment_logs" and "tracker" in config:
-        args.tracker_dir = config["tracker"].get("tracker_dir", "experiment_logs")
-    if args.aim_repo is None and "tracker" in config:
-        args.aim_repo = config["tracker"].get("aim_repo", None)
+    if args.output_dir:
+        config["output"]["results_dir"] = args.output_dir
+    if args.tracker and args.tracker != "file":
+        config["tracker"]["backend"] = args.tracker
+    if args.tracker_dir and args.tracker_dir != "experiment_logs":
+        config["tracker"]["tracker_dir"] = args.tracker_dir
+    if args.aim_repo:
+        config["tracker"]["aim_repo"] = args.aim_repo
 
-    os.makedirs(args.output_dir, exist_ok=True)
+    output_dir = config["output"]["results_dir"]
+    os.makedirs(output_dir, exist_ok=True)
 
-    if is_grid_complete(args.output_dir):
-        print(f"Grid search already complete. Found .complete file in {args.output_dir}")
+    if is_grid_complete(output_dir):
+        print(f"Grid search already complete. Found .complete file in {output_dir}")
         print("Delete .complete file to re-run experiments.")
         return
 
@@ -477,7 +480,7 @@ def main():
         run_id = experiment["run_id"]
 
         was_attempted, was_successful, is_singular, error = run_already_completed(
-            args.output_dir, run_id
+            output_dir, run_id
         )
         if was_attempted:
             if was_successful:
@@ -523,7 +526,7 @@ def main():
             )
 
             # Save individual result
-            result_file = get_result_filepath(args.output_dir, run_id)
+            result_file = get_result_filepath(output_dir, run_id)
             with open(result_file, "w") as f:
                 json.dump(result, f, indent=2)
 
@@ -557,7 +560,7 @@ def main():
                 "traceback": error_tb,
             }
 
-            result_file = get_result_filepath(args.output_dir, run_id)
+            result_file = get_result_filepath(output_dir, run_id)
             with open(result_file, "w") as f:
                 json.dump(error_result, f, indent=2)
 
@@ -606,14 +609,14 @@ def main():
             "top_configurations": results_sorted[:10],
         }
 
-        summary_file = os.path.join(args.output_dir, "summary.json")
+        summary_file = os.path.join(output_dir, "summary.json")
         with open(summary_file, "w") as f:
             json.dump(summary, f, indent=2)
 
         print(f"\nSummary saved to: {summary_file}")
 
     if failed_count == 0:
-        mark_grid_complete(args.output_dir)
+        mark_grid_complete(output_dir)
         print("Grid search complete. Marked as .complete")
     else:
         print(f"Grid search has {failed_count} failures. NOT marked as .complete")
