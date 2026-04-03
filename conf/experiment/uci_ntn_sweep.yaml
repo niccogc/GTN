@@ -1,0 +1,22 @@
+# @package _global_
+# UCI NTN Grid Search
+
+defaults:
+  - _base
+  - override /trainer: ntn
+
+hydra:
+  sweeper:
+    params:
+      # === Jitter Schedule (NTN-specific) ===
+      trainer.ridge: 5            # Regularization strength (used directly as jitter)
+      trainer.ridge_decay: 0.25       # Multiplicative decay per epoch
+      trainer.ridge_min: 0.0001        # Minimum ridge value
+      
+      # === Training ===
+      # trainer.n_epochs: 20
+      
+      # === Early Stopping ===
+      # trainer.patience: 5
+      # trainer.min_delta: 0.001
+      # trainer.train_selection: false

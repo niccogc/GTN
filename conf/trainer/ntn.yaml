@@ -1,0 +1,22 @@
+# @package _global_
+# NTN: Newton-based Tensor Network Training
+# Uses second-order optimization with ridge regularization
+
+trainer:
+  type: ntn
+  n_epochs: 20            # Number of training epochs (10-50 typical)
+  
+  # Ridge regularization (λ in ridge regression)
+  ridge: 5            # Regularization strength (used directly as jitter)
+  ridge_decay: 0.25       # Multiplicative decay per epoch
+  ridge_min: 0.0001        # Minimum ridge value
+  adaptive_ridge: false   # Auto-adjust for ill-conditioned matrices
+  
+  # Early stopping
+  patience: 10             # Epochs without improvement before stopping (null to disable)
+  min_delta: 0.001        # Minimum improvement to count as progress
+  
+  # Model selection strategy
+  # When false: select model with best validation quality only
+  # When true: use training quality as tiebreaker when validation quality is equal (within min_delta)
+  train_selection: true

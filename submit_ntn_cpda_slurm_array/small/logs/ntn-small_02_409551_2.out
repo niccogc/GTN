@@ -1,0 +1,4702 @@
+Node: comp-gpu01
+Array Job ID: 409551, Task ID: 2
+Start: 2026-04-02-11:25:25
+Running: model=cpda_typei dataset=wine
+[2026-04-02 11:25:35,278][HYDRA] Launching 40 jobs locally
+[2026-04-02 11:25:35,278][HYDRA] 	#0 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:35,409][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:35,414][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed42
+[2026-04-02 11:25:35,467][utils.tracking][INFO] - Loaded 12609 tracked runs from runs_tracking.csv
+[2026-04-02 11:25:35,469][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:25:36,783][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:25:36,784][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:25:36,784][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:36,784][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.22645 | quality: 0.26613
+        | Val:   loss: 1.13989 | quality: 0.25926
+
+Epoch 1 | Train: loss: 0.95230 | quality: 0.95161
+        | Val:   loss: 0.95932 | quality: 0.92593
+ *
+Epoch 2 | Train: loss: 0.70017 | quality: 0.96774
+        | Val:   loss: 0.71154 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42465 | quality: 0.97581
+        | Val:   loss: 0.44215 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24239 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13041 | quality: 0.99194
+        | Val:   loss: 0.16342 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04378 | quality: 1.00000
+        | Val:   loss: 0.08309 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00791 | quality: 1.00000
+        | Val:   loss: 0.04430 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00168 | quality: 1.00000
+        | Val:   loss: 0.03093 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02028 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01719 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.01815 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02146 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02463 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02731 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02937 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03081 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03176 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03238 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:25:37,685][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-02 11:25:37,685][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:25:37,685][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:25:37,686][HYDRA] 	#1 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:37,820][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:37,821][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed10090
+[2026-04-02 11:25:37,822][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:25:38,840][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:25:38,840][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:25:38,840][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:38,840][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.36494 | quality: 0.16129
+        | Val:   loss: 1.23670 | quality: 0.37037
+
+Epoch 1 | Train: loss: 0.94535 | quality: 0.94355
+        | Val:   loss: 0.95081 | quality: 0.92593
+ *
+Epoch 2 | Train: loss: 0.70020 | quality: 0.96774
+        | Val:   loss: 0.71159 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42464 | quality: 0.97581
+        | Val:   loss: 0.44215 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24239 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13033 | quality: 0.99194
+        | Val:   loss: 0.16337 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04150 | quality: 1.00000
+        | Val:   loss: 0.08233 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00761 | quality: 1.00000
+        | Val:   loss: 0.04786 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00165 | quality: 1.00000
+        | Val:   loss: 0.03526 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02358 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.01934 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.01933 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02233 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02540 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02813 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03031 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03186 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03283 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03336 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03362 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:25:39,570][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-02 11:25:39,570][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:25:39,570][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:25:39,571][HYDRA] 	#2 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:39,883][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:39,883][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed32874
+[2026-04-02 11:25:39,884][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:25:41,036][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:25:41,036][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:25:41,036][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:41,036][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.21887 | quality: 0.29032
+        | Val:   loss: 1.20600 | quality: 0.18519
+
+Epoch 1 | Train: loss: 0.94159 | quality: 0.95161
+        | Val:   loss: 0.94711 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70025 | quality: 0.96774
+        | Val:   loss: 0.71162 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42465 | quality: 0.97581
+        | Val:   loss: 0.44215 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24240 | quality: 0.98387
+        | Val:   loss: 0.26636 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13152 | quality: 0.99194
+        | Val:   loss: 0.16410 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04309 | quality: 1.00000
+        | Val:   loss: 0.08372 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00777 | quality: 1.00000
+        | Val:   loss: 0.04721 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00164 | quality: 1.00000
+        | Val:   loss: 0.03406 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02136 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01794 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.01885 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02234 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02557 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02826 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03024 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03157 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03238 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03287 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:25:41,736][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-02 11:25:41,736][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:25:41,736][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:25:41,737][HYDRA] 	#3 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:41,871][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:41,872][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed47311
+[2026-04-02 11:25:41,872][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:25:42,898][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:25:42,898][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:25:42,898][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:42,898][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.13044 | quality: 0.34677
+        | Val:   loss: 1.08746 | quality: 0.44444
+
+Epoch 1 | Train: loss: 0.95226 | quality: 0.95968
+        | Val:   loss: 0.95842 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70011 | quality: 0.96774
+        | Val:   loss: 0.71151 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42464 | quality: 0.97581
+        | Val:   loss: 0.44215 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24239 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13056 | quality: 0.99194
+        | Val:   loss: 0.16352 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04348 | quality: 1.00000
+        | Val:   loss: 0.08274 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00786 | quality: 1.00000
+        | Val:   loss: 0.04451 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00166 | quality: 1.00000
+        | Val:   loss: 0.03191 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.01991 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01734 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.01866 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02214 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02506 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02747 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02940 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03080 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03173 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03233 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:25:43,583][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-02 11:25:43,583][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:25:43,583][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:25:43,584][HYDRA] 	#4 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:43,722][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:43,722][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed47303
+[2026-04-02 11:25:43,723][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:25:44,898][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:25:44,898][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:25:44,898][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:44,898][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.03910 | quality: 0.45968
+        | Val:   loss: 1.04808 | quality: 0.37037
+
+Epoch 1 | Train: loss: 0.96274 | quality: 0.96774
+        | Val:   loss: 0.96712 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.69997 | quality: 0.96774
+        | Val:   loss: 0.71138 | quality: 0.96296
+
+Epoch 3 | Train: loss: 0.42463 | quality: 0.97581
+        | Val:   loss: 0.44214 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24240 | quality: 0.98387
+        | Val:   loss: 0.26636 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13186 | quality: 0.99194
+        | Val:   loss: 0.16431 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04266 | quality: 1.00000
+        | Val:   loss: 0.08366 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00769 | quality: 1.00000
+        | Val:   loss: 0.04796 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00163 | quality: 1.00000
+        | Val:   loss: 0.03468 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02151 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01835 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.01925 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02291 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02633 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02922 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03138 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03281 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03362 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03398 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03411 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:25:45,626][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-02 11:25:45,626][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:25:45,626][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:25:45,627][HYDRA] 	#5 : model.L=3 model.bond_dim=16 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:45,768][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:45,769][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed42
+[2026-04-02 11:25:45,769][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:25:46,779][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:25:46,780][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:25:46,780][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:46,780][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.55771 | quality: 0.22581
+        | Val:   loss: 1.36551 | quality: 0.25926
+
+Epoch 1 | Train: loss: 0.92559 | quality: 0.92742
+        | Val:   loss: 0.93185 | quality: 0.85185
+ *
+Epoch 2 | Train: loss: 0.70067 | quality: 0.96774
+        | Val:   loss: 0.71205 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42468 | quality: 0.97581
+        | Val:   loss: 0.44219 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24236 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12696 | quality: 0.99194
+        | Val:   loss: 0.16109 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03898 | quality: 1.00000
+        | Val:   loss: 0.07803 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00737 | quality: 1.00000
+        | Val:   loss: 0.04654 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00162 | quality: 1.00000
+        | Val:   loss: 0.03655 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02685 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.02224 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02115 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02346 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02641 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02923 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03154 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03322 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03429 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03484 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03502 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:25:47,622][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed42/results.json
+[2026-04-02 11:25:47,623][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:25:47,623][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:25:47,624][HYDRA] 	#6 : model.L=3 model.bond_dim=16 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:47,763][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:47,764][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed10090
+[2026-04-02 11:25:47,765][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:25:48,803][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:25:48,803][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:25:48,803][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:48,804][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.35694 | quality: 0.23387
+        | Val:   loss: 1.19007 | quality: 0.29630
+
+Epoch 1 | Train: loss: 0.95382 | quality: 0.96774
+        | Val:   loss: 0.95656 | quality: 0.88889
+ *
+Epoch 2 | Train: loss: 0.70041 | quality: 0.96774
+        | Val:   loss: 0.71181 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42467 | quality: 0.97581
+        | Val:   loss: 0.44217 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24236 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12743 | quality: 0.99194
+        | Val:   loss: 0.16141 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03928 | quality: 1.00000
+        | Val:   loss: 0.07757 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00741 | quality: 1.00000
+        | Val:   loss: 0.04578 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00163 | quality: 1.00000
+        | Val:   loss: 0.03577 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02591 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.02167 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02084 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02339 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02652 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02945 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03187 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03367 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03485 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03547 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03565 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:25:49,651][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed10090/results.json
+[2026-04-02 11:25:49,652][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:25:49,652][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:25:49,653][HYDRA] 	#7 : model.L=3 model.bond_dim=16 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:49,793][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:49,794][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed32874
+[2026-04-02 11:25:49,794][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:25:54,899][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:25:54,900][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:25:54,900][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:54,900][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.04061 | quality: 0.44355
+        | Val:   loss: 0.93981 | quality: 0.44444
+
+Epoch 1 | Train: loss: 0.96265 | quality: 0.95968
+        | Val:   loss: 0.96824 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70002 | quality: 0.96774
+        | Val:   loss: 0.71138 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42463 | quality: 0.97581
+        | Val:   loss: 0.44214 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24237 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12897 | quality: 0.99194
+        | Val:   loss: 0.16249 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04161 | quality: 1.00000
+        | Val:   loss: 0.08093 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00769 | quality: 1.00000
+        | Val:   loss: 0.04648 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00168 | quality: 1.00000
+        | Val:   loss: 0.03426 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00049 | quality: 1.00000
+        | Val:   loss: 0.02506 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.02059 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.01965 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02202 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02507 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02795 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03028 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03197 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03308 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03371 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:25:55,702][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed32874/results.json
+[2026-04-02 11:25:55,702][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:25:55,702][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:25:55,703][HYDRA] 	#8 : model.L=3 model.bond_dim=16 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:25:55,843][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:55,843][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed47311
+[2026-04-02 11:25:55,844][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:00,967][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:00,968][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:00,968][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:00,968][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.16699 | quality: 0.37097
+        | Val:   loss: 1.06543 | quality: 0.37037
+
+Epoch 1 | Train: loss: 0.96253 | quality: 0.96774
+        | Val:   loss: 0.96579 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70002 | quality: 0.96774
+        | Val:   loss: 0.71143 | quality: 0.96296
+
+Epoch 3 | Train: loss: 0.42463 | quality: 0.97581
+        | Val:   loss: 0.44213 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24240 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13160 | quality: 0.99194
+        | Val:   loss: 0.16414 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04069 | quality: 1.00000
+        | Val:   loss: 0.08218 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00740 | quality: 1.00000
+        | Val:   loss: 0.04844 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00159 | quality: 1.00000
+        | Val:   loss: 0.03525 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02284 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01942 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02014 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02385 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02753 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.03063 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03291 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03438 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03517 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03543 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03537 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:26:01,812][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed47311/results.json
+[2026-04-02 11:26:01,812][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:01,812][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:01,813][HYDRA] 	#9 : model.L=3 model.bond_dim=16 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:01,954][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:01,955][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed47303
+[2026-04-02 11:26:01,956][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:11,155][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:11,155][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:11,155][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:11,156][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.12372 | quality: 0.37903
+        | Val:   loss: 1.12447 | quality: 0.37037
+
+Epoch 1 | Train: loss: 0.95676 | quality: 0.96774
+        | Val:   loss: 0.96104 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70026 | quality: 0.96774
+        | Val:   loss: 0.71165 | quality: 0.96296
+
+Epoch 3 | Train: loss: 0.42465 | quality: 0.97581
+        | Val:   loss: 0.44216 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24236 | quality: 0.98387
+        | Val:   loss: 0.26633 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12794 | quality: 0.99194
+        | Val:   loss: 0.16177 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03958 | quality: 1.00000
+        | Val:   loss: 0.07774 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00744 | quality: 1.00000
+        | Val:   loss: 0.04526 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00164 | quality: 1.00000
+        | Val:   loss: 0.03481 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02539 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.02141 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02065 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02326 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02652 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02955 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03200 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03379 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03493 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03549 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03562 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:26:12,001][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd16_seed47303/results.json
+[2026-04-02 11:26:12,001][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:12,002][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:12,003][HYDRA] 	#10 : model.L=3 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:12,142][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:12,143][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed42
+[2026-04-02 11:26:12,143][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:17,689][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:17,690][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:17,690][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:17,690][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.33084 | quality: 0.25806
+        | Val:   loss: 1.09130 | quality: 0.44444
+
+Epoch 1 | Train: loss: 0.95164 | quality: 0.95968
+        | Val:   loss: 0.95660 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70041 | quality: 0.96774
+        | Val:   loss: 0.71178 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42466 | quality: 0.97581
+        | Val:   loss: 0.44217 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24238 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12885 | quality: 0.99194
+        | Val:   loss: 0.16240 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04043 | quality: 1.00000
+        | Val:   loss: 0.07938 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00746 | quality: 1.00000
+        | Val:   loss: 0.04657 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00161 | quality: 1.00000
+        | Val:   loss: 0.03461 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02326 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01978 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02022 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02330 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02635 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02900 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03108 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03253 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03339 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03382 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:26:18,724][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed42/results.json
+[2026-04-02 11:26:18,724][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:18,724][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:18,725][HYDRA] 	#11 : model.L=3 model.bond_dim=32 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:18,865][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:18,865][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed10090
+[2026-04-02 11:26:18,866][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:22,906][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:22,907][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:22,907][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:22,907][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.40217 | quality: 0.29839
+        | Val:   loss: 1.46914 | quality: 0.22222
+
+Epoch 1 | Train: loss: 0.94063 | quality: 0.91935
+        | Val:   loss: 0.94591 | quality: 0.88889
+ *
+Epoch 2 | Train: loss: 0.70046 | quality: 0.96774
+        | Val:   loss: 0.71184 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42466 | quality: 0.97581
+        | Val:   loss: 0.44218 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24238 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12916 | quality: 0.99194
+        | Val:   loss: 0.16260 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03930 | quality: 1.00000
+        | Val:   loss: 0.08065 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00731 | quality: 1.00000
+        | Val:   loss: 0.04774 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00160 | quality: 1.00000
+        | Val:   loss: 0.03561 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02390 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02005 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02013 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02311 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02615 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02891 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03118 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03286 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03395 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03450 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03467 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:26:23,999][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed10090/results.json
+[2026-04-02 11:26:23,999][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:23,999][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:24,000][HYDRA] 	#12 : model.L=3 model.bond_dim=32 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:24,140][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:24,140][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed32874
+[2026-04-02 11:26:24,141][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:26,735][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:26,735][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:26,735][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:26,735][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.39122 | quality: 0.39516
+        | Val:   loss: 1.31954 | quality: 0.29630
+
+Epoch 1 | Train: loss: 0.93324 | quality: 0.96774
+        | Val:   loss: 0.93834 | quality: 0.88889
+ *
+Epoch 2 | Train: loss: 0.70125 | quality: 0.96774
+        | Val:   loss: 0.71261 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42473 | quality: 0.97581
+        | Val:   loss: 0.44224 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24233 | quality: 0.98387
+        | Val:   loss: 0.26632 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12465 | quality: 0.99194
+        | Val:   loss: 0.15929 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03491 | quality: 1.00000
+        | Val:   loss: 0.07403 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00679 | quality: 1.00000
+        | Val:   loss: 0.04411 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00154 | quality: 1.00000
+        | Val:   loss: 0.03407 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00046 | quality: 1.00000
+        | Val:   loss: 0.02492 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02226 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02257 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02559 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02902 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03220 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03481 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03682 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03831 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03941 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:26:27,773][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed32874/results.json
+[2026-04-02 11:26:27,773][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:27,773][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:27,775][HYDRA] 	#13 : model.L=3 model.bond_dim=32 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:27,916][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:27,916][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed47311
+[2026-04-02 11:26:27,917][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:28,936][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:28,936][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:28,936][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:28,936][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.10513 | quality: 0.48387
+        | Val:   loss: 1.06760 | quality: 0.37037
+
+Epoch 1 | Train: loss: 0.95900 | quality: 0.95968
+        | Val:   loss: 0.96388 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70046 | quality: 0.96774
+        | Val:   loss: 0.71184 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42467 | quality: 0.97581
+        | Val:   loss: 0.44218 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24237 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12803 | quality: 0.99194
+        | Val:   loss: 0.16182 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03745 | quality: 1.00000
+        | Val:   loss: 0.07779 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00709 | quality: 1.00000
+        | Val:   loss: 0.04544 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00159 | quality: 1.00000
+        | Val:   loss: 0.03428 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02472 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02134 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02107 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02373 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02710 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03042 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03324 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03543 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03701 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03808 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03871 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:26:29,999][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed47311/results.json
+[2026-04-02 11:26:29,999][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:29,999][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:30,000][HYDRA] 	#14 : model.L=3 model.bond_dim=32 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:30,141][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:30,142][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed47303
+[2026-04-02 11:26:30,142][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:32,520][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:32,520][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:32,520][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:32,520][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.25680 | quality: 0.39516
+        | Val:   loss: 1.25939 | quality: 0.40741
+
+Epoch 1 | Train: loss: 0.94851 | quality: 0.95161
+        | Val:   loss: 0.95443 | quality: 0.92593
+ *
+Epoch 2 | Train: loss: 0.70063 | quality: 0.96774
+        | Val:   loss: 0.71196 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42468 | quality: 0.97581
+        | Val:   loss: 0.44218 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24235 | quality: 0.98387
+        | Val:   loss: 0.26633 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12636 | quality: 0.99194
+        | Val:   loss: 0.16063 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03810 | quality: 1.00000
+        | Val:   loss: 0.07658 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00727 | quality: 1.00000
+        | Val:   loss: 0.04553 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00161 | quality: 1.00000
+        | Val:   loss: 0.03593 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02680 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02235 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02142 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02405 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02726 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.03015 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03238 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03392 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03484 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03526 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03532 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:26:33,618][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd32_seed47303/results.json
+[2026-04-02 11:26:33,618][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:33,618][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:33,620][HYDRA] 	#15 : model.L=3 model.bond_dim=64 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:33,758][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:33,758][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed42
+[2026-04-02 11:26:33,759][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:35,790][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:35,791][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:35,791][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:35,791][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.76732 | quality: 0.13710
+        | Val:   loss: 1.49834 | quality: 0.14815
+
+Epoch 1 | Train: loss: 0.91807 | quality: 0.95161
+        | Val:   loss: 0.92476 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70183 | quality: 0.96774
+        | Val:   loss: 0.71312 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42477 | quality: 0.97581
+        | Val:   loss: 0.44227 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24224 | quality: 0.98387
+        | Val:   loss: 0.26626 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12018 | quality: 0.99194
+        | Val:   loss: 0.15533 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03324 | quality: 1.00000
+        | Val:   loss: 0.06900 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00671 | quality: 1.00000
+        | Val:   loss: 0.04226 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00153 | quality: 1.00000
+        | Val:   loss: 0.03375 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00046 | quality: 1.00000
+        | Val:   loss: 0.02576 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02385 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02453 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02708 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02988 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03260 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03483 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03639 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03726 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03754 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:26:37,827][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed42/results.json
+[2026-04-02 11:26:37,827][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:37,827][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:37,829][HYDRA] 	#16 : model.L=3 model.bond_dim=64 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:37,968][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:37,968][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed10090
+[2026-04-02 11:26:37,969][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:38,998][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:38,998][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:38,998][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:38,998][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.65507 | quality: 0.25000
+        | Val:   loss: 1.90428 | quality: 0.22222
+
+Epoch 1 | Train: loss: 0.93646 | quality: 0.95968
+        | Val:   loss: 0.94308 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70155 | quality: 0.96774
+        | Val:   loss: 0.71284 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42475 | quality: 0.97581
+        | Val:   loss: 0.44225 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24223 | quality: 0.98387
+        | Val:   loss: 0.26625 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.11984 | quality: 0.99194
+        | Val:   loss: 0.15505 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03371 | quality: 1.00000
+        | Val:   loss: 0.06910 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00680 | quality: 1.00000
+        | Val:   loss: 0.04236 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00154 | quality: 1.00000
+        | Val:   loss: 0.03402 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00046 | quality: 1.00000
+        | Val:   loss: 0.02584 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02369 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02421 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02688 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02992 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03275 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03497 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03646 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03725 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03749 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:26:41,058][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed10090/results.json
+[2026-04-02 11:26:41,059][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:41,059][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:41,060][HYDRA] 	#17 : model.L=3 model.bond_dim=64 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:41,199][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:41,200][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed32874
+[2026-04-02 11:26:41,200][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:42,267][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:42,267][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:42,267][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:42,267][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.21374 | quality: 0.60484
+        | Val:   loss: 1.50798 | quality: 0.55556
+
+Epoch 1 | Train: loss: 0.96510 | quality: 0.95968
+        | Val:   loss: 0.97160 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70088 | quality: 0.96774
+        | Val:   loss: 0.71216 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42470 | quality: 0.97581
+        | Val:   loss: 0.44221 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24229 | quality: 0.98387
+        | Val:   loss: 0.26629 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12269 | quality: 0.99194
+        | Val:   loss: 0.15771 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03658 | quality: 1.00000
+        | Val:   loss: 0.07322 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00715 | quality: 1.00000
+        | Val:   loss: 0.04476 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00158 | quality: 1.00000
+        | Val:   loss: 0.03613 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02688 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02319 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02263 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02524 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02838 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03136 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03387 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03586 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03736 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03845 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03920 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:26:44,442][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed32874/results.json
+[2026-04-02 11:26:44,442][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:44,442][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:44,443][HYDRA] 	#18 : model.L=3 model.bond_dim=64 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:44,582][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:44,582][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed47311
+[2026-04-02 11:26:44,583][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:45,715][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:45,715][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:45,715][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:45,715][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.58553 | quality: 0.31452
+        | Val:   loss: 1.21838 | quality: 0.29630
+
+Epoch 1 | Train: loss: 0.92757 | quality: 0.95161
+        | Val:   loss: 0.93581 | quality: 0.85185
+ *
+Epoch 2 | Train: loss: 0.70163 | quality: 0.96774
+        | Val:   loss: 0.71291 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42475 | quality: 0.97581
+        | Val:   loss: 0.44226 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24221 | quality: 0.98387
+        | Val:   loss: 0.26624 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.11921 | quality: 0.99194
+        | Val:   loss: 0.15442 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03412 | quality: 1.00000
+        | Val:   loss: 0.06846 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00690 | quality: 1.00000
+        | Val:   loss: 0.04174 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00156 | quality: 1.00000
+        | Val:   loss: 0.03389 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00046 | quality: 1.00000
+        | Val:   loss: 0.02620 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02397 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02469 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02760 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.03083 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03369 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03584 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03726 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03802 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03825 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:26:47,790][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed47311/results.json
+[2026-04-02 11:26:47,790][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:47,791][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:47,792][HYDRA] 	#19 : model.L=3 model.bond_dim=64 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:47,931][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:47,931][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed47303
+[2026-04-02 11:26:47,932][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:49,086][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:49,086][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:49,086][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:49,087][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.38414 | quality: 0.37097
+        | Val:   loss: 1.41256 | quality: 0.33333
+
+Epoch 1 | Train: loss: 0.93666 | quality: 0.95161
+        | Val:   loss: 0.94415 | quality: 0.88889
+ *
+Epoch 2 | Train: loss: 0.70123 | quality: 0.96774
+        | Val:   loss: 0.71252 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42472 | quality: 0.97581
+        | Val:   loss: 0.44223 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24225 | quality: 0.98387
+        | Val:   loss: 0.26626 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12066 | quality: 0.99194
+        | Val:   loss: 0.15590 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03539 | quality: 1.00000
+        | Val:   loss: 0.07086 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00704 | quality: 1.00000
+        | Val:   loss: 0.04347 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00157 | quality: 1.00000
+        | Val:   loss: 0.03555 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02716 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02387 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02379 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02656 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02986 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03290 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03540 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03732 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03873 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03974 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.04045 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:26:51,258][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L3_bd64_seed47303/results.json
+[2026-04-02 11:26:51,258][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:51,258][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:51,260][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:51,399][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:51,399][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed42
+[2026-04-02 11:26:51,400][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:52,775][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:52,775][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:52,775][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:52,775][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.20458 | quality: 0.26613
+        | Val:   loss: 1.13430 | quality: 0.25926
+
+Epoch 1 | Train: loss: 0.95443 | quality: 0.95968
+        | Val:   loss: 0.96112 | quality: 0.92593
+ *
+Epoch 2 | Train: loss: 0.70012 | quality: 0.96774
+        | Val:   loss: 0.71149 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42464 | quality: 0.97581
+        | Val:   loss: 0.44215 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24239 | quality: 0.98387
+        | Val:   loss: 0.26636 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13072 | quality: 0.99194
+        | Val:   loss: 0.16362 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04401 | quality: 1.00000
+        | Val:   loss: 0.08355 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00793 | quality: 1.00000
+        | Val:   loss: 0.04432 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00168 | quality: 1.00000
+        | Val:   loss: 0.03094 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.01976 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01697 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.01819 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02157 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02469 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02732 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02933 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03073 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03166 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03229 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:26:54,025][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-02 11:26:54,025][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:54,025][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:54,027][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:54,172][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:54,173][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed10090
+[2026-04-02 11:26:54,173][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:55,408][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:55,408][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:55,408][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:55,408][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.40422 | quality: 0.16935
+        | Val:   loss: 1.27299 | quality: 0.29630
+
+Epoch 1 | Train: loss: 0.94235 | quality: 0.94355
+        | Val:   loss: 0.94791 | quality: 0.92593
+ *
+Epoch 2 | Train: loss: 0.70025 | quality: 0.96774
+        | Val:   loss: 0.71164 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42465 | quality: 0.97581
+        | Val:   loss: 0.44216 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24238 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12992 | quality: 0.99194
+        | Val:   loss: 0.16311 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04091 | quality: 1.00000
+        | Val:   loss: 0.08215 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00755 | quality: 1.00000
+        | Val:   loss: 0.04825 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00165 | quality: 1.00000
+        | Val:   loss: 0.03559 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02430 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.01982 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.01955 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02232 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02530 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02803 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03025 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03187 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03289 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03345 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03372 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:26:56,702][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-02 11:26:56,702][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:56,702][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:56,703][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:56,834][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:56,835][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed32874
+[2026-04-02 11:26:56,835][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:26:58,202][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:26:58,202][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:26:58,202][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:58,202][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.22014 | quality: 0.32258
+        | Val:   loss: 1.17079 | quality: 0.18519
+
+Epoch 1 | Train: loss: 0.94290 | quality: 0.95161
+        | Val:   loss: 0.94847 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70022 | quality: 0.96774
+        | Val:   loss: 0.71160 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42465 | quality: 0.97581
+        | Val:   loss: 0.44215 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24240 | quality: 0.98387
+        | Val:   loss: 0.26636 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13180 | quality: 0.99194
+        | Val:   loss: 0.16427 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04317 | quality: 1.00000
+        | Val:   loss: 0.08376 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00776 | quality: 1.00000
+        | Val:   loss: 0.04702 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00163 | quality: 1.00000
+        | Val:   loss: 0.03364 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02069 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01782 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.01901 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02262 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02588 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02855 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03049 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03175 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03250 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03295 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:26:59,383][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-02 11:26:59,383][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:26:59,384][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:26:59,385][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:26:59,517][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:59,518][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed47311
+[2026-04-02 11:26:59,518][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:00,526][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:00,526][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:00,526][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:00,526][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.14029 | quality: 0.32258
+        | Val:   loss: 1.07040 | quality: 0.44444
+
+Epoch 1 | Train: loss: 0.95180 | quality: 0.95968
+        | Val:   loss: 0.95825 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70012 | quality: 0.96774
+        | Val:   loss: 0.71151 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42464 | quality: 0.97581
+        | Val:   loss: 0.44215 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24239 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13048 | quality: 0.99194
+        | Val:   loss: 0.16347 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04350 | quality: 1.00000
+        | Val:   loss: 0.08283 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00787 | quality: 1.00000
+        | Val:   loss: 0.04465 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00166 | quality: 1.00000
+        | Val:   loss: 0.03202 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02010 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01741 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.01867 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02210 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02500 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02743 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02937 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03079 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03172 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03233 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:27:01,825][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-02 11:27:01,825][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:01,825][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:01,826][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:01,959][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:01,959][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed47303
+[2026-04-02 11:27:01,960][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:04,916][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:04,916][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:04,916][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:04,916][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.03972 | quality: 0.45968
+        | Val:   loss: 1.04279 | quality: 0.37037
+
+Epoch 1 | Train: loss: 0.96254 | quality: 0.96774
+        | Val:   loss: 0.96685 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.69996 | quality: 0.96774
+        | Val:   loss: 0.71138 | quality: 0.96296
+
+Epoch 3 | Train: loss: 0.42463 | quality: 0.97581
+        | Val:   loss: 0.44214 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24240 | quality: 0.98387
+        | Val:   loss: 0.26636 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13198 | quality: 0.99194
+        | Val:   loss: 0.16438 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04247 | quality: 1.00000
+        | Val:   loss: 0.08352 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00765 | quality: 1.00000
+        | Val:   loss: 0.04803 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00162 | quality: 1.00000
+        | Val:   loss: 0.03467 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02149 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01843 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.01940 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02313 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02666 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02967 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03194 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03345 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03430 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03464 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03468 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:06,185][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-02 11:27:06,186][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:06,186][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:06,187][HYDRA] 	#25 : model.L=4 model.bond_dim=16 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:06,332][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:06,332][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed42
+[2026-04-02 11:27:06,333][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:07,591][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:07,591][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:07,591][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:07,591][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.56374 | quality: 0.20968
+        | Val:   loss: 1.36870 | quality: 0.25926
+
+Epoch 1 | Train: loss: 0.92565 | quality: 0.91935
+        | Val:   loss: 0.93194 | quality: 0.85185
+ *
+Epoch 2 | Train: loss: 0.70063 | quality: 0.96774
+        | Val:   loss: 0.71201 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42468 | quality: 0.97581
+        | Val:   loss: 0.44219 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24237 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12781 | quality: 0.99194
+        | Val:   loss: 0.16169 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03898 | quality: 1.00000
+        | Val:   loss: 0.07874 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00734 | quality: 1.00000
+        | Val:   loss: 0.04670 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00162 | quality: 1.00000
+        | Val:   loss: 0.03614 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02614 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.02173 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02088 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02337 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02644 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02932 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03165 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03333 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03438 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03491 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03507 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:09,030][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed42/results.json
+[2026-04-02 11:27:09,031][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:09,031][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:09,032][HYDRA] 	#26 : model.L=4 model.bond_dim=16 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:09,176][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:09,177][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed10090
+[2026-04-02 11:27:09,177][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:10,333][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:10,333][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:10,333][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:10,333][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.35129 | quality: 0.22581
+        | Val:   loss: 1.17731 | quality: 0.29630
+
+Epoch 1 | Train: loss: 0.95407 | quality: 0.95968
+        | Val:   loss: 0.95673 | quality: 0.88889
+ *
+Epoch 2 | Train: loss: 0.70038 | quality: 0.96774
+        | Val:   loss: 0.71179 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42467 | quality: 0.97581
+        | Val:   loss: 0.44217 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24237 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12779 | quality: 0.99194
+        | Val:   loss: 0.16167 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03946 | quality: 1.00000
+        | Val:   loss: 0.07790 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00742 | quality: 1.00000
+        | Val:   loss: 0.04581 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00163 | quality: 1.00000
+        | Val:   loss: 0.03555 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02579 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.02158 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02074 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02327 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02643 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02941 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03186 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03368 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03486 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03548 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03565 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:11,786][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed10090/results.json
+[2026-04-02 11:27:11,787][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:11,787][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:11,788][HYDRA] 	#27 : model.L=4 model.bond_dim=16 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:11,921][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:11,922][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed32874
+[2026-04-02 11:27:11,922][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:16,221][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:16,221][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:16,221][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:16,221][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.02722 | quality: 0.45161
+        | Val:   loss: 0.94559 | quality: 0.44444
+
+Epoch 1 | Train: loss: 0.96438 | quality: 0.95968
+        | Val:   loss: 0.96984 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.69997 | quality: 0.96774
+        | Val:   loss: 0.71133 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42463 | quality: 0.97581
+        | Val:   loss: 0.44214 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24238 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12935 | quality: 0.99194
+        | Val:   loss: 0.16274 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04195 | quality: 1.00000
+        | Val:   loss: 0.08136 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00771 | quality: 1.00000
+        | Val:   loss: 0.04639 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00167 | quality: 1.00000
+        | Val:   loss: 0.03438 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02393 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.01948 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.01924 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02210 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02516 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02789 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03005 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03159 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03258 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03316 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:27:17,594][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed32874/results.json
+[2026-04-02 11:27:17,594][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:17,594][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:17,595][HYDRA] 	#28 : model.L=4 model.bond_dim=16 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:17,739][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:17,740][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed47311
+[2026-04-02 11:27:17,740][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:21,922][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:21,923][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:21,923][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:21,923][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.17564 | quality: 0.38710
+        | Val:   loss: 1.06649 | quality: 0.40741
+
+Epoch 1 | Train: loss: 0.96165 | quality: 0.96774
+        | Val:   loss: 0.96478 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70005 | quality: 0.96774
+        | Val:   loss: 0.71146 | quality: 0.96296
+
+Epoch 3 | Train: loss: 0.42464 | quality: 0.97581
+        | Val:   loss: 0.44214 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24240 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.13146 | quality: 0.99194
+        | Val:   loss: 0.16406 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04048 | quality: 1.00000
+        | Val:   loss: 0.08187 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00737 | quality: 1.00000
+        | Val:   loss: 0.04830 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00159 | quality: 1.00000
+        | Val:   loss: 0.03505 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02272 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01938 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02018 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02389 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02756 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.03065 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03294 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03443 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03524 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03551 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03545 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:23,381][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed47311/results.json
+[2026-04-02 11:27:23,381][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:23,381][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:23,382][HYDRA] 	#29 : model.L=4 model.bond_dim=16 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:23,525][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:23,526][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed47303
+[2026-04-02 11:27:23,526][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:24,538][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:24,538][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:24,538][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:24,538][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.12719 | quality: 0.37097
+        | Val:   loss: 1.13605 | quality: 0.37037
+
+Epoch 1 | Train: loss: 0.95633 | quality: 0.95968
+        | Val:   loss: 0.96090 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70026 | quality: 0.96774
+        | Val:   loss: 0.71166 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42465 | quality: 0.97581
+        | Val:   loss: 0.44216 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24237 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12801 | quality: 0.99194
+        | Val:   loss: 0.16182 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03945 | quality: 1.00000
+        | Val:   loss: 0.07778 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00741 | quality: 1.00000
+        | Val:   loss: 0.04536 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00163 | quality: 1.00000
+        | Val:   loss: 0.03502 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00048 | quality: 1.00000
+        | Val:   loss: 0.02525 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00043 | quality: 1.00000
+        | Val:   loss: 0.02130 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02063 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02334 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02662 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02966 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03213 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03395 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03514 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03575 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03590 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:25,997][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd16_seed47303/results.json
+[2026-04-02 11:27:25,997][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:25,998][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:25,999][HYDRA] 	#30 : model.L=4 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:26,145][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:26,145][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed42
+[2026-04-02 11:27:26,146][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:27,165][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:27,166][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:27,166][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:27,166][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.36732 | quality: 0.25000
+        | Val:   loss: 1.10674 | quality: 0.40741
+
+Epoch 1 | Train: loss: 0.95045 | quality: 0.95968
+        | Val:   loss: 0.95554 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70047 | quality: 0.96774
+        | Val:   loss: 0.71184 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42467 | quality: 0.97581
+        | Val:   loss: 0.44217 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24237 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12821 | quality: 0.99194
+        | Val:   loss: 0.16196 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.04042 | quality: 1.00000
+        | Val:   loss: 0.07852 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00747 | quality: 1.00000
+        | Val:   loss: 0.04594 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00160 | quality: 1.00000
+        | Val:   loss: 0.03408 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02285 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.01976 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02028 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02331 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02629 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02890 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03101 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03252 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03345 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03391 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:27:28,892][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed42/results.json
+[2026-04-02 11:27:28,892][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:28,892][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:28,893][HYDRA] 	#31 : model.L=4 model.bond_dim=32 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:29,039][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:29,040][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed10090
+[2026-04-02 11:27:29,041][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:30,067][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:30,067][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:30,067][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:30,068][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.43792 | quality: 0.30645
+        | Val:   loss: 1.40605 | quality: 0.25926
+
+Epoch 1 | Train: loss: 0.93874 | quality: 0.91935
+        | Val:   loss: 0.94448 | quality: 0.85185
+ *
+Epoch 2 | Train: loss: 0.70055 | quality: 0.96774
+        | Val:   loss: 0.71193 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42467 | quality: 0.97581
+        | Val:   loss: 0.44218 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24237 | quality: 0.98387
+        | Val:   loss: 0.26635 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12814 | quality: 0.99194
+        | Val:   loss: 0.16191 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03833 | quality: 1.00000
+        | Val:   loss: 0.07899 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00721 | quality: 1.00000
+        | Val:   loss: 0.04667 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00159 | quality: 1.00000
+        | Val:   loss: 0.03546 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02479 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02093 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02062 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02342 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02658 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02952 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03194 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03374 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03491 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03553 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03569 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:31,885][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed10090/results.json
+[2026-04-02 11:27:31,885][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:31,885][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:31,886][HYDRA] 	#32 : model.L=4 model.bond_dim=32 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:32,020][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:32,020][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed32874
+[2026-04-02 11:27:32,021][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:33,030][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:33,030][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:33,030][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:33,030][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.39313 | quality: 0.37097
+        | Val:   loss: 1.30608 | quality: 0.33333
+
+Epoch 1 | Train: loss: 0.93352 | quality: 0.95161
+        | Val:   loss: 0.93801 | quality: 0.88889
+ *
+Epoch 2 | Train: loss: 0.70130 | quality: 0.96774
+        | Val:   loss: 0.71266 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42473 | quality: 0.97581
+        | Val:   loss: 0.44224 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24232 | quality: 0.98387
+        | Val:   loss: 0.26631 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12379 | quality: 0.99194
+        | Val:   loss: 0.15859 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03504 | quality: 1.00000
+        | Val:   loss: 0.07317 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00686 | quality: 1.00000
+        | Val:   loss: 0.04410 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00155 | quality: 1.00000
+        | Val:   loss: 0.03488 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00046 | quality: 1.00000
+        | Val:   loss: 0.02612 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02313 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02316 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02590 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02920 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03235 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03497 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03698 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03847 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03956 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.04034 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:34,819][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed32874/results.json
+[2026-04-02 11:27:34,820][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:34,820][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:34,821][HYDRA] 	#33 : model.L=4 model.bond_dim=32 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:34,963][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:34,964][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed47311
+[2026-04-02 11:27:34,964][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:36,051][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:36,051][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:36,051][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:36,051][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.18549 | quality: 0.45968
+        | Val:   loss: 1.09186 | quality: 0.29630
+
+Epoch 1 | Train: loss: 0.95591 | quality: 0.95968
+        | Val:   loss: 0.96049 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70056 | quality: 0.96774
+        | Val:   loss: 0.71194 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42468 | quality: 0.97581
+        | Val:   loss: 0.44218 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24236 | quality: 0.98387
+        | Val:   loss: 0.26634 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12729 | quality: 0.99194
+        | Val:   loss: 0.16129 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03689 | quality: 1.00000
+        | Val:   loss: 0.07694 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00699 | quality: 1.00000
+        | Val:   loss: 0.04540 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00156 | quality: 1.00000
+        | Val:   loss: 0.03416 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02386 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02091 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02110 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02419 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02758 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03073 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03339 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03552 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03716 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03841 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:27:37,771][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed47311/results.json
+[2026-04-02 11:27:37,771][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:37,771][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:37,772][HYDRA] 	#34 : model.L=4 model.bond_dim=32 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:37,904][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:37,906][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed47303
+[2026-04-02 11:27:37,907][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:39,368][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:39,368][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:39,368][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:39,368][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.24940 | quality: 0.41129
+        | Val:   loss: 1.27153 | quality: 0.40741
+
+Epoch 1 | Train: loss: 0.95147 | quality: 0.95161
+        | Val:   loss: 0.95716 | quality: 0.88889
+ *
+Epoch 2 | Train: loss: 0.70054 | quality: 0.96774
+        | Val:   loss: 0.71188 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42468 | quality: 0.97581
+        | Val:   loss: 0.44218 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24236 | quality: 0.98387
+        | Val:   loss: 0.26633 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12747 | quality: 0.99194
+        | Val:   loss: 0.16143 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03844 | quality: 1.00000
+        | Val:   loss: 0.07729 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00728 | quality: 1.00000
+        | Val:   loss: 0.04539 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00161 | quality: 1.00000
+        | Val:   loss: 0.03523 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02591 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02171 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02104 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02387 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02720 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.03015 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03241 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03394 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03484 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03522 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03527 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:41,163][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd32_seed47303/results.json
+[2026-04-02 11:27:41,164][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:41,164][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:41,165][HYDRA] 	#35 : model.L=4 model.bond_dim=64 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:41,310][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:41,311][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed42
+[2026-04-02 11:27:41,311][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:42,524][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:42,524][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:42,525][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:42,525][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.75752 | quality: 0.14516
+        | Val:   loss: 1.49054 | quality: 0.18519
+
+Epoch 1 | Train: loss: 0.92171 | quality: 0.95161
+        | Val:   loss: 0.92856 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70153 | quality: 0.96774
+        | Val:   loss: 0.71286 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42474 | quality: 0.97581
+        | Val:   loss: 0.44224 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24229 | quality: 0.98387
+        | Val:   loss: 0.26629 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12236 | quality: 0.99194
+        | Val:   loss: 0.15734 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03388 | quality: 1.00000
+        | Val:   loss: 0.07116 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00670 | quality: 1.00000
+        | Val:   loss: 0.04348 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00152 | quality: 1.00000
+        | Val:   loss: 0.03367 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00046 | quality: 1.00000
+        | Val:   loss: 0.02482 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02283 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02342 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02617 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02920 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03203 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03432 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03593 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03687 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03724 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:27:45,925][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed42/results.json
+[2026-04-02 11:27:45,925][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:45,925][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:45,926][HYDRA] 	#36 : model.L=4 model.bond_dim=64 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:46,060][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:46,061][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed10090
+[2026-04-02 11:27:46,061][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:47,071][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:47,071][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:47,071][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:47,071][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.69257 | quality: 0.25000
+        | Val:   loss: 1.93748 | quality: 0.22222
+
+Epoch 1 | Train: loss: 0.93290 | quality: 0.95968
+        | Val:   loss: 0.94000 | quality: 0.92593
+ *
+Epoch 2 | Train: loss: 0.70187 | quality: 0.96774
+        | Val:   loss: 0.71315 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42477 | quality: 0.97581
+        | Val:   loss: 0.44228 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24215 | quality: 0.98387
+        | Val:   loss: 0.26620 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.11735 | quality: 0.99194
+        | Val:   loss: 0.15257 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03284 | quality: 1.00000
+        | Val:   loss: 0.06706 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00676 | quality: 1.00000
+        | Val:   loss: 0.04105 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00154 | quality: 1.00000
+        | Val:   loss: 0.03308 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00046 | quality: 1.00000
+        | Val:   loss: 0.02537 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02357 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02459 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02743 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.03051 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03331 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03541 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03671 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03733 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03741 | quality: 1.00000
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-02 11:27:50,366][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed10090/results.json
+[2026-04-02 11:27:50,366][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:50,366][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:50,368][HYDRA] 	#37 : model.L=4 model.bond_dim=64 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:50,513][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:50,514][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed32874
+[2026-04-02 11:27:50,514][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:51,531][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:51,531][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:51,531][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:51,531][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.20053 | quality: 0.60484
+        | Val:   loss: 1.47763 | quality: 0.59259
+
+Epoch 1 | Train: loss: 0.96530 | quality: 0.96774
+        | Val:   loss: 0.97204 | quality: 0.96296
+ *
+Epoch 2 | Train: loss: 0.70082 | quality: 0.96774
+        | Val:   loss: 0.71211 | quality: 0.96296
+
+Epoch 3 | Train: loss: 0.42470 | quality: 0.97581
+        | Val:   loss: 0.44220 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24230 | quality: 0.98387
+        | Val:   loss: 0.26629 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.12304 | quality: 0.99194
+        | Val:   loss: 0.15801 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03683 | quality: 1.00000
+        | Val:   loss: 0.07361 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00719 | quality: 1.00000
+        | Val:   loss: 0.04484 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00160 | quality: 1.00000
+        | Val:   loss: 0.03646 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02742 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02339 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.02257 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02504 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02817 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03115 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03364 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03557 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03697 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03789 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03839 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:27:55,115][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed32874/results.json
+[2026-04-02 11:27:55,115][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:27:55,115][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-02 11:27:55,117][HYDRA] 	#38 : model.L=4 model.bond_dim=64 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:55,251][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:55,251][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed47311
+[2026-04-02 11:27:55,252][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:56,802][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:56,802][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:56,802][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:56,802][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.62191 | quality: 0.33065
+        | Val:   loss: 1.19937 | quality: 0.33333
+
+Epoch 1 | Train: loss: 0.92842 | quality: 0.95161
+        | Val:   loss: 0.93697 | quality: 0.85185
+ *
+Epoch 2 | Train: loss: 0.70169 | quality: 0.96774
+        | Val:   loss: 0.71294 | quality: 0.96296
+ *
+[2026-04-02 11:27:57,342][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 48.00 MiB. GPU 0 has a total capacity of 15.60 GiB of which 15.31 MiB is free. Including non-PyTorch memory, this process has 15.58 GiB memory in use. Of the allocated memory 14.97 GiB is allocated by PyTorch, and 384.65 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:27:57,345][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed47311/results.json
+[2026-04-02 11:27:57,345][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:27:57,345][__main__][INFO] -   Best val_quality before failure: 0.9630
+[2026-04-02 11:27:57,346][HYDRA] 	#39 : model.L=4 model.bond_dim=64 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=wine
+[2026-04-02 11:27:57,778][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:27:57,779][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed47303
+[2026-04-02 11:27:57,779][__main__][INFO] - Loading dataset: wine
+[2026-04-02 11:27:58,817][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-02 11:27:58,817][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-02 11:27:58,817][__main__][INFO] -   Device: cuda
+[2026-04-02 11:27:58,818][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.41478 | quality: 0.37097
+        | Val:   loss: 1.40559 | quality: 0.33333
+
+Epoch 1 | Train: loss: 0.93563 | quality: 0.94355
+        | Val:   loss: 0.94386 | quality: 0.88889
+ *
+Epoch 2 | Train: loss: 0.70138 | quality: 0.96774
+        | Val:   loss: 0.71264 | quality: 0.96296
+ *
+Epoch 3 | Train: loss: 0.42473 | quality: 0.97581
+        | Val:   loss: 0.44224 | quality: 0.96296
+ *
+Epoch 4 | Train: loss: 0.24221 | quality: 0.98387
+        | Val:   loss: 0.26624 | quality: 0.96296
+ *
+Epoch 5 | Train: loss: 0.11925 | quality: 0.99194
+        | Val:   loss: 0.15461 | quality: 0.96296
+ *
+Epoch 6 | Train: loss: 0.03500 | quality: 1.00000
+        | Val:   loss: 0.07002 | quality: 0.96296
+ *
+Epoch 7 | Train: loss: 0.00700 | quality: 1.00000
+        | Val:   loss: 0.04310 | quality: 0.96296
+
+Epoch 8 | Train: loss: 0.00156 | quality: 1.00000
+        | Val:   loss: 0.03458 | quality: 0.96296
+
+Epoch 9 | Train: loss: 0.00047 | quality: 1.00000
+        | Val:   loss: 0.02581 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.02302 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02339 | quality: 1.00000
+
+Epoch 12 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02635 | quality: 1.00000
+
+Epoch 13 | Train: loss: 0.00040 | quality: 1.00000
+        | Val:   loss: 0.02964 | quality: 1.00000
+
+Epoch 14 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03260 | quality: 1.00000
+
+Epoch 15 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03500 | quality: 1.00000
+
+Epoch 16 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03678 | quality: 1.00000
+
+Epoch 17 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03799 | quality: 1.00000
+
+Epoch 18 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03871 | quality: 1.00000
+
+Epoch 19 | Train: loss: 0.00041 | quality: 1.00000
+        | Val:   loss: 0.03899 | quality: 1.00000
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-02 11:28:02,683][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/wine/CPDATypeI_rg5_init0.1/L4_bd64_seed47303/results.json
+[2026-04-02 11:28:02,683][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-02 11:28:02,684][__main__][INFO] - ✓ Val Accuracy: 1.0000
+Done: 2026-04-02-11:28:03

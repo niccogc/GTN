@@ -1,0 +1,2568 @@
+Node: comp-gpu04
+Array Job ID: 409534, Task ID: 6
+Start: 2026-04-02-11:23:23
+Running: model=cpda_typei dataset=winequalityc
+[2026-04-02 11:23:33,290][HYDRA] Launching 40 jobs locally
+[2026-04-02 11:23:33,290][HYDRA] 	#0 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:23:33,399][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:23:33,403][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed42
+[2026-04-02 11:23:33,469][utils.tracking][INFO] - Loaded 12609 tracked runs from runs_tracking.csv
+[2026-04-02 11:23:33,471][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:23:36,144][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:23:36,144][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:23:36,144][__main__][INFO] -   Device: cuda
+[2026-04-02 11:23:36,144][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.15612 | quality: 0.07983
+        | Val:   loss: 2.18331 | quality: 0.07897
+
+Epoch 1 | Train: loss: 1.91602 | quality: 0.49505
+        | Val:   loss: 1.91533 | quality: 0.50359
+ *
+Epoch 2 | Train: loss: 1.84082 | quality: 0.49549
+        | Val:   loss: 1.84005 | quality: 0.49744
+
+Epoch 3 | Train: loss: 1.63144 | quality: 0.51111
+        | Val:   loss: 1.63075 | quality: 0.50154
+
+Epoch 4 | Train: loss: 1.34671 | quality: 0.53772
+        | Val:   loss: 1.34960 | quality: 0.51795
+ *
+Epoch 5 | Train: loss: 1.14844 | quality: 0.55025
+        | Val:   loss: 1.16287 | quality: 0.51795
+ *
+Epoch 6 | Train: loss: 1.06487 | quality: 0.56213
+        | Val:   loss: 1.09870 | quality: 0.53641
+ *
+Epoch 7 | Train: loss: 1.02526 | quality: 0.56719
+        | Val:   loss: 1.07796 | quality: 0.55077
+ *
+Epoch 8 | Train: loss: 0.99644 | quality: 0.56961
+        | Val:   loss: 1.09801 | quality: 0.54154
+
+Epoch 9 | Train: loss: 0.98422 | quality: 0.57774
+        | Val:   loss: 1.11376 | quality: 0.54667
+
+Epoch 10 | Train: loss: 0.98307 | quality: 0.57840
+        | Val:   loss: 1.11762 | quality: 0.54462
+
+Epoch 11 | Train: loss: 8.11757 | quality: 0.31823
+        | Val:   loss: 9.29379 | quality: 0.29436
+
+Epoch 12 | Train: loss: 80.31667 | quality: 0.15747
+        | Val:   loss: 110.22905 | quality: 0.14974
+
+Epoch 13 | Train: loss: 14264508.97109 | quality: 0.23048
+        | Val:   loss: 19158905.64291 | quality: 0.22256
+
+Epoch 14 | Train: loss: 2963096974437840846848.00000 | quality: 0.42292
+        | Val:   loss: 2802254038873364496384.00000 | quality: 0.44615
+
+Epoch 15 | Train: loss: 11907732122146221171492943724315410432.00000 | quality: 0.40884
+        | Val:   loss: 10974887291072367744207325933818871808.00000 | quality: 0.42974
+
+Epoch 16 | Train: loss: 58222247279446705444602279901903526064364237310918656.00000 | quality: 0.38971
+        | Val:   loss: 53110368984399750233183045540618782037566640564994048.00000 | quality: 0.40308
+
+Epoch 17 | Train: loss: 193163881814518269026792211154566735585324134050750651767592042102784.00000 | quality: 0.40972
+        | Val:   loss: 178285962314089127024827119460899228540804174327370586349303091953664.00000 | quality: 0.41436
+
+
+Early stopping at epoch 17 (best was epoch 7)
+
+Best epoch: 7 (val_quality=0.550769)
+[2026-04-02 11:23:44,976][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-02 11:23:44,976][__main__][INFO] - ✓ Train Accuracy: 0.5672
+[2026-04-02 11:23:44,976][__main__][INFO] - ✓ Val Accuracy: 0.5508
+[2026-04-02 11:23:44,977][HYDRA] 	#1 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:23:45,323][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:23:45,323][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed10090
+[2026-04-02 11:23:45,324][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:23:48,678][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:23:48,679][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:23:48,679][__main__][INFO] -   Device: cuda
+[2026-04-02 11:23:48,679][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.08858 | quality: 0.08929
+        | Val:   loss: 2.11884 | quality: 0.08205
+
+Epoch 1 | Train: loss: 1.91702 | quality: 0.49219
+        | Val:   loss: 1.91681 | quality: 0.47179
+ *
+Epoch 2 | Train: loss: 1.84080 | quality: 0.49527
+        | Val:   loss: 1.84003 | quality: 0.49744
+ *
+Epoch 3 | Train: loss: 1.63145 | quality: 0.51111
+        | Val:   loss: 1.63077 | quality: 0.50154
+ *
+Epoch 4 | Train: loss: 1.34747 | quality: 0.53772
+        | Val:   loss: 1.35044 | quality: 0.51692
+ *
+Epoch 5 | Train: loss: 1.16182 | quality: 0.54519
+        | Val:   loss: 1.17184 | quality: 0.52000
+ *
+Epoch 6 | Train: loss: 1.06676 | quality: 0.56125
+        | Val:   loss: 1.09541 | quality: 0.53538
+ *
+Epoch 7 | Train: loss: 1.02406 | quality: 0.56653
+        | Val:   loss: 1.07892 | quality: 0.54872
+ *
+Epoch 8 | Train: loss: 0.99795 | quality: 0.57532
+        | Val:   loss: 1.13252 | quality: 0.55179
+ *
+Epoch 9 | Train: loss: 3.30248 | quality: 0.39147
+        | Val:   loss: 3.88905 | quality: 0.35282
+
+Epoch 10 | Train: loss: 2.68889 | quality: 0.41720
+        | Val:   loss: 2.82261 | quality: 0.38564
+
+Epoch 11 | Train: loss: 25.75442 | quality: 0.18474
+        | Val:   loss: 26.36339 | quality: 0.19590
+
+Epoch 12 | Train: loss: 4171.03936 | quality: 0.14867
+        | Val:   loss: 5249.28694 | quality: 0.14769
+
+Epoch 13 | Train: loss: 7619319017084834.00000 | quality: 0.38553
+        | Val:   loss: 8307132270037185.00000 | quality: 0.37436
+
+Epoch 14 | Train: loss: 10025388761697537219634539790336.00000 | quality: 0.35298
+        | Val:   loss: 11432439582004969410823156924416.00000 | quality: 0.33333
+
+Epoch 15 | Train: loss: 8520487393896070560230330355738998215828045824.00000 | quality: 0.33099
+        | Val:   loss: 9095779354775405409619532478850321587835502592.00000 | quality: 0.34154
+
+Epoch 16 | Train: loss: 3144053819578278398439762687397330545869019217496988402581504.00000 | quality: 0.37915
+        | Val:   loss: 3219748383688922505590323381324810440969946652026312367013888.00000 | quality: 0.41026
+
+Epoch 17 | Train: loss: 1132013664715328413013734265315763462714851718595607623550087975911617986560.00000 | quality: 0.37497
+        | Val:   loss: 1156135639972831273720124125658884148814829005967730974823071756435876478976.00000 | quality: 0.40821
+
+Epoch 18 | Train: loss: 417326541327431839783093350132132111858103149808739764552036430860650806978072355947937792.00000 | quality: 0.36837
+        | Val:   loss: 426355899848151077404496121304444899769059389289641735380151709568886472888511581361537024.00000 | quality: 0.38256
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=0.551795)
+[2026-04-02 11:23:58,034][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-02 11:23:58,035][__main__][INFO] - ✓ Train Accuracy: 0.5753
+[2026-04-02 11:23:58,035][__main__][INFO] - ✓ Val Accuracy: 0.5518
+[2026-04-02 11:23:58,036][HYDRA] 	#2 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:23:58,146][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:23:58,147][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed32874
+[2026-04-02 11:23:58,147][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:01,912][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:01,912][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:01,912][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:01,912][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.05540 | quality: 0.15967
+        | Val:   loss: 2.13626 | quality: 0.18462
+
+Epoch 1 | Train: loss: 1.91747 | quality: 0.49879
+        | Val:   loss: 1.91709 | quality: 0.49128
+ *
+Epoch 2 | Train: loss: 1.84079 | quality: 0.49527
+        | Val:   loss: 1.84002 | quality: 0.49744
+ *
+Epoch 3 | Train: loss: 1.63145 | quality: 0.51111
+        | Val:   loss: 1.63076 | quality: 0.50154
+ *
+Epoch 4 | Train: loss: 1.34726 | quality: 0.53816
+        | Val:   loss: 1.35021 | quality: 0.51692
+ *
+Epoch 5 | Train: loss: 1.15327 | quality: 0.54695
+        | Val:   loss: 1.16559 | quality: 0.52103
+ *
+Epoch 6 | Train: loss: 1.06539 | quality: 0.56169
+        | Val:   loss: 1.09812 | quality: 0.53744
+ *
+Epoch 7 | Train: loss: 1.02561 | quality: 0.56807
+        | Val:   loss: 1.07935 | quality: 0.54974
+ *
+Epoch 8 | Train: loss: 1.00172 | quality: 0.57093
+        | Val:   loss: 1.12864 | quality: 0.54667
+
+Epoch 9 | Train: loss: 0.98602 | quality: 0.57510
+        | Val:   loss: 1.13977 | quality: 0.55077
+ *
+Epoch 10 | Train: loss: 8.15657 | quality: 0.30306
+        | Val:   loss: 8.45336 | quality: 0.30051
+
+Epoch 11 | Train: loss: 47.84466 | quality: 0.11150
+        | Val:   loss: 61.63656 | quality: 0.11077
+
+Epoch 12 | Train: loss: 1128396.57708 | quality: 0.17176
+        | Val:   loss: 2142978.76654 | quality: 0.15282
+
+Epoch 13 | Train: loss: 556240079016822767616.00000 | quality: 0.33868
+        | Val:   loss: 726064233673187000320.00000 | quality: 0.31897
+
+Epoch 14 | Train: loss: 3035794343072785419307774937269272576.00000 | quality: 0.32593
+        | Val:   loss: 3652373020443433592314847286546923520.00000 | quality: 0.31077
+
+Epoch 15 | Train: loss: 31259482607057627879411346919349398678585007121891328.00000 | quality: 0.32659
+        | Val:   loss: 36568547482477417029352144914786052486863229733044224.00000 | quality: 0.31282
+
+Epoch 16 | Train: loss: 352331323328718847829354382647686311899612872506365954205207001825280.00000 | quality: 0.32637
+        | Val:   loss: 410420672816255198490806039290585803850207940281567996130483448578048.00000 | quality: 0.31077
+
+Epoch 17 | Train: loss: 4006591862044021433031487158363625681631860685277845483906054722008176729860287234048.00000 | quality: 0.32879
+        | Val:   loss: 4654441798204936215063229377703049053885137445824473387926422631259573873492247969792.00000 | quality: 0.31077
+
+Epoch 18 | Train: loss: 45666365668604831665300499331997217795920336001860458327113923471943930839391429798397952936697135104.00000 | quality: 0.32989
+        | Val:   loss: 52962696167088916974755839926004856066821302603379377770473627082278401218527741511662140407345577984.00000 | quality: 0.31385
+
+Epoch 19 | Train: loss: 520860126549133608982596853626446923399413884493346366965396424342537397030233650969622382970677962128339633663115264.00000 | quality: 0.32967
+        | Val:   loss: 603496827431742843932582801069643542212078246442411545967811332208114710357209666620739037715991386728604676741136384.00000 | quality: 0.31487
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=0.550769)
+[2026-04-02 11:24:11,751][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-02 11:24:11,752][__main__][INFO] - ✓ Train Accuracy: 0.5751
+[2026-04-02 11:24:11,752][__main__][INFO] - ✓ Val Accuracy: 0.5508
+[2026-04-02 11:24:11,752][HYDRA] 	#3 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:11,861][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:11,862][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed47311
+[2026-04-02 11:24:11,862][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:15,204][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:15,205][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:15,205][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:15,205][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.03530 | quality: 0.16626
+        | Val:   loss: 2.05624 | quality: 0.13846
+
+Epoch 1 | Train: loss: 1.91794 | quality: 0.49153
+        | Val:   loss: 1.91776 | quality: 0.47795
+ *
+Epoch 2 | Train: loss: 1.84080 | quality: 0.49527
+        | Val:   loss: 1.84003 | quality: 0.49641
+ *
+Epoch 3 | Train: loss: 1.63145 | quality: 0.51111
+        | Val:   loss: 1.63076 | quality: 0.50154
+ *
+[2026-04-02 11:24:16,960][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 9.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 15.41 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:16,963][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-02 11:24:16,963][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:16,963][__main__][INFO] -   Best val_quality before failure: 0.5015
+[2026-04-02 11:24:16,964][HYDRA] 	#4 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:17,073][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:17,074][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed47303
+[2026-04-02 11:24:17,074][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:20,602][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:20,602][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:20,602][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:20,603][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.99525 | quality: 0.18122
+        | Val:   loss: 2.00886 | quality: 0.18154
+
+[2026-04-02 11:24:20,836][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 5.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.23 GiB is allocated by PyTorch, and 24.14 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:20,839][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-02 11:24:20,839][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:20,840][HYDRA] 	#5 : model.L=3 model.bond_dim=16 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:20,949][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:20,949][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed42
+[2026-04-02 11:24:20,950][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:24,321][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:24,321][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:24,321][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:24,321][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.08984 | quality: 0.15835
+        | Val:   loss: 2.12169 | quality: 0.16308
+
+[2026-04-02 11:24:24,509][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 5.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.23 GiB is allocated by PyTorch, and 23.17 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:24,513][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed42/results.json
+[2026-04-02 11:24:24,513][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:24,514][HYDRA] 	#6 : model.L=3 model.bond_dim=16 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:24,625][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:24,626][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed10090
+[2026-04-02 11:24:24,626][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:27,812][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:27,813][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:27,813][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:27,813][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.09959 | quality: 0.10468
+        | Val:   loss: 2.17942 | quality: 0.10872
+
+[2026-04-02 11:24:28,002][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 3.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 22.40 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:28,005][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed10090/results.json
+[2026-04-02 11:24:28,005][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:28,006][HYDRA] 	#7 : model.L=3 model.bond_dim=16 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:28,119][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:28,119][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed32874
+[2026-04-02 11:24:28,119][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:31,239][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:31,240][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:31,240][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:31,240][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.16934 | quality: 0.13108
+        | Val:   loss: 2.25803 | quality: 0.13231
+
+[2026-04-02 11:24:31,429][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 3.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 22.40 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:31,433][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed32874/results.json
+[2026-04-02 11:24:31,433][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:31,434][HYDRA] 	#8 : model.L=3 model.bond_dim=16 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:31,544][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:31,544][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed47311
+[2026-04-02 11:24:31,545][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:34,734][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:34,734][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:34,734][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:34,734][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.06897 | quality: 0.15681
+        | Val:   loss: 2.27816 | quality: 0.14359
+
+[2026-04-02 11:24:34,893][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 2.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.22 GiB is allocated by PyTorch, and 42.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:34,897][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed47311/results.json
+[2026-04-02 11:24:34,897][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:34,898][HYDRA] 	#9 : model.L=3 model.bond_dim=16 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:35,015][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:35,016][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed47303
+[2026-04-02 11:24:35,016][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:38,270][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:38,270][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:38,270][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:38,270][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.17755 | quality: 0.15725
+        | Val:   loss: 2.37361 | quality: 0.14564
+
+[2026-04-02 11:24:38,429][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 2.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.22 GiB is allocated by PyTorch, and 42.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:38,432][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd16_seed47303/results.json
+[2026-04-02 11:24:38,432][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:38,433][HYDRA] 	#10 : model.L=3 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:38,550][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:38,551][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed42
+[2026-04-02 11:24:38,551][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:41,736][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:41,737][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:41,737][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:41,737][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.28062 | quality: 0.09171
+        | Val:   loss: 2.40866 | quality: 0.08410
+
+[2026-04-02 11:24:41,889][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.21 GiB is allocated by PyTorch, and 49.38 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:41,893][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed42/results.json
+[2026-04-02 11:24:41,893][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:41,894][HYDRA] 	#11 : model.L=3 model.bond_dim=32 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:42,014][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:42,015][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed10090
+[2026-04-02 11:24:42,015][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:45,202][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:45,202][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:45,202][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:45,202][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.22318 | quality: 0.16143
+        | Val:   loss: 2.44856 | quality: 0.15487
+
+[2026-04-02 11:24:45,349][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.21 GiB is allocated by PyTorch, and 49.38 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:45,352][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed10090/results.json
+[2026-04-02 11:24:45,352][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:45,353][HYDRA] 	#12 : model.L=3 model.bond_dim=32 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:45,474][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:45,475][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed32874
+[2026-04-02 11:24:45,475][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:49,282][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:49,282][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:49,282][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:49,283][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.00195 | quality: 0.21751
+        | Val:   loss: 2.10202 | quality: 0.21846
+
+[2026-04-02 11:24:49,430][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.21 GiB is allocated by PyTorch, and 49.38 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:49,434][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed32874/results.json
+[2026-04-02 11:24:49,434][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:49,435][HYDRA] 	#13 : model.L=3 model.bond_dim=32 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:49,554][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:49,555][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed47311
+[2026-04-02 11:24:49,555][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:56,195][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:56,195][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:56,195][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:56,195][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.44367 | quality: 0.09985
+        | Val:   loss: 2.53768 | quality: 0.10051
+
+[2026-04-02 11:24:56,343][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.21 GiB is allocated by PyTorch, and 49.38 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:56,346][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed47311/results.json
+[2026-04-02 11:24:56,346][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:56,347][HYDRA] 	#14 : model.L=3 model.bond_dim=32 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:56,467][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:56,468][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed47303
+[2026-04-02 11:24:56,468][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:24:59,499][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:24:59,500][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:24:59,500][__main__][INFO] -   Device: cuda
+[2026-04-02 11:24:59,500][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.35599 | quality: 0.13481
+        | Val:   loss: 2.36327 | quality: 0.16205
+
+[2026-04-02 11:24:59,647][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.21 GiB is allocated by PyTorch, and 49.38 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:24:59,650][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd32_seed47303/results.json
+[2026-04-02 11:24:59,650][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:24:59,651][HYDRA] 	#15 : model.L=3 model.bond_dim=64 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:24:59,770][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:24:59,770][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed42
+[2026-04-02 11:24:59,771][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:02,954][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:02,955][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:02,955][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:02,955][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.41543 | quality: 0.12272
+        | Val:   loss: 2.56746 | quality: 0.12615
+
+[2026-04-02 11:25:03,103][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.20 GiB is allocated by PyTorch, and 58.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:03,107][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed42/results.json
+[2026-04-02 11:25:03,107][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:03,108][HYDRA] 	#16 : model.L=3 model.bond_dim=64 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:03,228][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:03,229][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed10090
+[2026-04-02 11:25:03,229][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:06,260][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:06,260][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:06,260][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:06,261][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.86184 | quality: 0.06950
+        | Val:   loss: 2.93446 | quality: 0.06769
+
+[2026-04-02 11:25:06,407][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.20 GiB is allocated by PyTorch, and 58.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:06,410][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed10090/results.json
+[2026-04-02 11:25:06,410][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:06,411][HYDRA] 	#17 : model.L=3 model.bond_dim=64 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:06,535][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:06,536][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed32874
+[2026-04-02 11:25:06,537][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:09,600][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:09,600][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:09,600][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:09,600][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.76107 | quality: 0.11986
+        | Val:   loss: 2.86062 | quality: 0.12718
+
+[2026-04-02 11:25:09,748][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.20 GiB is allocated by PyTorch, and 58.99 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:09,752][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed32874/results.json
+[2026-04-02 11:25:09,752][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:09,753][HYDRA] 	#18 : model.L=3 model.bond_dim=64 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:09,873][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:09,874][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed47311
+[2026-04-02 11:25:09,874][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:13,292][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:13,293][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:13,293][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:13,293][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.55752 | quality: 0.16736
+        | Val:   loss: 2.67784 | quality: 0.16718
+
+Epoch 1 | Train: loss: 1.91797 | quality: 0.48472
+        | Val:   loss: 1.91817 | quality: 0.46359
+ *
+Epoch 2 | Train: loss: 1.84086 | quality: 0.49593
+        | Val:   loss: 1.84010 | quality: 0.49846
+ *
+Epoch 3 | Train: loss: 1.63143 | quality: 0.51111
+        | Val:   loss: 1.63074 | quality: 0.50154
+ *
+Epoch 4 | Train: loss: 1.34584 | quality: 0.53794
+        | Val:   loss: 1.34864 | quality: 0.51795
+ *
+[2026-04-02 11:25:23,050][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 5.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.14 GiB is allocated by PyTorch, and 115.52 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:23,053][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed47311/results.json
+[2026-04-02 11:25:23,053][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:23,054][__main__][INFO] -   Best val_quality before failure: 0.5179
+[2026-04-02 11:25:23,055][HYDRA] 	#19 : model.L=3 model.bond_dim=64 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:23,170][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:23,171][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed47303
+[2026-04-02 11:25:23,171][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:26,322][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:26,322][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:26,322][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:26,322][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.18731 | quality: 0.21003
+        | Val:   loss: 2.23978 | quality: 0.22462
+
+[2026-04-02 11:25:26,763][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 186.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 161.38 MiB is free. Including non-PyTorch memory, this process has 23.38 GiB memory in use. Of the allocated memory 22.97 GiB is allocated by PyTorch, and 138.95 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:26,766][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L3_bd64_seed47303/results.json
+[2026-04-02 11:25:26,766][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:26,767][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:26,876][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:26,876][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed42
+[2026-04-02 11:25:26,877][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:29,905][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:29,905][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:29,906][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:29,906][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.17155 | quality: 0.07983
+        | Val:   loss: 2.35983 | quality: 0.08103
+
+Epoch 1 | Train: loss: 1.91593 | quality: 0.49571
+        | Val:   loss: 1.91523 | quality: 0.50154
+ *
+[2026-04-02 11:25:31,039][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 13.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.23 GiB is allocated by PyTorch, and 21.53 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:31,042][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-02 11:25:31,042][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:31,042][__main__][INFO] -   Best val_quality before failure: 0.5015
+[2026-04-02 11:25:31,043][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:31,151][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:31,151][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed10090
+[2026-04-02 11:25:31,152][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:34,255][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:34,255][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:34,255][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:34,255][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.14464 | quality: 0.08995
+        | Val:   loss: 2.24354 | quality: 0.08103
+
+[2026-04-02 11:25:34,533][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 9.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 16.79 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:34,536][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-02 11:25:34,536][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:34,537][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:34,648][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:34,648][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed32874
+[2026-04-02 11:25:34,649][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:37,831][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:37,832][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:37,832][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:37,832][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.07413 | quality: 0.16077
+        | Val:   loss: 2.19107 | quality: 0.18051
+
+[2026-04-02 11:25:38,097][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 7.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 19.28 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:38,100][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-02 11:25:38,100][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:38,101][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:38,211][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:38,212][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed47311
+[2026-04-02 11:25:38,212][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:41,395][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:41,396][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:41,396][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:41,396][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.02610 | quality: 0.16165
+        | Val:   loss: 2.04462 | quality: 0.13436
+
+[2026-04-02 11:25:41,657][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 7.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 19.28 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:41,660][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-02 11:25:41,660][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:41,661][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:41,769][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:41,770][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed47303
+[2026-04-02 11:25:41,770][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:44,958][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:44,959][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:44,959][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:44,959][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.05962 | quality: 0.18364
+        | Val:   loss: 2.18272 | quality: 0.17641
+
+[2026-04-02 11:25:45,220][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 3.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 17.88 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:45,223][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-02 11:25:45,223][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:45,224][HYDRA] 	#25 : model.L=4 model.bond_dim=16 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:45,332][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:45,333][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed42
+[2026-04-02 11:25:45,333][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:48,363][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:48,363][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:48,363][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:48,363][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.14103 | quality: 0.14801
+        | Val:   loss: 2.16542 | quality: 0.15385
+
+[2026-04-02 11:25:48,606][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 3.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.25 GiB is allocated by PyTorch, and 8.43 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:48,609][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed42/results.json
+[2026-04-02 11:25:48,609][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:48,610][HYDRA] 	#26 : model.L=4 model.bond_dim=16 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:48,719][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:48,719][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed10090
+[2026-04-02 11:25:48,720][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:55,245][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:55,246][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:55,246][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:55,246][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.12712 | quality: 0.10380
+        | Val:   loss: 2.13798 | quality: 0.10872
+
+[2026-04-02 11:25:55,486][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.25 GiB is allocated by PyTorch, and 7.64 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:55,488][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed10090/results.json
+[2026-04-02 11:25:55,489][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:55,489][HYDRA] 	#27 : model.L=4 model.bond_dim=16 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:55,599][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:55,599][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed32874
+[2026-04-02 11:25:55,600][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:25:58,705][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:25:58,705][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:25:58,705][__main__][INFO] -   Device: cuda
+[2026-04-02 11:25:58,705][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.19318 | quality: 0.13020
+        | Val:   loss: 2.21669 | quality: 0.13026
+
+[2026-04-02 11:25:58,947][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.25 GiB is allocated by PyTorch, and 7.64 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:25:58,950][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed32874/results.json
+[2026-04-02 11:25:58,950][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:25:58,951][HYDRA] 	#28 : model.L=4 model.bond_dim=16 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:25:59,060][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:25:59,062][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed47311
+[2026-04-02 11:25:59,062][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:03,357][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:03,358][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:03,358][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:03,358][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.08129 | quality: 0.15857
+        | Val:   loss: 2.19699 | quality: 0.14872
+
+[2026-04-02 11:26:03,598][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.25 GiB is allocated by PyTorch, and 7.64 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:03,601][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed47311/results.json
+[2026-04-02 11:26:03,601][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:03,602][HYDRA] 	#29 : model.L=4 model.bond_dim=16 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:03,712][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:03,712][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed47303
+[2026-04-02 11:26:03,712][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:13,197][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:13,197][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:13,197][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:13,197][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.15574 | quality: 0.15901
+        | Val:   loss: 2.32663 | quality: 0.14974
+
+[2026-04-02 11:26:13,440][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.25 GiB is allocated by PyTorch, and 7.64 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:13,443][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd16_seed47303/results.json
+[2026-04-02 11:26:13,443][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:13,444][HYDRA] 	#30 : model.L=4 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:13,553][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:13,554][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed42
+[2026-04-02 11:26:13,554][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:19,711][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:19,712][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:19,712][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:19,712][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.42602 | quality: 0.09215
+        | Val:   loss: 2.65783 | quality: 0.08513
+
+[2026-04-02 11:26:19,908][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 2.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 1.38 MiB is free. Including non-PyTorch memory, this process has 23.54 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 21.18 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:19,912][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed42/results.json
+[2026-04-02 11:26:19,912][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:19,913][HYDRA] 	#31 : model.L=4 model.bond_dim=32 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:20,022][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:20,022][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed10090
+[2026-04-02 11:26:20,023][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:24,930][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:24,930][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:24,930][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:24,930][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.29829 | quality: 0.16099
+        | Val:   loss: 2.68703 | quality: 0.15385
+
+[2026-04-02 11:26:25,104][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 19.38 MiB is free. Including non-PyTorch memory, this process has 23.52 GiB memory in use. Of the allocated memory 23.23 GiB is allocated by PyTorch, and 10.97 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:25,107][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed10090/results.json
+[2026-04-02 11:26:25,108][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:25,109][HYDRA] 	#32 : model.L=4 model.bond_dim=32 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:25,223][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:25,224][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed32874
+[2026-04-02 11:26:25,224][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:28,877][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:28,878][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:28,878][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:28,878][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.05774 | quality: 0.22102
+        | Val:   loss: 2.32048 | quality: 0.22359
+
+[2026-04-02 11:26:29,057][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 19.38 MiB is free. Including non-PyTorch memory, this process has 23.52 GiB memory in use. Of the allocated memory 23.23 GiB is allocated by PyTorch, and 10.97 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:29,060][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed32874/results.json
+[2026-04-02 11:26:29,060][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:29,061][HYDRA] 	#33 : model.L=4 model.bond_dim=32 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:29,175][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:29,176][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed47311
+[2026-04-02 11:26:29,176][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:32,275][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:32,276][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:32,276][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:32,276][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.42688 | quality: 0.10402
+        | Val:   loss: 2.51441 | quality: 0.11077
+
+[2026-04-02 11:26:32,451][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 17.38 MiB is free. Including non-PyTorch memory, this process has 23.52 GiB memory in use. Of the allocated memory 23.23 GiB is allocated by PyTorch, and 10.15 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:32,454][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed47311/results.json
+[2026-04-02 11:26:32,454][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:32,455][HYDRA] 	#34 : model.L=4 model.bond_dim=32 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:32,570][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:32,571][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed47303
+[2026-04-02 11:26:32,571][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:37,070][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:37,071][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:37,071][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:37,071][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.34317 | quality: 0.14845
+        | Val:   loss: 2.37059 | quality: 0.17641
+
+[2026-04-02 11:26:37,247][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 17.38 MiB is free. Including non-PyTorch memory, this process has 23.52 GiB memory in use. Of the allocated memory 23.23 GiB is allocated by PyTorch, and 10.15 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:37,250][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd32_seed47303/results.json
+[2026-04-02 11:26:37,250][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:37,251][HYDRA] 	#35 : model.L=4 model.bond_dim=64 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:37,364][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:37,365][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed42
+[2026-04-02 11:26:37,365][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:40,527][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:40,527][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:40,527][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:40,527][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.43231 | quality: 0.12338
+        | Val:   loss: 2.58377 | quality: 0.12410
+
+[2026-04-02 11:26:40,706][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 13.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 11.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:40,709][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed42/results.json
+[2026-04-02 11:26:40,710][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:40,711][HYDRA] 	#36 : model.L=4 model.bond_dim=64 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:40,823][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:40,824][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed10090
+[2026-04-02 11:26:40,824][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:43,984][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:43,985][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:43,985][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:43,985][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.96273 | quality: 0.06906
+        | Val:   loss: 3.03758 | quality: 0.06667
+
+[2026-04-02 11:26:44,173][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 13.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 11.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:44,176][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed10090/results.json
+[2026-04-02 11:26:44,176][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:44,177][HYDRA] 	#37 : model.L=4 model.bond_dim=64 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:44,289][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:44,289][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed32874
+[2026-04-02 11:26:44,290][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:47,474][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:47,474][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:47,474][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:47,475][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.91123 | quality: 0.12448
+        | Val:   loss: 2.98044 | quality: 0.12923
+
+[2026-04-02 11:26:47,666][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 13.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 11.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:47,670][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed32874/results.json
+[2026-04-02 11:26:47,670][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:47,671][HYDRA] 	#38 : model.L=4 model.bond_dim=64 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:47,786][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:47,787][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed47311
+[2026-04-02 11:26:47,787][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:50,352][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:50,352][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:50,352][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:50,352][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.52888 | quality: 0.16868
+        | Val:   loss: 2.72084 | quality: 0.16923
+
+[2026-04-02 11:26:50,530][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 13.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 11.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:50,533][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed47311/results.json
+[2026-04-02 11:26:50,533][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+[2026-04-02 11:26:50,534][HYDRA] 	#39 : model.L=4 model.bond_dim=64 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=winequalityc
+[2026-04-02 11:26:50,647][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: winequalityc
+  task: classification
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-02 11:26:50,647][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed47303
+[2026-04-02 11:26:50,648][__main__][INFO] - Loading dataset: winequalityc
+[2026-04-02 11:26:53,247][__main__][INFO] -   Samples: train=4547, val=975, test=975
+[2026-04-02 11:26:53,247][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-02 11:26:53,247][__main__][INFO] -   Device: cuda
+[2026-04-02 11:26:53,247][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.27651 | quality: 0.21047
+        | Val:   loss: 2.44596 | quality: 0.22564
+
+[2026-04-02 11:26:53,427][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 20.00 MiB. GPU 0 has a total capacity of 23.55 GiB of which 13.38 MiB is free. Including non-PyTorch memory, this process has 23.53 GiB memory in use. Of the allocated memory 23.24 GiB is allocated by PyTorch, and 11.26 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+[2026-04-02 11:26:53,430][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/winequalityc/CPDATypeI_rg5_init0.1/L4_bd64_seed47303/results.json
+[2026-04-02 11:26:53,430][__main__][WARNING] - ✗ Training failed (CUDA out of memory)
+Done: 2026-04-02-11:26:54

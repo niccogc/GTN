@@ -1,0 +1,27 @@
+# @package _global_
+# GTN: Gradient-based Tensor Network Training
+# Uses first-order gradient descent via PyTorch autograd
+
+trainer:
+  type: gtn
+  n_epochs: 1000           # Number of training epochs (50-200 typical)
+  
+  # Optimizer settings
+  lr: 0.005               # Learning rate
+  optimizer: adamw         # Optimizer: adam, adamw, sgd
+  
+  # Ridge regularization (λ in ridge regression)
+  # For GTN: weight_decay = 2 * ridge (to match NTN's ridge behavior)
+  ridge: 0.005            # Regularization strength (weight_decay = 2 * ridge = 0.01)
+  
+  # Loss function (auto-detected from task if not specified)
+  loss_fn: null           # null=auto, mse, mae, huber, cross_entropy
+  
+  # Early stopping
+  patience: 100            # Epochs without improvement before stopping (null to disable)
+  min_delta: 0.001        # Minimum improvement to count as progress
+  
+  # Model selection strategy
+  # When false: select model with best validation quality only
+  # When true: use training quality as tiebreaker when validation quality is equal (within min_delta)
+  train_selection: true

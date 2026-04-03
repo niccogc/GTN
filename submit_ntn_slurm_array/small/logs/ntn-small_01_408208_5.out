@@ -1,0 +1,4704 @@
+Node: comp-gpu14
+Array Job ID: 408208, Task ID: 5
+Start: 2026-03-30-12:41:25
+Running: model=lmpo2_typei dataset=breast
+[2026-03-30 12:41:35,435][HYDRA] Launching 90 jobs locally
+[2026-03-30 12:41:35,435][HYDRA] 	#0 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:41:35,510][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:41:35,514][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed42_rf0.3_bondmpo1
+[2026-03-30 12:41:35,514][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:41:37,396][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:41:37,396][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:41:37,396][__main__][INFO] -   Device: cuda
+[2026-03-30 12:41:37,396][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.73994 | quality: 0.36935
+        | Val:   loss: 0.75278 | quality: 0.34118
+
+Epoch 1 | Train: loss: 0.69130 | quality: 0.93467
+        | Val:   loss: 0.69107 | quality: 0.92941
+ *
+Epoch 2 | Train: loss: 0.69297 | quality: 0.93216
+        | Val:   loss: 0.69295 | quality: 0.92941
+
+Epoch 3 | Train: loss: 0.68877 | quality: 0.93216
+        | Val:   loss: 0.68823 | quality: 0.92941
+
+Epoch 4 | Train: loss: 0.30752 | quality: 0.93216
+        | Val:   loss: 0.28408 | quality: 0.92941
+
+Epoch 5 | Train: loss: 0.13014 | quality: 0.97487
+        | Val:   loss: 0.11173 | quality: 0.97647
+ *
+Epoch 6 | Train: loss: 0.07409 | quality: 0.98241
+        | Val:   loss: 0.06899 | quality: 0.98824
+ *
+Epoch 7 | Train: loss: 0.05162 | quality: 0.98744
+        | Val:   loss: 0.06522 | quality: 0.97647
+
+Epoch 8 | Train: loss: 0.03774 | quality: 0.98995
+        | Val:   loss: 0.07866 | quality: 0.97647
+
+Epoch 9 | Train: loss: 0.02262 | quality: 0.99497
+        | Val:   loss: 0.18729 | quality: 0.92941
+
+Epoch 10 | Train: loss: 0.01771 | quality: 0.99497
+        | Val:   loss: 0.20130 | quality: 0.95294
+
+Epoch 11 | Train: loss: 0.01379 | quality: 0.99497
+        | Val:   loss: 0.27445 | quality: 0.95294
+
+Epoch 12 | Train: loss: 0.01002 | quality: 0.99749
+        | Val:   loss: 0.37661 | quality: 0.94118
+
+Epoch 13 | Train: loss: 0.00722 | quality: 0.99749
+        | Val:   loss: 0.47828 | quality: 0.94118
+
+Epoch 14 | Train: loss: 0.00590 | quality: 1.00000
+        | Val:   loss: 0.53981 | quality: 0.94118
+
+Epoch 15 | Train: loss: 0.00559 | quality: 1.00000
+        | Val:   loss: 0.55736 | quality: 0.94118
+
+Epoch 16 | Train: loss: 0.00557 | quality: 1.00000
+        | Val:   loss: 0.55896 | quality: 0.94118
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.988235)
+[2026-03-30 12:41:41,317][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed42_rf0.3_bondmpo1/results.json
+[2026-03-30 12:41:41,318][__main__][INFO] - ✓ Train Accuracy: 0.9824
+[2026-03-30 12:41:41,318][__main__][INFO] - ✓ Val Accuracy: 0.9882
+[2026-03-30 12:41:41,319][HYDRA] 	#1 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:41:41,396][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:41:41,397][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed10090_rf0.3_bondmpo1
+[2026-03-30 12:41:41,397][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:41:42,886][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:41:42,886][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:41:42,886][__main__][INFO] -   Device: cuda
+[2026-03-30 12:41:42,886][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.66565 | quality: 0.73869
+        | Val:   loss: 0.64711 | quality: 0.71765
+
+Epoch 1 | Train: loss: 0.69209 | quality: 0.93216
+        | Val:   loss: 0.69195 | quality: 0.92941
+ *
+Epoch 2 | Train: loss: 0.69304 | quality: 0.93216
+        | Val:   loss: 0.69303 | quality: 0.92941
+
+Epoch 3 | Train: loss: 0.69056 | quality: 0.93216
+        | Val:   loss: 0.69024 | quality: 0.92941
+
+Epoch 4 | Train: loss: 0.32054 | quality: 0.93216
+        | Val:   loss: 0.29721 | quality: 0.92941
+
+Epoch 5 | Train: loss: 0.12965 | quality: 0.97487
+        | Val:   loss: 0.11198 | quality: 0.97647
+ *
+Epoch 6 | Train: loss: 0.07262 | quality: 0.98241
+        | Val:   loss: 0.06918 | quality: 0.98824
+ *
+Epoch 7 | Train: loss: 0.05050 | quality: 0.98744
+        | Val:   loss: 0.06630 | quality: 0.97647
+
+Epoch 8 | Train: loss: 0.03655 | quality: 0.99246
+        | Val:   loss: 0.08066 | quality: 0.97647
+
+Epoch 9 | Train: loss: 0.02243 | quality: 0.99497
+        | Val:   loss: 0.22488 | quality: 0.92941
+
+Epoch 10 | Train: loss: 0.01717 | quality: 0.99497
+        | Val:   loss: 0.21101 | quality: 0.95294
+
+Epoch 11 | Train: loss: 0.01260 | quality: 0.99749
+        | Val:   loss: 0.30732 | quality: 0.95294
+
+Epoch 12 | Train: loss: 0.00893 | quality: 0.99749
+        | Val:   loss: 0.41347 | quality: 0.94118
+
+Epoch 13 | Train: loss: 0.00665 | quality: 1.00000
+        | Val:   loss: 0.50173 | quality: 0.94118
+
+Epoch 14 | Train: loss: 0.00574 | quality: 1.00000
+        | Val:   loss: 0.54926 | quality: 0.94118
+
+Epoch 15 | Train: loss: 0.00558 | quality: 1.00000
+        | Val:   loss: 0.55824 | quality: 0.94118
+
+Epoch 16 | Train: loss: 0.00557 | quality: 1.00000
+        | Val:   loss: 0.55896 | quality: 0.94118
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.988235)
+[2026-03-30 12:41:46,634][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed10090_rf0.3_bondmpo1/results.json
+[2026-03-30 12:41:46,634][__main__][INFO] - ✓ Train Accuracy: 0.9824
+[2026-03-30 12:41:46,634][__main__][INFO] - ✓ Val Accuracy: 0.9882
+[2026-03-30 12:41:46,635][HYDRA] 	#2 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:41:46,710][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:41:46,710][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed32874_rf0.3_bondmpo1
+[2026-03-30 12:41:46,710][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:41:48,449][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:41:48,450][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:41:48,450][__main__][INFO] -   Device: cuda
+[2026-03-30 12:41:48,450][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.72380 | quality: 0.41457
+        | Val:   loss: 0.67399 | quality: 0.43529
+
+Epoch 1 | Train: loss: 0.69185 | quality: 0.92965
+        | Val:   loss: 0.69169 | quality: 0.92941
+ *
+Epoch 2 | Train: loss: 0.69303 | quality: 0.93216
+        | Val:   loss: 0.69301 | quality: 0.92941
+ *
+Epoch 3 | Train: loss: 0.69019 | quality: 0.93216
+        | Val:   loss: 0.68983 | quality: 0.92941
+
+Epoch 4 | Train: loss: 0.31758 | quality: 0.93216
+        | Val:   loss: 0.29423 | quality: 0.92941
+
+Epoch 5 | Train: loss: 0.12987 | quality: 0.97487
+        | Val:   loss: 0.11198 | quality: 0.97647
+ *
+Epoch 6 | Train: loss: 0.07305 | quality: 0.98241
+        | Val:   loss: 0.06911 | quality: 0.98824
+ *
+Epoch 7 | Train: loss: 0.05083 | quality: 0.98744
+        | Val:   loss: 0.06597 | quality: 0.97647
+
+Epoch 8 | Train: loss: 0.03690 | quality: 0.98995
+        | Val:   loss: 0.08004 | quality: 0.97647
+
+Epoch 9 | Train: loss: 0.02242 | quality: 0.99497
+        | Val:   loss: 0.21367 | quality: 0.92941
+
+Epoch 10 | Train: loss: 0.01718 | quality: 0.99497
+        | Val:   loss: 0.20984 | quality: 0.95294
+
+Epoch 11 | Train: loss: 0.01295 | quality: 0.99749
+        | Val:   loss: 0.29599 | quality: 0.95294
+
+Epoch 12 | Train: loss: 0.00922 | quality: 0.99749
+        | Val:   loss: 0.40285 | quality: 0.94118
+
+Epoch 13 | Train: loss: 0.00679 | quality: 1.00000
+        | Val:   loss: 0.49614 | quality: 0.94118
+
+Epoch 14 | Train: loss: 0.00577 | quality: 1.00000
+        | Val:   loss: 0.54709 | quality: 0.94118
+
+Epoch 15 | Train: loss: 0.00558 | quality: 1.00000
+        | Val:   loss: 0.55811 | quality: 0.94118
+
+Epoch 16 | Train: loss: 0.00557 | quality: 1.00000
+        | Val:   loss: 0.55897 | quality: 0.94118
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.988235)
+[2026-03-30 12:41:52,396][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed32874_rf0.3_bondmpo1/results.json
+[2026-03-30 12:41:52,396][__main__][INFO] - ✓ Train Accuracy: 0.9824
+[2026-03-30 12:41:52,396][__main__][INFO] - ✓ Val Accuracy: 0.9882
+[2026-03-30 12:41:52,397][HYDRA] 	#3 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:41:52,473][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:41:52,474][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47311_rf0.3_bondmpo1
+[2026-03-30 12:41:52,474][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:41:54,216][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:41:54,217][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:41:54,217][__main__][INFO] -   Device: cuda
+[2026-03-30 12:41:54,217][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.78255 | quality: 0.35930
+        | Val:   loss: 0.85521 | quality: 0.32941
+
+Epoch 1 | Train: loss: 0.69100 | quality: 0.92462
+        | Val:   loss: 0.69073 | quality: 0.92941
+ *
+Epoch 2 | Train: loss: 0.69293 | quality: 0.93216
+        | Val:   loss: 0.69290 | quality: 0.92941
+ *
+Epoch 3 | Train: loss: 0.68776 | quality: 0.93216
+        | Val:   loss: 0.68709 | quality: 0.92941
+
+Epoch 4 | Train: loss: 0.30115 | quality: 0.93719
+        | Val:   loss: 0.27767 | quality: 0.92941
+ *
+Epoch 5 | Train: loss: 0.12989 | quality: 0.97487
+        | Val:   loss: 0.11130 | quality: 0.97647
+ *
+Epoch 6 | Train: loss: 0.07442 | quality: 0.98241
+        | Val:   loss: 0.06892 | quality: 0.98824
+ *
+Epoch 7 | Train: loss: 0.05191 | quality: 0.98744
+        | Val:   loss: 0.06496 | quality: 0.97647
+
+Epoch 8 | Train: loss: 0.03804 | quality: 0.98995
+        | Val:   loss: 0.07818 | quality: 0.97647
+
+Epoch 9 | Train: loss: 0.02280 | quality: 0.99497
+        | Val:   loss: 0.17815 | quality: 0.94118
+
+Epoch 10 | Train: loss: 0.01802 | quality: 0.99497
+        | Val:   loss: 0.19667 | quality: 0.96471
+
+Epoch 11 | Train: loss: 0.01412 | quality: 0.99497
+        | Val:   loss: 0.26698 | quality: 0.95294
+
+Epoch 12 | Train: loss: 0.01034 | quality: 0.99749
+        | Val:   loss: 0.36668 | quality: 0.94118
+
+Epoch 13 | Train: loss: 0.00740 | quality: 0.99749
+        | Val:   loss: 0.47004 | quality: 0.94118
+
+Epoch 14 | Train: loss: 0.00597 | quality: 1.00000
+        | Val:   loss: 0.53656 | quality: 0.94118
+
+Epoch 15 | Train: loss: 0.00560 | quality: 1.00000
+        | Val:   loss: 0.55677 | quality: 0.94118
+
+Epoch 16 | Train: loss: 0.00557 | quality: 1.00000
+        | Val:   loss: 0.55896 | quality: 0.94118
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.988235)
+[2026-03-30 12:41:57,939][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47311_rf0.3_bondmpo1/results.json
+[2026-03-30 12:41:57,939][__main__][INFO] - ✓ Train Accuracy: 0.9824
+[2026-03-30 12:41:57,939][__main__][INFO] - ✓ Val Accuracy: 0.9882
+[2026-03-30 12:41:57,940][HYDRA] 	#4 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:41:58,014][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:41:58,015][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47303_rf0.3_bondmpo1
+[2026-03-30 12:41:58,015][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:41:59,480][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:41:59,480][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:41:59,480][__main__][INFO] -   Device: cuda
+[2026-03-30 12:41:59,480][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.66589 | quality: 0.72613
+        | Val:   loss: 0.68076 | quality: 0.62353
+
+Epoch 1 | Train: loss: 0.69116 | quality: 0.93216
+        | Val:   loss: 0.69092 | quality: 0.92941
+ *
+Epoch 2 | Train: loss: 0.69295 | quality: 0.93216
+        | Val:   loss: 0.69293 | quality: 0.92941
+
+Epoch 3 | Train: loss: 0.68837 | quality: 0.93216
+        | Val:   loss: 0.68777 | quality: 0.92941
+
+Epoch 4 | Train: loss: 0.30489 | quality: 0.93467
+        | Val:   loss: 0.28143 | quality: 0.92941
+ *
+Epoch 5 | Train: loss: 0.13007 | quality: 0.97487
+        | Val:   loss: 0.11158 | quality: 0.97647
+ *
+Epoch 6 | Train: loss: 0.07425 | quality: 0.98241
+        | Val:   loss: 0.06896 | quality: 0.98824
+ *
+Epoch 7 | Train: loss: 0.05176 | quality: 0.98744
+        | Val:   loss: 0.06510 | quality: 0.97647
+
+Epoch 8 | Train: loss: 0.03788 | quality: 0.98995
+        | Val:   loss: 0.07843 | quality: 0.97647
+
+Epoch 9 | Train: loss: 0.02270 | quality: 0.99497
+        | Val:   loss: 0.18296 | quality: 0.94118
+
+Epoch 10 | Train: loss: 0.01785 | quality: 0.99497
+        | Val:   loss: 0.19920 | quality: 0.95294
+
+Epoch 11 | Train: loss: 0.01394 | quality: 0.99497
+        | Val:   loss: 0.27094 | quality: 0.95294
+
+Epoch 12 | Train: loss: 0.01017 | quality: 0.99749
+        | Val:   loss: 0.37198 | quality: 0.94118
+
+Epoch 13 | Train: loss: 0.00730 | quality: 0.99749
+        | Val:   loss: 0.47451 | quality: 0.94118
+
+Epoch 14 | Train: loss: 0.00593 | quality: 1.00000
+        | Val:   loss: 0.53832 | quality: 0.94118
+
+Epoch 15 | Train: loss: 0.00560 | quality: 1.00000
+        | Val:   loss: 0.55712 | quality: 0.94118
+
+Epoch 16 | Train: loss: 0.00557 | quality: 1.00000
+        | Val:   loss: 0.55896 | quality: 0.94118
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.988235)
+[2026-03-30 12:42:03,202][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47303_rf0.3_bondmpo1/results.json
+[2026-03-30 12:42:03,202][__main__][INFO] - ✓ Train Accuracy: 0.9824
+[2026-03-30 12:42:03,202][__main__][INFO] - ✓ Val Accuracy: 0.9882
+[2026-03-30 12:42:03,203][HYDRA] 	#5 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:03,278][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:03,278][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed42_rf0.3_bondmpo1
+[2026-03-30 12:42:03,279][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:06,136][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:42:06,136][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:42:06,136][__main__][INFO] -   Device: cuda
+[2026-03-30 12:42:06,136][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.88479 | quality: 0.34171
+        | Val:   loss: 0.83393 | quality: 0.41176
+
+[2026-03-30 12:42:07,462][HYDRA] 	#6 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:07,538][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:07,538][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed10090_rf0.3_bondmpo1
+[2026-03-30 12:42:07,539][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:09,802][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:42:09,802][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:42:09,802][__main__][INFO] -   Device: cuda
+[2026-03-30 12:42:09,802][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.82347 | quality: 0.45226
+        | Val:   loss: 0.86012 | quality: 0.49412
+
+[2026-03-30 12:42:09,971][HYDRA] 	#7 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:10,046][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:10,046][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed32874_rf0.3_bondmpo1
+[2026-03-30 12:42:10,046][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:12,354][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:42:12,354][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:42:12,354][__main__][INFO] -   Device: cuda
+[2026-03-30 12:42:12,354][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.78233 | quality: 0.44724
+        | Val:   loss: 0.67293 | quality: 0.48235
+
+[2026-03-30 12:42:12,500][HYDRA] 	#8 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:12,577][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:12,577][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47311_rf0.3_bondmpo1
+[2026-03-30 12:42:12,577][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:14,852][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:42:14,852][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:42:14,852][__main__][INFO] -   Device: cuda
+[2026-03-30 12:42:14,853][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.69097 | quality: 0.58040
+        | Val:   loss: 0.66213 | quality: 0.54118
+
+[2026-03-30 12:42:14,950][HYDRA] 	#9 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:15,024][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:15,025][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47303_rf0.3_bondmpo1
+[2026-03-30 12:42:15,025][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:17,268][HYDRA] 	#10 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:17,342][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:17,343][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed42_rf0.3_bondmpo1
+[2026-03-30 12:42:17,343][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:19,587][HYDRA] 	#11 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:19,661][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:19,662][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed10090_rf0.3_bondmpo1
+[2026-03-30 12:42:19,662][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:21,945][HYDRA] 	#12 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:22,019][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:22,020][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed32874_rf0.3_bondmpo1
+[2026-03-30 12:42:22,020][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:24,362][HYDRA] 	#13 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:24,437][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:24,437][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47311_rf0.3_bondmpo1
+[2026-03-30 12:42:24,437][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:26,698][HYDRA] 	#14 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:26,774][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:26,775][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47303_rf0.3_bondmpo1
+[2026-03-30 12:42:26,775][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:29,017][HYDRA] 	#15 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:29,091][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:29,092][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed42_rf0.3_bondmpo1
+[2026-03-30 12:42:29,092][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:31,632][HYDRA] 	#16 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:31,708][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:31,708][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed10090_rf0.3_bondmpo1
+[2026-03-30 12:42:31,709][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:34,168][HYDRA] 	#17 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:34,243][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:34,244][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed32874_rf0.3_bondmpo1
+[2026-03-30 12:42:34,244][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:36,570][HYDRA] 	#18 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:36,645][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:36,647][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47311_rf0.3_bondmpo1
+[2026-03-30 12:42:36,647][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:38,979][HYDRA] 	#19 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:39,053][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:39,054][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47303_rf0.3_bondmpo1
+[2026-03-30 12:42:39,054][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:41,337][HYDRA] 	#20 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:41,412][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:41,413][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed42_rf0.3_bondmpo1
+[2026-03-30 12:42:41,413][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:43,659][HYDRA] 	#21 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:43,733][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:43,733][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed10090_rf0.3_bondmpo1
+[2026-03-30 12:42:43,733][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:45,984][HYDRA] 	#22 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:46,058][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:46,058][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed32874_rf0.3_bondmpo1
+[2026-03-30 12:42:46,059][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:48,301][HYDRA] 	#23 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:48,376][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:48,376][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47311_rf0.3_bondmpo1
+[2026-03-30 12:42:48,376][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:50,626][HYDRA] 	#24 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:50,700][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:50,701][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47303_rf0.3_bondmpo1
+[2026-03-30 12:42:50,701][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:52,945][HYDRA] 	#25 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:42:53,217][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:42:53,218][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.3_bondmpo1
+[2026-03-30 12:42:53,218][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:42:55,496][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:42:55,496][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:42:55,496][__main__][INFO] -   Device: cuda
+[2026-03-30 12:42:55,497][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.06533 | quality: 0.27889
+        | Val:   loss: 2.09101 | quality: 0.31765
+
+[2026-03-30 12:43:02,298][HYDRA] 	#26 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:02,376][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:02,377][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed10090_rf0.3_bondmpo1
+[2026-03-30 12:43:02,377][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:04,652][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:04,652][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:04,652][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:04,652][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 4.19909 | quality: 0.56784
+        | Val:   loss: 1.56205 | quality: 0.48235
+
+[2026-03-30 12:43:05,212][HYDRA] 	#27 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:05,289][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:05,289][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed32874_rf0.3_bondmpo1
+[2026-03-30 12:43:05,289][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:07,571][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:07,571][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:07,571][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:07,571][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.28195 | quality: 0.60804
+        | Val:   loss: 1.37960 | quality: 0.58824
+
+[2026-03-30 12:43:08,134][HYDRA] 	#28 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:08,211][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:08,211][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47311_rf0.3_bondmpo1
+[2026-03-30 12:43:08,211][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:10,602][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:10,602][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:10,602][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:10,602][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.46306 | quality: 0.45729
+        | Val:   loss: 1.67025 | quality: 0.45882
+
+[2026-03-30 12:43:11,108][HYDRA] 	#29 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:11,185][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:11,185][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47303_rf0.3_bondmpo1
+[2026-03-30 12:43:11,185][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:13,489][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:13,489][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:13,489][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:13,489][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 6.52252 | quality: 0.59296
+        | Val:   loss: 1.04084 | quality: 0.65882
+
+[2026-03-30 12:43:13,987][HYDRA] 	#30 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:14,063][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:14,063][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed42_rf0.5_bondmpo1
+[2026-03-30 12:43:14,064][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:17,283][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:17,283][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:17,283][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:17,283][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.61932 | quality: 0.78392
+        | Val:   loss: 0.59196 | quality: 0.71765
+
+Epoch 1 | Train: loss: 0.69098 | quality: 0.94724
+        | Val:   loss: 0.69070 | quality: 0.94118
+ *
+Epoch 2 | Train: loss: 0.69295 | quality: 0.93216
+        | Val:   loss: 0.69293 | quality: 0.92941
+
+[2026-03-30 12:43:18,749][HYDRA] 	#31 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:18,824][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:18,825][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed10090_rf0.5_bondmpo1
+[2026-03-30 12:43:18,825][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:21,062][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:21,062][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:21,062][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:21,062][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.86401 | quality: 0.23618
+        | Val:   loss: 0.84065 | quality: 0.22353
+
+[2026-03-30 12:43:21,188][HYDRA] 	#32 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:21,263][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:21,264][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed32874_rf0.5_bondmpo1
+[2026-03-30 12:43:21,264][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:23,718][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:23,718][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:23,718][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:23,718][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.74043 | quality: 0.53769
+        | Val:   loss: 0.75107 | quality: 0.52941
+
+[2026-03-30 12:43:23,833][HYDRA] 	#33 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:23,909][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:23,909][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47311_rf0.5_bondmpo1
+[2026-03-30 12:43:23,910][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:26,643][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:26,643][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:26,643][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:26,643][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.68787 | quality: 0.63317
+        | Val:   loss: 0.67295 | quality: 0.57647
+
+[2026-03-30 12:43:26,692][HYDRA] 	#34 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:26,768][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:26,769][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47303_rf0.5_bondmpo1
+[2026-03-30 12:43:26,769][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:29,435][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:29,435][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:29,435][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:29,435][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.78414 | quality: 0.51508
+        | Val:   loss: 0.74690 | quality: 0.57647
+
+[2026-03-30 12:43:29,453][HYDRA] 	#35 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:29,530][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:29,531][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed42_rf0.5_bondmpo1
+[2026-03-30 12:43:29,531][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:31,963][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:31,963][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:31,963][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:31,963][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.72918 | quality: 0.72362
+        | Val:   loss: 1.02491 | quality: 0.63529
+
+[2026-03-30 12:43:31,984][HYDRA] 	#36 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:32,061][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:32,062][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed10090_rf0.5_bondmpo1
+[2026-03-30 12:43:32,062][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:34,442][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:34,442][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:34,442][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:34,442][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.19208 | quality: 0.34673
+        | Val:   loss: 1.17998 | quality: 0.36471
+
+[2026-03-30 12:43:34,462][HYDRA] 	#37 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:34,537][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:34,538][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed32874_rf0.5_bondmpo1
+[2026-03-30 12:43:34,538][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:36,970][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:36,970][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:36,970][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:36,970][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.88776 | quality: 0.60553
+        | Val:   loss: 0.72958 | quality: 0.58824
+
+[2026-03-30 12:43:36,989][HYDRA] 	#38 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:37,066][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:37,068][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47311_rf0.5_bondmpo1
+[2026-03-30 12:43:37,068][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:40,501][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:40,501][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:40,501][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:40,501][__main__][INFO] - Creating model: LMPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+[2026-03-30 12:43:40,508][HYDRA] 	#39 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:40,583][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:40,583][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47303_rf0.5_bondmpo1
+[2026-03-30 12:43:40,583][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:42,822][__main__][INFO] -   Samples: train=398, val=85, test=86
+[2026-03-30 12:43:42,822][__main__][INFO] -   Features: 31 (including bias), Task: classification
+[2026-03-30 12:43:42,822][__main__][INFO] -   Device: cuda
+[2026-03-30 12:43:42,822][__main__][INFO] - Creating model: LMPO2TypeI
+[2026-03-30 12:43:42,828][HYDRA] 	#40 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:42,902][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:42,903][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed42_rf0.5_bondmpo1
+[2026-03-30 12:43:42,903][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:45,168][HYDRA] 	#41 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:45,242][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:45,243][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed10090_rf0.5_bondmpo1
+[2026-03-30 12:43:45,243][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:47,512][HYDRA] 	#42 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:47,587][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:47,588][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed32874_rf0.5_bondmpo1
+[2026-03-30 12:43:47,588][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:49,915][HYDRA] 	#43 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:49,989][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:49,990][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47311_rf0.5_bondmpo1
+[2026-03-30 12:43:49,990][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:52,248][HYDRA] 	#44 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:52,323][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:52,324][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47303_rf0.5_bondmpo1
+[2026-03-30 12:43:52,324][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:54,565][HYDRA] 	#45 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:54,640][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:54,641][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed42_rf0.5_bondmpo1
+[2026-03-30 12:43:54,641][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:57,061][HYDRA] 	#46 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:57,135][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:57,136][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed10090_rf0.5_bondmpo1
+[2026-03-30 12:43:57,136][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:43:59,853][HYDRA] 	#47 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:43:59,929][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:43:59,929][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed32874_rf0.5_bondmpo1
+[2026-03-30 12:43:59,930][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:02,175][HYDRA] 	#48 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:02,427][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:02,428][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47311_rf0.5_bondmpo1
+[2026-03-30 12:44:02,428][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:04,756][HYDRA] 	#49 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:04,831][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:04,832][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47303_rf0.5_bondmpo1
+[2026-03-30 12:44:04,832][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:07,116][HYDRA] 	#50 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:07,191][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:07,192][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed42_rf0.5_bondmpo1
+[2026-03-30 12:44:07,192][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:09,788][HYDRA] 	#51 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:09,864][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:09,864][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed10090_rf0.5_bondmpo1
+[2026-03-30 12:44:09,864][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:12,166][HYDRA] 	#52 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:12,243][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:12,243][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed32874_rf0.5_bondmpo1
+[2026-03-30 12:44:12,243][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:14,489][HYDRA] 	#53 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:14,565][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:14,565][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47311_rf0.5_bondmpo1
+[2026-03-30 12:44:14,566][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:16,739][HYDRA] 	#54 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:16,815][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:16,816][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47303_rf0.5_bondmpo1
+[2026-03-30 12:44:16,816][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:19,229][HYDRA] 	#55 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:19,307][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:19,308][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.5_bondmpo1
+[2026-03-30 12:44:19,308][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:21,567][HYDRA] 	#56 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:21,643][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:21,644][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed10090_rf0.5_bondmpo1
+[2026-03-30 12:44:21,644][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:24,049][HYDRA] 	#57 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:24,124][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:24,125][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed32874_rf0.5_bondmpo1
+[2026-03-30 12:44:24,125][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:26,432][HYDRA] 	#58 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:26,510][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:26,511][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47311_rf0.5_bondmpo1
+[2026-03-30 12:44:26,511][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:28,755][HYDRA] 	#59 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:28,832][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.5
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:28,833][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47303_rf0.5_bondmpo1
+[2026-03-30 12:44:28,833][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:31,349][HYDRA] 	#60 : model.reduction_factor=0.9 model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:31,424][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:31,426][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed42_rf0.9_bondmpo1
+[2026-03-30 12:44:31,426][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:33,670][HYDRA] 	#61 : model.reduction_factor=0.9 model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:33,749][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:33,749][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed10090_rf0.9_bondmpo1
+[2026-03-30 12:44:33,750][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:36,129][HYDRA] 	#62 : model.reduction_factor=0.9 model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:36,205][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:36,205][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed32874_rf0.9_bondmpo1
+[2026-03-30 12:44:36,205][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:38,804][HYDRA] 	#63 : model.reduction_factor=0.9 model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:38,879][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:38,881][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47311_rf0.9_bondmpo1
+[2026-03-30 12:44:38,881][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:41,127][HYDRA] 	#64 : model.reduction_factor=0.9 model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:41,202][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:41,203][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47303_rf0.9_bondmpo1
+[2026-03-30 12:44:41,203][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:43,449][HYDRA] 	#65 : model.reduction_factor=0.9 model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:43,523][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:43,524][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed42_rf0.9_bondmpo1
+[2026-03-30 12:44:43,524][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:45,779][HYDRA] 	#66 : model.reduction_factor=0.9 model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:45,854][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:45,855][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed10090_rf0.9_bondmpo1
+[2026-03-30 12:44:45,855][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:48,101][HYDRA] 	#67 : model.reduction_factor=0.9 model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:48,177][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:48,177][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed32874_rf0.9_bondmpo1
+[2026-03-30 12:44:48,177][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:50,431][HYDRA] 	#68 : model.reduction_factor=0.9 model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:50,506][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:50,507][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47311_rf0.9_bondmpo1
+[2026-03-30 12:44:50,507][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:52,752][HYDRA] 	#69 : model.reduction_factor=0.9 model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:52,827][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:52,827][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47303_rf0.9_bondmpo1
+[2026-03-30 12:44:52,827][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:55,124][HYDRA] 	#70 : model.reduction_factor=0.9 model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:55,199][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:55,200][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed42_rf0.9_bondmpo1
+[2026-03-30 12:44:55,200][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:57,450][HYDRA] 	#71 : model.reduction_factor=0.9 model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:57,526][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:57,527][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed10090_rf0.9_bondmpo1
+[2026-03-30 12:44:57,527][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:44:59,897][HYDRA] 	#72 : model.reduction_factor=0.9 model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:44:59,972][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:44:59,973][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed32874_rf0.9_bondmpo1
+[2026-03-30 12:44:59,973][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:02,221][HYDRA] 	#73 : model.reduction_factor=0.9 model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:02,297][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:02,297][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47311_rf0.9_bondmpo1
+[2026-03-30 12:45:02,297][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:04,542][HYDRA] 	#74 : model.reduction_factor=0.9 model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:04,616][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:04,617][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47303_rf0.9_bondmpo1
+[2026-03-30 12:45:04,617][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:06,864][HYDRA] 	#75 : model.reduction_factor=0.9 model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:06,938][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:06,939][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed42_rf0.9_bondmpo1
+[2026-03-30 12:45:06,939][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:09,188][HYDRA] 	#76 : model.reduction_factor=0.9 model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:09,263][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:09,264][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed10090_rf0.9_bondmpo1
+[2026-03-30 12:45:09,264][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:11,623][HYDRA] 	#77 : model.reduction_factor=0.9 model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:11,698][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:11,699][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed32874_rf0.9_bondmpo1
+[2026-03-30 12:45:11,699][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:14,002][HYDRA] 	#78 : model.reduction_factor=0.9 model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:14,077][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:14,077][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47311_rf0.9_bondmpo1
+[2026-03-30 12:45:14,077][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:16,325][HYDRA] 	#79 : model.reduction_factor=0.9 model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:16,401][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:16,402][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47303_rf0.9_bondmpo1
+[2026-03-30 12:45:16,402][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:18,740][HYDRA] 	#80 : model.reduction_factor=0.9 model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:18,814][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:18,815][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed42_rf0.9_bondmpo1
+[2026-03-30 12:45:18,815][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:21,067][HYDRA] 	#81 : model.reduction_factor=0.9 model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:21,142][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:21,142][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed10090_rf0.9_bondmpo1
+[2026-03-30 12:45:21,142][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:23,387][HYDRA] 	#82 : model.reduction_factor=0.9 model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:23,650][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:23,651][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed32874_rf0.9_bondmpo1
+[2026-03-30 12:45:23,651][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:25,897][HYDRA] 	#83 : model.reduction_factor=0.9 model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:25,972][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:25,973][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47311_rf0.9_bondmpo1
+[2026-03-30 12:45:25,973][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:28,217][HYDRA] 	#84 : model.reduction_factor=0.9 model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:28,292][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:28,293][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47303_rf0.9_bondmpo1
+[2026-03-30 12:45:28,293][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:31,976][HYDRA] 	#85 : model.reduction_factor=0.9 model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:32,053][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:32,054][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.9_bondmpo1
+[2026-03-30 12:45:32,054][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:34,508][HYDRA] 	#86 : model.reduction_factor=0.9 model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:34,586][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:34,587][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed10090_rf0.9_bondmpo1
+[2026-03-30 12:45:34,587][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:37,132][HYDRA] 	#87 : model.reduction_factor=0.9 model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:37,207][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:37,208][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed32874_rf0.9_bondmpo1
+[2026-03-30 12:45:37,208][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:39,545][HYDRA] 	#88 : model.reduction_factor=0.9 model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:39,621][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:39,623][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47311_rf0.9_bondmpo1
+[2026-03-30 12:45:39,623][__main__][INFO] - Loading dataset: breast
+[2026-03-30 12:45:42,194][HYDRA] 	#89 : model.reduction_factor=0.9 model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=breast
+[2026-03-30 12:45:42,271][__main__][INFO] - Configuration:
+model:
+  name: LMPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.9
+  bond_dim_mpo: 1
+  reduced_dim: null
+dataset:
+  name: breast
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 1024
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+
+[2026-03-30 12:45:42,272][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/ntn/breast/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47303_rf0.9_bondmpo1
+[2026-03-30 12:45:42,272][__main__][INFO] - Loading dataset: breast
+Done: 2026-03-30-12:45:46

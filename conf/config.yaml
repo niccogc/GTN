@@ -1,0 +1,33 @@
+# Main Hydra configuration for tensor network experiments
+#
+# Usage:
+#   python run.py                                    # defaults
+#   python run.py model=lmpo2 dataset=abalone        # override model/dataset  
+#   python run.py trainer=gtn trainer.lr=0.01        # GTN with custom LR
+#   python run.py --multirun model.bond_dim=4,6,8    # grid search
+#
+# Cluster settings (slurm/hpc) come automatically from dataset size presets
+
+defaults:
+  - model: mpo2
+  - dataset: iris
+  - trainer: ntn
+  # slurm/hpc settings come from dataset.size (small/medium/large)
+  - optional slurm: null
+  - optional hpc: null
+  - _self_
+
+# Experiment settings
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true  # Skip runs with existing successful results.json
+update_tracking: false  # Set to false on clusters (CSV regenerated on main only)
+
+# Hydra output configuration
+hydra:
+  run:
+    dir: outputs/${trainer.type}_${dataset.name}_${model.name}_rg${trainer.ridge}_init${model.init_strength}_${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: outputs/${trainer.type}/${dataset.name}/${model.name}_rg${trainer.ridge}_init${model.init_strength}
+  job:
+    chdir: false

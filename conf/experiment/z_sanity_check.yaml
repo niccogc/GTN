@@ -1,0 +1,46 @@
+# @package _global_
+# Sanity check experiment - quick validation of all models
+#
+# Tests all 6 models on iris (classification) and concrete (regression)
+# with minimal settings to verify the pipeline works.
+#
+# Usage:
+#   python run.py +experiment=sanity_check --multirun
+#
+# This runs 6 models × 2 datasets × 1 seed = 12 runs total
+
+defaults:
+  - /model: mpo2  # Will be overridden by sweep
+
+hydra:
+  mode: MULTIRUN
+  sweeper:
+    params:
+      # All 6 models
+      model: mpo2,lmpo2,mmpo2,mpo2_typei,lmpo2_typei,mmpo2_typei
+      # Classification + regression
+      dataset: iris,concrete
+
+# Minimal architecture for quick validation
+model:
+  L: 3
+  bond_dim: 2
+  bond_dim_mpo: 1
+  reduction_factor: 0.5
+  init_strength: 0.1
+
+# Single seed, single epoch
+seed: 42
+
+# NTN trainer with minimal settings
+trainer:
+  type: ntn
+  n_epochs: 1
+  batch_size: 1024
+  jitter_start: 1.0
+  jitter_decay: 0.5
+  jitter_min: 0.001
+  adaptive_jitter: false
+  patience: 1
+  min_delta: 0.00001
+  train_selection: best
