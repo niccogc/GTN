@@ -1,0 +1,29 @@
+[project]
+name = "tensor-network-training"
+version = "0.1.0"
+description = "Tensor Network Training Framework - Nix environment (minimal deps)"
+requires-python = ">=3.12,<3.13"
+
+# Only packages NOT provided by nix flake
+# Nix provides: torch, torchvision, numpy, scipy, matplotlib, scikit-learn, 
+#               quimb (with cotengra, autoray, opt-einsum, networkx), 
+#               pandas, ucimlrepo, pytest, pygraphviz
+dependencies = [
+    "hydra-core>=1.3.0",
+    "omegaconf>=2.3.0",
+    "tqdm>=4.60.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["model", "utils"]
+
+[tool.setuptools.package-data]
+utils = ["*.yaml"]
+"*" = ["conf/**/*.yaml"]
+
+[tool.uv]
+managed = true
