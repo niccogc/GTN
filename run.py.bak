@@ -436,43 +436,40 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         weight_decay,
     )
 
-    encoding = getattr(model, "encoding", None)
-    is_tnml = encoding is not None
+    # Append bias term (column of ones)
+    X_train = torch.cat(
+        [
+            data["X_train"],
+            torch.ones(
+                data["X_train"].shape[0],
+                1,
+                dtype=data["X_train"].dtype,
+                device=data["X_train"].device,
+            ),
+        ],
+        dim=1,
+    )
+    X_val = torch.cat(
+        [
+            data["X_val"],
+            torch.ones(
+                data["X_val"].shape[0], 1, dtype=data["X_val"].dtype, device=data["X_val"].device
+            ),
+        ],
+        dim=1,
+    )
 
-    if is_tnml:
-        poly_degree = getattr(model, "poly_degree", None)
-        n_features = data["X_train"].shape[1]
-        if encoding == "polynomial":
-            X_train_enc = encode_polynomial(data["X_train"], poly_degree)
-            X_val_enc = encode_polynomial(data["X_val"], poly_degree)
-        else:
-            X_train_enc = encode_fourier(data["X_train"])
-            X_val_enc = encode_fourier(data["X_val"])
-    else:
-        X_train_enc = torch.cat(
-            [data["X_train"], torch.ones(data["X_train"].shape[0], 1, dtype=data["X_train"].dtype, device=data["X_train"].device)],
-            dim=1,
-        )
-        X_val_enc = torch.cat(
-            [data["X_val"], torch.ones(data["X_val"].shape[0], 1, dtype=data["X_val"].dtype, device=data["X_val"].device)],
-            dim=1,
-        )
-
+    # Create data loaders
     train_loader = torch.utils.data.DataLoader(
-        torch.utils.data.TensorDataset(X_train_enc, data["y_train"]),
+        torch.utils.data.TensorDataset(X_train, data["y_train"]),
         batch_size=batch_size,
         shuffle=True,
     )
     val_loader = torch.utils.data.DataLoader(
-        torch.utils.data.TensorDataset(X_val_enc, data["y_val"]),
+        torch.utils.data.TensorDataset(X_val, data["y_val"]),
         batch_size=batch_size,
         shuffle=False,
     )
-
-    def prepare_input(batch_data):
-        if is_tnml:
-            return [batch_data[:, i, :] for i in range(batch_data.shape[1])]
-        return batch_data
 
     def evaluate(loader):
         gtn_model.eval()
@@ -482,7 +479,7 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         with torch.no_grad():
             for batch_data, batch_target in loader:
                 batch_data, batch_target = batch_data.to(DEVICE), batch_target.to(DEVICE)
-                output = gtn_model(prepare_input(batch_data))
+                output = gtn_model(batch_data)
                 loss = criterion(output, batch_target)
                 total_loss += loss.item() * batch_data.size(0)
                 all_preds.append(output.cpu())
@@ -518,7 +515,7 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         for batch_data, batch_target in train_loader:
             batch_data, batch_target = batch_data.to(DEVICE), batch_target.to(DEVICE)
             optimizer.zero_grad()
-            output = gtn_model(prepare_input(batch_data))
+            output = gtn_model(batch_data)
             loss = criterion(output, batch_target)
             loss.backward()
             optimizer.step()
