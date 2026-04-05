@@ -1,0 +1,55 @@
+Node: comp-gpu04
+Array Job ID: 409955, Task ID: 3
+Start: 2026-04-05-12:59:10
+Running: model=tnml_p dataset=student_dropout
+[2026-04-05 12:59:15,678][HYDRA] Launching 1 jobs locally
+[2026-04-05 12:59:15,678][HYDRA] 	#0 : trainer=gtn model=tnml_p dataset=student_dropout
+[2026-04-05 12:59:15,780][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 6
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: student_dropout
+  task: classification
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: gtn
+  n_epochs: 1000
+  lr: 0.005
+  optimizer: adamw
+  ridge: 0.005
+  loss_fn: null
+  patience: 100
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-05 12:59:15,785][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/gtn/student_dropout/TNML_P_rg0.005_init0.1/L3_bd6_seed42
+[2026-04-05 12:59:15,840][utils.tracking][INFO] - Loaded 14828 tracked runs from runs_tracking.csv
+[2026-04-05 12:59:15,842][__main__][INFO] - Loading dataset: student_dropout
+[2026-04-05 12:59:18,237][__main__][INFO] -   Samples: train=3096, val=664, test=664
+[2026-04-05 12:59:18,237][__main__][INFO] -   Features: 37 (including bias), Task: classification
+[2026-04-05 12:59:18,237][__main__][INFO] -   Device: cuda
+[2026-04-05 12:59:18,237][__main__][INFO] - Creating model: TNML_P
+Done: 2026-04-05-12:59:21
