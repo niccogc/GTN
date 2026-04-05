@@ -1,6 +1,75 @@
 import torch
+import math
 from model.builder import Inputs
 from typing import Optional, List, Union, Tuple, Any
+
+
+def encode_polynomial(X: torch.Tensor, degree: int) -> torch.Tensor:
+    """Transform X (samples, features) into polynomial features (samples, features, degree+1).
+    
+    For each feature x_i, creates: [1, x_i, x_i^2, ..., x_i^degree]
+    """
+    n_samples, n_features = X.shape
+    powers = torch.arange(degree + 1, dtype=X.dtype, device=X.device)
+    X_expanded = X.unsqueeze(-1)
+    return X_expanded ** powers
+
+
+def encode_fourier(X: torch.Tensor) -> torch.Tensor:
+    """Transform X (samples, features) into Fourier features (samples, features, 2).
+    
+    For each feature x_i, creates: [cos(x_i * pi/2), sin(x_i * pi/2)]
+    """
+    scaled = X * (math.pi / 2)
+    cos_features = torch.cos(scaled)
+    sin_features = torch.sin(scaled)
+    return torch.stack([cos_features, sin_features], dim=-1)
+
+
+def create_inputs_tnml(
+    X: torch.Tensor,
+    y: torch.Tensor,
+    input_labels: List[str],
+    output_labels: Optional[List[str]] = None,
+    batch_size: int = 32,
+    batch_dim: str = "s",
+    encoding: str = "polynomial",
+    degree: int = 3,
+) -> Inputs:
+    """Create Inputs for TNML models with polynomial or Fourier encoding.
+    
+    Args:
+        X: Input data (samples, features)
+        y: Target data (samples,) or (samples, output_dim)
+        input_labels: List of input dimension labels from model
+        encoding: "polynomial" or "fourier"
+        degree: Polynomial degree (only used if encoding="polynomial")
+    """
+    if output_labels is None:
+        output_labels = ["out"]
+    
+    if y.ndim == 1:
+        y = y.unsqueeze(1)
+    
+    if encoding == "polynomial":
+        X_encoded = encode_polynomial(X, degree)
+    elif encoding == "fourier":
+        X_encoded = encode_fourier(X)
+    else:
+        raise ValueError(f"Unknown encoding: {encoding}")
+    
+    n_samples, n_features, phys_dim = X_encoded.shape
+    inputs_list = [X_encoded[:, i, :] for i in range(n_features)]
+    
+    return Inputs(
+        inputs=inputs_list,
+        outputs=[y],
+        outputs_labels=output_labels,
+        input_labels=input_labels,
+        batch_dim=batch_dim,
+        batch_size=batch_size,
+    )
+
 
 def create_inputs(
     X, 
@@ -9,45 +78,47 @@ def create_inputs(
     output_labels = None,
     batch_size: int = 32,
     batch_dim: str = "s",
-    append_bias: bool = True
+    append_bias: bool = True,
+    encoding: str = None,
+    poly_degree: int = None,
 ) -> Inputs:
-    """
-    Utility function to create an Inputs object from dataset arrays.
-    
-    Args:
-        X: Input data tensor (samples, features)
-        y: Output/target data tensor (samples,) or (samples, output_dim)
-        input_labels: List of input dimension labels. If None, uses model.input_labels
-        output_labels: List of output dimension labels. If None, uses ["out"]
-        batch_size: Batch size for training (default: 32)
-        batch_dim: Name of the batch dimension (default: "s")
-        append_bias: Whether to append a column of ones as bias term (default: True)
-    
-    Returns:
-        Inputs object configured for the dataset
-    
-    Example:
-        >>> X = torch.randn(100, 4)  # 100 samples, 4 features
-        >>> y = torch.randn(100, 1)  # 100 samples, 1 output
-        >>> model = MPO2(L=3, bond_dim=5, phys_dim=5, output_dim=1)
-        >>> loader = create_inputs(X, y, input_labels=model.input_labels)
-        >>> # X will be (100, 5) with bias column appended
-    """
-    # Default output labels
+    """Create Inputs object from dataset arrays. Supports standard and TNML encodings."""
     if output_labels is None:
         output_labels = ["out"]
     
-    # Ensure y is 2D
     if y.ndim == 1:
         y = y.unsqueeze(1)
     
-    # Append bias term (column of ones)
+    if encoding == "polynomial":
+        X_encoded = encode_polynomial(X, poly_degree)
+        n_features = X_encoded.shape[1]
+        inputs_list = [X_encoded[:, i, :] for i in range(n_features)]
+        return Inputs(
+            inputs=inputs_list,
+            outputs=[y],
+            outputs_labels=output_labels,
+            input_labels=input_labels,
+            batch_dim=batch_dim,
+            batch_size=batch_size,
+        )
+    elif encoding == "fourier":
+        X_encoded = encode_fourier(X)
+        n_features = X_encoded.shape[1]
+        inputs_list = [X_encoded[:, i, :] for i in range(n_features)]
+        return Inputs(
+            inputs=inputs_list,
+            outputs=[y],
+            outputs_labels=output_labels,
+            input_labels=input_labels,
+            batch_dim=batch_dim,
+            batch_size=batch_size,
+        )
+    
     if append_bias:
         n_samples = X.shape[0]
         X = torch.cat([X, torch.ones(n_samples, 1, dtype=X.dtype, device=X.device)], dim=1)
     
-    # Create Inputs object
-    loader = Inputs(
+    return Inputs(
         inputs=[X],
         outputs=[y],
         outputs_labels=output_labels,
@@ -55,8 +126,6 @@ def create_inputs(
         batch_dim=batch_dim,
         batch_size=batch_size
     )
-    
-    return loader
 
 
 def metric_mse(y_pred, y_true):

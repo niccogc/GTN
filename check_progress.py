@@ -28,6 +28,8 @@ MODELS = [
     "MMPO2TypeI",
     "CPDA",
     "CPDATypeI",
+    "TNML_P",
+    "TNML_F",
 ]
 TRAINERS = ["ntn", "gtn"]
 SIZES = ["small", "medium", "large"]
