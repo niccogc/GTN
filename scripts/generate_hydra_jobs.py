@@ -41,7 +41,7 @@ from pathlib import Path
 from omegaconf import OmegaConf
 
 # All available models
-ALL_MODELS = ["mpo2", "lmpo2", "mmpo2", "mpo2_typei", "lmpo2_typei", "mmpo2_typei"]
+ALL_MODELS = ["mpo2", "lmpo2", "mmpo2", "mpo2_typei", "lmpo2_typei", "mmpo2_typei", "tnml_p", "tnml_f"]
 
 # === Job Templates ===
 

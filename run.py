@@ -35,7 +35,7 @@ from model.base.NTN import NTN
 from model.base.NTN_Ensemble import NTN_Ensemble
 from model.exceptions import SingularMatrixError
 from model.losses import CrossEntropyLoss, MSELoss
-from model.standard import CPDA, LMPO2, MMPO2, MPO2
+from model.standard import CPDA, LMPO2, MMPO2, MPO2, TNML_P, TNML_F
 from model.typeI import (
     CPDATypeI,
     CPDATypeI_GTN,
@@ -46,7 +46,7 @@ from model.typeI import (
     MPO2TypeI,
     MPO2TypeI_GTN,
 )
-from model.utils import CLASSIFICATION_METRICS, REGRESSION_METRICS, compute_quality, create_inputs
+from model.utils import CLASSIFICATION_METRICS, REGRESSION_METRICS, compute_quality, create_inputs, create_inputs_tnml, encode_polynomial, encode_fourier
 
 torch.set_default_dtype(torch.float64)
 log = logging.getLogger(__name__)
@@ -132,6 +132,8 @@ NTN_MODELS = {
     "LMPO2TypeI": LMPO2TypeI,
     "MMPO2TypeI": MMPO2TypeI,
     "CPDATypeI": CPDATypeI,
+    "TNML_P": TNML_P,
+    "TNML_F": TNML_F,
 }
 
 GTN_TYPEI_MODELS = {
@@ -158,30 +160,26 @@ def get_reduced_dim(cfg: DictConfig, input_dim: int) -> int:
 
 
 def build_model_params(
-    cfg: DictConfig, input_dim: int, output_dim: int, for_gtn: bool = False
+    cfg: DictConfig, input_dim: int, output_dim: int, for_gtn: bool = False, raw_feature_count: int = None
 ) -> dict:
     """Build model parameters from config."""
     is_typei = cfg.model.name.endswith("TypeI")
-    is_cpda = cfg.model.name == "CPDA"
+    is_tnml = cfg.model.name.startswith("TNML")
 
     params = {
-        "phys_dim": input_dim,
+        "phys_dim": raw_feature_count if is_tnml else input_dim,
         "output_dim": output_dim,
         "output_site": cfg.model.get("output_site"),
         "init_strength": cfg.model.get("init_strength", 0.001 if for_gtn else 0.1),
         "bond_dim": cfg.model.bond_dim,
+        "L": cfg.model.L,
     }
 
-    # TypeI models use max_sites, standard models use L
     if is_typei:
-        params["max_sites"] = cfg.model.L
-    else:
-        params["L"] = cfg.model.L
+        params["max_sites"] = params.pop("L")
 
-    # LMPO2 models need reduced_dim
     if "LMPO2" in cfg.model.name:
         params["reduced_dim"] = get_reduced_dim(cfg, input_dim)
-        # Standard LMPO2 (not TypeI) also needs bond_dim_mpo
         if not is_typei and not for_gtn:
             params["bond_dim_mpo"] = cfg.model.get("bond_dim_mpo", 2)
 
@@ -216,13 +214,13 @@ def create_optimizer(name: str, parameters, lr: float, weight_decay: float) -> o
     return optimizers[name]()
 
 
-def create_model(cfg: DictConfig, input_dim: int, output_dim: int):
+def create_model(cfg: DictConfig, input_dim: int, output_dim: int, raw_feature_count: int = None):
     """Create model instance from config."""
     model_cls = NTN_MODELS.get(cfg.model.name)
     if model_cls is None:
         raise ValueError(f"Unknown model: {cfg.model.name}. Available: {list(NTN_MODELS.keys())}")
 
-    params = build_model_params(cfg, input_dim, output_dim, for_gtn=False)
+    params = build_model_params(cfg, input_dim, output_dim, for_gtn=False, raw_feature_count=raw_feature_count)
     return model_cls(**params)
 
 
@@ -274,13 +272,17 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         )
         loader_val = ntn.val_data
     else:
+        encoding = getattr(model, "encoding", None)
+        poly_degree = getattr(model, "poly_degree", None) if encoding == "polynomial" else None
         loader_train = create_inputs(
             X=data["X_train"],
             y=data["y_train"],
             input_labels=model.input_labels,
             output_labels=model.output_dims,
             batch_size=cfg.dataset.batch_size,
-            append_bias=True,
+            append_bias=(encoding is None),
+            encoding=encoding,
+            poly_degree=poly_degree,
         )
         loader_val = create_inputs(
             X=data["X_val"],
@@ -288,7 +290,9 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             input_labels=model.input_labels,
             output_labels=model.output_dims,
             batch_size=cfg.dataset.batch_size,
-            append_bias=True,
+            append_bias=(encoding is None),
+            encoding=encoding,
+            poly_degree=poly_degree,
         )
         ntn = NTN(
             tn=model.tn,
@@ -648,7 +652,8 @@ def main(cfg: DictConfig):
     data, dataset_info = load_dataset(cfg.dataset.name)
     data = move_data_to_device(data)
 
-    input_dim = data["X_train"].shape[1] + 1  # +1 for bias term
+    raw_feature_count = data["X_train"].shape[1]
+    input_dim = raw_feature_count + 1
     output_dim = data["y_train"].shape[1] if data["y_train"].ndim > 1 else 1
 
     log.info(
@@ -659,7 +664,7 @@ def main(cfg: DictConfig):
 
     # Create model
     log.info(f"Creating model: {cfg.model.name}")
-    model = create_model(cfg, input_dim, output_dim)
+    model = create_model(cfg, input_dim, output_dim, raw_feature_count=raw_feature_count)
 
     # Run training
     if cfg.trainer.type == "ntn":
