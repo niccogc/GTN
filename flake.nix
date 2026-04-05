@@ -115,18 +115,8 @@
           uv venv --python ${python}/bin/python
         fi
 
-        # Activate the venv
         source .venv/bin/activate
-        # Add Nix packages to PYTHONPATH so they're available in the venv
         export PYTHONPATH="$NIX_PYTHON_SITE_PACKAGES:$PYTHONPATH"
-        # Install aim if not already installed
-        # if ! uv pip list | grep -q "^aim "; then
-        #   echo "Installing aim via UV..."
-        #   uv pip install aim
-        # fi
-        # set -a
-        # source /home/nicco/.config/sops-nix/secrets/aim
-        # set +a
         echo "✓ Environment ready!"
         echo "  Python: $(which python)"
         zsh
