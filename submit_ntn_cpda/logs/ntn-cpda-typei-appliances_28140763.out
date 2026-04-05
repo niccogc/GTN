@@ -1,0 +1,4138 @@
+[2026-04-03 23:14:06,348][HYDRA] Launching 40 jobs locally
+[2026-04-03 23:14:06,348][HYDRA] 	#0 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:14:06,469][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:14:06,475][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed42
+[2026-04-03 23:14:06,535][utils.tracking][INFO] - Loaded 14327 tracked runs from runs_tracking.csv
+[2026-04-03 23:14:06,536][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:14:09,289][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:14:09,290][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:14:09,290][__main__][INFO] -   Device: cuda
+[2026-04-03 23:14:09,290][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20140.73427 | quality: -0.90006
+        | Val:   loss: 17237.87086 | quality: -1.01624
+
+Epoch 1 | Train: loss: 6933.73718 | quality: 0.34588
+        | Val:   loss: 6485.05703 | quality: 0.24147
+ *
+Epoch 2 | Train: loss: 6401.05371 | quality: 0.39613
+        | Val:   loss: 6198.90335 | quality: 0.27494
+ *
+Epoch 3 | Train: loss: 6156.70599 | quality: 0.41918
+        | Val:   loss: 6074.94636 | quality: 0.28944
+ *
+Epoch 4 | Train: loss: 6005.30017 | quality: 0.43347
+        | Val:   loss: 6050.58046 | quality: 0.29229
+ *
+Epoch 5 | Train: loss: 5900.13962 | quality: 0.44339
+        | Val:   loss: 6060.38072 | quality: 0.29114
+
+Epoch 6 | Train: loss: 5823.66307 | quality: 0.45060
+        | Val:   loss: 6065.17971 | quality: 0.29058
+
+Epoch 7 | Train: loss: 5764.45935 | quality: 0.45619
+        | Val:   loss: 6061.15736 | quality: 0.29105
+
+Epoch 8 | Train: loss: 5717.02221 | quality: 0.46066
+        | Val:   loss: 6050.05528 | quality: 0.29235
+ *
+Epoch 9 | Train: loss: 5678.09623 | quality: 0.46433
+        | Val:   loss: 6033.85618 | quality: 0.29425
+ *
+Epoch 10 | Train: loss: 5645.19357 | quality: 0.46744
+        | Val:   loss: 6015.93254 | quality: 0.29634
+ *
+Epoch 11 | Train: loss: 5616.51479 | quality: 0.47014
+        | Val:   loss: 5999.81217 | quality: 0.29823
+ *
+Epoch 12 | Train: loss: 5590.93951 | quality: 0.47256
+        | Val:   loss: 5987.62058 | quality: 0.29965
+ *
+Epoch 13 | Train: loss: 5567.90571 | quality: 0.47473
+        | Val:   loss: 5979.67676 | quality: 0.30058
+ *
+Epoch 14 | Train: loss: 5547.19037 | quality: 0.47668
+        | Val:   loss: 5975.06800 | quality: 0.30112
+ *
+Epoch 15 | Train: loss: 5528.66970 | quality: 0.47843
+        | Val:   loss: 5972.55058 | quality: 0.30142
+ *
+Epoch 16 | Train: loss: 5512.16787 | quality: 0.47999
+        | Val:   loss: 5971.09573 | quality: 0.30159
+ *
+Epoch 17 | Train: loss: 5497.42551 | quality: 0.48138
+        | Val:   loss: 5970.01689 | quality: 0.30171
+ *
+Epoch 18 | Train: loss: 5484.14179 | quality: 0.48263
+        | Val:   loss: 5968.89115 | quality: 0.30184
+ *
+Epoch 19 | Train: loss: 5472.02570 | quality: 0.48377
+        | Val:   loss: 5967.48515 | quality: 0.30201
+ *
+Epoch 20 | Train: loss: 5460.82191 | quality: 0.48483
+        | Val:   loss: 5965.70871 | quality: 0.30222
+ *
+
+Best epoch: 20 (val_quality=0.302216)
+[2026-04-03 23:14:32,120][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-03 23:14:32,120][__main__][INFO] - ✓ Train R²: 0.4848
+[2026-04-03 23:14:32,120][__main__][INFO] - ✓ Val R²: 0.3022
+[2026-04-03 23:14:32,122][HYDRA] 	#1 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:14:32,251][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:14:32,254][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed10090
+[2026-04-03 23:14:32,255][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:14:34,796][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:14:34,796][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:14:34,796][__main__][INFO] -   Device: cuda
+[2026-04-03 23:14:34,796][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20093.15718 | quality: -0.89557
+        | Val:   loss: 17219.19734 | quality: -1.01406
+
+Epoch 1 | Train: loss: 6891.55551 | quality: 0.34986
+        | Val:   loss: 6691.29296 | quality: 0.21735
+ *
+Epoch 2 | Train: loss: 6342.95755 | quality: 0.40161
+        | Val:   loss: 6535.34208 | quality: 0.23559
+ *
+Epoch 3 | Train: loss: 6106.53251 | quality: 0.42392
+        | Val:   loss: 6456.20522 | quality: 0.24485
+ *
+Epoch 4 | Train: loss: 5956.50886 | quality: 0.43807
+        | Val:   loss: 6366.36883 | quality: 0.25535
+ *
+Epoch 5 | Train: loss: 5842.22911 | quality: 0.44885
+        | Val:   loss: 6296.19129 | quality: 0.26356
+ *
+Epoch 6 | Train: loss: 5754.11030 | quality: 0.45716
+        | Val:   loss: 6261.21425 | quality: 0.26765
+ *
+Epoch 7 | Train: loss: 5684.50806 | quality: 0.46373
+        | Val:   loss: 6252.88428 | quality: 0.26863
+ *
+Epoch 8 | Train: loss: 5627.90392 | quality: 0.46907
+        | Val:   loss: 6260.17220 | quality: 0.26777
+ *
+Epoch 9 | Train: loss: 5580.87606 | quality: 0.47351
+        | Val:   loss: 6271.98025 | quality: 0.26639
+
+Epoch 10 | Train: loss: 5540.97624 | quality: 0.47727
+        | Val:   loss: 6280.25997 | quality: 0.26542
+
+Epoch 11 | Train: loss: 5506.36718 | quality: 0.48053
+        | Val:   loss: 6282.13368 | quality: 0.26521
+
+Epoch 12 | Train: loss: 5475.85186 | quality: 0.48341
+        | Val:   loss: 6277.81965 | quality: 0.26571
+
+Epoch 13 | Train: loss: 5448.77994 | quality: 0.48597
+        | Val:   loss: 6268.72987 | quality: 0.26677
+
+Epoch 14 | Train: loss: 5424.79445 | quality: 0.48823
+        | Val:   loss: 6256.64593 | quality: 0.26819
+ *
+Epoch 15 | Train: loss: 5403.60493 | quality: 0.49023
+        | Val:   loss: 6243.21222 | quality: 0.26976
+ *
+Epoch 16 | Train: loss: 5384.88165 | quality: 0.49199
+        | Val:   loss: 6229.64153 | quality: 0.27135
+ *
+Epoch 17 | Train: loss: 5368.26478 | quality: 0.49356
+        | Val:   loss: 6216.69591 | quality: 0.27286
+ *
+Epoch 18 | Train: loss: 5353.40241 | quality: 0.49496
+        | Val:   loss: 6204.76894 | quality: 0.27425
+ *
+Epoch 19 | Train: loss: 5339.97796 | quality: 0.49623
+        | Val:   loss: 6193.99334 | quality: 0.27551
+ *
+Epoch 20 | Train: loss: 5327.72699 | quality: 0.49739
+        | Val:   loss: 6184.35166 | quality: 0.27664
+ *
+
+Best epoch: 20 (val_quality=0.276643)
+[2026-04-03 23:14:55,115][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-03 23:14:55,115][__main__][INFO] - ✓ Train R²: 0.4974
+[2026-04-03 23:14:55,116][__main__][INFO] - ✓ Val R²: 0.2766
+[2026-04-03 23:14:55,118][HYDRA] 	#2 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:14:55,246][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:14:55,249][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed32874
+[2026-04-03 23:14:55,250][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:14:57,929][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:14:57,930][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:14:57,930][__main__][INFO] -   Device: cuda
+[2026-04-03 23:14:57,930][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20161.90996 | quality: -0.90206
+        | Val:   loss: 17270.18188 | quality: -1.02002
+
+Epoch 1 | Train: loss: 6881.48486 | quality: 0.35081
+        | Val:   loss: 6329.16763 | quality: 0.25970
+ *
+Epoch 2 | Train: loss: 6338.59025 | quality: 0.40202
+        | Val:   loss: 6182.95860 | quality: 0.27681
+ *
+Epoch 3 | Train: loss: 6107.57379 | quality: 0.42382
+        | Val:   loss: 6111.23366 | quality: 0.28520
+ *
+Epoch 4 | Train: loss: 5959.71427 | quality: 0.43777
+        | Val:   loss: 6123.95825 | quality: 0.28371
+
+Epoch 5 | Train: loss: 5850.47937 | quality: 0.44807
+        | Val:   loss: 6145.60729 | quality: 0.28117
+
+Epoch 6 | Train: loss: 5765.17010 | quality: 0.45612
+        | Val:   loss: 6177.04905 | quality: 0.27750
+
+Epoch 7 | Train: loss: 5696.72012 | quality: 0.46258
+        | Val:   loss: 6218.02421 | quality: 0.27270
+
+Epoch 8 | Train: loss: 5642.46446 | quality: 0.46769
+        | Val:   loss: 6258.65122 | quality: 0.26795
+
+Epoch 9 | Train: loss: 5599.02738 | quality: 0.47179
+        | Val:   loss: 6288.32203 | quality: 0.26448
+
+Epoch 10 | Train: loss: 5562.71791 | quality: 0.47522
+        | Val:   loss: 6304.48388 | quality: 0.26259
+
+Epoch 11 | Train: loss: 5531.01460 | quality: 0.47821
+        | Val:   loss: 6311.00422 | quality: 0.26183
+
+Epoch 12 | Train: loss: 5502.35012 | quality: 0.48091
+        | Val:   loss: 6312.86857 | quality: 0.26161
+
+Epoch 13 | Train: loss: 5475.67079 | quality: 0.48343
+        | Val:   loss: 6313.11470 | quality: 0.26158
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.285195)
+[2026-04-03 23:15:14,071][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-03 23:15:14,071][__main__][INFO] - ✓ Train R²: 0.4238
+[2026-04-03 23:15:14,071][__main__][INFO] - ✓ Val R²: 0.2852
+[2026-04-03 23:15:14,074][HYDRA] 	#3 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:15:14,203][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:15:14,206][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed47311
+[2026-04-03 23:15:14,207][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:15:16,922][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:15:16,923][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:15:16,923][__main__][INFO] -   Device: cuda
+[2026-04-03 23:15:16,923][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20155.57223 | quality: -0.90146
+        | Val:   loss: 17271.41297 | quality: -1.02016
+
+Epoch 1 | Train: loss: 6823.02466 | quality: 0.35632
+        | Val:   loss: 6302.01350 | quality: 0.26288
+ *
+Epoch 2 | Train: loss: 6286.62411 | quality: 0.40693
+        | Val:   loss: 6224.04902 | quality: 0.27200
+ *
+Epoch 3 | Train: loss: 6036.64172 | quality: 0.43051
+        | Val:   loss: 6181.44365 | quality: 0.27698
+ *
+Epoch 4 | Train: loss: 5893.64760 | quality: 0.44400
+        | Val:   loss: 6225.16885 | quality: 0.27187
+
+Epoch 5 | Train: loss: 5802.61994 | quality: 0.45259
+        | Val:   loss: 6272.80204 | quality: 0.26630
+
+Epoch 6 | Train: loss: 5740.02059 | quality: 0.45849
+        | Val:   loss: 6292.82679 | quality: 0.26395
+
+Epoch 7 | Train: loss: 5691.89470 | quality: 0.46303
+        | Val:   loss: 6290.89347 | quality: 0.26418
+
+Epoch 8 | Train: loss: 5651.77919 | quality: 0.46682
+        | Val:   loss: 6276.15078 | quality: 0.26591
+
+Epoch 9 | Train: loss: 5616.54334 | quality: 0.47014
+        | Val:   loss: 6254.82107 | quality: 0.26840
+
+Epoch 10 | Train: loss: 5584.58707 | quality: 0.47315
+        | Val:   loss: 6232.72065 | quality: 0.27099
+
+Epoch 11 | Train: loss: 5555.48013 | quality: 0.47590
+        | Val:   loss: 6214.25412 | quality: 0.27315
+
+Epoch 12 | Train: loss: 5529.27829 | quality: 0.47837
+        | Val:   loss: 6200.43960 | quality: 0.27476
+
+Epoch 13 | Train: loss: 5505.87674 | quality: 0.48058
+        | Val:   loss: 6189.57380 | quality: 0.27603
+ *
+Epoch 14 | Train: loss: 5484.89582 | quality: 0.48256
+        | Val:   loss: 6179.15945 | quality: 0.27725
+ *
+Epoch 15 | Train: loss: 5465.85913 | quality: 0.48436
+        | Val:   loss: 6167.39460 | quality: 0.27863
+ *
+Epoch 16 | Train: loss: 5448.33511 | quality: 0.48601
+        | Val:   loss: 6153.69257 | quality: 0.28023
+ *
+Epoch 17 | Train: loss: 5431.98419 | quality: 0.48755
+        | Val:   loss: 6138.44125 | quality: 0.28201
+ *
+Epoch 18 | Train: loss: 5416.56456 | quality: 0.48901
+        | Val:   loss: 6122.50083 | quality: 0.28388
+ *
+Epoch 19 | Train: loss: 5401.92751 | quality: 0.49039
+        | Val:   loss: 6106.80592 | quality: 0.28571
+ *
+Epoch 20 | Train: loss: 5388.00555 | quality: 0.49170
+        | Val:   loss: 6092.17472 | quality: 0.28742
+ *
+
+Best epoch: 20 (val_quality=0.287424)
+[2026-04-03 23:15:37,329][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-03 23:15:37,330][__main__][INFO] - ✓ Train R²: 0.4917
+[2026-04-03 23:15:37,330][__main__][INFO] - ✓ Val R²: 0.2874
+[2026-04-03 23:15:37,332][HYDRA] 	#4 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:15:37,460][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:15:37,463][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed47303
+[2026-04-03 23:15:37,464][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:15:40,026][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:15:40,026][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:15:40,026][__main__][INFO] -   Device: cuda
+[2026-04-03 23:15:40,026][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20211.99699 | quality: -0.90678
+        | Val:   loss: 17321.55617 | quality: -1.02603
+
+Epoch 1 | Train: loss: 6805.77112 | quality: 0.35795
+        | Val:   loss: 6416.44931 | quality: 0.24950
+ *
+Epoch 2 | Train: loss: 6230.31598 | quality: 0.41224
+        | Val:   loss: 6160.67643 | quality: 0.27941
+ *
+Epoch 3 | Train: loss: 5971.66849 | quality: 0.43664
+        | Val:   loss: 6109.88168 | quality: 0.28535
+ *
+Epoch 4 | Train: loss: 5829.18453 | quality: 0.45008
+        | Val:   loss: 6085.56331 | quality: 0.28820
+ *
+Epoch 5 | Train: loss: 5730.46337 | quality: 0.45939
+        | Val:   loss: 6096.38985 | quality: 0.28693
+
+Epoch 6 | Train: loss: 5654.24532 | quality: 0.46658
+        | Val:   loss: 6121.77679 | quality: 0.28396
+
+Epoch 7 | Train: loss: 5591.31877 | quality: 0.47252
+        | Val:   loss: 6144.06532 | quality: 0.28135
+
+Epoch 8 | Train: loss: 5537.16163 | quality: 0.47763
+        | Val:   loss: 6159.36064 | quality: 0.27957
+
+Epoch 9 | Train: loss: 5490.06934 | quality: 0.48207
+        | Val:   loss: 6168.61659 | quality: 0.27848
+
+Epoch 10 | Train: loss: 5449.76961 | quality: 0.48587
+        | Val:   loss: 6171.64413 | quality: 0.27813
+
+Epoch 11 | Train: loss: 5416.03962 | quality: 0.48906
+        | Val:   loss: 6168.14019 | quality: 0.27854
+
+Epoch 12 | Train: loss: 5388.19363 | quality: 0.49168
+        | Val:   loss: 6159.72575 | quality: 0.27952
+
+Epoch 13 | Train: loss: 5365.31377 | quality: 0.49384
+        | Val:   loss: 6149.46450 | quality: 0.28072
+
+Epoch 14 | Train: loss: 5346.41702 | quality: 0.49562
+        | Val:   loss: 6140.05712 | quality: 0.28182
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.288198)
+[2026-04-03 23:15:54,640][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-03 23:15:54,641][__main__][INFO] - ✓ Train R²: 0.4501
+[2026-04-03 23:15:54,641][__main__][INFO] - ✓ Val R²: 0.2882
+[2026-04-03 23:15:54,643][HYDRA] 	#5 : model.L=3 model.bond_dim=16 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:15:54,771][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:15:54,775][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed42
+[2026-04-03 23:15:54,775][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:15:57,452][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:15:57,452][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:15:57,452][__main__][INFO] -   Device: cuda
+[2026-04-03 23:15:57,452][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20103.99161 | quality: -0.89659
+        | Val:   loss: 17230.91985 | quality: -1.01543
+
+Epoch 1 | Train: loss: 6160.64026 | quality: 0.41881
+        | Val:   loss: 6340.26734 | quality: 0.25841
+ *
+Epoch 2 | Train: loss: 5510.37347 | quality: 0.48016
+        | Val:   loss: 6049.59560 | quality: 0.29240
+ *
+Epoch 3 | Train: loss: 5215.60356 | quality: 0.50796
+        | Val:   loss: 6005.46970 | quality: 0.29757
+ *
+Epoch 4 | Train: loss: 5039.72673 | quality: 0.52456
+        | Val:   loss: 6041.97638 | quality: 0.29330
+
+Epoch 5 | Train: loss: 4924.46755 | quality: 0.53543
+        | Val:   loss: 6083.50838 | quality: 0.28844
+
+Epoch 6 | Train: loss: 4843.90568 | quality: 0.54303
+        | Val:   loss: 6122.30802 | quality: 0.28390
+
+Epoch 7 | Train: loss: 4783.80746 | quality: 0.54870
+        | Val:   loss: 6140.10521 | quality: 0.28182
+
+Epoch 8 | Train: loss: 4736.09523 | quality: 0.55320
+        | Val:   loss: 6140.14767 | quality: 0.28181
+
+Epoch 9 | Train: loss: 4696.11275 | quality: 0.55697
+        | Val:   loss: 6131.87264 | quality: 0.28278
+
+Epoch 10 | Train: loss: 4661.33698 | quality: 0.56025
+        | Val:   loss: 6122.01722 | quality: 0.28393
+
+Epoch 11 | Train: loss: 4630.42717 | quality: 0.56317
+        | Val:   loss: 6114.19200 | quality: 0.28485
+
+Epoch 12 | Train: loss: 4602.61117 | quality: 0.56579
+        | Val:   loss: 6109.55764 | quality: 0.28539
+
+Epoch 13 | Train: loss: 4577.35524 | quality: 0.56818
+        | Val:   loss: 6107.74792 | quality: 0.28560
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.297566)
+[2026-04-03 23:16:14,720][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed42/results.json
+[2026-04-03 23:16:14,721][__main__][INFO] - ✓ Train R²: 0.5080
+[2026-04-03 23:16:14,721][__main__][INFO] - ✓ Val R²: 0.2976
+[2026-04-03 23:16:14,722][HYDRA] 	#6 : model.L=3 model.bond_dim=16 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:16:14,850][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:16:14,853][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed10090
+[2026-04-03 23:16:14,854][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:16:17,380][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:16:17,381][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:16:17,381][__main__][INFO] -   Device: cuda
+[2026-04-03 23:16:17,381][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20188.42676 | quality: -0.90456
+        | Val:   loss: 17309.35561 | quality: -1.02460
+
+Epoch 1 | Train: loss: 6231.39071 | quality: 0.41214
+        | Val:   loss: 6290.39141 | quality: 0.26424
+ *
+Epoch 2 | Train: loss: 5630.09995 | quality: 0.46886
+        | Val:   loss: 6163.39136 | quality: 0.27909
+ *
+Epoch 3 | Train: loss: 5340.30054 | quality: 0.49620
+        | Val:   loss: 6165.68526 | quality: 0.27883
+ *
+Epoch 4 | Train: loss: 5161.13805 | quality: 0.51310
+        | Val:   loss: 6213.86872 | quality: 0.27319
+
+Epoch 5 | Train: loss: 5043.67259 | quality: 0.52418
+        | Val:   loss: 6211.66752 | quality: 0.27345
+
+Epoch 6 | Train: loss: 4957.03062 | quality: 0.53236
+        | Val:   loss: 6152.92123 | quality: 0.28032
+ *
+Epoch 7 | Train: loss: 4889.65617 | quality: 0.53871
+        | Val:   loss: 6088.37345 | quality: 0.28787
+ *
+Epoch 8 | Train: loss: 4835.43964 | quality: 0.54383
+        | Val:   loss: 6042.82714 | quality: 0.29320
+ *
+Epoch 9 | Train: loss: 4790.20536 | quality: 0.54810
+        | Val:   loss: 6015.07972 | quality: 0.29644
+ *
+Epoch 10 | Train: loss: 4751.46344 | quality: 0.55175
+        | Val:   loss: 5997.10850 | quality: 0.29854
+ *
+Epoch 11 | Train: loss: 4717.76536 | quality: 0.55493
+        | Val:   loss: 5982.88383 | quality: 0.30021
+ *
+Epoch 12 | Train: loss: 4688.05386 | quality: 0.55773
+        | Val:   loss: 5969.45221 | quality: 0.30178
+ *
+Epoch 13 | Train: loss: 4661.42132 | quality: 0.56025
+        | Val:   loss: 5955.80905 | quality: 0.30337
+ *
+Epoch 14 | Train: loss: 4637.15394 | quality: 0.56253
+        | Val:   loss: 5941.87304 | quality: 0.30500
+ *
+Epoch 15 | Train: loss: 4614.78125 | quality: 0.56465
+        | Val:   loss: 5927.95619 | quality: 0.30663
+ *
+Epoch 16 | Train: loss: 4594.02638 | quality: 0.56660
+        | Val:   loss: 5914.53849 | quality: 0.30820
+ *
+Epoch 17 | Train: loss: 4574.72220 | quality: 0.56842
+        | Val:   loss: 5902.13733 | quality: 0.30965
+ *
+Epoch 18 | Train: loss: 4556.74533 | quality: 0.57012
+        | Val:   loss: 5891.18803 | quality: 0.31093
+ *
+Epoch 19 | Train: loss: 4539.98398 | quality: 0.57170
+        | Val:   loss: 5882.00401 | quality: 0.31201
+ *
+Epoch 20 | Train: loss: 4524.33199 | quality: 0.57318
+        | Val:   loss: 5874.75893 | quality: 0.31285
+ *
+
+Best epoch: 20 (val_quality=0.312854)
+[2026-04-03 23:16:39,900][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed10090/results.json
+[2026-04-03 23:16:39,901][__main__][INFO] - ✓ Train R²: 0.5732
+[2026-04-03 23:16:39,901][__main__][INFO] - ✓ Val R²: 0.3129
+[2026-04-03 23:16:39,903][HYDRA] 	#7 : model.L=3 model.bond_dim=16 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:16:40,033][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:16:40,036][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed32874
+[2026-04-03 23:16:40,036][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:16:42,565][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:16:42,565][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:16:42,565][__main__][INFO] -   Device: cuda
+[2026-04-03 23:16:42,565][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20050.25601 | quality: -0.89152
+        | Val:   loss: 17176.26738 | quality: -1.00903
+
+Epoch 1 | Train: loss: 6149.32443 | quality: 0.41988
+        | Val:   loss: 6289.93907 | quality: 0.26429
+ *
+Epoch 2 | Train: loss: 5591.51379 | quality: 0.47250
+        | Val:   loss: 5972.52221 | quality: 0.30142
+ *
+Epoch 3 | Train: loss: 5337.50240 | quality: 0.49646
+        | Val:   loss: 5968.33395 | quality: 0.30191
+ *
+Epoch 4 | Train: loss: 5169.44625 | quality: 0.51232
+        | Val:   loss: 5988.87144 | quality: 0.29951
+
+Epoch 5 | Train: loss: 5048.31045 | quality: 0.52375
+        | Val:   loss: 5995.71270 | quality: 0.29871
+
+Epoch 6 | Train: loss: 4961.79992 | quality: 0.53191
+        | Val:   loss: 6008.63588 | quality: 0.29720
+
+Epoch 7 | Train: loss: 4897.06459 | quality: 0.53802
+        | Val:   loss: 6031.49195 | quality: 0.29452
+
+Epoch 8 | Train: loss: 4844.70613 | quality: 0.54295
+        | Val:   loss: 6060.97243 | quality: 0.29107
+
+Epoch 9 | Train: loss: 4800.37917 | quality: 0.54714
+        | Val:   loss: 6095.53092 | quality: 0.28703
+
+Epoch 10 | Train: loss: 4761.98175 | quality: 0.55076
+        | Val:   loss: 6135.35132 | quality: 0.28237
+
+Epoch 11 | Train: loss: 4728.14127 | quality: 0.55395
+        | Val:   loss: 6181.72368 | quality: 0.27695
+
+Epoch 12 | Train: loss: 4697.87470 | quality: 0.55681
+        | Val:   loss: 6234.87958 | quality: 0.27073
+
+Epoch 13 | Train: loss: 4670.51605 | quality: 0.55939
+        | Val:   loss: 6292.99482 | quality: 0.26394
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.301909)
+[2026-04-03 23:16:56,102][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed32874/results.json
+[2026-04-03 23:16:56,103][__main__][INFO] - ✓ Train R²: 0.4965
+[2026-04-03 23:16:56,103][__main__][INFO] - ✓ Val R²: 0.3019
+[2026-04-03 23:16:56,104][HYDRA] 	#8 : model.L=3 model.bond_dim=16 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:16:56,232][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:16:56,234][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed47311
+[2026-04-03 23:16:56,235][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:16:59,039][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:16:59,040][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:16:59,040][__main__][INFO] -   Device: cuda
+[2026-04-03 23:16:59,040][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20366.94340 | quality: -0.92140
+        | Val:   loss: 17470.05697 | quality: -1.04340
+
+Epoch 1 | Train: loss: 6159.15803 | quality: 0.41895
+        | Val:   loss: 6378.12223 | quality: 0.25398
+ *
+Epoch 2 | Train: loss: 5569.94909 | quality: 0.47454
+        | Val:   loss: 6131.01702 | quality: 0.28288
+ *
+Epoch 3 | Train: loss: 5286.81550 | quality: 0.50125
+        | Val:   loss: 6121.16422 | quality: 0.28403
+ *
+Epoch 4 | Train: loss: 5124.56927 | quality: 0.51655
+        | Val:   loss: 6157.85558 | quality: 0.27974
+
+Epoch 5 | Train: loss: 5013.08867 | quality: 0.52707
+        | Val:   loss: 6191.58800 | quality: 0.27580
+
+Epoch 6 | Train: loss: 4927.72983 | quality: 0.53512
+        | Val:   loss: 6206.84345 | quality: 0.27401
+
+Epoch 7 | Train: loss: 4857.40371 | quality: 0.54176
+        | Val:   loss: 6211.36151 | quality: 0.27348
+
+Epoch 8 | Train: loss: 4798.06414 | quality: 0.54735
+        | Val:   loss: 6207.03762 | quality: 0.27399
+
+Epoch 9 | Train: loss: 4747.72210 | quality: 0.55210
+        | Val:   loss: 6195.36165 | quality: 0.27535
+
+Epoch 10 | Train: loss: 4704.37586 | quality: 0.55619
+        | Val:   loss: 6181.20324 | quality: 0.27701
+
+Epoch 11 | Train: loss: 4666.34069 | quality: 0.55978
+        | Val:   loss: 6167.16728 | quality: 0.27865
+
+Epoch 12 | Train: loss: 4632.49075 | quality: 0.56297
+        | Val:   loss: 6153.81384 | quality: 0.28021
+
+Epoch 13 | Train: loss: 4602.04356 | quality: 0.56585
+        | Val:   loss: 6141.70802 | quality: 0.28163
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.284033)
+[2026-04-03 23:17:12,314][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed47311/results.json
+[2026-04-03 23:17:12,314][__main__][INFO] - ✓ Train R²: 0.5012
+[2026-04-03 23:17:12,315][__main__][INFO] - ✓ Val R²: 0.2840
+[2026-04-03 23:17:12,316][HYDRA] 	#9 : model.L=3 model.bond_dim=16 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:17:12,444][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:17:12,447][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed47303
+[2026-04-03 23:17:12,448][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:17:15,604][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:17:15,604][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:17:15,604][__main__][INFO] -   Device: cuda
+[2026-04-03 23:17:15,605][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20037.05159 | quality: -0.89028
+        | Val:   loss: 17158.27102 | quality: -1.00693
+
+Epoch 1 | Train: loss: 6112.37270 | quality: 0.42336
+        | Val:   loss: 6238.92306 | quality: 0.27026
+ *
+Epoch 2 | Train: loss: 5493.86737 | quality: 0.48171
+        | Val:   loss: 6078.32902 | quality: 0.28904
+ *
+Epoch 3 | Train: loss: 5221.38189 | quality: 0.50742
+        | Val:   loss: 6054.85650 | quality: 0.29179
+ *
+Epoch 4 | Train: loss: 5063.07296 | quality: 0.52235
+        | Val:   loss: 6031.23447 | quality: 0.29455
+ *
+Epoch 5 | Train: loss: 4956.14561 | quality: 0.53244
+        | Val:   loss: 6007.77645 | quality: 0.29730
+ *
+Epoch 6 | Train: loss: 4878.09328 | quality: 0.53980
+        | Val:   loss: 5988.68364 | quality: 0.29953
+ *
+Epoch 7 | Train: loss: 4818.23470 | quality: 0.54545
+        | Val:   loss: 5974.53143 | quality: 0.30118
+ *
+Epoch 8 | Train: loss: 4770.22555 | quality: 0.54998
+        | Val:   loss: 5963.62713 | quality: 0.30246
+ *
+Epoch 9 | Train: loss: 4730.21973 | quality: 0.55376
+        | Val:   loss: 5954.63402 | quality: 0.30351
+ *
+Epoch 10 | Train: loss: 4695.77411 | quality: 0.55700
+        | Val:   loss: 5947.91876 | quality: 0.30430
+ *
+Epoch 11 | Train: loss: 4665.35570 | quality: 0.55987
+        | Val:   loss: 5944.69184 | quality: 0.30467
+ *
+Epoch 12 | Train: loss: 4638.01829 | quality: 0.56245
+        | Val:   loss: 5945.69423 | quality: 0.30456
+ *
+Epoch 13 | Train: loss: 4613.18533 | quality: 0.56480
+        | Val:   loss: 5950.90308 | quality: 0.30395
+ *
+Epoch 14 | Train: loss: 4590.51022 | quality: 0.56694
+        | Val:   loss: 5959.69654 | quality: 0.30292
+
+Epoch 15 | Train: loss: 4569.76447 | quality: 0.56889
+        | Val:   loss: 5971.10226 | quality: 0.30159
+
+Epoch 16 | Train: loss: 4550.75647 | quality: 0.57069
+        | Val:   loss: 5984.08854 | quality: 0.30007
+
+Epoch 17 | Train: loss: 4533.28621 | quality: 0.57233
+        | Val:   loss: 5997.82851 | quality: 0.29846
+
+Epoch 18 | Train: loss: 4517.14275 | quality: 0.57386
+        | Val:   loss: 6011.81374 | quality: 0.29682
+
+Epoch 19 | Train: loss: 4502.12105 | quality: 0.57527
+        | Val:   loss: 6025.79514 | quality: 0.29519
+
+Epoch 20 | Train: loss: 4488.04288 | quality: 0.57660
+        | Val:   loss: 6039.69217 | quality: 0.29356
+
+
+Best epoch: 13 (val_quality=0.303948)
+[2026-04-03 23:17:41,750][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd16_seed47303/results.json
+[2026-04-03 23:17:41,751][__main__][INFO] - ✓ Train R²: 0.5648
+[2026-04-03 23:17:41,751][__main__][INFO] - ✓ Val R²: 0.3039
+[2026-04-03 23:17:41,753][HYDRA] 	#10 : model.L=3 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:17:41,881][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:17:41,884][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed42
+[2026-04-03 23:17:41,884][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:17:44,484][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:17:44,484][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:17:44,485][__main__][INFO] -   Device: cuda
+[2026-04-03 23:17:44,485][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20180.05224 | quality: -0.90377
+        | Val:   loss: 17287.18102 | quality: -1.02201
+
+Epoch 1 | Train: loss: 5386.64028 | quality: 0.49183
+        | Val:   loss: 5995.20227 | quality: 0.29877
+ *
+Epoch 2 | Train: loss: 4766.87282 | quality: 0.55030
+        | Val:   loss: 6017.19124 | quality: 0.29619
+
+Epoch 3 | Train: loss: 4484.85132 | quality: 0.57690
+        | Val:   loss: 6072.17310 | quality: 0.28976
+
+Epoch 4 | Train: loss: 4322.49795 | quality: 0.59222
+        | Val:   loss: 6095.86959 | quality: 0.28699
+
+Epoch 5 | Train: loss: 4214.90452 | quality: 0.60237
+        | Val:   loss: 6140.31600 | quality: 0.28179
+
+Epoch 6 | Train: loss: 4136.64751 | quality: 0.60975
+        | Val:   loss: 6194.72969 | quality: 0.27543
+
+Epoch 7 | Train: loss: 4075.28757 | quality: 0.61554
+        | Val:   loss: 6244.46136 | quality: 0.26961
+
+Epoch 8 | Train: loss: 4023.84216 | quality: 0.62039
+        | Val:   loss: 6291.09787 | quality: 0.26416
+
+Epoch 9 | Train: loss: 3979.24685 | quality: 0.62460
+        | Val:   loss: 6340.58505 | quality: 0.25837
+
+Epoch 10 | Train: loss: 3940.23883 | quality: 0.62828
+        | Val:   loss: 6394.72674 | quality: 0.25204
+
+Epoch 11 | Train: loss: 3906.02852 | quality: 0.63151
+        | Val:   loss: 6450.35596 | quality: 0.24553
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.298767)
+[2026-04-03 23:17:59,623][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed42/results.json
+[2026-04-03 23:17:59,624][__main__][INFO] - ✓ Train R²: 0.4918
+[2026-04-03 23:17:59,624][__main__][INFO] - ✓ Val R²: 0.2988
+[2026-04-03 23:17:59,626][HYDRA] 	#11 : model.L=3 model.bond_dim=32 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:17:59,755][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:17:59,758][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed10090
+[2026-04-03 23:17:59,759][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:18:02,298][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:18:02,299][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:18:02,299][__main__][INFO] -   Device: cuda
+[2026-04-03 23:18:02,299][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20320.45390 | quality: -0.91701
+        | Val:   loss: 17418.52592 | quality: -1.03737
+
+Epoch 1 | Train: loss: 5373.49758 | quality: 0.49307
+        | Val:   loss: 6240.39480 | quality: 0.27009
+ *
+Epoch 2 | Train: loss: 4758.66927 | quality: 0.55107
+        | Val:   loss: 5899.07852 | quality: 0.31001
+ *
+Epoch 3 | Train: loss: 4492.16353 | quality: 0.57621
+        | Val:   loss: 5949.91132 | quality: 0.30406
+
+Epoch 4 | Train: loss: 4335.91457 | quality: 0.59095
+        | Val:   loss: 6024.13459 | quality: 0.29538
+
+Epoch 5 | Train: loss: 4224.69282 | quality: 0.60145
+        | Val:   loss: 6110.64565 | quality: 0.28526
+
+Epoch 6 | Train: loss: 4140.32001 | quality: 0.60941
+        | Val:   loss: 6182.11973 | quality: 0.27690
+
+Epoch 7 | Train: loss: 4074.10132 | quality: 0.61565
+        | Val:   loss: 6234.98008 | quality: 0.27072
+
+Epoch 8 | Train: loss: 4020.71562 | quality: 0.62069
+        | Val:   loss: 6279.39220 | quality: 0.26553
+
+Epoch 9 | Train: loss: 3976.80353 | quality: 0.62483
+        | Val:   loss: 6320.26673 | quality: 0.26075
+
+Epoch 10 | Train: loss: 3940.01106 | quality: 0.62830
+        | Val:   loss: 6355.46556 | quality: 0.25663
+
+Epoch 11 | Train: loss: 3908.60844 | quality: 0.63127
+        | Val:   loss: 6382.73514 | quality: 0.25344
+
+Epoch 12 | Train: loss: 3881.31871 | quality: 0.63384
+        | Val:   loss: 6402.70183 | quality: 0.25110
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.310010)
+[2026-04-03 23:18:19,341][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed10090/results.json
+[2026-04-03 23:18:19,341][__main__][INFO] - ✓ Train R²: 0.5511
+[2026-04-03 23:18:19,341][__main__][INFO] - ✓ Val R²: 0.3100
+[2026-04-03 23:18:19,343][HYDRA] 	#12 : model.L=3 model.bond_dim=32 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:18:19,472][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:18:19,475][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed32874
+[2026-04-03 23:18:19,475][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:18:23,249][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:18:23,249][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:18:23,249][__main__][INFO] -   Device: cuda
+[2026-04-03 23:18:23,249][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20322.61734 | quality: -0.91722
+        | Val:   loss: 17437.94461 | quality: -1.03964
+
+Epoch 1 | Train: loss: 5363.17216 | quality: 0.49404
+        | Val:   loss: 6144.14176 | quality: 0.28135
+ *
+Epoch 2 | Train: loss: 4755.67520 | quality: 0.55135
+        | Val:   loss: 6109.68955 | quality: 0.28538
+ *
+Epoch 3 | Train: loss: 4491.26874 | quality: 0.57630
+        | Val:   loss: 6155.98166 | quality: 0.27996
+
+Epoch 4 | Train: loss: 4341.86220 | quality: 0.59039
+        | Val:   loss: 6226.77871 | quality: 0.27168
+
+Epoch 5 | Train: loss: 4240.17961 | quality: 0.59999
+        | Val:   loss: 6285.85807 | quality: 0.26477
+
+Epoch 6 | Train: loss: 4164.74002 | quality: 0.60710
+        | Val:   loss: 6340.60571 | quality: 0.25837
+
+Epoch 7 | Train: loss: 4105.26685 | quality: 0.61271
+        | Val:   loss: 6388.34959 | quality: 0.25278
+
+Epoch 8 | Train: loss: 4056.41032 | quality: 0.61732
+        | Val:   loss: 6425.11280 | quality: 0.24848
+
+Epoch 9 | Train: loss: 4014.79193 | quality: 0.62125
+        | Val:   loss: 6450.49664 | quality: 0.24551
+
+Epoch 10 | Train: loss: 3978.22916 | quality: 0.62470
+        | Val:   loss: 6467.32504 | quality: 0.24354
+
+Epoch 11 | Train: loss: 3945.48632 | quality: 0.62779
+        | Val:   loss: 6478.33820 | quality: 0.24226
+
+Epoch 12 | Train: loss: 3915.92065 | quality: 0.63058
+        | Val:   loss: 6484.57804 | quality: 0.24153
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.285376)
+[2026-04-03 23:18:40,493][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed32874/results.json
+[2026-04-03 23:18:40,493][__main__][INFO] - ✓ Train R²: 0.5514
+[2026-04-03 23:18:40,493][__main__][INFO] - ✓ Val R²: 0.2854
+[2026-04-03 23:18:40,495][HYDRA] 	#13 : model.L=3 model.bond_dim=32 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:18:40,624][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:18:40,627][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed47311
+[2026-04-03 23:18:40,627][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:18:43,302][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:18:43,303][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:18:43,303][__main__][INFO] -   Device: cuda
+[2026-04-03 23:18:43,303][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 19735.25234 | quality: -0.86181
+        | Val:   loss: 16846.75107 | quality: -0.97049
+
+Epoch 1 | Train: loss: 5397.78517 | quality: 0.49078
+        | Val:   loss: 5960.90409 | quality: 0.30278
+ *
+Epoch 2 | Train: loss: 4737.59308 | quality: 0.55306
+        | Val:   loss: 6381.84530 | quality: 0.25354
+
+Epoch 3 | Train: loss: 4474.55103 | quality: 0.57787
+        | Val:   loss: 6675.53381 | quality: 0.21919
+
+Epoch 4 | Train: loss: 4323.21260 | quality: 0.59215
+        | Val:   loss: 6846.35767 | quality: 0.19921
+
+Epoch 5 | Train: loss: 4217.28600 | quality: 0.60214
+        | Val:   loss: 6958.09686 | quality: 0.18614
+
+Epoch 6 | Train: loss: 4135.84432 | quality: 0.60983
+        | Val:   loss: 7033.94631 | quality: 0.17727
+
+Epoch 7 | Train: loss: 4069.26468 | quality: 0.61611
+        | Val:   loss: 7073.58936 | quality: 0.17263
+
+Epoch 8 | Train: loss: 4012.51553 | quality: 0.62146
+        | Val:   loss: 7073.10544 | quality: 0.17269
+
+Epoch 9 | Train: loss: 3962.95540 | quality: 0.62614
+        | Val:   loss: 7038.92099 | quality: 0.17669
+
+Epoch 10 | Train: loss: 3919.19451 | quality: 0.63027
+        | Val:   loss: 6986.85430 | quality: 0.18278
+
+Epoch 11 | Train: loss: 3880.52682 | quality: 0.63391
+        | Val:   loss: 6932.77419 | quality: 0.18910
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.302778)
+[2026-04-03 23:18:59,190][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed47311/results.json
+[2026-04-03 23:18:59,190][__main__][INFO] - ✓ Train R²: 0.4908
+[2026-04-03 23:18:59,190][__main__][INFO] - ✓ Val R²: 0.3028
+[2026-04-03 23:18:59,193][HYDRA] 	#14 : model.L=3 model.bond_dim=32 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:18:59,323][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:18:59,326][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed47303
+[2026-04-03 23:18:59,327][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:19:01,857][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:19:01,858][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:19:01,858][__main__][INFO] -   Device: cuda
+[2026-04-03 23:19:01,858][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20263.26314 | quality: -0.91162
+        | Val:   loss: 17366.41520 | quality: -1.03128
+
+Epoch 1 | Train: loss: 5376.32314 | quality: 0.49280
+        | Val:   loss: 6114.01487 | quality: 0.28487
+ *
+Epoch 2 | Train: loss: 4795.12637 | quality: 0.54763
+        | Val:   loss: 6182.17899 | quality: 0.27690
+
+Epoch 3 | Train: loss: 4530.82759 | quality: 0.57257
+        | Val:   loss: 6342.03448 | quality: 0.25820
+
+Epoch 4 | Train: loss: 4369.91597 | quality: 0.58775
+        | Val:   loss: 6395.86689 | quality: 0.25190
+
+Epoch 5 | Train: loss: 4253.82199 | quality: 0.59870
+        | Val:   loss: 6394.99011 | quality: 0.25201
+
+Epoch 6 | Train: loss: 4165.06010 | quality: 0.60707
+        | Val:   loss: 6398.41266 | quality: 0.25160
+
+Epoch 7 | Train: loss: 4095.14383 | quality: 0.61367
+        | Val:   loss: 6399.26153 | quality: 0.25151
+
+Epoch 8 | Train: loss: 4037.51393 | quality: 0.61910
+        | Val:   loss: 6393.93963 | quality: 0.25213
+
+Epoch 9 | Train: loss: 3988.54212 | quality: 0.62372
+        | Val:   loss: 6386.29106 | quality: 0.25302
+
+Epoch 10 | Train: loss: 3946.20691 | quality: 0.62772
+        | Val:   loss: 6379.07231 | quality: 0.25387
+
+Epoch 11 | Train: loss: 3909.25154 | quality: 0.63120
+        | Val:   loss: 6375.22671 | quality: 0.25432
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.284870)
+[2026-04-03 23:19:17,384][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd32_seed47303/results.json
+[2026-04-03 23:19:17,385][__main__][INFO] - ✓ Train R²: 0.4928
+[2026-04-03 23:19:17,385][__main__][INFO] - ✓ Val R²: 0.2849
+[2026-04-03 23:19:17,386][HYDRA] 	#15 : model.L=3 model.bond_dim=64 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:19:17,515][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:19:17,518][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed42
+[2026-04-03 23:19:17,519][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:19:20,064][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:19:20,065][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:19:20,065][__main__][INFO] -   Device: cuda
+[2026-04-03 23:19:20,065][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20088.05887 | quality: -0.89509
+        | Val:   loss: 17206.44502 | quality: -1.01256
+
+Epoch 1 | Train: loss: 4314.34173 | quality: 0.59299
+        | Val:   loss: 6278.70044 | quality: 0.26561
+ *
+Epoch 2 | Train: loss: 3856.31817 | quality: 0.63620
+        | Val:   loss: 6468.73279 | quality: 0.24338
+
+Epoch 3 | Train: loss: 3662.16761 | quality: 0.65451
+        | Val:   loss: 6458.06103 | quality: 0.24463
+
+Epoch 4 | Train: loss: 3547.10872 | quality: 0.66537
+        | Val:   loss: 6529.98829 | quality: 0.23622
+
+Epoch 5 | Train: loss: 3468.47337 | quality: 0.67279
+        | Val:   loss: 6575.15504 | quality: 0.23093
+
+Epoch 6 | Train: loss: 3410.63180 | quality: 0.67824
+        | Val:   loss: 6632.86817 | quality: 0.22418
+
+Epoch 7 | Train: loss: 3365.69575 | quality: 0.68248
+        | Val:   loss: 6684.84020 | quality: 0.21810
+
+Epoch 8 | Train: loss: 3329.17295 | quality: 0.68593
+        | Val:   loss: 6725.95612 | quality: 0.21329
+
+Epoch 9 | Train: loss: 3298.44506 | quality: 0.68883
+        | Val:   loss: 6758.93434 | quality: 0.20944
+
+Epoch 10 | Train: loss: 3271.93037 | quality: 0.69133
+        | Val:   loss: 6786.46260 | quality: 0.20622
+
+Epoch 11 | Train: loss: 3248.70056 | quality: 0.69352
+        | Val:   loss: 6810.49707 | quality: 0.20341
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.265607)
+[2026-04-03 23:19:34,893][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed42/results.json
+[2026-04-03 23:19:34,894][__main__][INFO] - ✓ Train R²: 0.5930
+[2026-04-03 23:19:34,894][__main__][INFO] - ✓ Val R²: 0.2656
+[2026-04-03 23:19:34,896][HYDRA] 	#16 : model.L=3 model.bond_dim=64 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:19:35,023][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:19:35,026][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed10090
+[2026-04-03 23:19:35,027][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:19:37,705][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:19:37,705][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:19:37,705][__main__][INFO] -   Device: cuda
+[2026-04-03 23:19:37,705][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20322.71511 | quality: -0.91723
+        | Val:   loss: 17430.72654 | quality: -1.03880
+
+Epoch 1 | Train: loss: 4315.49690 | quality: 0.59288
+        | Val:   loss: 6127.11156 | quality: 0.28334
+ *
+Epoch 2 | Train: loss: 3840.88649 | quality: 0.63765
+        | Val:   loss: 6223.87930 | quality: 0.27202
+
+Epoch 3 | Train: loss: 3633.96873 | quality: 0.65717
+        | Val:   loss: 6256.78640 | quality: 0.26817
+
+Epoch 4 | Train: loss: 3522.82883 | quality: 0.66766
+        | Val:   loss: 6358.12905 | quality: 0.25632
+
+Epoch 5 | Train: loss: 3446.90980 | quality: 0.67482
+        | Val:   loss: 6436.19785 | quality: 0.24719
+
+Epoch 6 | Train: loss: 3392.03666 | quality: 0.68000
+        | Val:   loss: 6491.88030 | quality: 0.24067
+
+Epoch 7 | Train: loss: 3350.72588 | quality: 0.68390
+        | Val:   loss: 6520.49323 | quality: 0.23733
+
+Epoch 8 | Train: loss: 3318.11496 | quality: 0.68697
+        | Val:   loss: 6538.92576 | quality: 0.23517
+
+Epoch 9 | Train: loss: 3291.15434 | quality: 0.68952
+        | Val:   loss: 6556.78768 | quality: 0.23308
+
+Epoch 10 | Train: loss: 3268.03166 | quality: 0.69170
+        | Val:   loss: 6575.10013 | quality: 0.23094
+
+Epoch 11 | Train: loss: 3247.68533 | quality: 0.69362
+        | Val:   loss: 6593.36660 | quality: 0.22880
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.283338)
+[2026-04-03 23:19:52,761][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed10090/results.json
+[2026-04-03 23:19:52,761][__main__][INFO] - ✓ Train R²: 0.5929
+[2026-04-03 23:19:52,761][__main__][INFO] - ✓ Val R²: 0.2833
+[2026-04-03 23:19:52,763][HYDRA] 	#17 : model.L=3 model.bond_dim=64 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:19:52,889][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:19:52,892][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed32874
+[2026-04-03 23:19:52,892][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:19:55,494][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:19:55,495][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:19:55,495][__main__][INFO] -   Device: cuda
+[2026-04-03 23:19:55,495][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20355.05470 | quality: -0.92028
+        | Val:   loss: 17472.01526 | quality: -1.04363
+
+Epoch 1 | Train: loss: 4312.44809 | quality: 0.59317
+        | Val:   loss: 6406.11916 | quality: 0.25070
+ *
+Epoch 2 | Train: loss: 3824.40824 | quality: 0.63921
+        | Val:   loss: 6536.03995 | quality: 0.23551
+
+Epoch 3 | Train: loss: 3634.38570 | quality: 0.65714
+        | Val:   loss: 6535.26435 | quality: 0.23560
+
+Epoch 4 | Train: loss: 3530.01556 | quality: 0.66698
+        | Val:   loss: 6596.80623 | quality: 0.22840
+
+Epoch 5 | Train: loss: 3457.24572 | quality: 0.67385
+        | Val:   loss: 6678.82753 | quality: 0.21881
+
+Epoch 6 | Train: loss: 3401.98129 | quality: 0.67906
+        | Val:   loss: 6740.89189 | quality: 0.21155
+
+Epoch 7 | Train: loss: 3358.12932 | quality: 0.68320
+        | Val:   loss: 6787.51294 | quality: 0.20609
+
+Epoch 8 | Train: loss: 3322.26389 | quality: 0.68658
+        | Val:   loss: 6823.54586 | quality: 0.20188
+
+Epoch 9 | Train: loss: 3292.59943 | quality: 0.68938
+        | Val:   loss: 6847.77103 | quality: 0.19905
+
+Epoch 10 | Train: loss: 3267.69977 | quality: 0.69173
+        | Val:   loss: 6861.83475 | quality: 0.19740
+
+Epoch 11 | Train: loss: 3246.29528 | quality: 0.69375
+        | Val:   loss: 6869.45694 | quality: 0.19651
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.250704)
+[2026-04-03 23:20:10,268][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed32874/results.json
+[2026-04-03 23:20:10,268][__main__][INFO] - ✓ Train R²: 0.5932
+[2026-04-03 23:20:10,269][__main__][INFO] - ✓ Val R²: 0.2507
+[2026-04-03 23:20:10,270][HYDRA] 	#18 : model.L=3 model.bond_dim=64 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:20:10,402][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:20:10,405][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed47311
+[2026-04-03 23:20:10,406][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:20:13,136][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:20:13,137][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:20:13,137][__main__][INFO] -   Device: cuda
+[2026-04-03 23:20:13,137][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20224.17791 | quality: -0.90793
+        | Val:   loss: 17354.66244 | quality: -1.02990
+
+Epoch 1 | Train: loss: 4352.78538 | quality: 0.58936
+        | Val:   loss: 6410.19621 | quality: 0.25023
+ *
+Epoch 2 | Train: loss: 3858.58105 | quality: 0.63598
+        | Val:   loss: 6646.86233 | quality: 0.22254
+
+Epoch 3 | Train: loss: 3659.07525 | quality: 0.65481
+        | Val:   loss: 6764.89301 | quality: 0.20874
+
+Epoch 4 | Train: loss: 3547.77905 | quality: 0.66531
+        | Val:   loss: 6695.98446 | quality: 0.21680
+
+Epoch 5 | Train: loss: 3471.82363 | quality: 0.67247
+        | Val:   loss: 6635.47303 | quality: 0.22388
+
+Epoch 6 | Train: loss: 3415.71499 | quality: 0.67776
+        | Val:   loss: 6607.08335 | quality: 0.22720
+
+Epoch 7 | Train: loss: 3372.69986 | quality: 0.68182
+        | Val:   loss: 6587.94474 | quality: 0.22944
+
+Epoch 8 | Train: loss: 3338.50641 | quality: 0.68505
+        | Val:   loss: 6570.16132 | quality: 0.23152
+
+Epoch 9 | Train: loss: 3310.22818 | quality: 0.68772
+        | Val:   loss: 6555.64148 | quality: 0.23321
+
+Epoch 10 | Train: loss: 3286.08452 | quality: 0.68999
+        | Val:   loss: 6546.41784 | quality: 0.23429
+
+Epoch 11 | Train: loss: 3264.93624 | quality: 0.69199
+        | Val:   loss: 6542.08014 | quality: 0.23480
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.250227)
+[2026-04-03 23:20:27,867][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed47311/results.json
+[2026-04-03 23:20:27,868][__main__][INFO] - ✓ Train R²: 0.5894
+[2026-04-03 23:20:27,868][__main__][INFO] - ✓ Val R²: 0.2502
+[2026-04-03 23:20:27,870][HYDRA] 	#19 : model.L=3 model.bond_dim=64 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:20:28,000][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:20:28,003][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed47303
+[2026-04-03 23:20:28,004][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:20:30,676][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:20:30,677][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:20:30,677][__main__][INFO] -   Device: cuda
+[2026-04-03 23:20:30,677][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 19831.71259 | quality: -0.87091
+        | Val:   loss: 16946.25430 | quality: -0.98213
+
+Epoch 1 | Train: loss: 4314.63820 | quality: 0.59296
+        | Val:   loss: 6544.91047 | quality: 0.23447
+ *
+Epoch 2 | Train: loss: 3847.38213 | quality: 0.63704
+        | Val:   loss: 6691.09091 | quality: 0.21737
+
+Epoch 3 | Train: loss: 3654.50527 | quality: 0.65524
+        | Val:   loss: 6818.68244 | quality: 0.20245
+
+Epoch 4 | Train: loss: 3543.60801 | quality: 0.66570
+        | Val:   loss: 6862.95558 | quality: 0.19727
+
+Epoch 5 | Train: loss: 3467.70458 | quality: 0.67286
+        | Val:   loss: 6885.14644 | quality: 0.19467
+
+Epoch 6 | Train: loss: 3411.71568 | quality: 0.67814
+        | Val:   loss: 6878.32874 | quality: 0.19547
+
+Epoch 7 | Train: loss: 3368.84469 | quality: 0.68219
+        | Val:   loss: 6860.84165 | quality: 0.19752
+
+Epoch 8 | Train: loss: 3334.38645 | quality: 0.68544
+        | Val:   loss: 6847.55881 | quality: 0.19907
+
+Epoch 9 | Train: loss: 3305.46095 | quality: 0.68817
+        | Val:   loss: 6849.08920 | quality: 0.19889
+
+Epoch 10 | Train: loss: 3280.46547 | quality: 0.69052
+        | Val:   loss: 6864.53539 | quality: 0.19708
+
+Epoch 11 | Train: loss: 3258.48686 | quality: 0.69260
+        | Val:   loss: 6886.84680 | quality: 0.19447
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.234470)
+[2026-04-03 23:20:45,314][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L3_bd64_seed47303/results.json
+[2026-04-03 23:20:45,314][__main__][INFO] - ✓ Train R²: 0.5930
+[2026-04-03 23:20:45,314][__main__][INFO] - ✓ Val R²: 0.2345
+[2026-04-03 23:20:45,316][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:20:45,445][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:20:45,447][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed42
+[2026-04-03 23:20:45,448][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:20:48,059][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:20:48,060][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:20:48,060][__main__][INFO] -   Device: cuda
+[2026-04-03 23:20:48,060][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20148.20097 | quality: -0.90076
+        | Val:   loss: 17241.03938 | quality: -1.01661
+
+Epoch 1 | Train: loss: 6349.75847 | quality: 0.40097
+        | Val:   loss: 6328.43334 | quality: 0.25979
+ *
+Epoch 2 | Train: loss: 5565.51760 | quality: 0.47495
+        | Val:   loss: 6409.65831 | quality: 0.25029
+
+Epoch 3 | Train: loss: 5177.81218 | quality: 0.51153
+        | Val:   loss: 6761.72125 | quality: 0.20911
+
+Epoch 4 | Train: loss: 4946.74542 | quality: 0.53333
+        | Val:   loss: 6965.27434 | quality: 0.18530
+
+Epoch 5 | Train: loss: 4787.66363 | quality: 0.54834
+        | Val:   loss: 7082.26043 | quality: 0.17162
+
+Epoch 6 | Train: loss: 4670.97722 | quality: 0.55934
+        | Val:   loss: 7171.40955 | quality: 0.16119
+
+Epoch 7 | Train: loss: 4580.05177 | quality: 0.56792
+        | Val:   loss: 7249.09587 | quality: 0.15210
+
+Epoch 8 | Train: loss: 4505.60887 | quality: 0.57494
+        | Val:   loss: 7349.94062 | quality: 0.14031
+
+Epoch 9 | Train: loss: 4443.31987 | quality: 0.58082
+        | Val:   loss: 7466.07688 | quality: 0.12672
+
+Epoch 10 | Train: loss: 4390.56194 | quality: 0.58580
+        | Val:   loss: 7573.43581 | quality: 0.11417
+
+Epoch 11 | Train: loss: 4345.36857 | quality: 0.59006
+        | Val:   loss: 7650.32435 | quality: 0.10517
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.259790)
+[2026-04-03 23:21:10,163][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-03 23:21:10,164][__main__][INFO] - ✓ Train R²: 0.4010
+[2026-04-03 23:21:10,164][__main__][INFO] - ✓ Val R²: 0.2598
+[2026-04-03 23:21:10,166][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:21:10,296][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:21:10,299][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed10090
+[2026-04-03 23:21:10,300][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:21:13,050][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:21:13,051][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:21:13,051][__main__][INFO] -   Device: cuda
+[2026-04-03 23:21:13,051][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20128.78571 | quality: -0.89893
+        | Val:   loss: 17256.99113 | quality: -1.01848
+
+Epoch 1 | Train: loss: 6229.44900 | quality: 0.41232
+        | Val:   loss: 6415.51705 | quality: 0.24960
+ *
+Epoch 2 | Train: loss: 5531.02491 | quality: 0.47821
+        | Val:   loss: 6332.22190 | quality: 0.25935
+ *
+Epoch 3 | Train: loss: 5203.53332 | quality: 0.50910
+        | Val:   loss: 6286.61858 | quality: 0.26468
+ *
+Epoch 4 | Train: loss: 5006.12184 | quality: 0.52773
+        | Val:   loss: 6337.15611 | quality: 0.25877
+
+Epoch 5 | Train: loss: 4857.83058 | quality: 0.54172
+        | Val:   loss: 6441.06496 | quality: 0.24662
+
+Epoch 6 | Train: loss: 4743.60165 | quality: 0.55249
+        | Val:   loss: 6540.02369 | quality: 0.23504
+
+Epoch 7 | Train: loss: 4650.06303 | quality: 0.56132
+        | Val:   loss: 6613.36654 | quality: 0.22646
+
+Epoch 8 | Train: loss: 4570.65426 | quality: 0.56881
+        | Val:   loss: 6656.98744 | quality: 0.22136
+
+Epoch 9 | Train: loss: 4503.67439 | quality: 0.57513
+        | Val:   loss: 6686.58140 | quality: 0.21790
+
+Epoch 10 | Train: loss: 4447.97108 | quality: 0.58038
+        | Val:   loss: 6721.78932 | quality: 0.21378
+
+Epoch 11 | Train: loss: 4401.90588 | quality: 0.58473
+        | Val:   loss: 6768.24015 | quality: 0.20835
+
+Epoch 12 | Train: loss: 4363.47653 | quality: 0.58835
+        | Val:   loss: 6820.40636 | quality: 0.20225
+
+Epoch 13 | Train: loss: 4330.70259 | quality: 0.59145
+        | Val:   loss: 6873.11457 | quality: 0.19608
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.264681)
+[2026-04-03 23:21:37,371][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-03 23:21:37,371][__main__][INFO] - ✓ Train R²: 0.5091
+[2026-04-03 23:21:37,371][__main__][INFO] - ✓ Val R²: 0.2647
+[2026-04-03 23:21:37,374][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:21:37,504][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:21:37,507][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed32874
+[2026-04-03 23:21:37,508][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:21:44,082][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:21:44,082][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:21:44,082][__main__][INFO] -   Device: cuda
+[2026-04-03 23:21:44,083][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20132.03330 | quality: -0.89924
+        | Val:   loss: 17242.41581 | quality: -1.01677
+
+Epoch 1 | Train: loss: 6334.45512 | quality: 0.40241
+        | Val:   loss: 6376.67591 | quality: 0.25415
+ *
+Epoch 2 | Train: loss: 5605.09195 | quality: 0.47122
+        | Val:   loss: 6259.26994 | quality: 0.26788
+ *
+Epoch 3 | Train: loss: 5224.88524 | quality: 0.50709
+        | Val:   loss: 6150.26566 | quality: 0.28063
+ *
+Epoch 4 | Train: loss: 4972.37897 | quality: 0.53091
+        | Val:   loss: 6184.51946 | quality: 0.27662
+
+Epoch 5 | Train: loss: 4804.72800 | quality: 0.54673
+        | Val:   loss: 6193.79669 | quality: 0.27554
+
+Epoch 6 | Train: loss: 4688.84584 | quality: 0.55766
+        | Val:   loss: 6173.36309 | quality: 0.27793
+
+Epoch 7 | Train: loss: 4602.31825 | quality: 0.56582
+        | Val:   loss: 6151.20541 | quality: 0.28052
+ *
+Epoch 8 | Train: loss: 4532.31126 | quality: 0.57243
+        | Val:   loss: 6133.73398 | quality: 0.28256
+ *
+Epoch 9 | Train: loss: 4472.97306 | quality: 0.57802
+        | Val:   loss: 6123.25129 | quality: 0.28379
+ *
+Epoch 10 | Train: loss: 4421.75410 | quality: 0.58286
+        | Val:   loss: 6120.50256 | quality: 0.28411
+ *
+Epoch 11 | Train: loss: 4377.21581 | quality: 0.58706
+        | Val:   loss: 6124.62973 | quality: 0.28363
+ *
+Epoch 12 | Train: loss: 4338.27614 | quality: 0.59073
+        | Val:   loss: 6133.30901 | quality: 0.28261
+
+Epoch 13 | Train: loss: 4303.91900 | quality: 0.59397
+        | Val:   loss: 6144.08280 | quality: 0.28135
+
+Epoch 14 | Train: loss: 4273.27403 | quality: 0.59686
+        | Val:   loss: 6155.48598 | quality: 0.28002
+
+Epoch 15 | Train: loss: 4245.72063 | quality: 0.59946
+        | Val:   loss: 6166.80686 | quality: 0.27869
+
+Epoch 16 | Train: loss: 4220.85123 | quality: 0.60181
+        | Val:   loss: 6177.55086 | quality: 0.27744
+
+Epoch 17 | Train: loss: 4198.36596 | quality: 0.60393
+        | Val:   loss: 6187.31838 | quality: 0.27630
+
+Epoch 18 | Train: loss: 4177.99532 | quality: 0.60585
+        | Val:   loss: 6195.88964 | quality: 0.27529
+
+Epoch 19 | Train: loss: 4159.47594 | quality: 0.60760
+        | Val:   loss: 6203.22749 | quality: 0.27443
+
+Epoch 20 | Train: loss: 4142.55588 | quality: 0.60919
+        | Val:   loss: 6209.38932 | quality: 0.27371
+
+
+Best epoch: 11 (val_quality=0.283628)
+[2026-04-03 23:22:22,851][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-03 23:22:22,852][__main__][INFO] - ✓ Train R²: 0.5871
+[2026-04-03 23:22:22,852][__main__][INFO] - ✓ Val R²: 0.2836
+[2026-04-03 23:22:22,855][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:22:22,986][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:22:22,989][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed47311
+[2026-04-03 23:22:22,990][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:22:28,633][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:22:28,634][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:22:28,634][__main__][INFO] -   Device: cuda
+[2026-04-03 23:22:28,634][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20152.73640 | quality: -0.90119
+        | Val:   loss: 17270.02575 | quality: -1.02000
+
+Epoch 1 | Train: loss: 6224.64157 | quality: 0.41277
+        | Val:   loss: 6521.45604 | quality: 0.23721
+ *
+Epoch 2 | Train: loss: 5500.71751 | quality: 0.48107
+        | Val:   loss: 6344.55454 | quality: 0.25790
+ *
+Epoch 3 | Train: loss: 5151.65617 | quality: 0.51400
+        | Val:   loss: 6132.02880 | quality: 0.28276
+ *
+Epoch 4 | Train: loss: 4920.36366 | quality: 0.53582
+        | Val:   loss: 6056.40192 | quality: 0.29161
+ *
+Epoch 5 | Train: loss: 4760.19399 | quality: 0.55093
+        | Val:   loss: 6075.27433 | quality: 0.28940
+
+Epoch 6 | Train: loss: 4641.77269 | quality: 0.56210
+        | Val:   loss: 6139.31195 | quality: 0.28191
+
+Epoch 7 | Train: loss: 4551.66054 | quality: 0.57060
+        | Val:   loss: 6218.66774 | quality: 0.27263
+
+Epoch 8 | Train: loss: 4479.81451 | quality: 0.57738
+        | Val:   loss: 6291.32359 | quality: 0.26413
+
+Epoch 9 | Train: loss: 4420.00181 | quality: 0.58302
+        | Val:   loss: 6349.91586 | quality: 0.25728
+
+Epoch 10 | Train: loss: 4368.67348 | quality: 0.58786
+        | Val:   loss: 6387.00973 | quality: 0.25294
+
+Epoch 11 | Train: loss: 4323.95255 | quality: 0.59208
+        | Val:   loss: 6394.84320 | quality: 0.25202
+
+Epoch 12 | Train: loss: 4284.90755 | quality: 0.59577
+        | Val:   loss: 6374.88752 | quality: 0.25436
+
+Epoch 13 | Train: loss: 4250.88014 | quality: 0.59898
+        | Val:   loss: 6338.21910 | quality: 0.25865
+
+Epoch 14 | Train: loss: 4221.12554 | quality: 0.60178
+        | Val:   loss: 6296.91273 | quality: 0.26348
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.291608)
+[2026-04-03 23:22:58,304][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-03 23:22:58,304][__main__][INFO] - ✓ Train R²: 0.5358
+[2026-04-03 23:22:58,304][__main__][INFO] - ✓ Val R²: 0.2916
+[2026-04-03 23:22:58,306][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:22:58,436][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:22:58,439][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed47303
+[2026-04-03 23:22:58,440][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:23:04,079][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:23:04,080][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:23:04,080][__main__][INFO] -   Device: cuda
+[2026-04-03 23:23:04,080][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20199.50293 | quality: -0.90560
+        | Val:   loss: 17307.18586 | quality: -1.02435
+
+Epoch 1 | Train: loss: 6186.54031 | quality: 0.41637
+        | Val:   loss: 6275.36532 | quality: 0.26600
+ *
+Epoch 2 | Train: loss: 5435.26665 | quality: 0.48724
+        | Val:   loss: 6059.59280 | quality: 0.29124
+ *
+Epoch 3 | Train: loss: 5081.54287 | quality: 0.52061
+        | Val:   loss: 6000.51520 | quality: 0.29815
+ *
+Epoch 4 | Train: loss: 4866.00777 | quality: 0.54095
+        | Val:   loss: 5956.16056 | quality: 0.30333
+ *
+Epoch 5 | Train: loss: 4717.46183 | quality: 0.55496
+        | Val:   loss: 5905.41063 | quality: 0.30927
+ *
+Epoch 6 | Train: loss: 4606.55315 | quality: 0.56542
+        | Val:   loss: 5874.77776 | quality: 0.31285
+ *
+Epoch 7 | Train: loss: 4518.43055 | quality: 0.57374
+        | Val:   loss: 5879.10954 | quality: 0.31235
+ *
+Epoch 8 | Train: loss: 4445.72042 | quality: 0.58059
+        | Val:   loss: 5901.94596 | quality: 0.30967
+
+Epoch 9 | Train: loss: 4384.55636 | quality: 0.58636
+        | Val:   loss: 5927.09226 | quality: 0.30673
+
+Epoch 10 | Train: loss: 4332.72710 | quality: 0.59125
+        | Val:   loss: 5947.75616 | quality: 0.30432
+
+Epoch 11 | Train: loss: 4288.62169 | quality: 0.59542
+        | Val:   loss: 5963.11969 | quality: 0.30252
+
+Epoch 12 | Train: loss: 4250.63625 | quality: 0.59900
+        | Val:   loss: 5975.12051 | quality: 0.30112
+
+Epoch 13 | Train: loss: 4217.26365 | quality: 0.60215
+        | Val:   loss: 5986.22587 | quality: 0.29982
+
+Epoch 14 | Train: loss: 4187.33073 | quality: 0.60497
+        | Val:   loss: 5998.43191 | quality: 0.29839
+
+Epoch 15 | Train: loss: 4160.06004 | quality: 0.60754
+        | Val:   loss: 6012.99031 | quality: 0.29669
+
+Epoch 16 | Train: loss: 4134.99748 | quality: 0.60991
+        | Val:   loss: 6030.63732 | quality: 0.29462
+
+Epoch 17 | Train: loss: 4111.88238 | quality: 0.61209
+        | Val:   loss: 6051.71409 | quality: 0.29216
+
+
+Early stopping at epoch 17 (best was epoch 7)
+
+Best epoch: 7 (val_quality=0.312346)
+[2026-04-03 23:23:36,147][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-03 23:23:36,148][__main__][INFO] - ✓ Train R²: 0.5737
+[2026-04-03 23:23:36,148][__main__][INFO] - ✓ Val R²: 0.3123
+[2026-04-03 23:23:36,150][HYDRA] 	#25 : model.L=4 model.bond_dim=16 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:23:36,514][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:23:36,517][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed42
+[2026-04-03 23:23:36,518][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:23:44,045][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:23:44,046][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:23:44,046][__main__][INFO] -   Device: cuda
+[2026-04-03 23:23:44,046][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20008.30119 | quality: -0.88757
+        | Val:   loss: 17137.92119 | quality: -1.00455
+
+Epoch 1 | Train: loss: 5427.80075 | quality: 0.48795
+        | Val:   loss: 6326.11309 | quality: 0.26006
+ *
+Epoch 2 | Train: loss: 4593.70232 | quality: 0.56663
+        | Val:   loss: 6045.78012 | quality: 0.29285
+ *
+Epoch 3 | Train: loss: 4203.83834 | quality: 0.60341
+        | Val:   loss: 5958.73989 | quality: 0.30303
+ *
+Epoch 4 | Train: loss: 3967.97427 | quality: 0.62566
+        | Val:   loss: 6125.62780 | quality: 0.28351
+
+Epoch 5 | Train: loss: 3803.60756 | quality: 0.64117
+        | Val:   loss: 6326.82674 | quality: 0.25998
+
+Epoch 6 | Train: loss: 3680.40946 | quality: 0.65279
+        | Val:   loss: 6473.73814 | quality: 0.24279
+
+Epoch 7 | Train: loss: 3583.88160 | quality: 0.66190
+        | Val:   loss: 6573.57731 | quality: 0.23112
+
+Epoch 8 | Train: loss: 3506.24288 | quality: 0.66922
+        | Val:   loss: 6638.75581 | quality: 0.22349
+
+Epoch 9 | Train: loss: 3442.19773 | quality: 0.67527
+        | Val:   loss: 6679.29679 | quality: 0.21875
+
+Epoch 10 | Train: loss: 3388.01640 | quality: 0.68038
+        | Val:   loss: 6706.75017 | quality: 0.21554
+
+Epoch 11 | Train: loss: 3341.25136 | quality: 0.68479
+        | Val:   loss: 6730.71338 | quality: 0.21274
+
+Epoch 12 | Train: loss: 3300.20683 | quality: 0.68866
+        | Val:   loss: 6756.90709 | quality: 0.20967
+
+Epoch 13 | Train: loss: 3263.59970 | quality: 0.69211
+        | Val:   loss: 6787.75431 | quality: 0.20607
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.303032)
+[2026-04-03 23:24:08,651][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed42/results.json
+[2026-04-03 23:24:08,652][__main__][INFO] - ✓ Train R²: 0.6034
+[2026-04-03 23:24:08,652][__main__][INFO] - ✓ Val R²: 0.3030
+[2026-04-03 23:24:08,654][HYDRA] 	#26 : model.L=4 model.bond_dim=16 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:24:08,784][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:24:08,787][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed10090
+[2026-04-03 23:24:08,788][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:24:14,574][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:24:14,575][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:24:14,575][__main__][INFO] -   Device: cuda
+[2026-04-03 23:24:14,576][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20143.44069 | quality: -0.90031
+        | Val:   loss: 17270.45872 | quality: -1.02005
+
+Epoch 1 | Train: loss: 5456.81528 | quality: 0.48521
+        | Val:   loss: 6456.19254 | quality: 0.24485
+ *
+Epoch 2 | Train: loss: 4598.42933 | quality: 0.56619
+        | Val:   loss: 6742.07668 | quality: 0.21141
+
+Epoch 3 | Train: loss: 4197.07935 | quality: 0.60405
+        | Val:   loss: 7218.53309 | quality: 0.15568
+
+Epoch 4 | Train: loss: 3954.61978 | quality: 0.62692
+        | Val:   loss: 7521.10485 | quality: 0.12029
+
+Epoch 5 | Train: loss: 3789.17265 | quality: 0.64253
+        | Val:   loss: 7494.37799 | quality: 0.12341
+
+Epoch 6 | Train: loss: 3670.05191 | quality: 0.65377
+        | Val:   loss: 7378.05983 | quality: 0.13702
+
+Epoch 7 | Train: loss: 3579.60227 | quality: 0.66230
+        | Val:   loss: 7281.84367 | quality: 0.14827
+
+Epoch 8 | Train: loss: 3507.09551 | quality: 0.66914
+        | Val:   loss: 7209.26543 | quality: 0.15676
+
+Epoch 9 | Train: loss: 3446.10809 | quality: 0.67490
+        | Val:   loss: 7150.73853 | quality: 0.16361
+
+Epoch 10 | Train: loss: 3393.10328 | quality: 0.67990
+        | Val:   loss: 7096.81490 | quality: 0.16992
+
+Epoch 11 | Train: loss: 3346.22817 | quality: 0.68432
+        | Val:   loss: 7045.08779 | quality: 0.17597
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.244847)
+[2026-04-03 23:24:41,081][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed10090/results.json
+[2026-04-03 23:24:41,082][__main__][INFO] - ✓ Train R²: 0.4852
+[2026-04-03 23:24:41,082][__main__][INFO] - ✓ Val R²: 0.2448
+[2026-04-03 23:24:41,084][HYDRA] 	#27 : model.L=4 model.bond_dim=16 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:24:41,215][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:24:41,218][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed32874
+[2026-04-03 23:24:41,219][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:24:47,019][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:24:47,020][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:24:47,020][__main__][INFO] -   Device: cuda
+[2026-04-03 23:24:47,020][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20046.59832 | quality: -0.89118
+        | Val:   loss: 17173.74787 | quality: -1.00874
+
+Epoch 1 | Train: loss: 5367.78212 | quality: 0.49361
+        | Val:   loss: 6411.51270 | quality: 0.25007
+ *
+Epoch 2 | Train: loss: 4616.42828 | quality: 0.56449
+        | Val:   loss: 6843.05215 | quality: 0.19960
+
+Epoch 3 | Train: loss: 4248.55915 | quality: 0.59919
+        | Val:   loss: 6532.00946 | quality: 0.23598
+
+Epoch 4 | Train: loss: 4010.75025 | quality: 0.62163
+        | Val:   loss: 6520.23036 | quality: 0.23736
+
+Epoch 5 | Train: loss: 3839.92440 | quality: 0.63774
+        | Val:   loss: 6591.38979 | quality: 0.22903
+
+Epoch 6 | Train: loss: 3712.42392 | quality: 0.64977
+        | Val:   loss: 6660.07159 | quality: 0.22100
+
+Epoch 7 | Train: loss: 3613.14833 | quality: 0.65914
+        | Val:   loss: 6760.36341 | quality: 0.20927
+
+Epoch 8 | Train: loss: 3531.72172 | quality: 0.66682
+        | Val:   loss: 6871.78316 | quality: 0.19624
+
+Epoch 9 | Train: loss: 3462.58064 | quality: 0.67334
+        | Val:   loss: 6958.10844 | quality: 0.18614
+
+Epoch 10 | Train: loss: 3403.00039 | quality: 0.67896
+        | Val:   loss: 7006.32949 | quality: 0.18050
+
+Epoch 11 | Train: loss: 3351.45629 | quality: 0.68383
+        | Val:   loss: 7017.54221 | quality: 0.17919
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.250073)
+[2026-04-03 23:25:13,337][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed32874/results.json
+[2026-04-03 23:25:13,337][__main__][INFO] - ✓ Train R²: 0.4936
+[2026-04-03 23:25:13,337][__main__][INFO] - ✓ Val R²: 0.2501
+[2026-04-03 23:25:13,339][HYDRA] 	#28 : model.L=4 model.bond_dim=16 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:25:13,468][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:25:13,471][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed47311
+[2026-04-03 23:25:13,471][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:25:19,404][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:25:19,405][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:25:19,405][__main__][INFO] -   Device: cuda
+[2026-04-03 23:25:19,405][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20344.00230 | quality: -0.91924
+        | Val:   loss: 17438.96670 | quality: -1.03976
+
+Epoch 1 | Train: loss: 5397.13038 | quality: 0.49084
+        | Val:   loss: 6331.49701 | quality: 0.25943
+ *
+Epoch 2 | Train: loss: 4632.32920 | quality: 0.56299
+        | Val:   loss: 6303.27630 | quality: 0.26273
+ *
+Epoch 3 | Train: loss: 4256.97581 | quality: 0.59840
+        | Val:   loss: 6350.78746 | quality: 0.25718
+
+Epoch 4 | Train: loss: 4021.17248 | quality: 0.62065
+        | Val:   loss: 6368.10842 | quality: 0.25515
+
+Epoch 5 | Train: loss: 3856.38184 | quality: 0.63619
+        | Val:   loss: 6434.37278 | quality: 0.24740
+
+Epoch 6 | Train: loss: 3732.40009 | quality: 0.64789
+        | Val:   loss: 6503.41569 | quality: 0.23932
+
+Epoch 7 | Train: loss: 3635.18605 | quality: 0.65706
+        | Val:   loss: 6569.61472 | quality: 0.23158
+
+Epoch 8 | Train: loss: 3556.54419 | quality: 0.66448
+        | Val:   loss: 6636.94394 | quality: 0.22370
+
+Epoch 9 | Train: loss: 3491.05343 | quality: 0.67066
+        | Val:   loss: 6695.91942 | quality: 0.21681
+
+Epoch 10 | Train: loss: 3435.24713 | quality: 0.67592
+        | Val:   loss: 6735.10015 | quality: 0.21222
+
+Epoch 11 | Train: loss: 3386.80036 | quality: 0.68049
+        | Val:   loss: 6753.44309 | quality: 0.21008
+
+Epoch 12 | Train: loss: 3343.98849 | quality: 0.68453
+        | Val:   loss: 6757.39783 | quality: 0.20962
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.262733)
+[2026-04-03 23:25:44,427][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed47311/results.json
+[2026-04-03 23:25:44,427][__main__][INFO] - ✓ Train R²: 0.5630
+[2026-04-03 23:25:44,427][__main__][INFO] - ✓ Val R²: 0.2627
+[2026-04-03 23:25:44,433][HYDRA] 	#29 : model.L=4 model.bond_dim=16 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:25:44,563][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 16
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:25:44,566][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed47303
+[2026-04-03 23:25:44,567][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:25:50,422][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:25:50,423][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:25:50,423][__main__][INFO] -   Device: cuda
+[2026-04-03 23:25:50,423][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20018.43596 | quality: -0.88852
+        | Val:   loss: 17138.35868 | quality: -1.00460
+
+Epoch 1 | Train: loss: 5372.89255 | quality: 0.49313
+        | Val:   loss: 6244.55916 | quality: 0.26960
+ *
+Epoch 2 | Train: loss: 4597.96473 | quality: 0.56623
+        | Val:   loss: 6115.21611 | quality: 0.28473
+ *
+Epoch 3 | Train: loss: 4221.88568 | quality: 0.60171
+        | Val:   loss: 6203.59232 | quality: 0.27439
+
+Epoch 4 | Train: loss: 3996.94501 | quality: 0.62293
+        | Val:   loss: 6300.03763 | quality: 0.26311
+
+Epoch 5 | Train: loss: 3840.82030 | quality: 0.63766
+        | Val:   loss: 6408.96618 | quality: 0.25037
+
+Epoch 6 | Train: loss: 3723.80283 | quality: 0.64870
+        | Val:   loss: 6504.17904 | quality: 0.23923
+
+Epoch 7 | Train: loss: 3630.87919 | quality: 0.65747
+        | Val:   loss: 6578.59950 | quality: 0.23053
+
+Epoch 8 | Train: loss: 3553.89374 | quality: 0.66473
+        | Val:   loss: 6641.29630 | quality: 0.22320
+
+Epoch 9 | Train: loss: 3488.53201 | quality: 0.67089
+        | Val:   loss: 6703.27265 | quality: 0.21595
+
+Epoch 10 | Train: loss: 3432.14308 | quality: 0.67621
+        | Val:   loss: 6766.32809 | quality: 0.20857
+
+Epoch 11 | Train: loss: 3382.74362 | quality: 0.68087
+        | Val:   loss: 6824.14573 | quality: 0.20181
+
+Epoch 12 | Train: loss: 3338.88816 | quality: 0.68501
+        | Val:   loss: 6868.47679 | quality: 0.19662
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.284729)
+[2026-04-03 23:26:18,999][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd16_seed47303/results.json
+[2026-04-03 23:26:18,999][__main__][INFO] - ✓ Train R²: 0.5662
+[2026-04-03 23:26:18,999][__main__][INFO] - ✓ Val R²: 0.2847
+[2026-04-03 23:26:19,002][HYDRA] 	#30 : model.L=4 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:26:19,131][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:26:19,134][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed42
+[2026-04-03 23:26:19,135][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:26:24,465][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:26:24,466][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:26:24,466][__main__][INFO] -   Device: cuda
+[2026-04-03 23:26:24,466][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20194.63442 | quality: -0.90514
+        | Val:   loss: 17307.58940 | quality: -1.02440
+
+Epoch 1 | Train: loss: 4434.06391 | quality: 0.58169
+        | Val:   loss: 6357.61037 | quality: 0.25638
+ *
+Epoch 2 | Train: loss: 3595.16032 | quality: 0.66084
+        | Val:   loss: 6648.09803 | quality: 0.22240
+
+Epoch 3 | Train: loss: 3222.48707 | quality: 0.69599
+        | Val:   loss: 6931.75259 | quality: 0.18922
+
+Epoch 4 | Train: loss: 2995.63471 | quality: 0.71739
+        | Val:   loss: 7286.77209 | quality: 0.14770
+
+Epoch 5 | Train: loss: 2843.83042 | quality: 0.73172
+        | Val:   loss: 7584.32898 | quality: 0.11289
+
+Epoch 6 | Train: loss: 2732.11161 | quality: 0.74225
+        | Val:   loss: 7777.42779 | quality: 0.09031
+
+Epoch 7 | Train: loss: 2643.92875 | quality: 0.75057
+        | Val:   loss: 7901.48615 | quality: 0.07580
+
+Epoch 8 | Train: loss: 2571.38026 | quality: 0.75742
+        | Val:   loss: 7988.39522 | quality: 0.06563
+
+Epoch 9 | Train: loss: 2510.08286 | quality: 0.76320
+        | Val:   loss: 8052.70673 | quality: 0.05811
+
+Epoch 10 | Train: loss: 2457.33417 | quality: 0.76818
+        | Val:   loss: 8105.99818 | quality: 0.05188
+
+Epoch 11 | Train: loss: 2411.32448 | quality: 0.77252
+        | Val:   loss: 8159.38780 | quality: 0.04563
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.256377)
+[2026-04-03 23:26:52,921][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed42/results.json
+[2026-04-03 23:26:52,922][__main__][INFO] - ✓ Train R²: 0.5817
+[2026-04-03 23:26:52,922][__main__][INFO] - ✓ Val R²: 0.2564
+[2026-04-03 23:26:52,924][HYDRA] 	#31 : model.L=4 model.bond_dim=32 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:26:53,056][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:26:53,059][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed10090
+[2026-04-03 23:26:53,060][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:26:58,092][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:26:58,093][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:26:58,093][__main__][INFO] -   Device: cuda
+[2026-04-03 23:26:58,093][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20330.57902 | quality: -0.91797
+        | Val:   loss: 17430.54443 | quality: -1.03878
+
+Epoch 1 | Train: loss: 4406.69976 | quality: 0.58428
+        | Val:   loss: 6255.21200 | quality: 0.26835
+ *
+Epoch 2 | Train: loss: 3595.46532 | quality: 0.66081
+        | Val:   loss: 6481.46066 | quality: 0.24189
+
+Epoch 3 | Train: loss: 3241.03097 | quality: 0.69424
+        | Val:   loss: 7060.10500 | quality: 0.17421
+
+Epoch 4 | Train: loss: 3032.39195 | quality: 0.71393
+        | Val:   loss: 7379.69004 | quality: 0.13683
+
+Epoch 5 | Train: loss: 2883.84281 | quality: 0.72794
+        | Val:   loss: 7619.97358 | quality: 0.10872
+
+Epoch 6 | Train: loss: 2769.10488 | quality: 0.73877
+        | Val:   loss: 7875.65761 | quality: 0.07882
+
+Epoch 7 | Train: loss: 2676.69468 | quality: 0.74748
+        | Val:   loss: 8167.37803 | quality: 0.04470
+
+Epoch 8 | Train: loss: 2600.09466 | quality: 0.75471
+        | Val:   loss: 8488.34773 | quality: 0.00715
+
+Epoch 9 | Train: loss: 2535.01756 | quality: 0.76085
+        | Val:   loss: 8808.04290 | quality: -0.03024
+
+Epoch 10 | Train: loss: 2478.68201 | quality: 0.76616
+        | Val:   loss: 9095.27477 | quality: -0.06384
+
+Epoch 11 | Train: loss: 2429.23165 | quality: 0.77083
+        | Val:   loss: 9335.15958 | quality: -0.09189
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.268354)
+[2026-04-03 23:27:26,951][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed10090/results.json
+[2026-04-03 23:27:26,952][__main__][INFO] - ✓ Train R²: 0.5843
+[2026-04-03 23:27:26,952][__main__][INFO] - ✓ Val R²: 0.2684
+[2026-04-03 23:27:26,953][HYDRA] 	#32 : model.L=4 model.bond_dim=32 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:27:27,080][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:27:27,083][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed32874
+[2026-04-03 23:27:27,084][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:27:32,099][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:27:32,100][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:27:32,100][__main__][INFO] -   Device: cuda
+[2026-04-03 23:27:32,101][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20404.10644 | quality: -0.92491
+        | Val:   loss: 17522.31513 | quality: -1.04951
+
+Epoch 1 | Train: loss: 4416.06215 | quality: 0.58339
+        | Val:   loss: 6176.46186 | quality: 0.27757
+ *
+Epoch 2 | Train: loss: 3589.38982 | quality: 0.66138
+        | Val:   loss: 6394.24809 | quality: 0.25209
+
+Epoch 3 | Train: loss: 3222.78822 | quality: 0.69596
+        | Val:   loss: 6605.06856 | quality: 0.22743
+
+Epoch 4 | Train: loss: 3013.27193 | quality: 0.71573
+        | Val:   loss: 6880.78590 | quality: 0.19518
+
+Epoch 5 | Train: loss: 2866.60921 | quality: 0.72957
+        | Val:   loss: 7054.12192 | quality: 0.17491
+
+Epoch 6 | Train: loss: 2754.49009 | quality: 0.74014
+        | Val:   loss: 7164.09934 | quality: 0.16205
+
+Epoch 7 | Train: loss: 2664.75984 | quality: 0.74861
+        | Val:   loss: 7245.42624 | quality: 0.15253
+
+Epoch 8 | Train: loss: 2591.02200 | quality: 0.75557
+        | Val:   loss: 7314.01438 | quality: 0.14451
+
+Epoch 9 | Train: loss: 2528.62229 | quality: 0.76145
+        | Val:   loss: 7380.38776 | quality: 0.13675
+
+Epoch 10 | Train: loss: 2474.25883 | quality: 0.76658
+        | Val:   loss: 7443.22392 | quality: 0.12940
+
+Epoch 11 | Train: loss: 2425.82973 | quality: 0.77115
+        | Val:   loss: 7499.53660 | quality: 0.12281
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.277566)
+[2026-04-03 23:27:56,216][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed32874/results.json
+[2026-04-03 23:27:56,217][__main__][INFO] - ✓ Train R²: 0.5834
+[2026-04-03 23:27:56,217][__main__][INFO] - ✓ Val R²: 0.2776
+[2026-04-03 23:27:56,218][HYDRA] 	#33 : model.L=4 model.bond_dim=32 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:27:56,348][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:27:56,351][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed47311
+[2026-04-03 23:27:56,352][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:28:01,377][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:28:01,377][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:28:01,377][__main__][INFO] -   Device: cuda
+[2026-04-03 23:28:01,377][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 19752.65386 | quality: -0.86345
+        | Val:   loss: 16853.28080 | quality: -0.97126
+
+Epoch 1 | Train: loss: 4422.75786 | quality: 0.58276
+        | Val:   loss: 6427.98536 | quality: 0.24815
+ *
+Epoch 2 | Train: loss: 3597.28592 | quality: 0.66064
+        | Val:   loss: 6914.89361 | quality: 0.19119
+
+Epoch 3 | Train: loss: 3266.43251 | quality: 0.69185
+        | Val:   loss: 7525.36908 | quality: 0.11979
+
+Epoch 4 | Train: loss: 3064.05293 | quality: 0.71094
+        | Val:   loss: 8181.47886 | quality: 0.04305
+
+Epoch 5 | Train: loss: 2918.28800 | quality: 0.72469
+        | Val:   loss: 8791.28460 | quality: -0.02828
+
+Epoch 6 | Train: loss: 2805.31200 | quality: 0.73535
+        | Val:   loss: 9247.87068 | quality: -0.08168
+
+Epoch 7 | Train: loss: 2714.08746 | quality: 0.74396
+        | Val:   loss: 9514.57657 | quality: -0.11288
+
+Epoch 8 | Train: loss: 2638.26971 | quality: 0.75111
+        | Val:   loss: 9641.88311 | quality: -0.12777
+
+Epoch 9 | Train: loss: 2573.90205 | quality: 0.75718
+        | Val:   loss: 9702.87757 | quality: -0.13490
+
+Epoch 10 | Train: loss: 2518.52143 | quality: 0.76240
+        | Val:   loss: 9737.65998 | quality: -0.13897
+
+Epoch 11 | Train: loss: 2470.33523 | quality: 0.76695
+        | Val:   loss: 9750.45141 | quality: -0.14047
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.248146)
+[2026-04-03 23:28:25,876][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed47311/results.json
+[2026-04-03 23:28:25,877][__main__][INFO] - ✓ Train R²: 0.5828
+[2026-04-03 23:28:25,877][__main__][INFO] - ✓ Val R²: 0.2481
+[2026-04-03 23:28:25,879][HYDRA] 	#34 : model.L=4 model.bond_dim=32 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:28:26,009][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 32
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:28:26,012][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed47303
+[2026-04-03 23:28:26,012][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:28:30,878][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:28:30,879][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:28:30,879][__main__][INFO] -   Device: cuda
+[2026-04-03 23:28:30,879][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20250.66045 | quality: -0.91043
+        | Val:   loss: 17351.97088 | quality: -1.02959
+
+Epoch 1 | Train: loss: 4442.65454 | quality: 0.58088
+        | Val:   loss: 6134.08059 | quality: 0.28252
+ *
+Epoch 2 | Train: loss: 3632.86184 | quality: 0.65728
+        | Val:   loss: 6250.60871 | quality: 0.26889
+
+Epoch 3 | Train: loss: 3269.83600 | quality: 0.69153
+        | Val:   loss: 6619.96429 | quality: 0.22569
+
+Epoch 4 | Train: loss: 3046.51954 | quality: 0.71259
+        | Val:   loss: 6983.78621 | quality: 0.18314
+
+Epoch 5 | Train: loss: 2892.74272 | quality: 0.72710
+        | Val:   loss: 7327.13451 | quality: 0.14298
+
+Epoch 6 | Train: loss: 2778.24216 | quality: 0.73790
+        | Val:   loss: 7756.05934 | quality: 0.09281
+
+Epoch 7 | Train: loss: 2687.13138 | quality: 0.74650
+        | Val:   loss: 8227.77332 | quality: 0.03763
+
+Epoch 8 | Train: loss: 2611.70929 | quality: 0.75361
+        | Val:   loss: 8705.36990 | quality: -0.01823
+
+Epoch 9 | Train: loss: 2547.74402 | quality: 0.75965
+        | Val:   loss: 9159.43440 | quality: -0.07134
+
+Epoch 10 | Train: loss: 2492.47481 | quality: 0.76486
+        | Val:   loss: 9568.15717 | quality: -0.11915
+
+Epoch 11 | Train: loss: 2443.95268 | quality: 0.76944
+        | Val:   loss: 9922.26235 | quality: -0.16056
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.282523)
+[2026-04-03 23:28:59,110][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd32_seed47303/results.json
+[2026-04-03 23:28:59,111][__main__][INFO] - ✓ Train R²: 0.5809
+[2026-04-03 23:28:59,111][__main__][INFO] - ✓ Val R²: 0.2825
+[2026-04-03 23:28:59,113][HYDRA] 	#35 : model.L=4 model.bond_dim=64 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:28:59,242][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:28:59,245][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed42
+[2026-04-03 23:28:59,246][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:29:04,131][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:29:04,132][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:29:04,132][__main__][INFO] -   Device: cuda
+[2026-04-03 23:29:04,132][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20097.01596 | quality: -0.89593
+        | Val:   loss: 17216.10560 | quality: -1.01369
+
+Epoch 1 | Train: loss: 3221.81777 | quality: 0.69606
+        | Val:   loss: 7162.36799 | quality: 0.16225
+ *
+Epoch 2 | Train: loss: 2508.72046 | quality: 0.76333
+        | Val:   loss: 7867.34050 | quality: 0.07979
+
+Epoch 3 | Train: loss: 2217.89173 | quality: 0.79077
+        | Val:   loss: 8306.04359 | quality: 0.02848
+
+Epoch 4 | Train: loss: 2042.64064 | quality: 0.80730
+        | Val:   loss: 9005.49388 | quality: -0.05333
+
+Epoch 5 | Train: loss: 1918.91116 | quality: 0.81897
+        | Val:   loss: 9664.01341 | quality: -0.13036
+
+Epoch 6 | Train: loss: 1824.71815 | quality: 0.82786
+        | Val:   loss: 10247.90697 | quality: -0.19865
+
+Epoch 7 | Train: loss: 1748.62126 | quality: 0.83504
+        | Val:   loss: 10795.60288 | quality: -0.26272
+
+Epoch 8 | Train: loss: 1684.79064 | quality: 0.84106
+        | Val:   loss: 11277.87662 | quality: -0.31913
+
+Epoch 9 | Train: loss: 1629.94445 | quality: 0.84623
+        | Val:   loss: 11679.01140 | quality: -0.36604
+
+Epoch 10 | Train: loss: 1581.96993 | quality: 0.85076
+        | Val:   loss: 12001.62937 | quality: -0.40378
+
+Epoch 11 | Train: loss: 1539.37396 | quality: 0.85478
+        | Val:   loss: 12256.44296 | quality: -0.43358
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.162248)
+[2026-04-03 23:29:30,522][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed42/results.json
+[2026-04-03 23:29:30,523][__main__][INFO] - ✓ Train R²: 0.6961
+[2026-04-03 23:29:30,523][__main__][INFO] - ✓ Val R²: 0.1622
+[2026-04-03 23:29:30,525][HYDRA] 	#36 : model.L=4 model.bond_dim=64 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:29:30,658][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:29:30,662][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed10090
+[2026-04-03 23:29:30,662][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:29:35,522][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:29:35,523][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:29:35,523][__main__][INFO] -   Device: cuda
+[2026-04-03 23:29:35,523][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20454.59427 | quality: -0.92967
+        | Val:   loss: 17567.96739 | quality: -1.05485
+
+Epoch 1 | Train: loss: 3274.82043 | quality: 0.69106
+        | Val:   loss: 6844.42939 | quality: 0.19944
+ *
+Epoch 2 | Train: loss: 2536.87522 | quality: 0.76067
+        | Val:   loss: 8625.51044 | quality: -0.00889
+
+Epoch 3 | Train: loss: 2233.80358 | quality: 0.78926
+        | Val:   loss: 10402.27728 | quality: -0.21671
+
+Epoch 4 | Train: loss: 2058.30331 | quality: 0.80582
+        | Val:   loss: 11919.20208 | quality: -0.39414
+
+Epoch 5 | Train: loss: 1937.84160 | quality: 0.81719
+        | Val:   loss: 13137.73605 | quality: -0.53667
+
+Epoch 6 | Train: loss: 1848.17451 | quality: 0.82564
+        | Val:   loss: 14275.62754 | quality: -0.66976
+
+Epoch 7 | Train: loss: 1776.75873 | quality: 0.83238
+        | Val:   loss: 15427.13950 | quality: -0.80445
+
+Epoch 8 | Train: loss: 1717.10681 | quality: 0.83801
+        | Val:   loss: 16565.28196 | quality: -0.93757
+
+Epoch 9 | Train: loss: 1665.86700 | quality: 0.84284
+        | Val:   loss: 17612.76637 | quality: -1.06009
+
+Epoch 10 | Train: loss: 1621.06015 | quality: 0.84707
+        | Val:   loss: 18524.71084 | quality: -1.16676
+
+Epoch 11 | Train: loss: 1581.36412 | quality: 0.85082
+        | Val:   loss: 19303.33670 | quality: -1.25783
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.199436)
+[2026-04-03 23:30:05,895][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed10090/results.json
+[2026-04-03 23:30:05,896][__main__][INFO] - ✓ Train R²: 0.6911
+[2026-04-03 23:30:05,896][__main__][INFO] - ✓ Val R²: 0.1994
+[2026-04-03 23:30:05,898][HYDRA] 	#37 : model.L=4 model.bond_dim=64 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:30:06,028][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:30:06,032][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed32874
+[2026-04-03 23:30:06,032][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:30:10,841][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:30:10,841][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:30:10,841][__main__][INFO] -   Device: cuda
+[2026-04-03 23:30:10,842][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20314.96019 | quality: -0.91650
+        | Val:   loss: 17432.96596 | quality: -1.03906
+
+Epoch 1 | Train: loss: 3254.46295 | quality: 0.69298
+        | Val:   loss: 6890.64635 | quality: 0.19403
+ *
+Epoch 2 | Train: loss: 2536.29873 | quality: 0.76073
+        | Val:   loss: 7297.25234 | quality: 0.14647
+
+Epoch 3 | Train: loss: 2225.61308 | quality: 0.79004
+        | Val:   loss: 7803.63759 | quality: 0.08724
+
+Epoch 4 | Train: loss: 2039.86552 | quality: 0.80756
+        | Val:   loss: 8361.48804 | quality: 0.02199
+
+Epoch 5 | Train: loss: 1910.89759 | quality: 0.81973
+        | Val:   loss: 9073.35762 | quality: -0.06127
+
+Epoch 6 | Train: loss: 1813.31380 | quality: 0.82893
+        | Val:   loss: 9745.43999 | quality: -0.13988
+
+Epoch 7 | Train: loss: 1735.47882 | quality: 0.83628
+        | Val:   loss: 10317.22856 | quality: -0.20676
+
+Epoch 8 | Train: loss: 1671.14673 | quality: 0.84235
+        | Val:   loss: 10828.37235 | quality: -0.26655
+
+Epoch 9 | Train: loss: 1616.65715 | quality: 0.84749
+        | Val:   loss: 11304.28872 | quality: -0.32221
+
+Epoch 10 | Train: loss: 1569.68837 | quality: 0.85192
+        | Val:   loss: 11750.04728 | quality: -0.37435
+
+Epoch 11 | Train: loss: 1528.65404 | quality: 0.85579
+        | Val:   loss: 12168.83183 | quality: -0.42334
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.194030)
+[2026-04-03 23:30:37,254][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed32874/results.json
+[2026-04-03 23:30:37,255][__main__][INFO] - ✓ Train R²: 0.6930
+[2026-04-03 23:30:37,255][__main__][INFO] - ✓ Val R²: 0.1940
+[2026-04-03 23:30:37,257][HYDRA] 	#38 : model.L=4 model.bond_dim=64 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:30:37,387][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:30:37,390][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed47311
+[2026-04-03 23:30:37,390][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:30:41,789][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:30:41,789][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:30:41,789][__main__][INFO] -   Device: cuda
+[2026-04-03 23:30:41,790][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20208.28953 | quality: -0.90643
+        | Val:   loss: 17337.88871 | quality: -1.02794
+
+Epoch 1 | Train: loss: 3259.18301 | quality: 0.69253
+        | Val:   loss: 7431.93081 | quality: 0.13072
+ *
+Epoch 2 | Train: loss: 2545.70656 | quality: 0.75984
+        | Val:   loss: 8338.82495 | quality: 0.02464
+
+Epoch 3 | Train: loss: 2241.03597 | quality: 0.78858
+        | Val:   loss: 8865.98051 | quality: -0.03702
+
+Epoch 4 | Train: loss: 2054.77194 | quality: 0.80615
+        | Val:   loss: 9078.98078 | quality: -0.06193
+
+Epoch 5 | Train: loss: 1922.80483 | quality: 0.81860
+        | Val:   loss: 9188.30384 | quality: -0.07472
+
+Epoch 6 | Train: loss: 1822.02671 | quality: 0.82811
+        | Val:   loss: 9212.27579 | quality: -0.07752
+
+Epoch 7 | Train: loss: 1741.75581 | quality: 0.83568
+        | Val:   loss: 9212.14058 | quality: -0.07750
+
+Epoch 8 | Train: loss: 1675.52421 | quality: 0.84193
+        | Val:   loss: 9231.99674 | quality: -0.07983
+
+Epoch 9 | Train: loss: 1619.51213 | quality: 0.84722
+        | Val:   loss: 9301.09408 | quality: -0.08791
+
+Epoch 10 | Train: loss: 1571.29835 | quality: 0.85177
+        | Val:   loss: 9422.90482 | quality: -0.10216
+
+Epoch 11 | Train: loss: 1529.20276 | quality: 0.85574
+        | Val:   loss: 9582.88484 | quality: -0.12087
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.130719)
+[2026-04-03 23:31:08,292][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed47311/results.json
+[2026-04-03 23:31:08,293][__main__][INFO] - ✓ Train R²: 0.6925
+[2026-04-03 23:31:08,293][__main__][INFO] - ✓ Val R²: 0.1307
+[2026-04-03 23:31:08,294][HYDRA] 	#39 : model.L=4 model.bond_dim=64 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+[2026-04-03 23:31:08,423][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 64
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: appliances
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-03 23:31:08,426][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed47303
+[2026-04-03 23:31:08,426][__main__][INFO] - Loading dataset: appliances
+[2026-04-03 23:31:13,042][__main__][INFO] -   Samples: train=13814, val=2960, test=2961
+[2026-04-03 23:31:13,043][__main__][INFO] -   Features: 28 (including bias), Task: regression
+[2026-04-03 23:31:13,043][__main__][INFO] -   Device: cuda
+[2026-04-03 23:31:13,043][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 19860.21239 | quality: -0.87360
+        | Val:   loss: 16976.90189 | quality: -0.98572
+
+Epoch 1 | Train: loss: 3244.19516 | quality: 0.69395
+        | Val:   loss: 8428.65072 | quality: 0.01414
+ *
+Epoch 2 | Train: loss: 2524.99062 | quality: 0.76179
+        | Val:   loss: 8580.82535 | quality: -0.00366
+
+Epoch 3 | Train: loss: 2227.14294 | quality: 0.78989
+        | Val:   loss: 8812.73386 | quality: -0.03079
+
+Epoch 4 | Train: loss: 2056.20090 | quality: 0.80602
+        | Val:   loss: 8888.93542 | quality: -0.03970
+
+Epoch 5 | Train: loss: 1938.06606 | quality: 0.81716
+        | Val:   loss: 9039.02019 | quality: -0.05726
+
+Epoch 6 | Train: loss: 1848.00042 | quality: 0.82566
+        | Val:   loss: 9240.66799 | quality: -0.08084
+
+Epoch 7 | Train: loss: 1775.74004 | quality: 0.83248
+        | Val:   loss: 9447.10898 | quality: -0.10499
+
+Epoch 8 | Train: loss: 1715.65623 | quality: 0.83815
+        | Val:   loss: 9639.66289 | quality: -0.12751
+
+Epoch 9 | Train: loss: 1664.31845 | quality: 0.84299
+        | Val:   loss: 9823.80668 | quality: -0.14905
+
+Epoch 10 | Train: loss: 1619.52162 | quality: 0.84722
+        | Val:   loss: 10006.92179 | quality: -0.17047
+
+Epoch 11 | Train: loss: 1579.77720 | quality: 0.85097
+        | Val:   loss: 10196.84194 | quality: -0.19268
+
+
+Early stopping at epoch 11 (best was epoch 1)
+
+Best epoch: 1 (val_quality=0.014137)
+[2026-04-03 23:31:40,341][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/appliances/CPDATypeI_rg5_init0.1/L4_bd64_seed47303/results.json
+[2026-04-03 23:31:40,342][__main__][INFO] - ✓ Train R²: 0.6939
+[2026-04-03 23:31:40,342][__main__][INFO] - ✓ Val R²: 0.0141
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28140763: <ntn-cpda-typei-appliances> in cluster <dcc> Done
+
+Job <ntn-cpda-typei-appliances> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri Apr  3 22:43:01 2026
+Job was executed on host(s) <4*n-62-20-16>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Fri Apr  3 23:13:56 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN/submit_ntn_cpda> was used as the working directory.
+Started at Fri Apr  3 23:13:56 2026
+Terminated at Fri Apr  3 23:31:41 2026
+Results reported at Fri Apr  3 23:31:41 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-cpda-typei-appliances
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-cpda-typei-appliances_%J.out
+#BSUB -e logs/ntn-cpda-typei-appliances_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a && source $HOME/aim && set +a
+
+python run.py --multirun +experiment=cpda_ntn_sweep model=cpda_typei dataset=appliances
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   959.00 sec.
+    Max Memory :                                 719 MB
+    Average Memory :                             691.10 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               1281.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                9
+    Run time :                                   1065 sec.
+    Turnaround time :                            2920 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-cpda-typei-appliances_28140763.err> for stderr output of this job.
+
