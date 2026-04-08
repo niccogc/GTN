@@ -16,4 +16,4 @@ source .venv/bin/activate
 
 set -a && source $HOME/aim && set +a
 
-python run.py --multirun trainer=ntn model=tnml_f dataset=mushrooms
+python run.py --multirun +experiment=uci_ntn_sweep model=tnml_f dataset=mushrooms

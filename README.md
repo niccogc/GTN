@@ -4,7 +4,7 @@
 
 ## Overall Progress
 
-**Total:** 14,826 / 15,960 (92.9%)
+**Total:** 14,826 / 18,480 (80.2%)
 
 | Status | Count |
 |--------|------:|
@@ -12,14 +12,14 @@
 | Singular | 754 |
 | OOM | 1,433 |
 | Failed | 0 |
-| Missing | 1,134 |
+| Missing | 3,654 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 6,851 | 7,980 | 85.9% | 4,664 | 754 | 1,433 | 0 |
-| GTN | 7,975 | 7,980 | 99.9% | 7,975 | 0 | 0 | 0 |
+| NTN | 6,851 | 9,240 | 74.1% | 4,664 | 754 | 1,433 | 0 |
+| GTN | 7,975 | 9,240 | 86.3% | 7,975 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
 
@@ -33,38 +33,42 @@
 | MMPO2TypeI | 539/630 (85.6%) | 630/630 (100.0%) |
 | CPDA | 420/840 (50.0%) | 840/840 (100.0%) |
 | CPDATypeI | 816/840 (97.1%) | 835/840 (99.4%) |
+| TNML_P | 0/630 (0.0%) | 0/630 (0.0%) |
+| TNML_F | 0/630 (0.0%) | 0/630 (0.0%) |
 
 ## By Dataset Size
 
 | Size | NTN | GTN | Missing |
 |------|-----|-----|--------:|
-| Small | 1306/1520 (85.9%) | 1520/1520 (100.0%) | 214 |
-| Medium | 3065/3420 (89.6%) | 3415/3420 (99.9%) | 360 |
-| Large | 2480/3040 (81.6%) | 3040/3040 (100.0%) | 560 |
+| Small | 1306/1760 (74.2%) | 1520/1760 (86.4%) | 694 |
+| Medium | 3065/3960 (77.4%) | 3415/3960 (86.2%) | 1,440 |
+| Large | 2480/3520 (70.5%) | 3040/3520 (86.4%) | 1,520 |
 
 ## By Dataset
 
-**Complete:** abalone, iris, obesity, student_perf
-
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
-| adult | 701 | 760 | 92.2% |
-| ai4i | 720 | 760 | 94.7% |
-| appliances | 720 | 760 | 94.7% |
-| bank | 715 | 760 | 94.1% |
-| bike | 715 | 760 | 94.1% |
-| breast | 640 | 760 | 84.2% |
-| car_evaluation | 618 | 760 | 81.3% |
-| concrete | 720 | 760 | 94.7% |
-| energy_efficiency | 720 | 760 | 94.7% |
-| hearth | 714 | 760 | 93.9% |
-| mushrooms | 640 | 760 | 84.2% |
-| popularity | 590 | 760 | 77.6% |
-| realstate | 720 | 760 | 94.7% |
-| seoulBike | 720 | 760 | 94.7% |
-| student_dropout | 674 | 760 | 88.7% |
-| wine | 712 | 760 | 93.7% |
-| winequalityc | 747 | 760 | 98.3% |
+| abalone | 760 | 880 | 86.4% |
+| adult | 701 | 880 | 79.7% |
+| ai4i | 720 | 880 | 81.8% |
+| appliances | 720 | 880 | 81.8% |
+| bank | 715 | 880 | 81.2% |
+| bike | 715 | 880 | 81.2% |
+| breast | 640 | 880 | 72.7% |
+| car_evaluation | 618 | 880 | 70.2% |
+| concrete | 720 | 880 | 81.8% |
+| energy_efficiency | 720 | 880 | 81.8% |
+| hearth | 714 | 880 | 81.1% |
+| iris | 760 | 880 | 86.4% |
+| mushrooms | 640 | 880 | 72.7% |
+| obesity | 760 | 880 | 86.4% |
+| popularity | 590 | 880 | 67.0% |
+| realstate | 720 | 880 | 81.8% |
+| seoulBike | 720 | 880 | 81.8% |
+| student_dropout | 674 | 880 | 76.6% |
+| student_perf | 760 | 880 | 86.4% |
+| wine | 712 | 880 | 80.9% |
+| winequalityc | 747 | 880 | 84.9% |
 
 ## Incomplete Experiments
 
@@ -91,7 +95,7 @@
 | LMPO2TypeI | wine | NTN | 42/90 (46.7%) |
 | MPO2TypeI | car_evaluation | NTN | 12/30 (40.0%) |
 
-*... and 23 more*
+*... and 107 more*
 
 ## Singular Matrix Failures (754)
 
@@ -101,8 +105,8 @@
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 1,134
-- **Experiments with missing runs:** 43
+- **Runs remaining:** 3,654
+- **Experiments with missing runs:** 127
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
 
@@ -110,30 +114,41 @@
 
 ### Small
 
-**NTN** (6 experiments, 214 runs missing):
+**NTN** (14 experiments, 454 runs missing):
 
 - CPDA: breast
 - LMPO2TypeI: breast, hearth, wine
 - MMPO2: breast
 - MMPO2TypeI: breast
+- TNML_F: breast, hearth, iris, wine
+- TNML_P: breast, hearth, iris, wine
+
+**GTN** (8 experiments, 240 runs missing):
+
+- TNML_F: breast, hearth, iris, wine
+- TNML_P: breast, hearth, iris, wine
 
 ### Medium
 
-**NTN** (11 experiments, 355 runs missing):
+**NTN** (29 experiments, 895 runs missing):
 
 - CPDA: bike, concrete, energy_efficiency, realstate, seoulBike
 - LMPO2TypeI: car_evaluation, winequalityc
 - MMPO2: car_evaluation
 - MMPO2TypeI: car_evaluation, winequalityc
 - MPO2TypeI: car_evaluation
+- TNML_F: bike, car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
+- TNML_P: bike, car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
 
-**GTN** (1 experiments, 5 runs missing):
+**GTN** (19 experiments, 545 runs missing):
 
 - CPDATypeI: bike
+- TNML_F: bike, car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
+- TNML_P: bike, car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
 
 ### Large
 
-**NTN** (25 experiments, 560 runs missing):
+**NTN** (41 experiments, 1,040 runs missing):
 
 - CPDA: adult, ai4i, appliances, mushrooms, popularity, student_dropout
 - CPDATypeI: adult, bank
@@ -143,12 +158,21 @@
 - MMPO2TypeI: adult, bank, mushrooms, student_dropout
 - MPO2: bank, mushrooms, popularity, student_dropout
 - MPO2TypeI: adult, bank, mushrooms, student_dropout
+- TNML_F: abalone, adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
+- TNML_P: abalone, adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
+
+**GTN** (16 experiments, 480 runs missing):
+
+- TNML_F: abalone, adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
+- TNML_P: abalone, adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
 
 ## Suggested Commands
 
 ```bash
 cd submit_ntn && bash submit_small_slurm.sh  # or submit_small_hpc.sh
+cd submit_gtn && bash submit_small_slurm.sh  # or submit_small_hpc.sh
 cd submit_ntn && bash submit_medium_slurm.sh  # or submit_medium_hpc.sh
 cd submit_gtn && bash submit_medium_slurm.sh  # or submit_medium_hpc.sh
 cd submit_ntn && bash submit_large_slurm.sh  # or submit_large_hpc.sh
+cd submit_gtn && bash submit_large_slurm.sh  # or submit_large_hpc.sh
 ```
