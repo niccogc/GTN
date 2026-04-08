@@ -20,6 +20,6 @@ conda activate gtn
 
 set -a && source $HOME/aim && set +a
 
-python run.py --multirun trainer=gtn model=tnml_p dataset=student_dropout
+python run.py --multirun +experiment=uci_gtn_sweep model=tnml_p dataset=student_dropout
 
 echo "Done: $(date +%F-%R:%S)"

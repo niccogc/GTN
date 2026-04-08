@@ -16,4 +16,4 @@ source .venv/bin/activate
 
 set -a && source $HOME/aim && set +a
 
-python run.py --multirun trainer=gtn model=tnml_f dataset=hearth
+python run.py --multirun +experiment=uci_gtn_sweep model=tnml_f dataset=hearth

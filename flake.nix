@@ -84,25 +84,25 @@
           echo "   Zen MCP server may not work properly."
         fi
 
-        cleanup() {
-          echo "Stopping docs-mcp-server..."
-          ${pkgs.podman}/bin/podman stop "$DOCS_CONTAINER_NAME" >/dev/null 2>&1 || true
-        }
-        trap cleanup EXIT
+        # cleanup() {
+        #   echo "Stopping docs-mcp-server..."
+        #   ${pkgs.podman}/bin/podman stop "$DOCS_CONTAINER_NAME" >/dev/null 2>&1 || true
+        # }
+        # trap cleanup EXIT
 
-        Start server if not running
-        if ! podman ps --format "{{.Names}}" | grep -q "^$DOCS_CONTAINER_NAME$"; then
-          echo "🚀 Starting docs-mcp-server..."
-          podman run --rm -d \
-            --name "$DOCS_CONTAINER_NAME" \
-            -v "$DATA_DIR:/data" \
-            -p 6280:6280 \
-            ghcr.io/arabold/docs-mcp-server:latest \
-            --protocol http --host 0.0.0.0 --port 6280 --no-telemetry
-          sleep 2
-        else
-          echo "✓ docs-mcp-server is running."
-        fi
+        # Start server if not running
+        # if ! podman ps --format "{{.Names}}" | grep -q "^$DOCS_CONTAINER_NAME$"; then
+        #   echo "🚀 Starting docs-mcp-server..."
+        #   podman run --rm -d \
+        #     --name "$DOCS_CONTAINER_NAME" \
+        #     -v "$DATA_DIR:/data" \
+        #     -p 6280:6280 \
+        #     ghcr.io/arabold/docs-mcp-server:latest \
+        #     --protocol http --host 0.0.0.0 --port 6280 --no-telemetry
+        #   sleep 2
+        # else
+        #   echo "✓ docs-mcp-server is running."
+        # fi
         # Get the Nix Python site-packages path
         export NIX_PYTHON_SITE_PACKAGES="${pythonWithNixPkgs}/${pythonWithNixPkgs.sitePackages}"
 
