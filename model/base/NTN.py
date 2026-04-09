@@ -62,7 +62,9 @@ class NTN:
 
         return self._concat_batch_results(results)
 
-    def _concat_tuple_over_batches(self, batch_operation, data_iterator, *args, **kwargs):
+    def _concat_tuple_over_batches(
+        self, batch_operation, data_iterator, *args, **kwargs
+    ):
         """
         Specific iterator for operations that return a TUPLE of tensors (e.g. Grad, Hess).
         Concatenates each element of the tuple separately.
@@ -108,7 +110,11 @@ class NTN:
         return result
 
     def compute_node_derivatives(
-        self, tn: qt.TensorNetwork, node_tag: str, input_generator, sum_over_batches=True
+        self,
+        tn: qt.TensorNetwork,
+        node_tag: str,
+        input_generator,
+        sum_over_batches=True,
     ):
         """
         Computes the Gradient (Jacobian) and Hessian (approx) for a specific NODE directly.
@@ -162,7 +168,9 @@ class NTN:
         out_row_inds = out_inds
         out_col_inds = [x + "_prime" for x in out_inds]
 
-        d2L_tensor = qt.Tensor(d2L_dy2.data, inds=[self.batch_dim] + out_row_inds + out_col_inds)
+        d2L_tensor = qt.Tensor(
+            d2L_dy2.data, inds=[self.batch_dim] + out_row_inds + out_col_inds
+        )
         env_right = self._prime_indices_tensor(env, exclude_indices=[self.batch_dim])
 
         hess_tn = env & d2L_tensor & env_right
@@ -210,7 +218,9 @@ class NTN:
         )
         return total_grad, total_hess
 
-    def _batch_forward(self, inputs: List[qt.Tensor], tn, output_inds: List[str]) -> qt.Tensor:
+    def _batch_forward(
+        self, inputs: List[qt.Tensor], tn, output_inds: List[str]
+    ) -> qt.Tensor:
         full_tn = tn & inputs
         res = full_tn.contract(output_inds=output_inds)
         if len(output_inds) > 0:
@@ -410,6 +420,10 @@ class NTN:
         if not isinstance(first_result, qt.Tensor):
             return batch_results
 
+        if self.batch_dim in first_result.inds:
+            batch_results = [t.moveindex(self.batch_dim, 0) for t in batch_results]
+            first_result = batch_results[0]
+
         first_data = first_result.data
 
         is_torch = False
@@ -472,7 +486,9 @@ class NTN:
     ) -> qt.Tensor | None:
         exclude_indices = exclude_indices
         reindex_map = {
-            ind: f"{ind}{prime_suffix}" for ind in tensor.inds if ind not in exclude_indices
+            ind: f"{ind}{prime_suffix}"
+            for ind in tensor.inds
+            if ind not in exclude_indices
         }
         return tensor.reindex(reindex_map)
 
@@ -544,14 +560,18 @@ class NTN:
         backend_name, lib = self.get_backend(matrix_data)
 
         if method == "cholesky":
-            result_data = self.cholesky_solve_helper(matrix_data, vector_data, backend_name, lib)
+            result_data = self.cholesky_solve_helper(
+                matrix_data, vector_data, backend_name, lib
+            )
         else:
             if backend_name == "torch":
                 b = vector_data
                 if b.ndim == matrix_data.ndim - 1:
                     b = b.unsqueeze(-1)
                 res = lib.linalg.solve(matrix_data, b)
-                result_data = res.squeeze(-1) if vector_data.ndim == matrix_data.ndim - 1 else res
+                result_data = (
+                    res.squeeze(-1) if vector_data.ndim == matrix_data.ndim - 1 else res
+                )
             elif backend_name == "numpy":
                 result_data = lib.linalg.solve(matrix_data, vector_data)
             elif backend_name == "jax":
@@ -559,37 +579,10 @@ class NTN:
 
         return result_data
 
-    def _get_node_optimum_regression(
-        self,
-        node_tag,
-        regularize=True,
-        jitter=1e-6,
-        adaptive_jitter=False,
-        max_jitter=0.1,
-        y_all=None,
-    ):
-        """
-        Compute the optimal node value directly using least squares.
-
-        Unlike _get_node_update which returns a delta, this returns the optimal
-        node value that minimizes ||env @ w - y||^2 + jitter * ||w||^2.
-
-        This is specifically for regression with a single output dimension.
-
-        Args:
-            node_tag: Tag of the node to optimize
-            regularize: Whether to apply L2 regularization
-            jitter: Regularization strength (lambda in ridge regression)
-            adaptive_jitter: Not used (kept for API compatibility)
-            max_jitter: Not used (kept for API compatibility)
-
-        Returns:
-            qt.Tensor: The optimal node tensor (not an update)
-        """
-        target_tensor = self.tn[node_tag]
-        node_inds = list(target_tensor.inds)
-        node_shape = target_tensor.shape
-        n_params = int(np.prod(node_shape))
+    def _get_node_optimum_regression(self, node_tag, regularize=True, jitter=1e-6, **_):
+        target = self.tn[node_tag]
+        node_inds = set(target.inds)
+        out_labels = set(self.output_dimensions)
 
         env = self.get_environment(
             self.tn,
@@ -599,48 +592,59 @@ class NTN:
             sum_over_batch=False,
             sum_over_output=True,
         )
-        y_all = self.train_data.outputs_data[0]
+        y = self.train_data.outputs_data[0].squeeze()
 
-        if y_all.ndim > 1:
-            y_all = y_all.squeeze(-1)
+        env_inds = set(env.inds)
+        variational_inds = list(env_inds & node_inds)
+        var_sizes = tuple(target.ind_size(i) for i in variational_inds)
 
-        env_data = env.data
-        if not torch.is_tensor(env_data):
-            env_data = torch.tensor(env_data, dtype=torch.float64)
+        env.fuse_({self.batch_dim: [self.batch_dim], "cols": variational_inds})
+        env.moveindex_(self.batch_dim, 0)
+        env_matrix = env.data
 
-        n_samples = env_data.shape[0]
-        env_matrix = env_data.reshape(n_samples, n_params)
-        jitter = jitter
-        # print(n_samples)
         if regularize and jitter > 0:
-            sqrt_jitter = np.sqrt(jitter)
-            reg_matrix = sqrt_jitter * torch.eye(
-                n_params, dtype=env_matrix.dtype, device=env_matrix.device
+            n_params = env_matrix.shape[1]
+            sqrt_j = np.sqrt(jitter)
+            env_matrix = torch.cat(
+                [
+                    env_matrix,
+                    sqrt_j
+                    * torch.eye(
+                        n_params, dtype=env_matrix.dtype, device=env_matrix.device
+                    ),
+                ],
+                dim=0,
             )
-            reg_y = torch.zeros(n_params, dtype=y_all.dtype, device=y_all.device)
+            y = torch.cat(
+                [y, torch.zeros(n_params, dtype=y.dtype, device=y.device)], dim=0
+            )
 
-            env_aug = torch.cat([env_matrix, reg_matrix], dim=0)
-            y_aug = torch.cat([y_all, reg_y], dim=0)
-        else:
-            env_aug = env_matrix
-            y_aug = y_all
+        solution = torch.linalg.lstsq(env_matrix, y).solution
 
-        result = torch.linalg.lstsq(env_aug, y_aug)
-        solution = result.solution
+        result = qt.Tensor(data=solution, inds=["cols"])
+        result.unfuse_({"cols": variational_inds}, shape_map={"cols": var_sizes})
 
-        solution_reshaped = solution.reshape(node_shape)
+        for out_ind in (node_inds & out_labels) - env_inds:
+            result = (result & qt.Tensor(data=torch.ones(1), inds=[out_ind])).contract()
 
-        optimal_node = qt.Tensor(data=solution_reshaped, inds=node_inds, tags=target_tensor.tags)
-
-        return optimal_node
+        result.modify(tags=[node_tag])
+        return result
 
     def _get_node_update(
-        self, node_tag, regularize=True, jitter=1e-6, adaptive_jitter=False, max_jitter=0.1
+        self,
+        node_tag,
+        regularize=True,
+        jitter=1e-6,
+        adaptive_jitter=False,
+        max_jitter=0.1,
     ):
         b, H = self._compute_H_b(node_tag)
 
         variational_ind = b.inds
-        map_H = {"rows": variational_ind, "cols": [i + "_prime" for i in variational_ind]}
+        map_H = {
+            "rows": variational_ind,
+            "cols": [i + "_prime" for i in variational_ind],
+        }
         map_b = {"cols": variational_ind}
 
         var_sizes = tuple(self.tn[node_tag].ind_size(i) for i in variational_ind)
@@ -689,7 +693,9 @@ class NTN:
 
         tensor_node_data = self.solve_linear_system(matrix_data, -gradient_vector)
 
-        update_node = qt.Tensor(tensor_node_data, inds=["cols"], tags=self.tn[node_tag].tags)
+        update_node = qt.Tensor(
+            tensor_node_data, inds=["cols"], tags=self.tn[node_tag].tags
+        )
 
         update_node.unfuse({"cols": variational_ind}, shape_map=shape_map, inplace=True)
         update_node.modify(tags=[node_tag])
@@ -781,7 +787,9 @@ class NTN:
             else:
                 for name, res in batch_results.items():
                     if isinstance(res, tuple):
-                        aggregates[name] = tuple(a + b for a, b in zip(aggregates[name], res))
+                        aggregates[name] = tuple(
+                            a + b for a, b in zip(aggregates[name], res)
+                        )
                     else:
                         aggregates[name] += res
 
@@ -807,7 +815,9 @@ class NTN:
 
         return final_scores
 
-    def update_tn_node(self, node_tag, regularize, jitter, adaptive_jitter=False, max_jitter=None):
+    def update_tn_node(
+        self, node_tag, regularize, jitter, adaptive_jitter=False, max_jitter=None
+    ):
         if max_jitter is None:
             max_jitter = max(10.0, jitter * 10)
 
@@ -914,7 +924,9 @@ class NTN:
             print(f"Starting Fit: {n_epochs} epochs.")
             print(f"Sweep Order: {full_sweep_order}")
             if self.val_data is not None:
-                print(f"Validation: Using separate validation set for best model selection")
+                print(
+                    f"Validation: Using separate validation set for best model selection"
+                )
             if patience is not None:
                 print(f"Early stopping: patience={patience}, min_delta={min_delta}")
 
@@ -937,7 +949,9 @@ class NTN:
         if callback_init is not None:
             info = {
                 "n_epochs": n_epochs,
-                "jitter_schedule": jitter if isinstance(jitter, list) else [jitter] * n_epochs,
+                "jitter_schedule": jitter
+                if isinstance(jitter, list)
+                else [jitter] * n_epochs,
                 "regularize": regularize,
             }
             callback_init(scores_train, scores_val, info)
@@ -959,7 +973,10 @@ class NTN:
                         self.update_tn_node_optimum(node_tag, regularize, jitter[epoch])
                     else:
                         self.update_tn_node(
-                            node_tag, regularize, jitter[epoch], adaptive_jitter=adaptive_jitter
+                            node_tag,
+                            regularize,
+                            jitter[epoch],
+                            adaptive_jitter=adaptive_jitter,
                         )
 
                 scores_train = self.evaluate(eval_metrics, data_stream=self.train_data)
@@ -1061,12 +1078,17 @@ class NTN:
             except torch.linalg.LinAlgError as e:
                 self.singular_encountered = True
                 if verbose:
-                    print(f"\n✗ Singular matrix at epoch {epoch + 1} - stopping training")
+                    print(
+                        f"\n✗ Singular matrix at epoch {epoch + 1} - stopping training"
+                    )
                 raise SingularMatrixError(
-                    message="Singular matrix encountered during NTN optimization", epoch=epoch + 1
+                    message="Singular matrix encountered during NTN optimization",
+                    epoch=epoch + 1,
                 )
 
         if verbose and best_epoch >= 0:
-            print(f"\nBest epoch: {best_epoch + 1} (val_quality={best_val_quality:.6f})")
+            print(
+                f"\nBest epoch: {best_epoch + 1} (val_quality={best_val_quality:.6f})"
+            )
 
         return best_scores_train, best_scores_val
