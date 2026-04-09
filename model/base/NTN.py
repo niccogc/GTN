@@ -625,7 +625,7 @@ class NTN:
         result.unfuse_({"cols": variational_inds}, shape_map={"cols": var_sizes})
 
         for out_ind in (node_inds & out_labels) - env_inds:
-            result = (result & qt.Tensor(data=torch.ones(1), inds=[out_ind])).contract()
+            result = (result & qt.Tensor(data=torch.ones(1, device = result.data.device, dtype= result.data.dtype), inds=[out_ind])).contract()
 
         result.modify(tags=[node_tag])
         return result
