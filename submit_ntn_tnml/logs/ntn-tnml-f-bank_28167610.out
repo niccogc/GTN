@@ -1,0 +1,113 @@
+[2026-04-09 13:09:07,657][HYDRA] Launching 30 jobs locally
+[2026-04-09 13:09:07,657][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=bank
+[2026-04-09 13:09:07,808][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bank
+  task: classification
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-09 13:09:07,815][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bank/TNML_F_rg5_init0.1/L3_bd4_seed42
+[2026-04-09 13:09:07,885][utils.tracking][INFO] - Loaded 16586 tracked runs from runs_tracking.csv
+[2026-04-09 13:09:07,887][__main__][INFO] - Loading dataset: bank
+[2026-04-09 13:09:12,560][__main__][INFO] -   Samples: train=31647, val=6782, test=6782
+[2026-04-09 13:09:12,561][__main__][INFO] -   Features: 34 (including bias), Task: classification
+[2026-04-09 13:09:12,561][__main__][INFO] -   Device: cuda
+[2026-04-09 13:09:12,561][__main__][INFO] - Creating model: TNML_F
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28167610: <ntn-tnml-f-bank> in cluster <dcc> Exited
+
+Job <ntn-tnml-f-bank> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Apr  9 13:02:32 2026
+Job was executed on host(s) <4*n-62-11-14>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Thu Apr  9 13:08:56 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN/submit_ntn_tnml> was used as the working directory.
+Started at Thu Apr  9 13:08:56 2026
+Terminated at Thu Apr  9 13:10:13 2026
+Results reported at Thu Apr  9 13:10:13 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-tnml-f-bank
+#BSUB -W 24:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-tnml-f-bank_%J.out
+#BSUB -e logs/ntn-tnml-f-bank_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a && source $HOME/aim && set +a
+
+python run.py --multirun +experiment=uci_ntn_sweep model=tnml_f dataset=bank
+
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   70.00 sec.
+    Max Memory :                                 2000 MB
+    Average Memory :                             1466.67 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                10
+    Run time :                                   77 sec.
+    Turnaround time :                            461 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-tnml-f-bank_28167610.err> for stderr output of this job.
+

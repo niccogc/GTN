@@ -1,0 +1,128 @@
+[2026-04-05 20:12:52,293][HYDRA] Launching 1 jobs locally
+[2026-04-05 20:12:52,293][HYDRA] 	#0 : trainer=ntn model=tnml_p dataset=iris
+[2026-04-05 20:12:52,398][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 6
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-05 20:12:52,404][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/TNML_P_rg5_init0.1/L3_bd6_seed42
+[2026-04-05 20:12:52,464][utils.tracking][INFO] - Loaded 14828 tracked runs from runs_tracking.csv
+[2026-04-05 20:12:52,466][__main__][INFO] - Loading dataset: iris
+[2026-04-05 20:12:53,728][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-05 20:12:53,729][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-05 20:12:53,729][__main__][INFO] -   Device: cuda
+[2026-04-05 20:12:53,729][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 50.44007 | quality: 0.55238
+        | Val:   loss: 63.32854 | quality: 0.40909
+Epoch 1 | Train: loss: 3311185541619254272.00000 | quality: 0.20000
+        | Val:   loss: 6045429434180174848.00000 | quality: 0.13636
+
+Epoch 2 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.68182
+ *
+
+✗ Singular matrix at epoch 3 - stopping training
+[2026-04-05 20:12:54,066][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/TNML_P_rg5_init0.1/L3_bd6_seed42/results.json
+[2026-04-05 20:12:54,066][__main__][WARNING] - ✗ Training failed (singular matrix)
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28144145: <ntn-tnml-p-iris> in cluster <dcc> Done
+
+Job <ntn-tnml-p-iris> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Apr  5 19:49:19 2026
+Job was executed on host(s) <4*n-62-20-12>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Sun Apr  5 20:12:45 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN/submit_ntn_tnml> was used as the working directory.
+Started at Sun Apr  5 20:12:45 2026
+Terminated at Sun Apr  5 20:12:54 2026
+Results reported at Sun Apr  5 20:12:54 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-tnml-p-iris
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-tnml-p-iris_%J.out
+#BSUB -e logs/ntn-tnml-p-iris_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a && source $HOME/aim && set +a
+
+python run.py --multirun trainer=ntn model=tnml_p dataset=iris
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   5.36 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   9 sec.
+    Turnaround time :                            1415 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-tnml-p-iris_28144145.err> for stderr output of this job.
+

@@ -1,0 +1,118 @@
+[2026-04-05 20:19:24,618][HYDRA] Launching 1 jobs locally
+[2026-04-05 20:19:24,619][HYDRA] 	#0 : trainer=ntn model=tnml_f dataset=obesity
+[2026-04-05 20:19:24,725][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 6
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-05 20:19:24,731][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd6_seed42
+[2026-04-05 20:19:24,790][utils.tracking][INFO] - Loaded 14828 tracked runs from runs_tracking.csv
+[2026-04-05 20:19:24,791][__main__][INFO] - Loading dataset: obesity
+[2026-04-05 20:19:26,708][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-05 20:19:26,709][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-05 20:19:26,709][__main__][INFO] -   Device: cuda
+[2026-04-05 20:19:26,709][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.11182 | quality: -2.44051
+        | Val:   loss: 12.57562 | quality: -2.49385
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28144158: <ntn-tnml-f-obesity> in cluster <dcc> Exited
+
+Job <ntn-tnml-f-obesity> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Apr  5 19:49:30 2026
+Job was executed on host(s) <4*n-62-20-12>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Sun Apr  5 20:19:17 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN/submit_ntn_tnml> was used as the working directory.
+Started at Sun Apr  5 20:19:17 2026
+Terminated at Sun Apr  5 20:19:28 2026
+Results reported at Sun Apr  5 20:19:28 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-tnml-f-obesity
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-tnml-f-obesity_%J.out
+#BSUB -e logs/ntn-tnml-f-obesity_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a && source $HOME/aim && set +a
+
+python run.py --multirun trainer=ntn model=tnml_f dataset=obesity
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   5.40 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   11 sec.
+    Turnaround time :                            1798 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-tnml-f-obesity_28144158.err> for stderr output of this job.
+

@@ -1,0 +1,156 @@
+[2026-04-05 20:14:23,006][HYDRA] Launching 1 jobs locally
+[2026-04-05 20:14:23,007][HYDRA] 	#0 : trainer=ntn model=tnml_f dataset=wine
+[2026-04-05 20:14:23,113][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 6
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: wine
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-05 20:14:23,120][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/wine/TNML_F_rg5_init0.1/L3_bd6_seed42
+[2026-04-05 20:14:23,181][utils.tracking][INFO] - Loaded 14828 tracked runs from runs_tracking.csv
+[2026-04-05 20:14:23,182][__main__][INFO] - Loading dataset: wine
+[2026-04-05 20:14:24,564][__main__][INFO] -   Samples: train=124, val=27, test=27
+[2026-04-05 20:14:24,565][__main__][INFO] -   Features: 14 (including bias), Task: classification
+[2026-04-05 20:14:24,565][__main__][INFO] -   Device: cuda
+[2026-04-05 20:14:24,565][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.47144 | quality: 0.31452
+        | Val:   loss: 1.30267 | quality: 0.18519
+Epoch 1 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+ *
+Epoch 2 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 3 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 4 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 5 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 6 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 7 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 8 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 9 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 10 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+Epoch 11 | Train: loss: 1.09861 | quality: 0.32258
+        | Val:   loss: 1.09861 | quality: 0.37037
+
+
+⏸ Early stopping at epoch 11 (best was epoch 1)
+[2026-04-05 20:14:26,203][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/wine/TNML_F_rg5_init0.1/L3_bd6_seed42/results.json
+[2026-04-05 20:14:26,204][__main__][INFO] - ✓ Train Accuracy: 0.3226
+[2026-04-05 20:14:26,204][__main__][INFO] - ✓ Val Accuracy: 0.3704
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28144148: <ntn-tnml-f-wine> in cluster <dcc> Done
+
+Job <ntn-tnml-f-wine> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sun Apr  5 19:49:20 2026
+Job was executed on host(s) <4*n-62-20-12>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Sun Apr  5 20:14:16 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN/submit_ntn_tnml> was used as the working directory.
+Started at Sun Apr  5 20:14:16 2026
+Terminated at Sun Apr  5 20:14:27 2026
+Results reported at Sun Apr  5 20:14:27 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpuv100
+#BSUB -J ntn-tnml-f-wine
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-tnml-f-wine_%J.out
+#BSUB -e logs/ntn-tnml-f-wine_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a && source $HOME/aim && set +a
+
+python run.py --multirun trainer=ntn model=tnml_f dataset=wine
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   6.70 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   11 sec.
+    Turnaround time :                            1507 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-tnml-f-wine_28144148.err> for stderr output of this job.
+

@@ -1,0 +1,40 @@
+Error executing job with overrides: ['model.L=3', 'model.bond_dim=4', 'seed=42', 'trainer.ridge=5', 'trainer.ridge_decay=0.25', 'trainer.ridge_min=0.0001', '+experiment=uci_ntn_sweep', 'model=tnml_p', 'dataset=ai4i']
+Traceback (most recent call last):
+  File "/zhome/6b/e/212868/GTN/run.py", line 674, in main
+    result = run_ntn(cfg, model, data, output_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/run.py", line 322, in run_ntn
+    scores_train, scores_val = ntn.fit(
+                               ^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 973, in fit
+    self.update_tn_node_optimum(node_tag, regularize, jitter[epoch])
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 847, in update_tn_node_optimum
+    optimal_tensor = self._get_node_optimum_regression(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 628, in _get_node_optimum_regression
+    result = (result & qt.Tensor(data=torch.ones(1), inds=[out_ind])).contract()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/tensor_core.py", line 8922, in contract
+    return tensor_contract(
+           ^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/tensor_core.py", line 319, in tensor_contract
+    data_out = array_contract(
+               ^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/contraction.py", line 285, in array_contract
+    return ctg.array_contract(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/cotengra/interface.py", line 864, in array_contract
+    return expr(*arrays, backend=backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/cotengra/contract.py", line 784, in __call__
+    p_array = _tensordot(l_array, r_array, arg)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/autoray/autoray.py", line 2574, in numpy_like
+    return fn(a, b, dims=axes)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/torch/functional.py", line 1358, in tensordot
+    return _VF.tensordot(a, b, dims_a, dims_b)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Expected all tensors to be on the same device, but got mat2 is on cpu, different from other tensors on cuda:0 (when checking argument in method wrapper_CUDA_mm)
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
