@@ -1,0 +1,32 @@
+# Main Hydra configuration for CMPO2/CMPO3 image experiments
+#
+# Usage:
+#   python run.py                                    # defaults (CMPO2, MNIST, GTN)
+#   python run.py model=cmpo3 dataset=cifar10        # override model/dataset
+#   python run.py trainer=ntn                        # use NTN trainer
+#   python run.py trainer.lr=0.001                   # custom learning rate
+#   python run.py --multirun model.L=3,4             # sweep L (sites)
+#   python run.py --multirun seed=42,7,123           # multi-seed
+#   python run.py data_dir=/path/to/data             # custom data directory
+
+defaults:
+  - model: cmpo2
+  - dataset: mnist
+  - trainer: gtn
+  - _self_
+
+# Experiment settings
+seed: 42
+experiment_name: ${model.name}_${dataset.name}
+skip_completed: true
+data_dir: null
+
+# Hydra output configuration
+hydra:
+  run:
+    dir: outputs/${trainer.type}/${dataset.name}/${model.name}_np${model.n_patches}_L${model.L}_rp${model.rank_pixel}_rpa${model.rank_patch}_${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: outputs/${trainer.type}/${dataset.name}/${model.name}
+    subdir: np${model.n_patches}_L${model.L}_rp${model.rank_pixel}_rpa${model.rank_patch}_seed${seed}
+  job:
+    chdir: false
