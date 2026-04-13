@@ -334,6 +334,7 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         )
         success = True
         singular = ntn.singular_encountered
+
     except SingularMatrixError:
         success = False
         singular = True
