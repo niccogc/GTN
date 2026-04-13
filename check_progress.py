@@ -9,11 +9,14 @@ Usage:
     python check_progress.py --verbose    # Show all incomplete experiments
     python check_progress.py --missing    # List all missing run paths
     python check_progress.py --json       # Output as JSON
+    python check_progress.py --oom        # Deep OOM analysis with parameter breakdowns
+    python check_progress.py --oom-detail # Show all OOM run paths
 """
 
 import argparse
 import json
 import os
+import re
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -323,8 +326,13 @@ def count_runs_for_model(model: str) -> int:
     return base_runs
 
 
-def check_result(result_path: Path) -> dict:
-    """Check a results.json file and return status info."""
+def check_result(result_path: Path, include_full_data: bool = False) -> dict:
+    """Check a results.json file and return status info.
+
+    Args:
+        result_path: Path to results.json
+        include_full_data: If True, include full config and gpu_memory data
+    """
     if not result_path.exists():
         return {
             "status": "missing",
@@ -336,13 +344,18 @@ def check_result(result_path: Path) -> dict:
     try:
         with open(result_path) as f:
             data = json.load(f)
-        return {
+        result = {
             "status": "completed",
             "success": data.get("success", False),
             "singular": data.get("singular", False),
             "oom_error": data.get("oom_error", False),
             "val_quality": data.get("val_quality"),
         }
+        if include_full_data:
+            result["config"] = data.get("config", {})
+            result["gpu_memory"] = data.get("gpu_memory", {})
+            result["dataset_info"] = data.get("dataset_info", {})
+        return result
     except (json.JSONDecodeError, KeyError):
         return {
             "status": "corrupted",
@@ -556,6 +569,347 @@ def collect_stats():
             "failed": total_failed,
         },
     }
+
+
+def collect_oom_details() -> list[dict]:
+    """Collect detailed information about all OOM runs by reading results.json files."""
+    oom_details = []
+
+    for model in MODELS:
+        expected_subdirs = get_expected_subdirs(model)
+
+        for dataset in DATASETS:
+            for trainer in TRAINERS:
+                exp_dir = get_experiment_path(model, dataset, trainer)
+
+                for subdir in expected_subdirs:
+                    result_path = exp_dir / subdir / "results.json"
+                    result = check_result(result_path, include_full_data=True)
+
+                    if result.get("oom_error"):
+                        params = parse_subdir_params(subdir)
+                        detail = {
+                            "path": str(exp_dir / subdir),
+                            "model": model,
+                            "dataset": dataset,
+                            "trainer": trainer,
+                            "size": DATASET_SIZES.get(dataset, "unknown"),
+                            **params,
+                        }
+
+                        gpu_mem = result.get("gpu_memory", {})
+                        if gpu_mem:
+                            after = gpu_mem.get("after", {})
+                            detail["peak_gb"] = after.get("peak_allocated_gb")
+                            detail["total_gpu_gb"] = after.get("total_gb")
+                            detail["device"] = after.get("device_name", "unknown")
+
+                        ds_info = result.get("dataset_info", {})
+                        if ds_info:
+                            detail["n_features"] = ds_info.get("n_features")
+                            detail["n_train"] = ds_info.get("n_train")
+
+                        oom_details.append(detail)
+
+    return oom_details
+
+
+def parse_subdir_params(subdir: str) -> dict:
+    """Parse L, bond_dim, seed, rf from subdir name like L4_bd12_seed47311_rf0.3_bondmpo1."""
+    params = {}
+
+    for pattern, key, conv in [
+        (r"L(\d+)", "L", int),
+        (r"bd(\d+)", "bond_dim", int),
+        (r"seed(\d+)", "seed", int),
+        (r"rf([\d.]+)", "reduction_factor", float),
+    ]:
+        m = re.search(pattern, subdir)
+        if m:
+            params[key] = conv(m.group(1))
+
+    return params
+
+
+def generate_oom_report(oom_details: list[dict], show_all_paths: bool = False) -> str:
+    """Generate detailed OOM analysis report."""
+    lines = []
+
+    def out(text: str = ""):
+        lines.append(text)
+
+    if not oom_details:
+        out("No OOM errors found.")
+        return "\n".join(lines)
+
+    out("=" * 100)
+    out("                           CUDA OUT OF MEMORY ANALYSIS")
+    out("=" * 100)
+    out()
+    out(f"Total OOM runs: {len(oom_details)}")
+    out()
+
+    # =========================================================================
+    # BY MODEL
+    # =========================================================================
+    out("OOM BY MODEL")
+    out("-" * 100)
+    by_model = defaultdict(list)
+    for d in oom_details:
+        by_model[d["model"]].append(d)
+
+    for model in MODELS:
+        count = len(by_model.get(model, []))
+        if count > 0:
+            pct = count / len(oom_details) * 100
+            out(f"  {model:<15s}: {count:4d} ({pct:5.1f}%)")
+    out()
+
+    # =========================================================================
+    # BY DATASET SIZE
+    # =========================================================================
+    out("OOM BY DATASET SIZE")
+    out("-" * 100)
+    by_size = defaultdict(list)
+    for d in oom_details:
+        by_size[d["size"]].append(d)
+
+    for size in SIZES:
+        count = len(by_size.get(size, []))
+        if count > 0:
+            pct = count / len(oom_details) * 100
+            out(f"  {size:<10s}: {count:4d} ({pct:5.1f}%)")
+    out()
+
+    # =========================================================================
+    # BY BOND_DIM
+    # =========================================================================
+    out("OOM BY BOND DIMENSION")
+    out("-" * 100)
+    by_bd = defaultdict(list)
+    for d in oom_details:
+        bd = d.get("bond_dim", "unknown")
+        by_bd[bd].append(d)
+
+    for bd in sorted(by_bd.keys(), key=lambda x: (isinstance(x, str), x)):
+        count = len(by_bd[bd])
+        pct = count / len(oom_details) * 100
+        out(f"  bond_dim={bd:<3}: {count:4d} ({pct:5.1f}%)")
+    out()
+
+    # =========================================================================
+    # BY L (number of sites)
+    # =========================================================================
+    out("OOM BY NUMBER OF SITES (L)")
+    out("-" * 100)
+    by_L = defaultdict(list)
+    for d in oom_details:
+        L = d.get("L", "unknown")
+        by_L[L].append(d)
+
+    for L in sorted(by_L.keys(), key=lambda x: (isinstance(x, str), x)):
+        count = len(by_L[L])
+        pct = count / len(oom_details) * 100
+        out(f"  L={L}: {count:4d} ({pct:5.1f}%)")
+    out()
+
+    # =========================================================================
+    # BY DATASET
+    # =========================================================================
+    out("OOM BY DATASET")
+    out("-" * 100)
+    by_dataset = defaultdict(list)
+    for d in oom_details:
+        by_dataset[d["dataset"]].append(d)
+
+    sorted_datasets = sorted(by_dataset.items(), key=lambda x: -len(x[1]))
+    for dataset, items in sorted_datasets:
+        size = DATASET_SIZES.get(dataset, "?")
+        count = len(items)
+        pct = count / len(oom_details) * 100
+        out(f"  {dataset:<18s} ({size:<6s}): {count:4d} ({pct:5.1f}%)")
+    out()
+
+    # =========================================================================
+    # CROSS-ANALYSIS: MODEL x BOND_DIM
+    # =========================================================================
+    out("OOM HEATMAP: MODEL x BOND_DIM")
+    out("-" * 100)
+
+    all_bds = sorted(
+        set(d.get("bond_dim", 0) for d in oom_details if d.get("bond_dim"))
+    )
+    header = f"{'Model':<15s}"
+    for bd in all_bds:
+        header += f" | bd={bd:<3d}"
+    header += " | Total"
+    out(header)
+    out("-" * len(header))
+
+    for model in MODELS:
+        model_ooms = by_model.get(model, [])
+        if not model_ooms:
+            continue
+
+        row = f"{model:<15s}"
+        for bd in all_bds:
+            count = sum(1 for d in model_ooms if d.get("bond_dim") == bd)
+            row += f" | {count:>6d}" if count > 0 else " |      -"
+        row += f" | {len(model_ooms):>5d}"
+        out(row)
+    out()
+
+    # =========================================================================
+    # CROSS-ANALYSIS: DATASET x MODEL (top offenders)
+    # =========================================================================
+    out("TOP OOM COMBINATIONS (Dataset x Model)")
+    out("-" * 100)
+
+    combo_counts = defaultdict(int)
+    for d in oom_details:
+        key = (d["dataset"], d["model"])
+        combo_counts[key] += 1
+
+    sorted_combos = sorted(combo_counts.items(), key=lambda x: -x[1])[:20]
+    for (dataset, model), count in sorted_combos:
+        size = DATASET_SIZES.get(dataset, "?")
+        out(f"  {dataset:<18s} + {model:<15s} ({size}): {count:4d}")
+    out()
+
+    # =========================================================================
+    # PARAMETER CORRELATION ANALYSIS
+    # =========================================================================
+    out("OOM PARAMETER PATTERNS")
+    out("-" * 100)
+
+    l4_count = sum(1 for d in oom_details if d.get("L") == 4)
+    l3_count = sum(1 for d in oom_details if d.get("L") == 3)
+    out(f"  L=4 vs L=3: {l4_count} vs {l3_count}")
+
+    high_bd = sum(1 for d in oom_details if d.get("bond_dim", 0) >= 12)
+    low_bd = sum(1 for d in oom_details if d.get("bond_dim", 0) < 12)
+    out(f"  bond_dim >= 12 vs < 12: {high_bd} vs {low_bd}")
+
+    large_count = sum(1 for d in oom_details if d.get("size") == "large")
+    other_count = len(oom_details) - large_count
+    out(f"  Large datasets vs others: {large_count} vs {other_count}")
+
+    lmpo2_ooms = [d for d in oom_details if "LMPO2" in d["model"]]
+    if lmpo2_ooms:
+        out()
+        out("  LMPO2 reduction_factor breakdown:")
+        by_rf = defaultdict(int)
+        for d in lmpo2_ooms:
+            rf = d.get("reduction_factor", "unknown")
+            by_rf[rf] += 1
+        for rf, count in sorted(
+            by_rf.items(), key=lambda x: (isinstance(x[0], str), x[0])
+        ):
+            out(f"    rf={rf}: {count}")
+    out()
+
+    # =========================================================================
+    # GPU MEMORY ANALYSIS
+    # =========================================================================
+    peak_gbs: list[float] = [
+        d["peak_gb"]
+        for d in oom_details
+        if d.get("peak_gb") is not None and isinstance(d["peak_gb"], (int, float))
+    ]
+    if peak_gbs:
+        out("GPU PEAK MEMORY AT OOM")
+        out("-" * 100)
+        out(f"  Samples with peak_gb data: {len(peak_gbs)}")
+        out(f"  Min peak: {min(peak_gbs):.2f} GB")
+        out(f"  Max peak: {max(peak_gbs):.2f} GB")
+        out(f"  Avg peak: {sum(peak_gbs) / len(peak_gbs):.2f} GB")
+
+        by_device = defaultdict(list)
+        for d in oom_details:
+            if d.get("peak_gb") is not None:
+                by_device[d.get("device", "unknown")].append(d["peak_gb"])
+
+        if len(by_device) > 1:
+            out()
+            out("  By GPU device:")
+            for device, peaks in sorted(by_device.items()):
+                out(
+                    f"    {device}: avg={sum(peaks) / len(peaks):.2f} GB, n={len(peaks)}"
+                )
+        out()
+
+    # =========================================================================
+    # FEATURE COUNT ANALYSIS
+    # =========================================================================
+    n_features_list = [d.get("n_features") for d in oom_details if d.get("n_features")]
+    if n_features_list:
+        out("OOM BY FEATURE COUNT")
+        out("-" * 100)
+
+        by_features = defaultdict(int)
+        for d in oom_details:
+            nf = d.get("n_features")
+            if nf:
+                by_features[nf] += 1
+
+        sorted_features = sorted(by_features.items(), key=lambda x: -x[1])[:10]
+        for nf, count in sorted_features:
+            pct = count / len(oom_details) * 100
+            out(f"  n_features={nf:<3d}: {count:4d} ({pct:5.1f}%)")
+        out()
+
+    # =========================================================================
+    # ACTIONABLE INSIGHTS
+    # =========================================================================
+    out("=" * 100)
+    out("ACTIONABLE INSIGHTS")
+    out("=" * 100)
+    out()
+
+    if sorted_combos:
+        worst_combo = sorted_combos[0]
+        out(
+            f"1. WORST COMBO: {worst_combo[0][0]} + {worst_combo[0][1]} ({worst_combo[1]} OOMs)"
+        )
+        out(
+            f"   → Consider reducing bond_dim or using gradient checkpointing for this combo"
+        )
+        out()
+
+    if l4_count > l3_count * 2:
+        out(f"2. L=4 DOMINATES: {l4_count} OOMs vs {l3_count} for L=3")
+        out("   → Memory scales exponentially with L; consider L=3 for large datasets")
+        out()
+
+    if high_bd > low_bd * 2:
+        out(f"3. HIGH BOND_DIM DOMINATES: {high_bd} OOMs for bd>=12")
+        out("   → Reduce bond_dim for memory-constrained runs")
+        out()
+
+    if large_count > other_count:
+        out(
+            f"4. LARGE DATASETS DOMINATE: {large_count} OOMs ({large_count / len(oom_details) * 100:.1f}%)"
+        )
+        out("   → Large datasets need smaller models or more GPU memory")
+        out()
+
+    # =========================================================================
+    # ALL OOM PATHS (if requested)
+    # =========================================================================
+    if show_all_paths:
+        out()
+        out("=" * 100)
+        out("ALL OOM RUN PATHS")
+        out("=" * 100)
+        for d in sorted(
+            oom_details, key=lambda x: (x["model"], x["dataset"], x.get("bond_dim", 0))
+        ):
+            bd = d.get("bond_dim", "?")
+            L = d.get("L", "?")
+            out(f"  {d['path']}  (L={L}, bd={bd})")
+        out()
+
+    return "\n".join(lines)
 
 
 def generate_report(data: dict, verbose: bool = False) -> str:
@@ -1066,7 +1420,30 @@ def main():
     parser.add_argument(
         "--no-readme", action="store_true", help="Don't write README.md file"
     )
+    parser.add_argument(
+        "--oom", action="store_true", help="Deep OOM analysis with parameter breakdowns"
+    )
+    parser.add_argument(
+        "--oom-detail",
+        action="store_true",
+        help="Show all OOM run paths (implies --oom)",
+    )
+    parser.add_argument(
+        "--oom-json", action="store_true", help="Output OOM details as JSON"
+    )
     args = parser.parse_args()
+
+    if args.oom or args.oom_detail or args.oom_json:
+        print("Scanning for OOM runs...", file=sys.stderr)
+        oom_details = collect_oom_details()
+
+        if args.oom_json:
+            print(json.dumps(oom_details, indent=2))
+            return
+
+        report = generate_oom_report(oom_details, show_all_paths=args.oom_detail)
+        print(report)
+        return
 
     data = collect_stats()
     stats = data["stats"]
@@ -1074,7 +1451,6 @@ def main():
     totals = data["totals"]
 
     if args.json:
-        # JSON output mode
         output = {
             "totals": totals,
             "by_model": dict(stats["by_model"]),
@@ -1088,19 +1464,16 @@ def main():
         return
 
     if args.missing:
-        # Just print missing runs
         try:
             for run in sorted(missing_runs):
                 print(run)
         except BrokenPipeError:
-            pass  # Handle piping to head/less gracefully
+            pass
         return
 
-    # Generate and print report
     report = generate_report(data, verbose=args.verbose)
     print(report)
 
-    # Write README.md unless disabled
     if not args.no_readme:
         write_readme(data, verbose=args.verbose)
         print("README.md updated.")
