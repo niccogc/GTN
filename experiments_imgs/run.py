@@ -71,7 +71,7 @@ def evaluate(model: nn.Module, loader, criterion) -> tuple[float, float]:
 
     with torch.no_grad():
         for batch_data, batch_target in loader:
-            batch_data, batch_target = batch_data.to(DEVICE), batch_target.to(DEVICE)
+            batch_data, batch_target = batch_data, batch_target
             output = model(batch_data)
             loss = criterion(output, batch_target)
             total_loss += loss.item() * batch_data.size(0)
