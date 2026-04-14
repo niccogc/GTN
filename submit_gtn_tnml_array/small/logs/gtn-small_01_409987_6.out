@@ -1,0 +1,59 @@
+Node: comp-gpu01
+Array Job ID: 409987, Task ID: 6
+Start: 2026-04-05-19:37:26
+Running: model=tnml_f dataset=iris
+[2026-04-05 19:37:33,517][HYDRA] Launching 1 jobs locally
+[2026-04-05 19:37:33,517][HYDRA] 	#0 : trainer=gtn model=tnml_f dataset=iris
+[2026-04-05 19:37:33,655][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 6
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: gtn
+  n_epochs: 1000
+  lr: 0.005
+  optimizer: adamw
+  ridge: 0.005
+  loss_fn: null
+  patience: 100
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-05 19:37:33,658][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/gtn/iris/TNML_F_rg0.005_init0.1/L3_bd6_seed42
+[2026-04-05 19:37:33,732][utils.tracking][INFO] - Loaded 14828 tracked runs from runs_tracking.csv
+[2026-04-05 19:37:33,734][__main__][INFO] - Loading dataset: iris
+[2026-04-05 19:37:35,215][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-05 19:37:35,215][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-05 19:37:35,215][__main__][INFO] -   Device: cuda
+[2026-04-05 19:37:35,216][__main__][INFO] - Creating model: TNML_F
+[2026-04-05 19:37:39,035][__main__][INFO] - Early stopping at epoch 262 (no improvement for 100 epochs)
+[2026-04-05 19:37:39,043][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/gtn/iris/TNML_F_rg0.005_init0.1/L3_bd6_seed42/results.json
+[2026-04-05 19:37:39,043][__main__][INFO] - ✓ Train Accuracy: 0.8571
+[2026-04-05 19:37:39,043][__main__][INFO] - ✓ Val Accuracy: 0.9091
+Done: 2026-04-05-19:37:40
