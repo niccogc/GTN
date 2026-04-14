@@ -255,7 +255,6 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     reset_gpu_memory_stats()
     gpu_info_before = get_gpu_memory_info()
 
-    # Create NTN trainer
     if is_typei:
         ntn = NTN_Ensemble(
             tns=model.tns,

@@ -17,7 +17,8 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from experiments_imgs.image_dataset_loader import load_image_dataset
 from experiments_imgs.models import CMPO2, CMPO3, CMPO2_GTN, CMPO3_GTN
-from utils.device_utils import DEVICE, move_tn_to_device
+from utils.device_utils import DEVICE, move_data_to_device, move_tn_to_device
+
 
 torch.set_default_dtype(torch.float64)
 log = logging.getLogger(__name__)
@@ -370,6 +371,8 @@ def main(cfg: DictConfig):
         data_dir=data_dir,
         bias=True,
     )
+
+    data = move_data_to_device(data)
 
     log.info(
         f"  Train: {dataset_info['n_train']}, Val: {dataset_info['n_val']}, Test: {dataset_info['n_test']}"
