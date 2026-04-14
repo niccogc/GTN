@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-TARGET="/home/nicci/Desktop/remote/GTN/outputs"
+REL_TARGET="outputs"
+TARGET="/home/nicci/Desktop/remote/GTN/$REL_TARGET"
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
@@ -14,7 +15,7 @@ sync_host () {
 
   echo "Fetching from $HOST..."
 
-  ssh "$HOST" 'tar -I zstd -cf - -C ~/GTN outputs' \
+  ssh "$HOST" tar -I zstd -cf - -C ~/GTN "$REL_TARGET" \
     | tar -I zstd -xf - -C "$TMPDIR"
 
   echo "Merging from $HOST..."

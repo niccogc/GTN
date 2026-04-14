@@ -866,6 +866,7 @@ class NTN:
         min_delta=0.0,
         adaptive_jitter=False,
         train_selection=False,
+        full_sweep_order=None,
     ):
         """
         Main training loop (Alternating Least Squares / Newton Sweep).
@@ -915,10 +916,11 @@ class NTN:
 
         if not isinstance(jitter, list):
             jitter = [jitter] * n_epochs
-        trainable_nodes = self._get_trainable_nodes()
+        if full_sweep_order is None:
+            trainable_nodes = self._get_trainable_nodes()
 
-        back_sweep = trainable_nodes[-2:0:-1]
-        full_sweep_order = trainable_nodes + back_sweep
+            back_sweep = trainable_nodes[-2:0:-1]
+            full_sweep_order = trainable_nodes + back_sweep
 
         if verbose:
             print(f"Starting Fit: {n_epochs} epochs.")

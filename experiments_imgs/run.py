@@ -11,6 +11,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from omegaconf import DictConfig, OmegaConf
+from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -184,17 +185,8 @@ def run_gtn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> 
 def create_inputs_cmpo(X, y, input_labels, output_labels, batch_size, n_patches):
     from model.builder import Inputs
 
-    n_samples = X.shape[0]
-    L = len(input_labels)
-
-    inputs_list = []
-    for i in range(L):
-        site_idx = i % n_patches
-        patch_data = X[:, site_idx, :]
-        inputs_list.append(patch_data)
-
     return Inputs(
-        inputs=inputs_list,
+        inputs=[X],
         outputs=[y],
         outputs_labels=output_labels,
         input_labels=input_labels,
@@ -261,6 +253,15 @@ def run_ntn(cfg: DictConfig, cmpo_model, data: dict, output_dir: Path) -> dict:
         metrics_log.append(metrics)
 
     try:
+        trainable_nodes = ntn._get_trainable_nodes()
+        groups = defaultdict(list)
+        for node in trainable_nodes:
+            groups[int(node.split('_')[0])].append(node)
+
+        indices = sorted(groups.keys())
+        sequence = indices + indices[-2:0:-1]
+
+        ordered_list = [node for i in sequence for node in groups[i]]
         scores_train, scores_val = ntn.fit(
             n_epochs=n_epochs,
             regularize=True,
@@ -273,6 +274,7 @@ def run_ntn(cfg: DictConfig, cmpo_model, data: dict, output_dir: Path) -> dict:
             patience=cfg.trainer.patience,
             min_delta=cfg.trainer.min_delta,
             train_selection=cfg.trainer.train_selection,
+            full_sweep_order=ordered_list,
         )
         success = True
         singular = ntn.singular_encountered
