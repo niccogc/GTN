@@ -14,7 +14,7 @@ from omegaconf import DictConfig, OmegaConf
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from experiments_images.image_dataset_loader import load_image_dataset
+from experiments_imgs.image_dataset_loader import load_image_dataset
 from experiments_imgs.models import CMPO2, CMPO3, CMPO2_GTN, CMPO3_GTN
 from utils.device_utils import DEVICE, move_tn_to_device
 
@@ -26,8 +26,9 @@ def create_cmpo2(cfg: DictConfig, dataset_info: dict) -> CMPO2:
     return CMPO2(
         L=cfg.model.L,
         pixel_dim=dataset_info["pixels_per_patch"],
-        patch_dim=cfg.model.n_patches,
-        bond_dim=cfg.model.rank_pixel,
+        patch_dim=dataset_info["n_patches"],
+        pixel_bond_dim=cfg.model.rank_pixel,
+        patch_bond_dim=cfg.model.rank_patch,
         output_dim=dataset_info["n_classes"],
         init_strength=cfg.model.init_strength,
     )
@@ -38,9 +39,10 @@ def create_cmpo3(cfg: DictConfig, dataset_info: dict) -> CMPO3:
         L=cfg.model.L,
         channel_dim=dataset_info["n_channels"],
         pixel_dim=dataset_info["pixels_per_patch"],
-        patch_dim=cfg.model.n_patches,
-        rank_channel=cfg.model.rank_channel,
-        bond_dim=cfg.model.rank_pixel,
+        patch_dim=dataset_info["n_patches"],
+        channel_bond_dim=cfg.model.rank_channel,
+        pixel_bond_dim=cfg.model.rank_pixel,
+        patch_bond_dim=cfg.model.rank_patch,
         output_dim=dataset_info["n_classes"],
         init_strength=cfg.model.init_strength,
     )
@@ -225,6 +227,7 @@ def run_ntn(cfg: DictConfig, cmpo_model, data: dict, output_dir: Path) -> dict:
         batch_size,
         n_patches,
     )
+
     loader_val = create_inputs_cmpo(
         data["X_val"],
         data["y_val"],
@@ -363,6 +366,7 @@ def main(cfg: DictConfig):
         n_test=n_test,
         model_type=model_type,
         data_dir=data_dir,
+        bias=True,
     )
 
     log.info(

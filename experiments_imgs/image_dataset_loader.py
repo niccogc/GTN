@@ -8,6 +8,7 @@ Loads MNIST, FASHION_MNIST, CIFAR10, CIFAR100 and preprocesses into
 import os
 import torch
 import numpy as np
+import torch.nn.functional as F
 from torch.utils.data import DataLoader, Subset, random_split
 from torchvision import datasets, transforms
 from typing import Tuple, Dict, Any, Optional
@@ -116,7 +117,6 @@ def preprocess_for_cmpo3(
 
     return X.to(device), y.to(device)
 
-
 def load_image_dataset(
     dataset_name: str,
     n_patches: int = 4,
@@ -128,6 +128,7 @@ def load_image_dataset(
     device: str = "cpu",
     data_dir: Optional[str] = None,
     model_type: str = "cmpo2",
+    bias: bool = True,
 ) -> Tuple[Dict[str, torch.Tensor], Dict[str, Any]]:
     if data_dir is None:
         data_dir = os.path.join(os.path.expanduser("~"), "data")
@@ -213,6 +214,15 @@ def load_image_dataset(
             test_images, test_labels, n_patches, pixels_per_patch, n_classes, device
         )
 
+    if bias:
+        X_train = pad_and_corner_one(X_train)
+        X_val = pad_and_corner_one(X_val)
+        X_test = pad_and_corner_one(X_test)
+        n_patches += 1
+        pixels_per_patch += 1
+        n_channels += 1
+
+        
     data = {
         "X_train": X_train,
         "y_train": y_train,
@@ -252,6 +262,11 @@ def get_valid_patch_configs(dataset_name: str):
             configs.append((n_patches, pixels_per_patch))
     return configs
 
+
+def pad_and_corner_one(x):
+    x_pad = F.pad(x, (0,1) * (x.dim() - 1))
+    x_pad[(slice(None),) + (-1,) * (x.dim() - 1)] = 1
+    return x_pad
 
 if __name__ == "__main__":
     for ds in ["MNIST", "CIFAR10"]:

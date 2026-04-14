@@ -10,7 +10,8 @@ class CMPO2:
         L: int,
         pixel_dim: int,
         patch_dim: int,
-        bond_dim: int,
+        pixel_bond_dim: int,
+        patch_bond_dim: int,
         output_dim: int,
         init_strength: float = 0.01,
     ):
@@ -19,8 +20,8 @@ class CMPO2:
         self.patch_dim = patch_dim
         self.output_dim = output_dim
 
-        psi = qt.MPS_rand_state(L, bond_dim=bond_dim, phys_dim=pixel_dim)
-        phi = qt.MPS_rand_state(L, bond_dim=bond_dim, phys_dim=patch_dim)
+        psi = qt.MPS_rand_state(L, bond_dim=pixel_bond_dim, phys_dim=pixel_dim)
+        phi = qt.MPS_rand_state(L, bond_dim=patch_bond_dim, phys_dim=patch_dim)
 
         output_node = psi[f"I{L - 1}"]
         output_node.new_ind(
@@ -55,8 +56,9 @@ class CMPO3:
         channel_dim: int,
         pixel_dim: int,
         patch_dim: int,
-        rank_channel: int,
-        bond_dim: int,
+        channel_bond_dim: int,
+        pixel_bond_dim: int,
+        patch_bond_dim: int,
         output_dim: int,
         init_strength: float = 0.01,
     ):
@@ -66,9 +68,9 @@ class CMPO3:
         self.patch_dim = patch_dim
         self.output_dim = output_dim
 
-        chi = qt.MPS_rand_state(L, bond_dim=rank_channel, phys_dim=channel_dim)
-        psi = qt.MPS_rand_state(L, bond_dim=bond_dim, phys_dim=pixel_dim)
-        phi = qt.MPS_rand_state(L, bond_dim=bond_dim, phys_dim=patch_dim)
+        chi = qt.MPS_rand_state(L, bond_dim=channel_bond_dim, phys_dim=channel_dim)
+        psi = qt.MPS_rand_state(L, bond_dim=pixel_bond_dim, phys_dim=pixel_dim)
+        phi = qt.MPS_rand_state(L, bond_dim=patch_bond_dim, phys_dim=patch_dim)
 
         output_node = chi[f"I{L - 1}"]
         output_node.new_ind(
@@ -121,24 +123,12 @@ class CMPO2_GTN(nn.Module):
 
         tn_params = {int(i): p for i, p in self.torch_params.items()}
         weights = qt.unpack(tn_params, self.skeleton)
-
+        
         input_nodes = []
         for i in range(self.L):
             _, (patch_idx, pixel_idx) = self.input_labels[i]
-            site_idx = i % n_patches
-
-            pixel_data = x[:, site_idx, :]
-            t_pixel = qt.Tensor(pixel_data, inds=["s", pixel_idx], tags=f"In_pixel_{i}")
-            input_nodes.append(t_pixel)
-
-            patch_one_hot = torch.zeros(
-                batch_size, n_patches, dtype=x.dtype, device=x.device
-            )
-            patch_one_hot[:, site_idx] = 1.0
-            t_patch = qt.Tensor(
-                patch_one_hot, inds=["s", patch_idx], tags=f"In_patch_{i}"
-            )
-            input_nodes.append(t_patch)
+            input_node = qt.Tensor(x, inds=["s", patch_idx, pixel_idx], tags=f"Input_{i}")
+            input_nodes.append(input_node)
 
         input_tn = qt.TensorNetwork(input_nodes)
         full_tn = weights & input_tn
@@ -167,28 +157,8 @@ class CMPO3_GTN(nn.Module):
         input_nodes = []
         for i in range(self.L):
             _, (patch_idx, pixel_idx, channel_idx) = self.input_labels[i]
-            site_idx = i % n_patches
-
-            data = x[:, site_idx, :, :]
-
-            pixel_data = data.mean(dim=-1)
-            t_pixel = qt.Tensor(pixel_data, inds=["s", pixel_idx], tags=f"In_pixel_{i}")
-            input_nodes.append(t_pixel)
-
-            channel_data = data.mean(dim=-2)
-            t_channel = qt.Tensor(
-                channel_data, inds=["s", channel_idx], tags=f"In_channel_{i}"
-            )
-            input_nodes.append(t_channel)
-
-            patch_one_hot = torch.zeros(
-                batch_size, n_patches, dtype=x.dtype, device=x.device
-            )
-            patch_one_hot[:, site_idx] = 1.0
-            t_patch = qt.Tensor(
-                patch_one_hot, inds=["s", patch_idx], tags=f"In_patch_{i}"
-            )
-            input_nodes.append(t_patch)
+            input_node = qt.Tensor(x, inds=["s", patch_idx, pixel_idx, channel_idx], tags=f"Input_{i}")
+            input_nodes.append(input_node)
 
         input_tn = qt.TensorNetwork(input_nodes)
         full_tn = weights & input_tn
