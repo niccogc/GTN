@@ -127,7 +127,7 @@ def run_gtn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> 
         train_loss = 0.0
 
         for batch_data, batch_target in train_loader:
-            batch_data, batch_target = batch_data.to(DEVICE), batch_target.to(DEVICE)
+            batch_data, batch_target = batch_data, batch_target
             optimizer.zero_grad()
             output = model(batch_data)
             loss = criterion(output, batch_target)
@@ -422,7 +422,6 @@ def main(cfg: DictConfig):
     log.info(f"Test Accuracy: {result['test_accuracy']:.4f}")
 
     return result["test_accuracy"]
-
 
 if __name__ == "__main__":
     main()
