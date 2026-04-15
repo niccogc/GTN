@@ -1,0 +1,203 @@
+================================================================================
+                    NTN OPTIMIZATION COMPARISON: GTN vs TNOld
+                              EXECUTIVE SUMMARY
+================================================================================
+
+CRITICAL ALGORITHMIC DIFFERENCES:
+
+1. RIDGE/JITTER APPLICATION (Most Important!)
+   ─────────────────────────────────────────
+   GTN:    Unscaled ridge
+           - Computes scale = mean(|diag(H)|) but IGNORES it
+           - Applies: H' = H + 2*jitter*I (constant regularization)
+           - Problem: Regularization strength is independent of Hessian magnitude
+   
+   TNOld:  Scaled ridge
+           - Computes scale = mean(|diag(A)|) and USES it
+           - Normalizes: A' = A/scale, b' = b/scale
+           - Applies: A'' = A' + 2*eps*I (adaptive regularization)
+           - Benefit: Regularization strength scales with Hessian conditioning
+
+   IMPACT: TNOld is more numerically stable for ill-conditioned Hessians
+
+
+2. SWEEP ORDER
+   ───────────
+   GTN:    Asymmetric sweep
+           Forward:  [0, 1, 2, 3]
+           Backward: [2, 1]
+           Full:     [0, 1, 2, 3, 2, 1]
+           
+           Updates: Node0(1x), Node1(2x), Node2(2x), Node3(1x)
+           - Boundary nodes updated once
+           - Interior nodes updated twice
+           - Faster per-epoch (N + N-1 updates)
+   
+   TNOld:  Symmetric sweep
+           L2R:      [0, 1, 2, 3]
+           R2L:      [3, 2, 1, 0]
+           Full:     [0, 1, 2, 3, 3, 2, 1, 0]
+           
+           Updates: All nodes updated twice (2N updates)
+           - All nodes treated equally
+           - More thorough optimization
+           - Potentially better convergence
+
+   IMPACT: TNOld provides more balanced optimization
+
+
+3. GRADIENT/HESSIAN COMPUTATION
+   ────────────────────────────
+   GTN:    Environment-based contraction
+           - Uses tensor network environment: E
+           - Computes: grad = E * dL_dy
+           - Computes: hess = (E * d²L) * E^T
+           - Sums over batches inside function
+   
+   TNOld:  Einsum-based computation
+           - Uses Jacobian stack: J
+           - Computes: A = J^H * d²L * J
+           - Computes: b = J^H * dL
+           - Accumulates over batches in main loop
+
+   IMPACT: Different implementation, mathematically equivalent
+
+
+4. MEMORY MANAGEMENT
+   ──────────────────
+   GTN:    Explicit cleanup
+           - Deletes intermediate tensors
+           - Calls torch.cuda.empty_cache()
+           - Aggressive GPU memory management
+   
+   TNOld:  Implicit cleanup
+           - Relies on Python garbage collection
+           - No explicit cache clearing
+
+   IMPACT: GTN better for memory-constrained environments
+
+
+5. SOLVER FLEXIBILITY
+   ──────────────────
+   GTN:    2 methods
+           - cholesky (fast, requires positive definite)
+           - standard (robust)
+   
+   TNOld:  5 methods
+           - exact (standard solve)
+           - ridge_exact (with regularization)
+           - ridge_cholesky (with regularization + Cholesky)
+           - cholesky (Cholesky decomposition)
+           - gradient (gradient descent fallback)
+
+   IMPACT: TNOld more flexible for different problem types
+
+
+================================================================================
+                              PERFORMANCE TRADE-OFFS
+================================================================================
+
+GTN ADVANTAGES:
+  ✓ Simpler regularization (direct L2 weight decay)
+  ✓ Explicit memory management (better for large models)
+  ✓ Faster per-epoch (fewer node updates)
+  ✓ Cleaner code organization
+
+GTN DISADVANTAGES:
+  ✗ Unscaled regularization (less stable with ill-conditioned Hessians)
+  ✗ Asymmetric sweep (boundary nodes less optimized)
+  ✗ Less flexible solver options
+
+TNOld ADVANTAGES:
+  ✓ Scaled regularization (adaptive to Hessian magnitude)
+  ✓ Symmetric sweep (all nodes treated equally)
+  ✓ More flexible solver options
+  ✓ Better numerical stability
+
+TNOld DISADVANTAGES:
+  ✗ More complex regularization logic
+  ✗ Implicit memory management (may use more GPU memory)
+  ✗ Slower per-epoch (more node updates)
+  ✗ More complex code
+
+
+================================================================================
+                              WHEN TO USE WHICH
+================================================================================
+
+USE GTN WHEN:
+  • Hessian is well-conditioned
+  • Memory is extremely limited
+  • You want fastest per-epoch convergence
+  • Working with MPS-like structures (asymmetric sweep is intentional)
+  • You need explicit GPU memory control
+
+USE TNOld WHEN:
+  • Hessian may be ill-conditioned
+  • Numerical stability is critical
+  • You want symmetric treatment of all nodes
+  • You need flexible solver options
+  • You want adaptive regularization strength
+  • You can afford more GPU memory usage
+
+
+================================================================================
+                              MATHEMATICAL EQUIVALENCE
+================================================================================
+
+Both solve the same regularized least squares problem:
+
+  min ||y - f(w)||² + λ||w||²
+
+GTN:    (H + 2λI) Δw = -(∇L + 2λ*w_old)
+        where λ = jitter (fixed)
+
+TNOld:  (H/s + 2ε*I) Δw = -(∇L/s + 2ε*w_old)
+        where s = mean(|diag(H)|), effective λ = ε/s (adaptive)
+
+The key difference is that TNOld's regularization strength adapts to the 
+Hessian magnitude, while GTN's is fixed.
+
+
+================================================================================
+                              RECOMMENDED HYBRID APPROACH
+================================================================================
+
+Combine GTN's explicit memory management with TNOld's scaled regularization:
+
+  # Compute scale
+  scale = matrix_data.diagonal().abs().mean()
+  if scale == 0:
+      scale = 1.0
+  
+  # Scale the regularization
+  scaled_jitter = 2 * effective_jitter / scale
+  
+  # Apply to diagonal
+  matrix_data.diagonal().add_(scaled_jitter)
+  gradient_vector = gradient_vector + scaled_jitter * old_weight
+  
+  # Explicit cleanup
+  del H, b, matrix_data, gradient_vector
+  if torch.cuda.is_available():
+      torch.cuda.empty_cache()
+
+This combines:
+  ✓ Numerical stability of TNOld (scaled regularization)
+  ✓ Memory efficiency of GTN (explicit cleanup)
+  ✓ Simplicity of GTN (direct application)
+
+
+================================================================================
+                              KEY TAKEAWAY
+================================================================================
+
+The MOST IMPORTANT difference is the ridge/jitter scaling:
+
+  GTN:    Unscaled → Less stable with ill-conditioned Hessians
+  TNOld:  Scaled   → More stable with ill-conditioned Hessians
+
+For production use with potentially ill-conditioned problems, TNOld's 
+approach is recommended. For well-conditioned problems with memory constraints,
+GTN's approach is sufficient.
+

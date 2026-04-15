@@ -668,7 +668,7 @@ class NTN:
         else:
             scale = 1.0
 
-        effective_jitter = jitter
+        effective_jitter = jitter * scale
 
         if regularize:
             backend, lib = self.get_backend(matrix_data)
@@ -677,7 +677,7 @@ class NTN:
             current_node.fuse(map_b, inplace=True)
             old_weight = current_node.to_dense(["cols"])
 
-            scaled_jitter = 2 * effective_jitter  # removed scale factor
+            scaled_jitter = 2 * effective_jitter
 
             if backend == "torch":
                 matrix_data.diagonal().add_(scaled_jitter)
@@ -908,6 +908,7 @@ class NTN:
         from model.losses import MSELoss, MAELoss, HuberLoss
 
         use_lstsq = isinstance(self.loss, (MSELoss, MAELoss, HuberLoss))
+        use_lstsq = False
 
         if eval_metrics is None:
             from model.utils import REGRESSION_METRICS

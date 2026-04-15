@@ -1,0 +1,261 @@
+================================================================================
+GTN MODEL ARCHITECTURE ANALYSIS - COMPREHENSIVE SUMMARY
+================================================================================
+
+ANALYSIS COMPLETED: 3 detailed documents created
+
+1. GTN_ARCHITECTURE_ANALYSIS.md (915 lines)
+   - Complete technical reference
+   - All tensor shapes and indices
+   - Mathematical formulations
+   - Detailed code walkthroughs
+
+2. GTN_QUICK_REFERENCE.md
+   - Quick lookup guide
+   - Common patterns
+   - Debugging checklist
+   - Performance tips
+
+3. GTN_DETAILED_EXAMPLES.md
+   - 10 complete working examples
+   - Tensor shape tracking
+   - Feature encodings
+   - Training configurations
+
+================================================================================
+KEY FINDINGS
+================================================================================
+
+1. TENSOR CONSTRUCTION (MPO2_models.py)
+   ├─ MPO2: Standard MPS with output dimension
+   │  └─ Shapes: (phys_dim, bond_dim) → (bond_dim, phys_dim, bond_dim) → (bond_dim, phys_dim, output_dim)
+   │  └─ Indices: x{i} (physical), b{i} (bonds), out (output)
+   │  └─ Tags: Node{i} for site identification
+   │
+   ├─ CMPO2: Cross-connected pixel and patch MPS
+   │  └─ Two separate MPS layers with cross-connections
+   │  └─ Indices: {i}_pixels, {i}_patches, {i}_Pi, {i}_Pa
+   │
+   ├─ LMPO2: MPO (reduction) + MPS (output)
+   │  └─ Two-layer architecture for dimensionality reduction
+   │  └─ Indices: {i}_in, {i}_reduced, {i}_mpo, {i}_mps
+   │
+   └─ MMPO2: Non-trainable mask + trainable MPS
+      └─ Causal mask (Heaviside) + MPS
+      └─ Mask tensors tagged with "NT" (non-trainable)
+
+2. INITIALIZATION (initialization.py)
+   ├─ base_init = 0.1 if use_tn_normalization else init_strength
+   ├─ Two normalization strategies:
+   │  ├─ Output-based: scale_factor = target_std / current_std
+   │  └─ Frobenius: target_norm = √(L·bond_dim·phys_dim)
+   └─ Eliminates seed-dependent collapses
+
+3. FORWARD PASS (NTN.py)
+   ├─ Basic: full_tn = tn & inputs; y_pred = full_tn.contract(output_inds)
+   ├─ Environment-based: 
+   │  ├─ env = contract(tn \ {node} & inputs, output_inds)
+   │  └─ y_pred = contract(env & node, output_inds)
+   └─ Key advantage: Reuse env for multiple forward passes
+
+4. GRADIENT/HESSIAN COMPUTATION (NTN.py)
+   ├─ Environment: (batch, *node_inds, *output_inds)
+   ├─ Loss derivatives: dL/dy, d²L/dy²
+   ├─ Node gradient: contract(env & dL/dy, output_inds=node_inds)
+   ├─ Node hessian: contract(env & d²L/dy² & env_prime, output_inds=node_inds+node_inds_prime)
+   └─ Regularization: (H + 2λI) * Δw = -∇L + 2λ * w_old
+
+5. INPUT PREPARATION (utils.py)
+   ├─ create_inputs(): Handles bias term, encodings
+   ├─ Bias: append_bias=True → X becomes (samples, features+1)
+   ├─ Polynomial: encode_polynomial(X, degree) → (samples, features, degree+1)
+   ├─ Fourier: encode_fourier(X) → (samples, features, 2)
+   └─ Inputs class: Manages batching and tensor creation
+
+6. LOSS FUNCTIONS (losses.py)
+   ├─ MSELoss: use_diagonal_hessian=True
+   │  └─ Gradient: 2*(y_pred - y_true), Hessian: 2 (constant)
+   ├─ CrossEntropyLoss: use_diagonal_hessian=False
+   │  └─ Gradient: p_i - y_i, Hessian: p_i*(δ_ij - p_j) (FULL MATRIX!)
+   ├─ MAELoss: use_diagonal_hessian=True
+   │  └─ Gradient: sign(y_pred - y_true), Hessian: ε (small constant)
+   └─ HuberLoss: use_diagonal_hessian=True
+      └─ Hybrid MSE/MAE with smooth transition
+
+7. TRAINING ALGORITHM (NTN.py)
+   ├─ Algorithm selection:
+   │  ├─ Regression (MSE/MAE/Huber): Direct least squares solver
+   │  └─ Classification (CrossEntropy): Newton-based optimization
+   ├─ Sweep order: [Node0, Node1, ..., NodeL-1, NodeL-2, ..., Node1]
+   ├─ Early stopping: patience + min_delta
+   └─ Regularization schedule: jitter list per epoch
+
+================================================================================
+EXACT TENSOR SHAPES (Example: L=3, bond_dim=4, phys_dim=2, output_dim=3)
+================================================================================
+
+Network Tensors:
+  Node0: (2, 4)           indices: ("x0", "b0")
+  Node1: (4, 2, 4)        indices: ("b0", "x1", "b1")
+  Node2: (4, 2, 3)        indices: ("b1", "x2", "out")
+
+Input Tensors (batch=32):
+  Input0: (32, 4)         indices: ("s", "x")
+
+Forward Pass:
+  full_tn = tn & [Input0]
+  y_pred = full_tn.contract(output_inds=["s", "out"])
+  y_pred shape: (32, 3)
+
+Environment for Node2:
+  env = contract(tn \ {Node2} & [Input0], output_inds=["s", "b1", "x2", "out"])
+  env shape: (32, 4, 2, 3)
+
+Gradient/Hessian:
+  dL/dy shape: (32, 3)
+  d²L/dy² shape: (32, 3, 3)
+  node_grad shape: (4, 2, 3)
+  node_hess shape: (4, 2, 3, 4, 2, 3)
+
+================================================================================
+INDEX NAMING CONVENTIONS
+================================================================================
+
+Batch Dimension:        "s" (sample)
+Physical Indices:       "x{i}" (input feature at site i)
+Bond Indices:           "b{i}" (MPS bond), "b_mpo_{i}" (MPO bond), "b_mps_{i}" (MPS bond in LMPO2)
+Output:                 "out" (single, shared across network)
+Primed Indices:         "{index}_prime" (for Hessian second derivatives)
+Tags:                   "Node{i}" (site location), "NT" (non-trainable)
+
+================================================================================
+MATHEMATICAL STRUCTURE
+================================================================================
+
+Forward Pass:
+  y = contract(TN ⊗ inputs, output_inds)
+
+Environment-Based Optimization:
+  E = contract(TN \ {node} ⊗ inputs, node_inds ∪ output_inds)
+  y = contract(E ⊗ node, output_inds)
+  ∇_node L = contract(E ⊗ ∇_y L, node_inds)
+  H_node = contract(E ⊗ ∇²_y L ⊗ E†, node_inds ⊗ node_inds')
+
+Newton Update:
+  Δw = -H^{-1} * ∇L
+  w_new = w_old + Δw
+
+Regularized Newton Update:
+  (H + 2λI) * Δw = -∇L + 2λ * w_old
+
+================================================================================
+KEY DESIGN PATTERNS
+================================================================================
+
+1. Non-Trainable Tensors: Mark with "NT" tag
+   - Excluded from optimization
+   - Not included in regularization
+   - Example: MMPO2 mask tensors
+
+2. Index Fusion/Unfusion: For linear algebra operations
+   - Fuse: Combine multiple indices into one
+   - Unfuse: Split fused index back to original shape
+   - Used in gradient/Hessian computation
+
+3. Environment Caching: Compute once, reuse multiple times
+   - Significant speedup for multiple forward passes
+   - Key advantage of environment-based optimization
+
+4. Regularization: L2 penalty on weights
+   - Prevents overfitting
+   - Jitter schedule: decrease over epochs
+   - Scaled jitter = 2 * jitter (for Newton update)
+
+5. Batch Processing: Amortize environment computation
+   - Compute environment once per batch
+   - Apply to all samples in batch
+   - Reduces computational cost
+
+================================================================================
+INITIALIZATION DIFFERENCES
+================================================================================
+
+Without Normalization (use_tn_normalization=False):
+  base_init = init_strength (default: 0.001)
+  → Very small initialization, may cause vanishing gradients
+
+With Frobenius Normalization (no sample_inputs):
+  base_init = 0.1
+  target_norm = √(L·bond_dim·phys_dim)
+  → Deterministic, doesn't require data
+  → Good for reproducibility
+
+With Output-Based Normalization (sample_inputs provided):
+  base_init = 0.1
+  scale_factor = target_std / current_std
+  target_std = 0.1 (default)
+  → Data-dependent, eliminates seed-dependent collapses
+  → Better for training stability
+
+================================================================================
+COMMON PITFALLS & SOLUTIONS
+================================================================================
+
+1. Index Conflicts:
+   Problem: Duplicate index names cause incorrect contractions
+   Solution: Use unique index names (x{i}, b{i}, etc.)
+
+2. Shape Mismatches:
+   Problem: Tensor shapes don't match indices
+   Solution: Verify shape = product of index dimensions
+
+3. Singular Matrices:
+   Problem: Hessian is singular, linear solver fails
+   Solution: Use jitter > 0 for regularization
+
+4. Vanishing Gradients:
+   Problem: Initialization too small
+   Solution: Use output-based normalization
+
+5. Memory Issues:
+   Problem: Large Hessian matrices
+   Solution: Use diagonal Hessian approximation (when appropriate)
+
+================================================================================
+FILES ANALYZED
+================================================================================
+
+✓ model/standard/MPO2_models.py (441 lines)
+  - MPO2, CMPO2, LMPO2, MMPO2 classes
+  - Tensor construction and initialization
+
+✓ model/base/NTN.py (1096 lines)
+  - Forward pass, environment computation
+  - Gradient/Hessian computation
+  - Node updates, training loop
+
+✓ model/utils.py (283 lines)
+  - create_inputs function
+  - Polynomial/Fourier encoding
+  - Metric functions
+
+✓ model/initialization.py (411 lines)
+  - normalize_tn_output
+  - normalize_tn_frobenius
+  - Initialization strategies
+
+✓ model/losses.py (516 lines)
+  - MSELoss, MAELoss, HuberLoss, CrossEntropyLoss
+  - Gradient/Hessian computation
+
+✓ model/builder.py (157 lines)
+  - Inputs class
+  - Batch creation and preparation
+
+✓ model/base/GTN.py (82 lines)
+  - GTN PyTorch module wrapper
+
+================================================================================
+TOTAL ANALYSIS: 2,986 lines of code examined
+DOCUMENTATION: 915 + 300+ + 500+ lines created
+================================================================================
