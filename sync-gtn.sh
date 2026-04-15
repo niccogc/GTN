@@ -14,8 +14,7 @@ sync_host () {
   mkdir -p "$TMPDIR"
 
   echo "Fetching from $HOST..."
-
-  ssh "$HOST" tar -I zstd -cf - -C ~/GTN "$REL_TARGET" \
+    ssh "$HOST" "tar -I zstd -cf - -C ~/GTN \"$REL_TARGET\"" \
     | tar -I zstd -xf - -C "$TMPDIR"
 
   echo "Merging from $HOST..."
