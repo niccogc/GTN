@@ -3,7 +3,7 @@
 set -euo pipefail
 
 REL_TARGET="outputs"
-TARGET="/home/nicco/Desktop/remote/GTN/$REL_TARGET"
+TARGET="$HOME/Desktop/remote/GTN/$REL_TARGET"
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
