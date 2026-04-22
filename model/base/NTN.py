@@ -42,7 +42,7 @@ class NTN:
             for tensor in tensors:
                 tensor.add_tag(NOT_TRAINABLE_TAG)
         self.not_trainable_nodes = not_trainable_nodes
-        self.backend = tn.backend
+        self.backend = "torch"
         self.input_dims = input_dims
         self.output_dims = output_dims
         self.loss = loss
