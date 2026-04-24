@@ -35,7 +35,7 @@ from model.base.NTN import NTN
 from model.base.NTN_Ensemble import NTN_Ensemble
 from model.exceptions import SingularMatrixError
 from model.losses import CrossEntropyLoss, MSELoss
-from model.standard import CPDA, LMPO2, MMPO2, MPO2, TNML_P, TNML_F
+from model.standard import CPDA, LMPO2, MMPO2, MPO2, TNML_P, TNML_F, BosonMPS
 from model.typeI import (
     CPDATypeI,
     CPDATypeI_GTN,
@@ -46,7 +46,15 @@ from model.typeI import (
     MPO2TypeI,
     MPO2TypeI_GTN,
 )
-from model.utils import CLASSIFICATION_METRICS, REGRESSION_METRICS, compute_quality, create_inputs, create_inputs_tnml, encode_polynomial, encode_fourier
+from model.utils import (
+    CLASSIFICATION_METRICS,
+    REGRESSION_METRICS,
+    compute_quality,
+    create_inputs,
+    create_inputs_tnml,
+    encode_polynomial,
+    encode_fourier,
+)
 
 torch.set_default_dtype(torch.float64)
 log = logging.getLogger(__name__)
@@ -73,9 +81,10 @@ def get_tracking_df():
 # GPU Memory Utilities
 # =============================================================================
 
+
 def get_gpu_memory_info() -> dict:
     """Get GPU memory information in GB.
-    
+
     Returns dict with:
         - total_gb: Total GPU memory
         - allocated_gb: Currently allocated memory
@@ -86,19 +95,19 @@ def get_gpu_memory_info() -> dict:
     """
     if not torch.cuda.is_available():
         return {"cuda_available": False}
-    
+
     try:
         device = torch.cuda.current_device()
         props = torch.cuda.get_device_properties(device)
-        
+
         total = props.total_memory
         allocated = torch.cuda.memory_allocated(device)
         reserved = torch.cuda.memory_reserved(device)
         peak = torch.cuda.max_memory_allocated(device)
-        
+
         # Convert to GB
         to_gb = lambda x: round(x / (1024**3), 3)
-        
+
         return {
             "cuda_available": True,
             "device_name": props.name,
@@ -143,6 +152,10 @@ GTN_TYPEI_MODELS = {
     "CPDATypeI": CPDATypeI_GTN,
 }
 
+GTN_ONLY_MODELS = {
+    "BosonMPS": BosonMPS,
+}
+
 
 # =============================================================================
 # Helper Functions
@@ -160,7 +173,11 @@ def get_reduced_dim(cfg: DictConfig, input_dim: int) -> int:
 
 
 def build_model_params(
-    cfg: DictConfig, input_dim: int, output_dim: int, for_gtn: bool = False, raw_feature_count: int = None
+    cfg: DictConfig,
+    input_dim: int,
+    output_dim: int,
+    for_gtn: bool = False,
+    raw_feature_count: int = None,
 ) -> dict:
     """Build model parameters from config."""
     is_typei = cfg.model.name.endswith("TypeI")
@@ -202,25 +219,38 @@ def create_gtn_loss(task: str, loss_fn_name: str | None = None) -> nn.Module:
     return nn.MSELoss() if task == "regression" else nn.CrossEntropyLoss()
 
 
-def create_optimizer(name: str, parameters, lr: float, weight_decay: float) -> optim.Optimizer:
+def create_optimizer(
+    name: str, parameters, lr: float, weight_decay: float
+) -> optim.Optimizer:
     """Create optimizer by name."""
     optimizers = {
         "adam": lambda: optim.Adam(parameters, lr=lr, weight_decay=weight_decay),
         "adamw": lambda: optim.AdamW(parameters, lr=lr, weight_decay=weight_decay),
-        "sgd": lambda: optim.SGD(parameters, lr=lr, weight_decay=weight_decay, momentum=0.9),
+        "sgd": lambda: optim.SGD(
+            parameters, lr=lr, weight_decay=weight_decay, momentum=0.9
+        ),
     }
     if name not in optimizers:
         raise ValueError(f"Unknown optimizer: {name}")
     return optimizers[name]()
 
 
-def create_model(cfg: DictConfig, input_dim: int, output_dim: int, raw_feature_count: int = None):
+def create_model(
+    cfg: DictConfig, input_dim: int, output_dim: int, raw_feature_count: int = None
+):
     """Create model instance from config."""
+    if cfg.model.name in GTN_ONLY_MODELS:
+        return None
+
     model_cls = NTN_MODELS.get(cfg.model.name)
     if model_cls is None:
-        raise ValueError(f"Unknown model: {cfg.model.name}. Available: {list(NTN_MODELS.keys())}")
+        raise ValueError(
+            f"Unknown model: {cfg.model.name}. Available: {list(NTN_MODELS.keys())}"
+        )
 
-    params = build_model_params(cfg, input_dim, output_dim, for_gtn=False, raw_feature_count=raw_feature_count)
+    params = build_model_params(
+        cfg, input_dim, output_dim, for_gtn=False, raw_feature_count=raw_feature_count
+    )
     return model_cls(**params)
 
 
@@ -272,7 +302,9 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         loader_val = ntn.val_data
     else:
         encoding = getattr(model, "encoding", None)
-        poly_degree = getattr(model, "poly_degree", None) if encoding == "polynomial" else None
+        poly_degree = (
+            getattr(model, "poly_degree", None) if encoding == "polynomial" else None
+        )
         loader_train = create_inputs(
             X=data["X_train"],
             y=data["y_train"],
@@ -416,14 +448,22 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     input_dim = data["X_train"].shape[1] + 1  # +1 for bias term
     output_dim = data["y_train"].shape[1] if data["y_train"].ndim > 1 else 1
 
-    if is_typei:
+    is_gtn_only = cfg.model.name in GTN_ONLY_MODELS
+
+    if is_gtn_only:
+        gtn_cls = GTN_ONLY_MODELS[cfg.model.name]
+        params = build_model_params(cfg, input_dim, output_dim, for_gtn=True)
+        gtn_model = gtn_cls(**params)
+    elif is_typei:
         gtn_cls = GTN_TYPEI_MODELS.get(cfg.model.name)
         if gtn_cls is None:
             raise ValueError(f"Unknown TypeI model for GTN: {cfg.model.name}")
         params = build_model_params(cfg, input_dim, output_dim, for_gtn=True)
         gtn_model = gtn_cls(**params)
     else:
-        gtn_model = GTN(tn=model.tn, output_dims=model.output_dims, input_dims=model.input_dims)
+        gtn_model = GTN(
+            tn=model.tn, output_dims=model.output_dims, input_dims=model.input_dims
+        )
 
     gtn_model = gtn_model.to(DEVICE)
 
@@ -436,7 +476,7 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         weight_decay,
     )
 
-    encoding = getattr(model, "encoding", None)
+    encoding = getattr(model, "encoding", None) if model is not None else None
     is_tnml = encoding is not None
 
     if is_tnml:
@@ -450,11 +490,27 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             X_val_enc = encode_fourier(data["X_val"])
     else:
         X_train_enc = torch.cat(
-            [data["X_train"], torch.ones(data["X_train"].shape[0], 1, dtype=data["X_train"].dtype, device=data["X_train"].device)],
+            [
+                data["X_train"],
+                torch.ones(
+                    data["X_train"].shape[0],
+                    1,
+                    dtype=data["X_train"].dtype,
+                    device=data["X_train"].device,
+                ),
+            ],
             dim=1,
         )
         X_val_enc = torch.cat(
-            [data["X_val"], torch.ones(data["X_val"].shape[0], 1, dtype=data["X_val"].dtype, device=data["X_val"].device)],
+            [
+                data["X_val"],
+                torch.ones(
+                    data["X_val"].shape[0],
+                    1,
+                    dtype=data["X_val"].dtype,
+                    device=data["X_val"].device,
+                ),
+            ],
             dim=1,
         )
 
@@ -481,7 +537,10 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
 
         with torch.no_grad():
             for batch_data, batch_target in loader:
-                batch_data, batch_target = batch_data.to(DEVICE), batch_target.to(DEVICE)
+                batch_data, batch_target = (
+                    batch_data.to(DEVICE),
+                    batch_target.to(DEVICE),
+                )
                 output = gtn_model(prepare_input(batch_data))
                 loss = criterion(output, batch_target)
                 total_loss += loss.item() * batch_data.size(0)
@@ -566,7 +625,9 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
                 patience_counter += 1
 
         if patience is not None and patience_counter >= patience:
-            log.info(f"Early stopping at epoch {epoch + 1} (no improvement for {patience} epochs)")
+            log.info(
+                f"Early stopping at epoch {epoch + 1} (no improvement for {patience} epochs)"
+            )
             break
 
     # Get best metrics from metrics_log (consistent with NTN behavior)
@@ -630,8 +691,12 @@ def main(cfg: DictConfig):
                 with open(result_file) as f:
                     existing_result = json.load(f)
                 if existing_result.get("success", False):
-                    log.info(f"⏭ Skipping: already completed successfully (from results.json)")
-                    log.info(f"  Previous val_quality: {existing_result.get('val_quality')}")
+                    log.info(
+                        f"⏭ Skipping: already completed successfully (from results.json)"
+                    )
+                    log.info(
+                        f"  Previous val_quality: {existing_result.get('val_quality')}"
+                    )
                     return existing_result.get("val_quality", float("-inf"))
                 elif existing_result.get("singular", False):
                     best_val = existing_result.get("val_quality")
@@ -642,7 +707,9 @@ def main(cfg: DictConfig):
                     return best_val if best_val is not None else float("-inf")
                 elif existing_result.get("oom_error", False):
                     best_val = existing_result.get("val_quality")
-                    log.info(f"♻ Re-running: previous run failed with OOM error (may succeed with memory optimizations)")
+                    log.info(
+                        f"♻ Re-running: previous run failed with OOM error (may succeed with memory optimizations)"
+                    )
                     log.info(f"  Best val_quality before failure: {best_val}")
                     # Don't skip OOM errors - they may succeed after memory fixes
                 else:
@@ -667,10 +734,16 @@ def main(cfg: DictConfig):
 
     # Create model
     log.info(f"Creating model: {cfg.model.name}")
-    model = create_model(cfg, input_dim, output_dim, raw_feature_count=raw_feature_count)
+    model = create_model(
+        cfg, input_dim, output_dim, raw_feature_count=raw_feature_count
+    )
 
     # Run training
     if cfg.trainer.type == "ntn":
+        if cfg.model.name in GTN_ONLY_MODELS:
+            raise ValueError(
+                f"{cfg.model.name} is GTN-only and cannot be used with NTN trainer"
+            )
         result = run_ntn(cfg, model, data, output_dir)
     elif cfg.trainer.type == "gtn":
         result = run_gtn(cfg, model, data, output_dir)

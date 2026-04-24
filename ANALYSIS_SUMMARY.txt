@@ -1,261 +1,215 @@
 ================================================================================
-GTN MODEL ARCHITECTURE ANALYSIS - COMPREHENSIVE SUMMARY
+                    RUN.PY COMPREHENSIVE ANALYSIS SUMMARY
 ================================================================================
 
-ANALYSIS COMPLETED: 3 detailed documents created
+DOCUMENTS CREATED:
+1. RUN_PY_ANALYSIS.md (579 lines)
+   - Complete overview of run.py functionality
+   - Detailed explanations of all 5 key areas
+   - Configuration system and model instantiation
+   - Input preparation and training procedures
+   - Dataset information and command-line usage
+   - Full execution flow from start to model forward pass
 
-1. GTN_ARCHITECTURE_ANALYSIS.md (915 lines)
-   - Complete technical reference
-   - All tensor shapes and indices
-   - Mathematical formulations
-   - Detailed code walkthroughs
-
-2. GTN_QUICK_REFERENCE.md
-   - Quick lookup guide
-   - Common patterns
-   - Debugging checklist
-   - Performance tips
-
-3. GTN_DETAILED_EXAMPLES.md
-   - 10 complete working examples
-   - Tensor shape tracking
-   - Feature encodings
-   - Training configurations
+2. RUN_PY_CODE_EXAMPLES.md (500+ lines)
+   - Detailed code examples for each model type
+   - Step-by-step input preparation examples
+   - Complete training loop implementations
+   - Command-line usage examples
+   - Result inspection and analysis code
 
 ================================================================================
-KEY FINDINGS
+                              KEY FINDINGS
 ================================================================================
 
-1. TENSOR CONSTRUCTION (MPO2_models.py)
-   ├─ MPO2: Standard MPS with output dimension
-   │  └─ Shapes: (phys_dim, bond_dim) → (bond_dim, phys_dim, bond_dim) → (bond_dim, phys_dim, output_dim)
-   │  └─ Indices: x{i} (physical), b{i} (bonds), out (output)
-   │  └─ Tags: Node{i} for site identification
-   │
-   ├─ CMPO2: Cross-connected pixel and patch MPS
-   │  └─ Two separate MPS layers with cross-connections
-   │  └─ Indices: {i}_pixels, {i}_patches, {i}_Pi, {i}_Pa
-   │
-   ├─ LMPO2: MPO (reduction) + MPS (output)
-   │  └─ Two-layer architecture for dimensionality reduction
-   │  └─ Indices: {i}_in, {i}_reduced, {i}_mpo, {i}_mps
-   │
-   └─ MMPO2: Non-trainable mask + trainable MPS
-      └─ Causal mask (Heaviside) + MPS
-      └─ Mask tensors tagged with "NT" (non-trainable)
+1. MODEL INSTANTIATION & CONFIGURATION
+   ✓ Uses Hydra for configuration management
+   ✓ 10 model types available (MPO2, LMPO2, MMPO2, CPDA, TypeI variants, TNML)
+   ✓ Models instantiated via registry lookup: NTN_MODELS[cfg.model.name]
+   ✓ Parameters built dynamically based on dataset dimensions
+   ✓ Special handling for TypeI (variable sites) and TNML (feature encoding)
 
-2. INITIALIZATION (initialization.py)
-   ├─ base_init = 0.1 if use_tn_normalization else init_strength
-   ├─ Two normalization strategies:
-   │  ├─ Output-based: scale_factor = target_std / current_std
-   │  └─ Frobenius: target_norm = √(L·bond_dim·phys_dim)
-   └─ Eliminates seed-dependent collapses
+2. INPUT PREPARATION
+   ✓ Standard models: append bias term to features
+   ✓ TNML models: encode features (polynomial or Fourier) into higher dimensions
+   ✓ NTN: uses quimb Inputs class with pre-computed batches
+   ✓ GTN: uses PyTorch DataLoaders with standard tensors
+   ✓ Classification: targets converted to one-hot encoding
+   ✓ Regression: targets kept as continuous values
 
-3. FORWARD PASS (NTN.py)
-   ├─ Basic: full_tn = tn & inputs; y_pred = full_tn.contract(output_inds)
-   ├─ Environment-based: 
-   │  ├─ env = contract(tn \ {node} & inputs, output_inds)
-   │  └─ y_pred = contract(env & node, output_inds)
-   └─ Key advantage: Reuse env for multiple forward passes
+3. TRAINING/TESTING
+   ✓ Two trainer types: NTN (Newton-based) and GTN (gradient-based)
+   ✓ NTN: 20 epochs, ridge regularization with decay schedule
+   ✓ GTN: 1000 epochs, standard optimizers (Adam, AdamW, SGD)
+   ✓ Both support early stopping with patience and min_delta
+   ✓ Model selection based on validation quality (with optional train tiebreaker)
+   ✓ Error handling for singular matrices and OOM errors
 
-4. GRADIENT/HESSIAN COMPUTATION (NTN.py)
-   ├─ Environment: (batch, *node_inds, *output_inds)
-   ├─ Loss derivatives: dL/dy, d²L/dy²
-   ├─ Node gradient: contract(env & dL/dy, output_inds=node_inds)
-   ├─ Node hessian: contract(env & d²L/dy² & env_prime, output_inds=node_inds+node_inds_prime)
-   └─ Regularization: (H + 2λI) * Δw = -∇L + 2λ * w_old
+4. AVAILABLE DATASETS
+   ✓ 21 datasets total (11 regression, 10 classification)
+   ✓ NO small regression datasets exist!
+   ✓ Smallest regression: concrete (165 samples) - Medium
+   ✓ Small classification datasets: iris, hearth, breast, wine, car_evaluation
+   ✓ Fixed 70/15/15 train/val/test split (seed=42)
+   ✓ Standardization applied to numeric features only
 
-5. INPUT PREPARATION (utils.py)
-   ├─ create_inputs(): Handles bias term, encodings
-   ├─ Bias: append_bias=True → X becomes (samples, features+1)
-   ├─ Polynomial: encode_polynomial(X, degree) → (samples, features, degree+1)
-   ├─ Fourier: encode_fourier(X) → (samples, features, 2)
-   └─ Inputs class: Manages batching and tensor creation
-
-6. LOSS FUNCTIONS (losses.py)
-   ├─ MSELoss: use_diagonal_hessian=True
-   │  └─ Gradient: 2*(y_pred - y_true), Hessian: 2 (constant)
-   ├─ CrossEntropyLoss: use_diagonal_hessian=False
-   │  └─ Gradient: p_i - y_i, Hessian: p_i*(δ_ij - p_j) (FULL MATRIX!)
-   ├─ MAELoss: use_diagonal_hessian=True
-   │  └─ Gradient: sign(y_pred - y_true), Hessian: ε (small constant)
-   └─ HuberLoss: use_diagonal_hessian=True
-      └─ Hybrid MSE/MAE with smooth transition
-
-7. TRAINING ALGORITHM (NTN.py)
-   ├─ Algorithm selection:
-   │  ├─ Regression (MSE/MAE/Huber): Direct least squares solver
-   │  └─ Classification (CrossEntropy): Newton-based optimization
-   ├─ Sweep order: [Node0, Node1, ..., NodeL-1, NodeL-2, ..., Node1]
-   ├─ Early stopping: patience + min_delta
-   └─ Regularization schedule: jitter list per epoch
+5. MODEL TYPE SPECIFICATION
+   ✓ Command line: python run.py model=lmpo2 dataset=abalone trainer=gtn
+   ✓ Config files: create conf/experiment/my_experiment.yaml
+   ✓ Parameter overrides: python run.py model.bond_dim=8 trainer.lr=0.01
+   ✓ Grid search: python run.py --multirun model.bond_dim=4,6,8
+   ✓ All parameters can be overridden from command line
 
 ================================================================================
-EXACT TENSOR SHAPES (Example: L=3, bond_dim=4, phys_dim=2, output_dim=3)
+                         EXECUTION FLOW SUMMARY
 ================================================================================
 
-Network Tensors:
-  Node0: (2, 4)           indices: ("x0", "b0")
-  Node1: (4, 2, 4)        indices: ("b0", "x1", "b1")
-  Node2: (4, 2, 3)        indices: ("b1", "x2", "out")
+INITIALIZATION
+  └─ Hydra loads config from conf/ directory
+     └─ Merges defaults: model=mpo2, dataset=iris, trainer=ntn
+        └─ Sets random seeds for reproducibility
 
-Input Tensors (batch=32):
-  Input0: (32, 4)         indices: ("s", "x")
+DATASET LOADING
+  └─ load_dataset() fetches from UCI ML Repository
+     └─ One-hot encodes categorical features (with cap=50)
+        └─ Fixed 70/15/15 split (seed=42)
+           └─ Standardizes numeric features (fit on train only)
+              └─ Returns: data dict + dataset_info
 
-Forward Pass:
-  full_tn = tn & [Input0]
-  y_pred = full_tn.contract(output_inds=["s", "out"])
-  y_pred shape: (32, 3)
+MODEL INSTANTIATION
+  └─ create_model() looks up model class from registry
+     └─ build_model_params() calculates parameters from config
+        └─ Instantiates model (e.g., MPO2(**params))
+           └─ Creates tensor network with quimb
+              └─ Extracts: model.tn, model.input_labels, model.output_dims
 
-Environment for Node2:
-  env = contract(tn \ {Node2} & [Input0], output_inds=["s", "b1", "x2", "out"])
-  env shape: (32, 4, 2, 3)
+INPUT PREPARATION
+  └─ For NTN: create_inputs() creates Inputs object with batches
+     └─ Each batch: (mu=[qt.Tensor, ...], y=qt.Tensor)
+  └─ For GTN: create PyTorch DataLoaders
+     └─ Each batch: (X_batch, y_batch) as torch.Tensor
 
-Gradient/Hessian:
-  dL/dy shape: (32, 3)
-  d²L/dy² shape: (32, 3, 3)
-  node_grad shape: (4, 2, 3)
-  node_hess shape: (4, 2, 3, 4, 2, 3)
+TRAINING
+  └─ If NTN: run_ntn() uses Newton-based optimization
+     └─ Ridge schedule: [5.0, 1.25, 0.3125, ...]
+        └─ For each epoch: compute loss, gradient, Hessian
+           └─ Update: θ = θ - (hess + ridge*I)^{-1} @ grad
+  └─ If GTN: run_gtn() uses gradient descent
+     └─ For each epoch: forward, backward, optimizer.step()
+        └─ Early stopping based on validation quality
 
-================================================================================
-INDEX NAMING CONVENTIONS
-================================================================================
-
-Batch Dimension:        "s" (sample)
-Physical Indices:       "x{i}" (input feature at site i)
-Bond Indices:           "b{i}" (MPS bond), "b_mpo_{i}" (MPO bond), "b_mps_{i}" (MPS bond in LMPO2)
-Output:                 "out" (single, shared across network)
-Primed Indices:         "{index}_prime" (for Hessian second derivatives)
-Tags:                   "Node{i}" (site location), "NT" (non-trainable)
-
-================================================================================
-MATHEMATICAL STRUCTURE
-================================================================================
-
-Forward Pass:
-  y = contract(TN ⊗ inputs, output_inds)
-
-Environment-Based Optimization:
-  E = contract(TN \ {node} ⊗ inputs, node_inds ∪ output_inds)
-  y = contract(E ⊗ node, output_inds)
-  ∇_node L = contract(E ⊗ ∇_y L, node_inds)
-  H_node = contract(E ⊗ ∇²_y L ⊗ E†, node_inds ⊗ node_inds')
-
-Newton Update:
-  Δw = -H^{-1} * ∇L
-  w_new = w_old + Δw
-
-Regularized Newton Update:
-  (H + 2λI) * Δw = -∇L + 2λ * w_old
+RESULT SAVING
+  └─ Save results.json with metrics, config, dataset_info
+     └─ Update tracking CSV (if enabled)
 
 ================================================================================
-KEY DESIGN PATTERNS
+                        IMPORTANT NOTES
 ================================================================================
 
-1. Non-Trainable Tensors: Mark with "NT" tag
-   - Excluded from optimization
-   - Not included in regularization
-   - Example: MMPO2 mask tensors
+1. SMALL REGRESSION DATASETS
+   - There are NO small regression datasets in the current collection
+   - Smallest regression dataset is "concrete" with 165 samples (Medium)
+   - For small datasets, use classification datasets (iris, wine, breast, etc.)
 
-2. Index Fusion/Unfusion: For linear algebra operations
-   - Fuse: Combine multiple indices into one
-   - Unfuse: Split fused index back to original shape
-   - Used in gradient/Hessian computation
+2. DATASET SPLITS
+   - Train/val/test splits are FIXED (seed=42) for reproducibility
+   - Experiment seed (default 42) controls model initialization, NOT data splits
+   - This is standard practice to isolate model variance from data variance
 
-3. Environment Caching: Compute once, reuse multiple times
-   - Significant speedup for multiple forward passes
-   - Key advantage of environment-based optimization
+3. BIAS TERM
+   - Standard models: bias term appended to features (input_dim = raw_features + 1)
+   - TNML models: NO bias term (uses feature encoding instead)
 
-4. Regularization: L2 penalty on weights
-   - Prevents overfitting
-   - Jitter schedule: decrease over epochs
-   - Scaled jitter = 2 * jitter (for Newton update)
+4. FEATURE ENCODING
+   - Standard models: raw features used directly
+   - TNML_P: polynomial encoding [1, x, x^2, ..., x^degree]
+   - TNML_F: Fourier encoding [cos(x*π/2), sin(x*π/2)]
 
-5. Batch Processing: Amortize environment computation
-   - Compute environment once per batch
-   - Apply to all samples in batch
-   - Reduces computational cost
+5. RIDGE REGULARIZATION
+   - NTN: ridge parameter decays per epoch (ridge_decay=0.25)
+   - GTN: weight_decay = 2 * ridge (to match NTN behavior)
 
-================================================================================
-INITIALIZATION DIFFERENCES
-================================================================================
-
-Without Normalization (use_tn_normalization=False):
-  base_init = init_strength (default: 0.001)
-  → Very small initialization, may cause vanishing gradients
-
-With Frobenius Normalization (no sample_inputs):
-  base_init = 0.1
-  target_norm = √(L·bond_dim·phys_dim)
-  → Deterministic, doesn't require data
-  → Good for reproducibility
-
-With Output-Based Normalization (sample_inputs provided):
-  base_init = 0.1
-  scale_factor = target_std / current_std
-  target_std = 0.1 (default)
-  → Data-dependent, eliminates seed-dependent collapses
-  → Better for training stability
+6. MODEL SELECTION
+   - Default: select model with best validation quality
+   - With train_selection=true: use training quality as tiebreaker when val quality equal
 
 ================================================================================
-COMMON PITFALLS & SOLUTIONS
+                         QUICK START EXAMPLES
 ================================================================================
 
-1. Index Conflicts:
-   Problem: Duplicate index names cause incorrect contractions
-   Solution: Use unique index names (x{i}, b{i}, etc.)
+# Default run (MPO2 + iris + NTN)
+python run.py
 
-2. Shape Mismatches:
-   Problem: Tensor shapes don't match indices
-   Solution: Verify shape = product of index dimensions
+# Change model
+python run.py model=lmpo2
+python run.py model=cpda
+python run.py model=tnml_p
 
-3. Singular Matrices:
-   Problem: Hessian is singular, linear solver fails
-   Solution: Use jitter > 0 for regularization
+# Change dataset
+python run.py dataset=wine
+python run.py dataset=concrete
 
-4. Vanishing Gradients:
-   Problem: Initialization too small
-   Solution: Use output-based normalization
+# Change trainer
+python run.py trainer=gtn
 
-5. Memory Issues:
-   Problem: Large Hessian matrices
-   Solution: Use diagonal Hessian approximation (when appropriate)
+# Combine
+python run.py model=lmpo2 dataset=concrete trainer=gtn
 
-================================================================================
-FILES ANALYZED
-================================================================================
+# Grid search
+python run.py --multirun model.bond_dim=4,6,8
+python run.py --multirun seed=0,1,2,3,4
 
-✓ model/standard/MPO2_models.py (441 lines)
-  - MPO2, CMPO2, LMPO2, MMPO2 classes
-  - Tensor construction and initialization
-
-✓ model/base/NTN.py (1096 lines)
-  - Forward pass, environment computation
-  - Gradient/Hessian computation
-  - Node updates, training loop
-
-✓ model/utils.py (283 lines)
-  - create_inputs function
-  - Polynomial/Fourier encoding
-  - Metric functions
-
-✓ model/initialization.py (411 lines)
-  - normalize_tn_output
-  - normalize_tn_frobenius
-  - Initialization strategies
-
-✓ model/losses.py (516 lines)
-  - MSELoss, MAELoss, HuberLoss, CrossEntropyLoss
-  - Gradient/Hessian computation
-
-✓ model/builder.py (157 lines)
-  - Inputs class
-  - Batch creation and preparation
-
-✓ model/base/GTN.py (82 lines)
-  - GTN PyTorch module wrapper
+# Custom hyperparameters
+python run.py model=lmpo2 model.reduction_factor=0.5 trainer=gtn trainer.lr=0.01
 
 ================================================================================
-TOTAL ANALYSIS: 2,986 lines of code examined
-DOCUMENTATION: 915 + 300+ + 500+ lines created
+                         FILE LOCATIONS
+================================================================================
+
+Main Script:
+  /home/nicci/Desktop/remote/GTNbos/run.py (727 lines)
+
+Configuration:
+  /home/nicci/Desktop/remote/GTNbos/conf/
+    ├── config.yaml (main config)
+    ├── model/ (10 model configs)
+    ├── trainer/ (2 trainer configs: ntn.yaml, gtn.yaml)
+    └── dataset/ (21 dataset configs)
+
+Model Classes:
+  /home/nicci/Desktop/remote/GTNbos/model/
+    ├── standard/ (MPO2, LMPO2, MMPO2, CPDA, TNML)
+    ├── typeI/ (TypeI variants)
+    ├── base/ (NTN.py, GTN.py)
+    └── builder.py (Inputs class)
+
+Utilities:
+  /home/nicci/Desktop/remote/GTNbos/utils/
+    ├── dataset_loader.py (load_dataset function)
+    ├── device_utils.py (GPU/device management)
+    └── tracking.py (run tracking)
+
+================================================================================
+                         ANALYSIS DOCUMENTS
+================================================================================
+
+1. RUN_PY_ANALYSIS.md
+   - Comprehensive overview of all 5 key areas
+   - Configuration system details
+   - Model instantiation flow
+   - Input preparation procedures
+   - Training/testing implementations
+   - Dataset information
+   - Command-line usage guide
+   - Full execution flow diagram
+   - Key insights and best practices
+
+2. RUN_PY_CODE_EXAMPLES.md
+   - Detailed code examples for each model type
+   - Step-by-step input preparation with actual code
+   - Complete training loop implementations
+   - Command-line usage examples
+   - Result inspection and analysis code
+   - JSON result structure
+
 ================================================================================
