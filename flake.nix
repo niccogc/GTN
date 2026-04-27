@@ -3,59 +3,19 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    quimb-flake = {
-      url = "github:niccogc/quimbflake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
     self,
     nixpkgs,
-    quimb-flake,
   }: let
     system = "x86_64-linux";
     # Define the custom Python package separately
     pkgs = import nixpkgs {
       inherit system;
-      overlays = [quimb-flake.overlays.default];
     };
 
-    python = pkgs.python312;
-    ucimlrepo = python.pkgs.buildPythonPackage rec {
-      pname = "ucimlrepo";
-      version = "0.0.7";
-      pyproject = true;
-
-      src = pkgs.fetchPypi {
-        inherit pname version;
-        hash = "sha256-TP8/noFDZ91glW2pmazkcxlyN7n85MB+mmied7T/tZo=";
-      };
-
-      build-system = [
-        python.pkgs.setuptools
-        python.pkgs.wheel
-      ];
-
-      propagatedBuildInputs = [
-        python.pkgs.pandas
-        python.pkgs.certifi
-        python.pkgs.requests
-      ];
-    };
-    pythonWithNixPkgs = python.withPackages (ps:
-      with ps; [
-        pygraphviz
-        ucimlrepo
-        torchvision
-        torch
-        scipy
-        matplotlib
-        scikit-learn
-        pytest
-        quimb
-        numpy
-      ]);
+    python = pkgs.python313;
   in {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = [
@@ -63,7 +23,7 @@
         pkgs.zlib
       ];
       packages = [
-        pythonWithNixPkgs
+        python
         pkgs.uv
       ];
 
@@ -104,7 +64,7 @@
         #   echo "✓ docs-mcp-server is running."
         # fi
         # Get the Nix Python site-packages path
-        export NIX_PYTHON_SITE_PACKAGES="${pythonWithNixPkgs}/${pythonWithNixPkgs.sitePackages}"
+        export NIX_PYTHON_SITE_PACKAGES="${python}/${python.sitePackages}"
 
         # Create or Repair the UV venv symlinks
         if [ ! -d .venv ]; then
