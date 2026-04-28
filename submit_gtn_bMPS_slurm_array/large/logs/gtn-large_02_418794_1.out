@@ -1,0 +1,59 @@
+Node: comp-gpu05
+Array Job ID: 418794, Task ID: 1
+Start: 2026-04-24-08:52:39
+Running: model=bosonmps dataset=popularity
+[2026-04-24 08:52:44,401][HYDRA] Launching 1 jobs locally
+[2026-04-24 08:52:44,401][HYDRA] 	#0 : trainer=gtn model=bosonmps dataset=popularity
+[2026-04-24 08:52:44,498][__main__][INFO] - Configuration:
+model:
+  name: BosonMPS
+  L: 3
+  bond_dim: 6
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: popularity
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: gtn
+  n_epochs: 1000
+  lr: 0.005
+  optimizer: adamw
+  ridge: 0.005
+  loss_fn: null
+  patience: 100
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-24 08:52:44,501][__main__][INFO] - Output directory: /home/nicci/GTN/outputs/gtn/popularity/BosonMPS_rg0.005_init0.1/L3_bd6_seed42
+[2026-04-24 08:52:44,547][utils.tracking][INFO] - Loaded 12474 tracked runs from runs_tracking.csv
+[2026-04-24 08:52:44,548][__main__][INFO] - Loading dataset: popularity
+[2026-04-24 08:52:54,988][__main__][INFO] -   Samples: train=27750, val=5947, test=5947
+[2026-04-24 08:52:54,988][__main__][INFO] -   Features: 59 (including bias), Task: regression
+[2026-04-24 08:52:54,988][__main__][INFO] -   Device: cuda
+[2026-04-24 08:52:54,989][__main__][INFO] - Creating model: BosonMPS
+[2026-04-24 08:55:02,636][__main__][INFO] - Early stopping at epoch 147 (no improvement for 100 epochs)
+[2026-04-24 08:55:02,643][__main__][INFO] - Results saved to: /home/nicci/GTN/outputs/gtn/popularity/BosonMPS_rg0.005_init0.1/L3_bd6_seed42/results.json
+[2026-04-24 08:55:02,643][__main__][INFO] - ✓ Train R²: 0.0419
+[2026-04-24 08:55:02,643][__main__][INFO] - ✓ Val R²: -0.0016
+Done: 2026-04-24-08:55:03
