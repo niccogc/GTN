@@ -16,4 +16,4 @@ source .venv/bin/activate
 
 set -a && source $HOME/aim && set +a
 
-python run.py --multirun trainer=ntn model=mmpo2_typei dataset=concrete
+python run.py --multirun +experiment=uci_ntn_sweep model=mmpo2_typei dataset=concrete

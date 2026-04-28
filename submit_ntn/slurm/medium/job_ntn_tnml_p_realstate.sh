@@ -20,6 +20,6 @@ source $(conda info --base)/etc/profile.d/conda.sh
 conda activate gtn
 set -a && source $HOME/aim && set +a
 
-python run.py --multirun trainer=ntn model=tnml_p dataset=realstate
+python run.py --multirun +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
 
 echo "Done: $(date +%F-%R:%S)"
