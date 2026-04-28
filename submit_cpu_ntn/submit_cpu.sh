@@ -18,7 +18,7 @@ DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "c
 NUM_DATASETS=${#DATASETS[@]}
 NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
 if [ "$1" == "test" ]; then
-    echo "SIMULATING FULL ARRAY MAPPING (1-44):"
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
     echo "--------------------------------------"
 for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
         IDV=$((i - 1))
@@ -36,7 +36,6 @@ source .venv/bin/activate
 
 mkdir -p logs
 
-# LSF logic for the actual cluster run
 IDV=$((LSB_JOBINDEX - 1))
 MODEL_IDX=$((IDV % NUM_MODELS))
 DATASET_IDX=$((IDV / NUM_MODELS))
