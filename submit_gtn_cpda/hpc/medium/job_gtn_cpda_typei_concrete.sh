@@ -16,4 +16,4 @@ source .venv/bin/activate
 
 set -a && source $HOME/aim && set +a
 
-python run.py --multirun +experiment=uci_gtn_sweep model=cpda_typei dataset=concrete
+python run.py --multirun +experiment=cpda_gtn_sweep model=cpda_typei dataset=concrete

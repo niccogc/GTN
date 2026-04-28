@@ -20,6 +20,6 @@ source $(conda info --base)/etc/profile.d/conda.sh
 conda activate gtn
 set -a && source $HOME/aim && set +a
 
-python run.py --multirun +experiment=uci_gtn_sweep model=cpda_typei dataset=bike
+python run.py --multirun +experiment=cpda_gtn_sweep model=cpda_typei dataset=bike
 
 echo "Done: $(date +%F-%R:%S)"
