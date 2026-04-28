@@ -41,14 +41,14 @@ from pathlib import Path
 from omegaconf import OmegaConf
 
 # All available models
-ALL_MODELS = ["mpo2", "lmpo2", "mmpo2", "mpo2_typei", "lmpo2_typei", "mmpo2_typei", "tnml_p", "tnml_f"]
+ALL_MODELS = ["mpo2", "lmpo2", "mmpo2", "mpo2_typei", "lmpo2_typei", "mmpo2_typei", "tnml_p", "tnml_f", "cpda", "cpda_typei"]
 
 # === Job Templates ===
 
 SLURM_TEMPLATE = """#!/bin/bash
 #SBATCH --job-name={job_name}
-#SBATCH --output=logs/{job_name}_%J.out
-#SBATCH --error=logs/{job_name}_%J.err
+#SBATCH --output=/home/nicci/logs/{job_name}_%J.out
+#SBATCH --error=/home/nicci/logs/{job_name}_%J.err
 #SBATCH --partition={partition}
 #SBATCH --time={time}
 #SBATCH --mem=2gb
@@ -61,10 +61,10 @@ echo "Node: $(hostname)"
 echo "Start: $(date +%F-%R:%S)"
 
 export HOME=/home/nicci
+mkdir -p $HOME/logs
 cd $HOME/GTN
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate gtn
-
 set -a && source $HOME/aim && set +a
 
 {command}
@@ -74,8 +74,8 @@ echo "Done: $(date +%F-%R:%S)"
 
 SLURM_ARRAY_TEMPLATE = """#!/bin/bash
 #SBATCH --job-name={job_name}
-#SBATCH --output=logs/{job_name}_%A_%a.out
-#SBATCH --error=logs/{job_name}_%A_%a.err
+#SBATCH --output=/home/nicci/logs/{job_name}_%A_%a.out
+#SBATCH --error=/home/nicci/logs/{job_name}_%A_%a.err
 #SBATCH --partition={partition}
 #SBATCH --time={time}
 #SBATCH --mem=2gb

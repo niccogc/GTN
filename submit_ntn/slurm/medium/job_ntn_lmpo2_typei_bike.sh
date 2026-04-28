@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=ntn-lmpo2-typei-bike
-#SBATCH --output=logs/ntn-lmpo2-typei-bike_%J.out
-#SBATCH --error=logs/ntn-lmpo2-typei-bike_%J.err
+#SBATCH --output=/home/nicci/logs/ntn-lmpo2-typei-bike_%J.out
+#SBATCH --error=/home/nicci/logs/ntn-lmpo2-typei-bike_%J.err
 #SBATCH --partition=titans
 #SBATCH --time=12:00:00
 #SBATCH --mem=2gb
@@ -14,12 +14,12 @@ echo "Node: $(hostname)"
 echo "Start: $(date +%F-%R:%S)"
 
 export HOME=/home/nicci
+mkdir -p $HOME/logs
 cd $HOME/GTN
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate gtn
-
 set -a && source $HOME/aim && set +a
 
-python run.py --multirun +experiment=uci_ntn_sweep model=lmpo2_typei dataset=bike
+python run.py --multirun trainer=ntn model=lmpo2_typei dataset=bike
 
 echo "Done: $(date +%F-%R:%S)"
