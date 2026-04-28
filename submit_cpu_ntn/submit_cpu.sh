@@ -31,7 +31,7 @@ fi
 # ----------------------------
 
 export HOME=/zhome/6b/e/212868
-cd $HOME/BMPO
+cd $HOME/GTN
 source .venv/bin/activate
 
 mkdir -p logs
