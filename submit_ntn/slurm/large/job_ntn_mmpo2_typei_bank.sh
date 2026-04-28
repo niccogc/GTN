@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=ntn-mmpo2-typei-bank
-#SBATCH --output=/home/nicci/logs/ntn-mmpo2-typei-bank_%J.out
-#SBATCH --error=/home/nicci/logs/ntn-mmpo2-typei-bank_%J.err
+#SBATCH --output=/home/nicci/GTN/logs/ntn-mmpo2-typei-bank_%J.out
+#SBATCH --error=/home/nicci/GTN/logs/ntn-mmpo2-typei-bank_%J.err
 #SBATCH --partition=titans
 #SBATCH --time=24:00:00
 #SBATCH --mem=2gb

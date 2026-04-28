@@ -47,8 +47,8 @@ ALL_MODELS = ["mpo2", "lmpo2", "mmpo2", "mpo2_typei", "lmpo2_typei", "mmpo2_type
 
 SLURM_TEMPLATE = """#!/bin/bash
 #SBATCH --job-name={job_name}
-#SBATCH --output=/home/nicci/logs/{job_name}_%J.out
-#SBATCH --error=/home/nicci/logs/{job_name}_%J.err
+#SBATCH --output=/home/nicci/GTN/logs/{job_name}_%J.out
+#SBATCH --error=/home/nicci/GTN/logs/{job_name}_%J.err
 #SBATCH --partition={partition}
 #SBATCH --time={time}
 #SBATCH --mem=2gb

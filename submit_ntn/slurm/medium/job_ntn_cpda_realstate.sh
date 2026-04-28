@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=ntn-cpda-realstate
-#SBATCH --output=/home/nicci/logs/ntn-cpda-realstate_%J.out
-#SBATCH --error=/home/nicci/logs/ntn-cpda-realstate_%J.err
+#SBATCH --output=/home/nicci/GTN/logs/ntn-cpda-realstate_%J.out
+#SBATCH --error=/home/nicci/GTN/logs/ntn-cpda-realstate_%J.err
 #SBATCH --partition=titans
 #SBATCH --time=12:00:00
 #SBATCH --mem=2gb

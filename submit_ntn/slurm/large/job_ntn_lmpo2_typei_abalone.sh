@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=ntn-lmpo2-typei-abalone
-#SBATCH --output=/home/nicci/logs/ntn-lmpo2-typei-abalone_%J.out
-#SBATCH --error=/home/nicci/logs/ntn-lmpo2-typei-abalone_%J.err
+#SBATCH --output=/home/nicci/GTN/logs/ntn-lmpo2-typei-abalone_%J.out
+#SBATCH --error=/home/nicci/GTN/logs/ntn-lmpo2-typei-abalone_%J.err
 #SBATCH --partition=titans
 #SBATCH --time=24:00:00
 #SBATCH --mem=2gb

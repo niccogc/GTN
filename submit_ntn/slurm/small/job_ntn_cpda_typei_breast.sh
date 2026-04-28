@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=ntn-cpda-typei-breast
-#SBATCH --output=/home/nicci/logs/ntn-cpda-typei-breast_%J.out
-#SBATCH --error=/home/nicci/logs/ntn-cpda-typei-breast_%J.err
+#SBATCH --output=/home/nicci/GTN/logs/ntn-cpda-typei-breast_%J.out
+#SBATCH --error=/home/nicci/GTN/logs/ntn-cpda-typei-breast_%J.err
 #SBATCH --partition=titans
 #SBATCH --time=12:00:00
 #SBATCH --mem=2gb
