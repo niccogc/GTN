@@ -4,21 +4,21 @@
 
 ## Overall Progress
 
-**Total:** 14,125 / 18,480 (76.4%)
+**Total:** 15,076 / 18,480 (81.6%)
 
 | Status | Count |
 |--------|------:|
-| Success | 12,363 |
-| Singular | 1,114 |
-| OOM | 648 |
+| Success | 12,937 |
+| Singular | 1,310 |
+| OOM | 829 |
 | Failed | 0 |
-| Missing | 4,355 |
+| Missing | 3,404 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 4,901 | 9,240 | 53.0% | 3,139 | 1,114 | 648 | 0 |
+| NTN | 5,852 | 9,240 | 63.3% | 3,713 | 1,310 | 829 | 0 |
 | GTN | 9,224 | 9,240 | 99.8% | 9,224 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
@@ -31,8 +31,8 @@
 | MPO2TypeI | 324/630 (51.4%) | 630/630 (100.0%) |
 | LMPO2TypeI | 886/1890 (46.9%) | 1890/1890 (100.0%) |
 | MMPO2TypeI | 327/630 (51.9%) | 630/630 (100.0%) |
-| CPDA | 255/840 (30.4%) | 840/840 (100.0%) |
-| CPDATypeI | 240/840 (28.6%) | 835/840 (99.4%) |
+| CPDA | 665/840 (79.2%) | 840/840 (100.0%) |
+| CPDATypeI | 781/840 (93.0%) | 835/840 (99.4%) |
 | TNML_P | 602/630 (95.6%) | 624/630 (99.0%) |
 | TNML_F | 597/630 (94.8%) | 625/630 (99.2%) |
 
@@ -40,11 +40,13 @@
 
 | Size | NTN | GTN | Missing |
 |------|-----|-----|--------:|
-| Small | 939/1760 (53.4%) | 1760/1760 (100.0%) | 821 |
-| Medium | 3140/3960 (79.3%) | 3948/3960 (99.7%) | 832 |
-| Large | 822/3520 (23.4%) | 3516/3520 (99.9%) | 2,702 |
+| Small | 1112/1760 (63.2%) | 1760/1760 (100.0%) | 648 |
+| Medium | 3742/3960 (94.5%) | 3948/3960 (99.7%) | 230 |
+| Large | 998/3520 (28.4%) | 3516/3520 (99.9%) | 2,526 |
 
 ## By Dataset
+
+**Complete:** concrete, energy_efficiency, realstate
 
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
@@ -54,21 +56,18 @@
 | appliances | 580 | 880 | 65.9% |
 | bank | 580 | 880 | 65.9% |
 | bike | 875 | 880 | 99.4% |
-| breast | 583 | 880 | 66.2% |
-| car_evaluation | 670 | 880 | 76.1% |
-| concrete | 800 | 880 | 90.9% |
-| energy_efficiency | 800 | 880 | 90.9% |
-| hearth | 675 | 880 | 76.7% |
-| iris | 797 | 880 | 90.6% |
-| mushrooms | 473 | 880 | 53.8% |
-| obesity | 800 | 880 | 90.9% |
-| popularity | 499 | 880 | 56.7% |
-| realstate | 800 | 880 | 90.9% |
-| seoulBike | 796 | 880 | 90.5% |
-| student_dropout | 470 | 880 | 53.4% |
-| student_perf | 797 | 880 | 90.6% |
-| wine | 644 | 880 | 73.2% |
-| winequalityc | 750 | 880 | 85.2% |
+| breast | 594 | 880 | 67.5% |
+| car_evaluation | 719 | 880 | 81.7% |
+| hearth | 698 | 880 | 79.3% |
+| iris | 877 | 880 | 99.7% |
+| mushrooms | 519 | 880 | 59.0% |
+| obesity | 873 | 880 | 99.2% |
+| popularity | 579 | 880 | 65.8% |
+| seoulBike | 876 | 880 | 99.5% |
+| student_dropout | 520 | 880 | 59.1% |
+| student_perf | 877 | 880 | 99.7% |
+| wine | 703 | 880 | 79.9% |
+| winequalityc | 830 | 880 | 94.3% |
 
 ## Incomplete Experiments
 
@@ -78,6 +77,8 @@
 | LMPO2TypeI | iris | NTN | 87/90 (96.7%) |
 | TNML_P | popularity | NTN | 29/30 (96.7%) |
 | TNML_F | abalone | GTN | 29/30 (96.7%) |
+| CPDATypeI | obesity | NTN | 37/40 (92.5%) |
+| CPDA | obesity | NTN | 36/40 (90.0%) |
 | TNML_P | abalone | GTN | 27/30 (90.0%) |
 | TNML_P | student_perf | GTN | 27/30 (90.0%) |
 | TNML_F | breast | NTN | 27/30 (90.0%) |
@@ -86,27 +87,25 @@
 | TNML_F | seoulBike | GTN | 26/30 (86.7%) |
 | LMPO2TypeI | winequalityc | NTN | 60/90 (66.7%) |
 | LMPO2 | car_evaluation | NTN | 56/90 (62.2%) |
+| CPDA | wine | NTN | 19/40 (47.5%) |
 | LMPO2 | breast | NTN | 42/90 (46.7%) |
 | MMPO2TypeI | wine | NTN | 14/30 (46.7%) |
 | MPO2TypeI | wine | NTN | 13/30 (43.3%) |
 | CPDA | breast | NTN | 15/40 (37.5%) |
 | MPO2 | hearth | NTN | 11/30 (36.7%) |
-| MPO2 | wine | NTN | 11/30 (36.7%) |
-| MMPO2 | wine | NTN | 11/30 (36.7%) |
-| MPO2 | winequalityc | NTN | 10/30 (33.3%) |
 
-*... and 91 more*
+*... and 71 more*
 
-## Singular Matrix Failures (1114)
+## Singular Matrix Failures (1310)
 
 | Experiment | Count |
 |------------|------:|
-| ntn | 1114 |
+| ntn | 1310 |
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 4,355
-- **Experiments with missing runs:** 111
+- **Runs remaining:** 3,404
+- **Experiments with missing runs:** 91
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
 
@@ -114,10 +113,10 @@
 
 ### Small
 
-**NTN** (26 experiments, 821 runs missing):
+**NTN** (23 experiments, 648 runs missing):
 
-- CPDA: breast, hearth, iris, wine
-- CPDATypeI: breast, hearth, iris, wine
+- CPDA: breast, hearth, wine
+- CPDATypeI: breast, hearth
 - LMPO2: breast, wine
 - LMPO2TypeI: breast, hearth, iris, wine
 - MMPO2: breast, hearth, wine
@@ -128,10 +127,10 @@
 
 ### Medium
 
-**NTN** (23 experiments, 820 runs missing):
+**NTN** (10 experiments, 218 runs missing):
 
-- CPDA: car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
-- CPDATypeI: car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
+- CPDA: car_evaluation, obesity
+- CPDATypeI: obesity
 - LMPO2: car_evaluation
 - LMPO2TypeI: winequalityc
 - MMPO2: car_evaluation
@@ -147,10 +146,9 @@
 
 ### Large
 
-**NTN** (57 experiments, 2,698 runs missing):
+**NTN** (53 experiments, 2,522 runs missing):
 
-- CPDA: mushrooms, popularity, student_dropout
-- CPDATypeI: mushrooms, popularity, student_dropout
+- CPDA: mushrooms, student_dropout
 - LMPO2: abalone, adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
 - LMPO2TypeI: abalone, adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
 - MMPO2: abalone, adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
