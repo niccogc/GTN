@@ -1,0 +1,1904 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28326036[5]: <ntn_grid_full[1-140]%20> in cluster <dcc> Done
+
+Job <ntn_grid_full[1-140]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Wed Apr 29 14:15:19 2026
+Job was executed on host(s) <4*n-62-29-31>, in queue <hpc>, as user <nicci> in cluster <dcc> at Wed Apr 29 14:15:21 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Wed Apr 29 14:15:21 2026
+Terminated at Wed Apr 29 14:20:55 2026
+Results reported at Wed Apr 29 14:20:55 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-140]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=2GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+DATASETS=(
+    "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+    "car_evaluation" "concrete" "energy_efficiency" "hearth"
+    "iris" "mushrooms" "obesity" "popularity" "realstate"
+    "seoulBike" "student_dropout" "student_perf" "wine"
+    "winequalityc"
+)
+
+COMPLETED_DATASETS=(
+    "bike" "concrete" "energy_efficiency"
+    "iris" "obesity" "realstate" "seoulBike"
+)
+
+# Filter datasets
+FILTERED_DATASETS=()
+for ds in "${DATASETS[@]}"; do
+    skip=false
+    for completed in "${COMPLETED_DATASETS[@]}"; do
+        if [[ "$ds" == "$completed" ]]; then
+            skip=true
+            break
+        fi
+    done
+
+    if ! $skip; then
+        FILTERED_DATASETS+=("$ds")
+    fi
+done
+
+DATASETS=("${FILTERED_DATASETS[@]}")
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   991.33 sec.
+    Max Memory :                                 651 MB
+    Average Memory :                             500.25 MB
+    Total Requested Memory :                     8192.00 MB
+    Delta Memory :                               7541.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   334 sec.
+    Turnaround time :                            336 sec.
+
+The output (if any) follows:
+
+Task 5: Dataset=abalone, Model=mpo2, Experiment=uci_ntn_sweep
+[2026-04-29 14:15:46,657][HYDRA] Launching 30 jobs locally
+[2026-04-29 14:15:46,658][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:15:46,926][utils.tracking][INFO] - Loaded 16372 tracked runs from runs_tracking.csv
+[2026-04-29 14:15:46,928][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 18109.17044 | quality: -1725.89167
+        | Val:   loss: 16329.19978 | quality: -1626.56609
+Epoch 1 | Train: loss: 79.68277 | quality: -6.59855
+        | Val:   loss: 74.72965 | quality: -6.44846
+ *
+Epoch 2 | Train: loss: 64.09194 | quality: -5.11181
+        | Val:   loss: 59.93901 | quality: -4.97425
+ *
+Epoch 3 | Train: loss: 52.46002 | quality: -4.00259
+        | Val:   loss: 49.08799 | quality: -3.89270
+ *
+Epoch 4 | Train: loss: 6.69623 | quality: 0.36145
+        | Val:   loss: 6.13847 | quality: 0.38817
+ *
+Epoch 5 | Train: loss: 4.40004 | quality: 0.58041
+        | Val:   loss: 4.73549 | quality: 0.52800
+ *
+Epoch 6 | Train: loss: 4.28626 | quality: 0.59126
+        | Val:   loss: 4.77462 | quality: 0.52410
+
+Epoch 7 | Train: loss: 4.22612 | quality: 0.59700
+        | Val:   loss: 4.81418 | quality: 0.52016
+
+Epoch 8 | Train: loss: 4.15648 | quality: 0.60364
+        | Val:   loss: 4.80737 | quality: 0.52084
+
+Epoch 9 | Train: loss: 4.09668 | quality: 0.60934
+        | Val:   loss: 4.77450 | quality: 0.52412
+
+Epoch 10 | Train: loss: 4.07301 | quality: 0.61160
+        | Val:   loss: 4.78364 | quality: 0.52320
+
+Epoch 11 | Train: loss: 4.05478 | quality: 0.61334
+        | Val:   loss: 4.76946 | quality: 0.52462
+
+Epoch 12 | Train: loss: 4.04296 | quality: 0.61446
+        | Val:   loss: 4.77137 | quality: 0.52443
+
+Epoch 13 | Train: loss: 4.03195 | quality: 0.61551
+        | Val:   loss: 4.79659 | quality: 0.52191
+
+Epoch 14 | Train: loss: 4.02308 | quality: 0.61636
+        | Val:   loss: 4.82528 | quality: 0.51905
+
+Epoch 15 | Train: loss: 4.01676 | quality: 0.61696
+        | Val:   loss: 4.83811 | quality: 0.51778
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-29 14:15:51,270][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed42 | val=0.5280
+[2026-04-29 14:15:51,272][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:15:51,425][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 23751.63346 | quality: -2263.95731
+        | Val:   loss: 2107.25111 | quality: -209.03420
+Epoch 1 | Train: loss: 72.63891 | quality: -5.92685
+        | Val:   loss: 67.78514 | quality: -5.75629
+ *
+Epoch 2 | Train: loss: 61.80307 | quality: -4.89354
+        | Val:   loss: 57.74989 | quality: -4.75605
+ *
+Epoch 3 | Train: loss: 43.15068 | quality: -3.11485
+        | Val:   loss: 39.87350 | quality: -2.97428
+ *
+Epoch 4 | Train: loss: 4.67889 | quality: 0.55382
+        | Val:   loss: 4.77437 | quality: 0.52413
+ *
+Epoch 5 | Train: loss: 4.35602 | quality: 0.58461
+        | Val:   loss: 4.71834 | quality: 0.52971
+ *
+Epoch 6 | Train: loss: 4.26848 | quality: 0.59296
+        | Val:   loss: 4.72377 | quality: 0.52917
+ *
+Epoch 7 | Train: loss: 4.21367 | quality: 0.59818
+        | Val:   loss: 4.75115 | quality: 0.52644
+
+Epoch 8 | Train: loss: 4.11549 | quality: 0.60755
+        | Val:   loss: 4.78774 | quality: 0.52280
+
+Epoch 9 | Train: loss: 4.07442 | quality: 0.61146
+        | Val:   loss: 4.78736 | quality: 0.52283
+
+Epoch 10 | Train: loss: 4.03736 | quality: 0.61500
+        | Val:   loss: 4.84728 | quality: 0.51686
+
+Epoch 11 | Train: loss: 4.02635 | quality: 0.61605
+        | Val:   loss: 4.83856 | quality: 0.51773
+
+Epoch 12 | Train: loss: 4.02581 | quality: 0.61610
+        | Val:   loss: 4.83980 | quality: 0.51761
+
+Epoch 13 | Train: loss: 4.02700 | quality: 0.61598
+        | Val:   loss: 4.84634 | quality: 0.51696
+
+Epoch 14 | Train: loss: 4.02627 | quality: 0.61606
+        | Val:   loss: 4.85555 | quality: 0.51604
+
+Epoch 15 | Train: loss: 4.02351 | quality: 0.61632
+        | Val:   loss: 4.86630 | quality: 0.51497
+
+Epoch 16 | Train: loss: 4.02016 | quality: 0.61664
+        | Val:   loss: 4.87318 | quality: 0.51428
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-29 14:15:55,419][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed10090 | val=0.5292
+[2026-04-29 14:15:55,421][HYDRA] 	#2 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:15:55,572][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=4 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 644195.54107 | quality: -61429.52854
+        | Val:   loss: 3374.64691 | quality: -335.35824
+Epoch 1 | Train: loss: 78.69084 | quality: -6.50396
+        | Val:   loss: 73.49897 | quality: -6.32580
+ *
+Epoch 2 | Train: loss: 62.53193 | quality: -4.96305
+        | Val:   loss: 58.56229 | quality: -4.83703
+ *
+Epoch 3 | Train: loss: 49.35638 | quality: -3.70663
+        | Val:   loss: 46.16153 | quality: -3.60102
+ *
+Epoch 4 | Train: loss: 4.89720 | quality: 0.53300
+        | Val:   loss: 4.81916 | quality: 0.51966
+ *
+Epoch 5 | Train: loss: 4.39930 | quality: 0.58048
+        | Val:   loss: 4.72597 | quality: 0.52895
+ *
+Epoch 6 | Train: loss: 4.28475 | quality: 0.59141
+        | Val:   loss: 4.71392 | quality: 0.53015
+ *
+Epoch 7 | Train: loss: 4.20498 | quality: 0.59901
+        | Val:   loss: 4.74312 | quality: 0.52724
+
+Epoch 8 | Train: loss: 4.14969 | quality: 0.60429
+        | Val:   loss: 4.79227 | quality: 0.52234
+
+Epoch 9 | Train: loss: 4.12245 | quality: 0.60688
+        | Val:   loss: 4.80301 | quality: 0.52127
+
+Epoch 10 | Train: loss: 4.11195 | quality: 0.60788
+        | Val:   loss: 4.82229 | quality: 0.51935
+
+Epoch 11 | Train: loss: 4.07608 | quality: 0.61130
+        | Val:   loss: 4.91493 | quality: 0.51012
+
+Epoch 12 | Train: loss: 4.05025 | quality: 0.61377
+        | Val:   loss: 4.94838 | quality: 0.50678
+
+Epoch 13 | Train: loss: 4.02925 | quality: 0.61577
+        | Val:   loss: 4.97729 | quality: 0.50390
+
+Epoch 14 | Train: loss: 4.02189 | quality: 0.61647
+        | Val:   loss: 4.98737 | quality: 0.50290
+
+Epoch 15 | Train: loss: 4.01604 | quality: 0.61703
+        | Val:   loss: 5.00458 | quality: 0.50118
+
+Epoch 16 | Train: loss: 4.01190 | quality: 0.61743
+        | Val:   loss: 5.02558 | quality: 0.49909
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-29 14:15:59,818][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=4 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed32874 | val=0.5302
+[2026-04-29 14:15:59,820][HYDRA] 	#3 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:15:59,971][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=4 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2103.14065 | quality: -199.55563
+        | Val:   loss: 1099.77501 | quality: -108.61692
+Epoch 1 | Train: loss: 76.85970 | quality: -6.32935
+        | Val:   loss: 71.85179 | quality: -6.16162
+ *
+Epoch 2 | Train: loss: 62.04796 | quality: -4.91690
+        | Val:   loss: 58.10476 | quality: -4.79143
+ *
+Epoch 3 | Train: loss: 48.86431 | quality: -3.65970
+        | Val:   loss: 45.60926 | quality: -3.54597
+ *
+Epoch 4 | Train: loss: 4.96052 | quality: 0.52696
+        | Val:   loss: 4.89582 | quality: 0.51202
+ *
+Epoch 5 | Train: loss: 4.41381 | quality: 0.57910
+        | Val:   loss: 4.77414 | quality: 0.52415
+ *
+Epoch 6 | Train: loss: 4.28738 | quality: 0.59115
+        | Val:   loss: 4.73660 | quality: 0.52789
+ *
+Epoch 7 | Train: loss: 4.23353 | quality: 0.59629
+        | Val:   loss: 4.74397 | quality: 0.52716
+ *
+Epoch 8 | Train: loss: 4.16663 | quality: 0.60267
+        | Val:   loss: 4.80959 | quality: 0.52062
+
+Epoch 9 | Train: loss: 4.13390 | quality: 0.60579
+        | Val:   loss: 4.81325 | quality: 0.52025
+
+Epoch 10 | Train: loss: 4.12451 | quality: 0.60669
+        | Val:   loss: 4.80797 | quality: 0.52078
+
+Epoch 11 | Train: loss: 4.11325 | quality: 0.60776
+        | Val:   loss: 4.80521 | quality: 0.52105
+
+Epoch 12 | Train: loss: 4.08725 | quality: 0.61024
+        | Val:   loss: 4.81283 | quality: 0.52029
+
+Epoch 13 | Train: loss: 4.07145 | quality: 0.61175
+        | Val:   loss: 4.82223 | quality: 0.51936
+
+Epoch 14 | Train: loss: 4.05828 | quality: 0.61300
+        | Val:   loss: 4.83325 | quality: 0.51826
+
+Epoch 15 | Train: loss: 4.03004 | quality: 0.61569
+        | Val:   loss: 4.87569 | quality: 0.51403
+
+Epoch 16 | Train: loss: 4.01167 | quality: 0.61745
+        | Val:   loss: 4.91188 | quality: 0.51042
+
+Epoch 17 | Train: loss: 4.00357 | quality: 0.61822
+        | Val:   loss: 4.92218 | quality: 0.50940
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:16:03,923][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=4 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed47311 | val=0.5272
+[2026-04-29 14:16:03,925][HYDRA] 	#4 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:16:04,076][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=4 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20126.61710 | quality: -1918.27551
+        | Val:   loss: 14139.93538 | quality: -1408.35745
+Epoch 1 | Train: loss: 77.94718 | quality: -6.43305
+        | Val:   loss: 72.99916 | quality: -6.27598
+ *
+Epoch 2 | Train: loss: 63.11689 | quality: -5.01883
+        | Val:   loss: 59.06886 | quality: -4.88752
+ *
+Epoch 3 | Train: loss: 51.04688 | quality: -3.86783
+        | Val:   loss: 47.71796 | quality: -3.75615
+ *
+Epoch 4 | Train: loss: 5.21168 | quality: 0.50301
+        | Val:   loss: 5.00781 | quality: 0.50086
+ *
+Epoch 5 | Train: loss: 4.40604 | quality: 0.57984
+        | Val:   loss: 4.71804 | quality: 0.52974
+ *
+Epoch 6 | Train: loss: 4.29014 | quality: 0.59089
+        | Val:   loss: 4.74715 | quality: 0.52684
+
+Epoch 7 | Train: loss: 4.23454 | quality: 0.59619
+        | Val:   loss: 4.78600 | quality: 0.52297
+
+Epoch 8 | Train: loss: 4.16296 | quality: 0.60302
+        | Val:   loss: 4.82552 | quality: 0.51903
+
+Epoch 9 | Train: loss: 4.11256 | quality: 0.60783
+        | Val:   loss: 4.77845 | quality: 0.52372
+
+Epoch 10 | Train: loss: 4.08693 | quality: 0.61027
+        | Val:   loss: 4.81490 | quality: 0.52009
+
+Epoch 11 | Train: loss: 4.07242 | quality: 0.61165
+        | Val:   loss: 4.85205 | quality: 0.51639
+
+Epoch 12 | Train: loss: 4.06088 | quality: 0.61275
+        | Val:   loss: 4.87459 | quality: 0.51414
+
+Epoch 13 | Train: loss: 4.05044 | quality: 0.61375
+        | Val:   loss: 4.89113 | quality: 0.51249
+
+Epoch 14 | Train: loss: 4.04260 | quality: 0.61450
+        | Val:   loss: 4.90319 | quality: 0.51129
+
+Epoch 15 | Train: loss: 4.03682 | quality: 0.61505
+        | Val:   loss: 4.91264 | quality: 0.51035
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-29 14:16:07,785][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=4 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd4_seed47303 | val=0.5297
+[2026-04-29 14:16:07,787][HYDRA] 	#5 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:16:07,938][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 27730.53763 | quality: -2643.38587
+        | Val:   loss: 1748.82080 | quality: -173.30869
+Epoch 1 | Train: loss: 65.88896 | quality: -5.28318
+        | Val:   loss: 61.65178 | quality: -5.14496
+ *
+Epoch 2 | Train: loss: 55.62646 | quality: -4.30454
+        | Val:   loss: 52.01531 | quality: -4.18448
+ *
+Epoch 3 | Train: loss: 13.59959 | quality: -0.29686
+        | Val:   loss: 12.35601 | quality: -0.23155
+ *
+Epoch 4 | Train: loss: 4.62658 | quality: 0.55881
+        | Val:   loss: 4.85486 | quality: 0.51611
+ *
+Epoch 5 | Train: loss: 4.36557 | quality: 0.58370
+        | Val:   loss: 4.81810 | quality: 0.51977
+ *
+Epoch 6 | Train: loss: 4.28836 | quality: 0.59106
+        | Val:   loss: 4.82366 | quality: 0.51922
+ *
+Epoch 7 | Train: loss: 4.18837 | quality: 0.60060
+        | Val:   loss: 4.74214 | quality: 0.52734
+ *
+Epoch 8 | Train: loss: 4.13722 | quality: 0.60547
+        | Val:   loss: 4.74152 | quality: 0.52740
+ *
+Epoch 9 | Train: loss: 4.05490 | quality: 0.61332
+        | Val:   loss: 4.93643 | quality: 0.50798
+
+Epoch 10 | Train: loss: 4.02894 | quality: 0.61580
+        | Val:   loss: 4.97165 | quality: 0.50447
+
+Epoch 11 | Train: loss: 4.01339 | quality: 0.61728
+        | Val:   loss: 4.98022 | quality: 0.50361
+
+Epoch 12 | Train: loss: 3.99423 | quality: 0.61911
+        | Val:   loss: 4.95539 | quality: 0.50609
+
+Epoch 13 | Train: loss: 3.98862 | quality: 0.61964
+        | Val:   loss: 4.92128 | quality: 0.50949
+
+Epoch 14 | Train: loss: 3.98356 | quality: 0.62013
+        | Val:   loss: 4.90067 | quality: 0.51154
+
+Epoch 15 | Train: loss: 3.97918 | quality: 0.62055
+        | Val:   loss: 4.89289 | quality: 0.51231
+
+Epoch 16 | Train: loss: 3.97595 | quality: 0.62085
+        | Val:   loss: 4.89267 | quality: 0.51234
+
+Epoch 17 | Train: loss: 3.97452 | quality: 0.62099
+        | Val:   loss: 4.89554 | quality: 0.51205
+
+Epoch 18 | Train: loss: 3.97495 | quality: 0.62095
+        | Val:   loss: 4.89961 | quality: 0.51165
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-29 14:16:13,972][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed42 | val=0.5274
+[2026-04-29 14:16:13,975][HYDRA] 	#6 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:16:14,128][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 21038.14552 | quality: -2005.19892
+        | Val:   loss: 11968.81416 | quality: -1191.95718
+Epoch 1 | Train: loss: 64.35684 | quality: -5.13707
+        | Val:   loss: 60.29640 | quality: -5.00987
+ *
+Epoch 2 | Train: loss: 44.40800 | quality: -3.23475
+        | Val:   loss: 41.34248 | quality: -3.12069
+ *
+Epoch 3 | Train: loss: 4.72890 | quality: 0.54905
+        | Val:   loss: 4.77300 | quality: 0.52427
+ *
+Epoch 4 | Train: loss: 4.37716 | quality: 0.58259
+        | Val:   loss: 4.75758 | quality: 0.52580
+ *
+Epoch 5 | Train: loss: 4.28998 | quality: 0.59091
+        | Val:   loss: 4.75572 | quality: 0.52599
+ *
+Epoch 6 | Train: loss: 4.21428 | quality: 0.59813
+        | Val:   loss: 4.72331 | quality: 0.52922
+ *
+Epoch 7 | Train: loss: 4.16349 | quality: 0.60297
+        | Val:   loss: 4.73168 | quality: 0.52838
+ *
+Epoch 8 | Train: loss: 4.12023 | quality: 0.60709
+        | Val:   loss: 4.71960 | quality: 0.52959
+ *
+Epoch 9 | Train: loss: 4.02061 | quality: 0.61659
+        | Val:   loss: 4.92124 | quality: 0.50949
+
+Epoch 10 | Train: loss: 3.98973 | quality: 0.61954
+        | Val:   loss: 4.95322 | quality: 0.50630
+
+Epoch 11 | Train: loss: 3.94334 | quality: 0.62396
+        | Val:   loss: 4.92936 | quality: 0.50868
+
+Epoch 12 | Train: loss: 3.93135 | quality: 0.62511
+        | Val:   loss: 4.89064 | quality: 0.51254
+
+Epoch 13 | Train: loss: 3.92782 | quality: 0.62544
+        | Val:   loss: 4.90631 | quality: 0.51098
+
+Epoch 14 | Train: loss: 3.93104 | quality: 0.62514
+        | Val:   loss: 4.91875 | quality: 0.50974
+
+Epoch 15 | Train: loss: 3.93593 | quality: 0.62467
+        | Val:   loss: 4.92489 | quality: 0.50913
+
+Epoch 16 | Train: loss: 3.94099 | quality: 0.62419
+        | Val:   loss: 4.92497 | quality: 0.50912
+
+Epoch 17 | Train: loss: 3.94510 | quality: 0.62380
+        | Val:   loss: 4.92216 | quality: 0.50940
+
+Epoch 18 | Train: loss: 3.94852 | quality: 0.62347
+        | Val:   loss: 4.91890 | quality: 0.50972
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-29 14:16:20,015][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed10090 | val=0.5296
+[2026-04-29 14:16:20,018][HYDRA] 	#7 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:16:20,169][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 12908.99625 | quality: -1230.00272
+        | Val:   loss: 3780.91262 | quality: -375.85161
+Epoch 1 | Train: loss: 63.92181 | quality: -5.09559
+        | Val:   loss: 59.80031 | quality: -4.96042
+ *
+Epoch 2 | Train: loss: 18.06199 | quality: -0.72239
+        | Val:   loss: 15.80868 | quality: -0.57568
+ *
+Epoch 3 | Train: loss: 4.60405 | quality: 0.56096
+        | Val:   loss: 4.75178 | quality: 0.52638
+ *
+Epoch 4 | Train: loss: 4.37421 | quality: 0.58287
+        | Val:   loss: 4.76320 | quality: 0.52524
+
+Epoch 5 | Train: loss: 4.28871 | quality: 0.59103
+        | Val:   loss: 4.75357 | quality: 0.52620
+ *
+Epoch 6 | Train: loss: 4.23175 | quality: 0.59646
+        | Val:   loss: 4.74559 | quality: 0.52700
+ *
+Epoch 7 | Train: loss: 4.12792 | quality: 0.60636
+        | Val:   loss: 4.72738 | quality: 0.52881
+ *
+Epoch 8 | Train: loss: 4.06366 | quality: 0.61249
+        | Val:   loss: 4.83501 | quality: 0.51808
+
+Epoch 9 | Train: loss: 4.02197 | quality: 0.61646
+        | Val:   loss: 5.05017 | quality: 0.49664
+
+Epoch 10 | Train: loss: 4.00778 | quality: 0.61782
+        | Val:   loss: 5.03245 | quality: 0.49841
+
+Epoch 11 | Train: loss: 3.99944 | quality: 0.61861
+        | Val:   loss: 5.00358 | quality: 0.50128
+
+Epoch 12 | Train: loss: 3.99688 | quality: 0.61886
+        | Val:   loss: 4.97022 | quality: 0.50461
+
+Epoch 13 | Train: loss: 3.99643 | quality: 0.61890
+        | Val:   loss: 4.94513 | quality: 0.50711
+
+Epoch 14 | Train: loss: 3.99178 | quality: 0.61934
+        | Val:   loss: 4.92526 | quality: 0.50909
+
+Epoch 15 | Train: loss: 3.98582 | quality: 0.61991
+        | Val:   loss: 4.90956 | quality: 0.51065
+
+Epoch 16 | Train: loss: 3.98106 | quality: 0.62037
+        | Val:   loss: 4.90261 | quality: 0.51135
+
+Epoch 17 | Train: loss: 3.97842 | quality: 0.62062
+        | Val:   loss: 4.89748 | quality: 0.51186
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:16:26,751][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed32874 | val=0.5288
+[2026-04-29 14:16:26,753][HYDRA] 	#8 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:16:26,904][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 18321.95511 | quality: -1746.18283
+        | Val:   loss: 1382.16020 | quality: -136.76285
+Epoch 1 | Train: loss: 64.83963 | quality: -5.18311
+        | Val:   loss: 60.55353 | quality: -5.03550
+ *
+Epoch 2 | Train: loss: 55.17770 | quality: -4.26175
+        | Val:   loss: 51.42972 | quality: -4.12611
+ *
+Epoch 3 | Train: loss: 6.59952 | quality: 0.37067
+        | Val:   loss: 6.16307 | quality: 0.38571
+ *
+Epoch 4 | Train: loss: 4.50080 | quality: 0.57080
+        | Val:   loss: 4.80882 | quality: 0.52069
+ *
+Epoch 5 | Train: loss: 4.32878 | quality: 0.58721
+        | Val:   loss: 4.78763 | quality: 0.52281
+ *
+Epoch 6 | Train: loss: 4.25491 | quality: 0.59425
+        | Val:   loss: 4.79621 | quality: 0.52195
+ *
+Epoch 7 | Train: loss: 4.18783 | quality: 0.60065
+        | Val:   loss: 4.78465 | quality: 0.52310
+ *
+Epoch 8 | Train: loss: 4.13125 | quality: 0.60604
+        | Val:   loss: 4.70199 | quality: 0.53134
+ *
+Epoch 9 | Train: loss: 4.03369 | quality: 0.61535
+        | Val:   loss: 4.89586 | quality: 0.51202
+
+Epoch 10 | Train: loss: 4.00720 | quality: 0.61787
+        | Val:   loss: 4.92353 | quality: 0.50926
+
+Epoch 11 | Train: loss: 3.99187 | quality: 0.61934
+        | Val:   loss: 4.94194 | quality: 0.50743
+
+Epoch 12 | Train: loss: 3.98078 | quality: 0.62039
+        | Val:   loss: 4.92924 | quality: 0.50869
+
+Epoch 13 | Train: loss: 3.97648 | quality: 0.62080
+        | Val:   loss: 4.92027 | quality: 0.50959
+
+Epoch 14 | Train: loss: 3.97435 | quality: 0.62101
+        | Val:   loss: 4.91788 | quality: 0.50982
+
+Epoch 15 | Train: loss: 3.97379 | quality: 0.62106
+        | Val:   loss: 4.91434 | quality: 0.51018
+
+Epoch 16 | Train: loss: 3.97365 | quality: 0.62107
+        | Val:   loss: 4.91516 | quality: 0.51010
+
+Epoch 17 | Train: loss: 3.97375 | quality: 0.62106
+        | Val:   loss: 4.92110 | quality: 0.50950
+
+Epoch 18 | Train: loss: 3.97393 | quality: 0.62105
+        | Val:   loss: 4.92742 | quality: 0.50887
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-29 14:16:32,966][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed47311 | val=0.5313
+[2026-04-29 14:16:32,968][HYDRA] 	#9 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:16:33,151][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 369628.79371 | quality: -35246.82572
+        | Val:   loss: 568.74342 | quality: -55.68787
+Epoch 1 | Train: loss: 64.71285 | quality: -5.17102
+        | Val:   loss: 60.47446 | quality: -5.02762
+ *
+Epoch 2 | Train: loss: 53.79857 | quality: -4.13024
+        | Val:   loss: 50.27206 | quality: -4.01072
+ *
+Epoch 3 | Train: loss: 6.76900 | quality: 0.35451
+        | Val:   loss: 6.20529 | quality: 0.38151
+ *
+Epoch 4 | Train: loss: 4.47748 | quality: 0.57303
+        | Val:   loss: 4.78445 | quality: 0.52312
+ *
+Epoch 5 | Train: loss: 4.32084 | quality: 0.58796
+        | Val:   loss: 4.76414 | quality: 0.52515
+ *
+Epoch 6 | Train: loss: 4.24627 | quality: 0.59508
+        | Val:   loss: 4.78136 | quality: 0.52343
+
+Epoch 7 | Train: loss: 4.16063 | quality: 0.60324
+        | Val:   loss: 4.73568 | quality: 0.52799
+ *
+Epoch 8 | Train: loss: 4.09504 | quality: 0.60950
+        | Val:   loss: 4.76901 | quality: 0.52466
+
+Epoch 9 | Train: loss: 4.03725 | quality: 0.61501
+        | Val:   loss: 4.95161 | quality: 0.50646
+
+Epoch 10 | Train: loss: 3.99508 | quality: 0.61903
+        | Val:   loss: 5.04158 | quality: 0.49750
+
+Epoch 11 | Train: loss: 3.97187 | quality: 0.62124
+        | Val:   loss: 4.99501 | quality: 0.50214
+
+Epoch 12 | Train: loss: 3.95981 | quality: 0.62239
+        | Val:   loss: 4.97747 | quality: 0.50388
+
+Epoch 13 | Train: loss: 3.95924 | quality: 0.62245
+        | Val:   loss: 4.96545 | quality: 0.50508
+
+Epoch 14 | Train: loss: 3.96163 | quality: 0.62222
+        | Val:   loss: 4.94414 | quality: 0.50721
+
+Epoch 15 | Train: loss: 3.96434 | quality: 0.62196
+        | Val:   loss: 4.92581 | quality: 0.50903
+
+Epoch 16 | Train: loss: 3.96640 | quality: 0.62176
+        | Val:   loss: 4.91716 | quality: 0.50990
+
+Epoch 17 | Train: loss: 3.96775 | quality: 0.62164
+        | Val:   loss: 4.91490 | quality: 0.51012
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:16:39,022][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd8_seed47303 | val=0.5280
+[2026-04-29 14:16:39,024][HYDRA] 	#10 : model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:16:39,169][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 5573.02553 | quality: -530.44408
+        | Val:   loss: 1064.67894 | quality: -105.11882
+Epoch 1 | Train: loss: 55.07004 | quality: -4.25148
+        | Val:   loss: 51.48153 | quality: -4.13127
+ *
+Epoch 2 | Train: loss: 6.07218 | quality: 0.42096
+        | Val:   loss: 5.50609 | quality: 0.45120
+ *
+Epoch 3 | Train: loss: 4.44548 | quality: 0.57608
+        | Val:   loss: 4.73710 | quality: 0.52784
+ *
+Epoch 4 | Train: loss: 4.32718 | quality: 0.58736
+        | Val:   loss: 4.74813 | quality: 0.52674
+
+Epoch 5 | Train: loss: 4.26530 | quality: 0.59326
+        | Val:   loss: 4.73739 | quality: 0.52781
+ *
+Epoch 6 | Train: loss: 4.20290 | quality: 0.59921
+        | Val:   loss: 4.75051 | quality: 0.52651
+
+Epoch 7 | Train: loss: 4.12536 | quality: 0.60661
+        | Val:   loss: 4.73823 | quality: 0.52773
+ *
+Epoch 8 | Train: loss: 4.04877 | quality: 0.61391
+        | Val:   loss: 4.81472 | quality: 0.52011
+
+Epoch 9 | Train: loss: 3.97895 | quality: 0.62057
+        | Val:   loss: 4.97609 | quality: 0.50402
+
+Epoch 10 | Train: loss: 3.94145 | quality: 0.62414
+        | Val:   loss: 4.96556 | quality: 0.50507
+
+Epoch 11 | Train: loss: 3.92209 | quality: 0.62599
+        | Val:   loss: 4.96769 | quality: 0.50486
+
+Epoch 12 | Train: loss: 3.91814 | quality: 0.62637
+        | Val:   loss: 4.97166 | quality: 0.50446
+
+Epoch 13 | Train: loss: 3.91801 | quality: 0.62638
+        | Val:   loss: 4.98207 | quality: 0.50343
+
+Epoch 14 | Train: loss: 3.91875 | quality: 0.62631
+        | Val:   loss: 4.99167 | quality: 0.50247
+
+Epoch 15 | Train: loss: 3.91973 | quality: 0.62621
+        | Val:   loss: 4.99638 | quality: 0.50200
+
+Epoch 16 | Train: loss: 3.92099 | quality: 0.62609
+        | Val:   loss: 4.99432 | quality: 0.50221
+
+Epoch 17 | Train: loss: 3.92199 | quality: 0.62600
+        | Val:   loss: 4.98864 | quality: 0.50277
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:16:52,411][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed42 | val=0.5277
+[2026-04-29 14:16:52,414][HYDRA] 	#11 : model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:16:52,583][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 23755.40466 | quality: -2264.31693
+        | Val:   loss: 842.73026 | quality: -82.99672
+Epoch 1 | Train: loss: 58.72175 | quality: -4.59971
+        | Val:   loss: 54.87671 | quality: -4.46968
+ *
+Epoch 2 | Train: loss: 6.69964 | quality: 0.36112
+        | Val:   loss: 5.92832 | quality: 0.40911
+ *
+Epoch 3 | Train: loss: 4.43416 | quality: 0.57716
+        | Val:   loss: 4.73346 | quality: 0.52821
+ *
+Epoch 4 | Train: loss: 4.32015 | quality: 0.58803
+        | Val:   loss: 4.74328 | quality: 0.52723
+ *
+Epoch 5 | Train: loss: 4.26272 | quality: 0.59351
+        | Val:   loss: 4.73307 | quality: 0.52824
+ *
+Epoch 6 | Train: loss: 4.20743 | quality: 0.59878
+        | Val:   loss: 4.74861 | quality: 0.52670
+
+Epoch 7 | Train: loss: 4.12940 | quality: 0.60622
+        | Val:   loss: 4.79471 | quality: 0.52210
+
+Epoch 8 | Train: loss: 4.04822 | quality: 0.61396
+        | Val:   loss: 4.81300 | quality: 0.52028
+
+Epoch 9 | Train: loss: 3.98301 | quality: 0.62018
+        | Val:   loss: 4.89815 | quality: 0.51179
+
+Epoch 10 | Train: loss: 3.97251 | quality: 0.62118
+        | Val:   loss: 4.92580 | quality: 0.50903
+
+Epoch 11 | Train: loss: 3.96893 | quality: 0.62152
+        | Val:   loss: 4.94467 | quality: 0.50715
+
+Epoch 12 | Train: loss: 3.96674 | quality: 0.62173
+        | Val:   loss: 4.96469 | quality: 0.50516
+
+Epoch 13 | Train: loss: 3.96332 | quality: 0.62206
+        | Val:   loss: 4.97455 | quality: 0.50418
+
+Epoch 14 | Train: loss: 3.95959 | quality: 0.62241
+        | Val:   loss: 4.98066 | quality: 0.50357
+
+Epoch 15 | Train: loss: 3.95610 | quality: 0.62275
+        | Val:   loss: 4.98111 | quality: 0.50352
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-29 14:17:04,470][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed10090 | val=0.5282
+[2026-04-29 14:17:04,473][HYDRA] 	#12 : model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:17:04,623][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 26778.79263 | quality: -2552.62740
+        | Val:   loss: 1563.96648 | quality: -154.88387
+Epoch 1 | Train: loss: 56.27944 | quality: -4.36681
+        | Val:   loss: 52.53493 | quality: -4.23627
+ *
+Epoch 2 | Train: loss: 6.27172 | quality: 0.40193
+        | Val:   loss: 5.62194 | quality: 0.43965
+ *
+Epoch 3 | Train: loss: 4.47558 | quality: 0.57321
+        | Val:   loss: 4.75296 | quality: 0.52626
+ *
+Epoch 4 | Train: loss: 4.32226 | quality: 0.58783
+        | Val:   loss: 4.75797 | quality: 0.52576
+ *
+Epoch 5 | Train: loss: 4.26262 | quality: 0.59352
+        | Val:   loss: 4.74684 | quality: 0.52687
+ *
+Epoch 6 | Train: loss: 4.21796 | quality: 0.59778
+        | Val:   loss: 4.75517 | quality: 0.52604
+ *
+Epoch 7 | Train: loss: 4.13293 | quality: 0.60588
+        | Val:   loss: 4.77909 | quality: 0.52366
+
+Epoch 8 | Train: loss: 4.04832 | quality: 0.61395
+        | Val:   loss: 4.89109 | quality: 0.51249
+
+Epoch 9 | Train: loss: 3.99610 | quality: 0.61893
+        | Val:   loss: 5.01130 | quality: 0.50051
+
+Epoch 10 | Train: loss: 3.97254 | quality: 0.62118
+        | Val:   loss: 5.05139 | quality: 0.49652
+
+Epoch 11 | Train: loss: 3.96237 | quality: 0.62215
+        | Val:   loss: 5.06348 | quality: 0.49531
+
+Epoch 12 | Train: loss: 3.95596 | quality: 0.62276
+        | Val:   loss: 5.06611 | quality: 0.49505
+
+Epoch 13 | Train: loss: 3.94862 | quality: 0.62346
+        | Val:   loss: 5.07106 | quality: 0.49456
+
+Epoch 14 | Train: loss: 3.94088 | quality: 0.62420
+        | Val:   loss: 5.07520 | quality: 0.49414
+
+Epoch 15 | Train: loss: 3.93371 | quality: 0.62488
+        | Val:   loss: 5.08179 | quality: 0.49349
+
+Epoch 16 | Train: loss: 3.92781 | quality: 0.62544
+        | Val:   loss: 5.09443 | quality: 0.49223
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-29 14:17:17,190][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed32874 | val=0.5260
+[2026-04-29 14:17:17,193][HYDRA] 	#13 : model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:17:17,339][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=12 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2439.93131 | quality: -231.67201
+        | Val:   loss: 1339.42321 | quality: -132.50316
+Epoch 1 | Train: loss: 56.38524 | quality: -4.37690
+        | Val:   loss: 52.75499 | quality: -4.25820
+ *
+Epoch 2 | Train: loss: 20.80741 | quality: -0.98420
+        | Val:   loss: 18.49851 | quality: -0.84379
+ *
+Epoch 3 | Train: loss: 4.46402 | quality: 0.57431
+        | Val:   loss: 4.76012 | quality: 0.52555
+ *
+Epoch 4 | Train: loss: 4.33287 | quality: 0.58682
+        | Val:   loss: 4.77532 | quality: 0.52403
+
+Epoch 5 | Train: loss: 4.26512 | quality: 0.59328
+        | Val:   loss: 4.75459 | quality: 0.52610
+ *
+Epoch 6 | Train: loss: 4.16463 | quality: 0.60286
+        | Val:   loss: 4.71614 | quality: 0.52993
+ *
+Epoch 7 | Train: loss: 4.11426 | quality: 0.60766
+        | Val:   loss: 4.69428 | quality: 0.53211
+ *
+Epoch 8 | Train: loss: 4.04135 | quality: 0.61462
+        | Val:   loss: 4.88429 | quality: 0.51317
+
+Epoch 9 | Train: loss: 3.98596 | quality: 0.61990
+        | Val:   loss: 4.98101 | quality: 0.50353
+
+Epoch 10 | Train: loss: 3.97523 | quality: 0.62092
+        | Val:   loss: 4.97104 | quality: 0.50453
+
+Epoch 11 | Train: loss: 3.96091 | quality: 0.62229
+        | Val:   loss: 4.97705 | quality: 0.50393
+
+Epoch 12 | Train: loss: 3.95234 | quality: 0.62310
+        | Val:   loss: 4.98928 | quality: 0.50271
+
+Epoch 13 | Train: loss: 3.95420 | quality: 0.62293
+        | Val:   loss: 4.99143 | quality: 0.50249
+
+Epoch 14 | Train: loss: 3.95899 | quality: 0.62247
+        | Val:   loss: 4.99080 | quality: 0.50256
+
+Epoch 15 | Train: loss: 3.96265 | quality: 0.62212
+        | Val:   loss: 4.98819 | quality: 0.50282
+
+Epoch 16 | Train: loss: 3.96559 | quality: 0.62184
+        | Val:   loss: 4.98189 | quality: 0.50344
+
+Epoch 17 | Train: loss: 3.96748 | quality: 0.62166
+        | Val:   loss: 4.97335 | quality: 0.50430
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:17:30,624][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=12 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed47311 | val=0.5321
+[2026-04-29 14:17:30,628][HYDRA] 	#14 : model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:17:30,781][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=3 bd=12 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 148963.41958 | quality: -14204.16134
+        | Val:   loss: 5250.68304 | quality: -522.34675
+Epoch 1 | Train: loss: 59.39736 | quality: -4.66414
+        | Val:   loss: 55.43652 | quality: -4.52548
+ *
+Epoch 2 | Train: loss: 45.45985 | quality: -3.33505
+        | Val:   loss: 42.09556 | quality: -3.19575
+ *
+Epoch 3 | Train: loss: 4.65394 | quality: 0.55620
+        | Val:   loss: 4.75416 | quality: 0.52614
+ *
+Epoch 4 | Train: loss: 4.36191 | quality: 0.58405
+        | Val:   loss: 4.75798 | quality: 0.52576
+ *
+Epoch 5 | Train: loss: 4.27685 | quality: 0.59216
+        | Val:   loss: 4.75132 | quality: 0.52643
+ *
+Epoch 6 | Train: loss: 4.22172 | quality: 0.59742
+        | Val:   loss: 4.77545 | quality: 0.52402
+
+Epoch 7 | Train: loss: 4.16271 | quality: 0.60304
+        | Val:   loss: 4.77270 | quality: 0.52430
+
+Epoch 8 | Train: loss: 4.07457 | quality: 0.61145
+        | Val:   loss: 4.77563 | quality: 0.52400
+
+Epoch 9 | Train: loss: 4.02098 | quality: 0.61656
+        | Val:   loss: 4.90590 | quality: 0.51102
+
+Epoch 10 | Train: loss: 3.99170 | quality: 0.61935
+        | Val:   loss: 4.89980 | quality: 0.51163
+
+Epoch 11 | Train: loss: 3.96557 | quality: 0.62184
+        | Val:   loss: 4.90079 | quality: 0.51153
+
+Epoch 12 | Train: loss: 3.94635 | quality: 0.62368
+        | Val:   loss: 4.91004 | quality: 0.51061
+
+Epoch 13 | Train: loss: 3.93497 | quality: 0.62476
+        | Val:   loss: 4.92578 | quality: 0.50904
+
+Epoch 14 | Train: loss: 3.92918 | quality: 0.62531
+        | Val:   loss: 4.94038 | quality: 0.50758
+
+Epoch 15 | Train: loss: 3.92393 | quality: 0.62581
+        | Val:   loss: 4.95316 | quality: 0.50631
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-29 14:17:42,838][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=3 bd=12 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L3_bd12_seed47303 | val=0.5264
+[2026-04-29 14:17:42,840][HYDRA] 	#15 : model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:17:42,991][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 428697.61712 | quality: -40879.63255
+        | Val:   loss: 78140.32026 | quality: -7787.41200
+Epoch 1 | Train: loss: 95.59120 | quality: -8.11558
+        | Val:   loss: 89.23779 | quality: -7.89452
+ *
+Epoch 2 | Train: loss: 59.06264 | quality: -4.63222
+        | Val:   loss: 56.35707 | quality: -4.61723
+ *
+Epoch 3 | Train: loss: 6.86146 | quality: 0.34569
+        | Val:   loss: 6.41253 | quality: 0.36085
+ *
+Epoch 4 | Train: loss: 4.78452 | quality: 0.54375
+        | Val:   loss: 5.03955 | quality: 0.49770
+ *
+Epoch 5 | Train: loss: 4.44021 | quality: 0.57658
+        | Val:   loss: 4.92331 | quality: 0.50928
+ *
+Epoch 6 | Train: loss: 4.27098 | quality: 0.59272
+        | Val:   loss: 4.83485 | quality: 0.51810
+ *
+Epoch 7 | Train: loss: 4.13980 | quality: 0.60523
+        | Val:   loss: 4.75730 | quality: 0.52583
+ *
+Epoch 8 | Train: loss: 4.05030 | quality: 0.61376
+        | Val:   loss: 4.81455 | quality: 0.52012
+
+Epoch 9 | Train: loss: 4.02848 | quality: 0.61584
+        | Val:   loss: 4.87136 | quality: 0.51446
+
+Epoch 10 | Train: loss: 4.04565 | quality: 0.61421
+        | Val:   loss: 4.86801 | quality: 0.51480
+
+Epoch 11 | Train: loss: 4.04968 | quality: 0.61382
+        | Val:   loss: 4.84292 | quality: 0.51730
+
+Epoch 12 | Train: loss: 4.04692 | quality: 0.61409
+        | Val:   loss: 4.82045 | quality: 0.51954
+
+Epoch 13 | Train: loss: 4.03068 | quality: 0.61563
+        | Val:   loss: 4.82390 | quality: 0.51919
+
+Epoch 14 | Train: loss: 4.00974 | quality: 0.61763
+        | Val:   loss: 4.84799 | quality: 0.51679
+
+Epoch 15 | Train: loss: 3.99035 | quality: 0.61948
+        | Val:   loss: 4.87305 | quality: 0.51429
+
+Epoch 16 | Train: loss: 3.97258 | quality: 0.62117
+        | Val:   loss: 4.87871 | quality: 0.51373
+
+Epoch 17 | Train: loss: 3.95157 | quality: 0.62318
+        | Val:   loss: 4.85780 | quality: 0.51581
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:17:48,937][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed42 | val=0.5258
+[2026-04-29 14:17:48,939][HYDRA] 	#16 : model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:17:49,090][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1402665.33740 | quality: -133757.25748
+        | Val:   loss: 464223.21479 | quality: -46269.11568
+Epoch 1 | Train: loss: 95.97034 | quality: -8.15174
+        | Val:   loss: 89.58553 | quality: -7.92918
+ *
+Epoch 2 | Train: loss: 60.35642 | quality: -4.75559
+        | Val:   loss: 57.73364 | quality: -4.75443
+ *
+Epoch 3 | Train: loss: 5.23346 | quality: 0.50094
+        | Val:   loss: 5.07655 | quality: 0.49401
+ *
+Epoch 4 | Train: loss: 4.47729 | quality: 0.57305
+        | Val:   loss: 4.74206 | quality: 0.52735
+ *
+Epoch 5 | Train: loss: 4.31251 | quality: 0.58876
+        | Val:   loss: 4.75944 | quality: 0.52562
+
+Epoch 6 | Train: loss: 4.23473 | quality: 0.59618
+        | Val:   loss: 4.76669 | quality: 0.52489
+
+Epoch 7 | Train: loss: 4.17799 | quality: 0.60159
+        | Val:   loss: 4.80195 | quality: 0.52138
+
+Epoch 8 | Train: loss: 4.12671 | quality: 0.60648
+        | Val:   loss: 4.77931 | quality: 0.52364
+
+Epoch 9 | Train: loss: 4.09409 | quality: 0.60959
+        | Val:   loss: 4.80163 | quality: 0.52141
+
+Epoch 10 | Train: loss: 4.08980 | quality: 0.61000
+        | Val:   loss: 4.82373 | quality: 0.51921
+
+Epoch 11 | Train: loss: 4.08305 | quality: 0.61064
+        | Val:   loss: 4.83580 | quality: 0.51801
+
+Epoch 12 | Train: loss: 4.07555 | quality: 0.61135
+        | Val:   loss: 4.83721 | quality: 0.51786
+
+Epoch 13 | Train: loss: 4.06556 | quality: 0.61231
+        | Val:   loss: 4.83019 | quality: 0.51856
+
+Epoch 14 | Train: loss: 4.05311 | quality: 0.61350
+        | Val:   loss: 4.82586 | quality: 0.51900
+
+
+⏸ Early stopping at epoch 14 (best was epoch 4)
+[2026-04-29 14:17:54,917][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed10090 | val=0.5273
+[2026-04-29 14:17:54,920][HYDRA] 	#17 : model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:17:55,070][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=4 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 3421670.38473 | quality: -326289.70963
+        | Val:   loss: 2331.25206 | quality: -231.36085
+Epoch 1 | Train: loss: 96.84978 | quality: -8.23560
+        | Val:   loss: 90.46002 | quality: -8.01634
+ *
+Epoch 2 | Train: loss: 67.75442 | quality: -5.46107
+        | Val:   loss: 64.16150 | quality: -5.39511
+ *
+Epoch 3 | Train: loss: 5.63271 | quality: 0.46286
+        | Val:   loss: 5.19384 | quality: 0.48232
+ *
+Epoch 4 | Train: loss: 4.42887 | quality: 0.57766
+        | Val:   loss: 4.72351 | quality: 0.52920
+ *
+Epoch 5 | Train: loss: 4.30038 | quality: 0.58992
+        | Val:   loss: 4.75528 | quality: 0.52603
+
+Epoch 6 | Train: loss: 4.22724 | quality: 0.59689
+        | Val:   loss: 4.76435 | quality: 0.52513
+
+Epoch 7 | Train: loss: 4.16198 | quality: 0.60311
+        | Val:   loss: 4.80749 | quality: 0.52083
+
+Epoch 8 | Train: loss: 4.12030 | quality: 0.60709
+        | Val:   loss: 4.83571 | quality: 0.51801
+
+Epoch 9 | Train: loss: 4.06299 | quality: 0.61255
+        | Val:   loss: 4.79586 | quality: 0.52199
+
+Epoch 10 | Train: loss: 4.04956 | quality: 0.61383
+        | Val:   loss: 4.79759 | quality: 0.52181
+
+Epoch 11 | Train: loss: 4.04864 | quality: 0.61392
+        | Val:   loss: 4.80644 | quality: 0.52093
+
+Epoch 12 | Train: loss: 4.04866 | quality: 0.61392
+        | Val:   loss: 4.81444 | quality: 0.52013
+
+Epoch 13 | Train: loss: 4.04655 | quality: 0.61412
+        | Val:   loss: 4.81978 | quality: 0.51960
+
+Epoch 14 | Train: loss: 4.04353 | quality: 0.61441
+        | Val:   loss: 4.82313 | quality: 0.51927
+
+
+⏸ Early stopping at epoch 14 (best was epoch 4)
+[2026-04-29 14:18:00,590][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=4 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed32874 | val=0.5292
+[2026-04-29 14:18:00,592][HYDRA] 	#18 : model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:18:00,744][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=4 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 23627642.33763 | quality: -2253132.50453
+        | Val:   loss: 188646.70135 | quality: -18801.81816
+Epoch 1 | Train: loss: 96.15728 | quality: -8.16956
+        | Val:   loss: 89.76845 | quality: -7.94741
+ *
+Epoch 2 | Train: loss: 60.91791 | quality: -4.80914
+        | Val:   loss: 58.17825 | quality: -4.79875
+ *
+Epoch 3 | Train: loss: 8.69097 | quality: 0.17123
+        | Val:   loss: 7.91968 | quality: 0.21063
+ *
+Epoch 4 | Train: loss: 4.80436 | quality: 0.54186
+        | Val:   loss: 5.02453 | quality: 0.49919
+ *
+Epoch 5 | Train: loss: 4.38857 | quality: 0.58151
+        | Val:   loss: 4.83380 | quality: 0.51820
+ *
+Epoch 6 | Train: loss: 4.22633 | quality: 0.59698
+        | Val:   loss: 4.80785 | quality: 0.52079
+ *
+Epoch 7 | Train: loss: 4.15019 | quality: 0.60424
+        | Val:   loss: 4.81710 | quality: 0.51987
+ *
+Epoch 8 | Train: loss: 4.09844 | quality: 0.60917
+        | Val:   loss: 4.81029 | quality: 0.52055
+ *
+Epoch 9 | Train: loss: 4.05966 | quality: 0.61287
+        | Val:   loss: 4.82330 | quality: 0.51925
+
+Epoch 10 | Train: loss: 4.07291 | quality: 0.61161
+        | Val:   loss: 4.77943 | quality: 0.52362
+ *
+Epoch 11 | Train: loss: 4.08625 | quality: 0.61033
+        | Val:   loss: 4.76460 | quality: 0.52510
+ *
+Epoch 12 | Train: loss: 4.08811 | quality: 0.61016
+        | Val:   loss: 4.76214 | quality: 0.52535
+
+Epoch 13 | Train: loss: 4.08472 | quality: 0.61048
+        | Val:   loss: 4.75887 | quality: 0.52567
+
+Epoch 14 | Train: loss: 4.06817 | quality: 0.61206
+        | Val:   loss: 4.76289 | quality: 0.52527
+ *
+Epoch 15 | Train: loss: 4.05615 | quality: 0.61321
+        | Val:   loss: 4.76465 | quality: 0.52510
+ *
+Epoch 16 | Train: loss: 4.04661 | quality: 0.61411
+        | Val:   loss: 4.79640 | quality: 0.52193
+
+Epoch 17 | Train: loss: 4.03332 | quality: 0.61538
+        | Val:   loss: 4.84998 | quality: 0.51659
+
+Epoch 18 | Train: loss: 4.01271 | quality: 0.61735
+        | Val:   loss: 4.95965 | quality: 0.50566
+
+Epoch 19 | Train: loss: 3.97737 | quality: 0.62072
+        | Val:   loss: 4.93268 | quality: 0.50835
+
+Epoch 20 | Train: loss: 3.98502 | quality: 0.61999
+        | Val:   loss: 4.92624 | quality: 0.50899
+
+
+Best epoch: 15 (val_quality=0.525097)
+[2026-04-29 14:18:07,715][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=4 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed47311 | val=0.5251
+[2026-04-29 14:18:07,717][HYDRA] 	#19 : model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:18:07,867][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=4 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 137215.28451 | quality: -13083.85842
+        | Val:   loss: 67358.63537 | quality: -6712.77853
+Epoch 1 | Train: loss: 95.81044 | quality: -8.13649
+        | Val:   loss: 89.40703 | quality: -7.91139
+ *
+Epoch 2 | Train: loss: 64.10660 | quality: -5.11321
+        | Val:   loss: 61.19539 | quality: -5.09947
+ *
+Epoch 3 | Train: loss: 7.58860 | quality: 0.27635
+        | Val:   loss: 7.29451 | quality: 0.27294
+ *
+Epoch 4 | Train: loss: 5.14883 | quality: 0.50901
+        | Val:   loss: 5.33835 | quality: 0.46791
+ *
+Epoch 5 | Train: loss: 4.49579 | quality: 0.57128
+        | Val:   loss: 4.95514 | quality: 0.50611
+ *
+Epoch 6 | Train: loss: 4.29241 | quality: 0.59068
+        | Val:   loss: 4.83430 | quality: 0.51816
+ *
+Epoch 7 | Train: loss: 4.20721 | quality: 0.59880
+        | Val:   loss: 4.79888 | quality: 0.52169
+ *
+Epoch 8 | Train: loss: 4.12764 | quality: 0.60639
+        | Val:   loss: 4.77118 | quality: 0.52445
+ *
+Epoch 9 | Train: loss: 4.03629 | quality: 0.61510
+        | Val:   loss: 4.79069 | quality: 0.52250
+
+Epoch 10 | Train: loss: 4.00539 | quality: 0.61805
+        | Val:   loss: 4.85716 | quality: 0.51588
+
+Epoch 11 | Train: loss: 3.98132 | quality: 0.62034
+        | Val:   loss: 4.88629 | quality: 0.51297
+
+Epoch 12 | Train: loss: 3.96356 | quality: 0.62203
+        | Val:   loss: 4.89988 | quality: 0.51162
+
+Epoch 13 | Train: loss: 3.95754 | quality: 0.62261
+        | Val:   loss: 4.88693 | quality: 0.51291
+
+Epoch 14 | Train: loss: 3.96143 | quality: 0.62224
+        | Val:   loss: 4.85405 | quality: 0.51619
+
+Epoch 15 | Train: loss: 3.96733 | quality: 0.62168
+        | Val:   loss: 4.82146 | quality: 0.51943
+
+Epoch 16 | Train: loss: 3.97203 | quality: 0.62123
+        | Val:   loss: 4.79905 | quality: 0.52167
+
+Epoch 17 | Train: loss: 3.97564 | quality: 0.62088
+        | Val:   loss: 4.79086 | quality: 0.52249
+
+Epoch 18 | Train: loss: 3.97512 | quality: 0.62093
+        | Val:   loss: 4.79477 | quality: 0.52210
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-29 14:18:14,365][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=4 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd4_seed47303 | val=0.5244
+[2026-04-29 14:18:14,367][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:18:14,518][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 171018.54493 | quality: -16307.33953
+        | Val:   loss: 29277.03955 | quality: -2917.10483
+Epoch 1 | Train: loss: 91.51881 | quality: -7.72724
+        | Val:   loss: 85.68932 | quality: -7.54084
+ *
+Epoch 2 | Train: loss: 56.64688 | quality: -4.40185
+        | Val:   loss: 53.15907 | quality: -4.29848
+ *
+Epoch 3 | Train: loss: 24.80674 | quality: -1.36557
+        | Val:   loss: 23.39442 | quality: -1.33177
+ *
+Epoch 4 | Train: loss: 4.39150 | quality: 0.58123
+        | Val:   loss: 4.74328 | quality: 0.52723
+ *
+Epoch 5 | Train: loss: 4.27085 | quality: 0.59273
+        | Val:   loss: 4.74023 | quality: 0.52753
+ *
+Epoch 6 | Train: loss: 4.19155 | quality: 0.60029
+        | Val:   loss: 4.73223 | quality: 0.52833
+ *
+Epoch 7 | Train: loss: 4.09379 | quality: 0.60962
+        | Val:   loss: 4.80275 | quality: 0.52130
+
+Epoch 8 | Train: loss: 4.03467 | quality: 0.61525
+        | Val:   loss: 4.82306 | quality: 0.51928
+
+Epoch 9 | Train: loss: 3.97850 | quality: 0.62061
+        | Val:   loss: 4.86204 | quality: 0.51539
+
+Epoch 10 | Train: loss: 3.97678 | quality: 0.62077
+        | Val:   loss: 4.83706 | quality: 0.51788
+
+Epoch 11 | Train: loss: 3.97563 | quality: 0.62088
+        | Val:   loss: 4.81672 | quality: 0.51991
+
+Epoch 12 | Train: loss: 3.97309 | quality: 0.62113
+        | Val:   loss: 4.80560 | quality: 0.52102
+
+Epoch 13 | Train: loss: 3.96243 | quality: 0.62214
+        | Val:   loss: 4.81383 | quality: 0.52020
+
+Epoch 14 | Train: loss: 3.92865 | quality: 0.62536
+        | Val:   loss: 4.83219 | quality: 0.51837
+
+Epoch 15 | Train: loss: 3.89763 | quality: 0.62832
+        | Val:   loss: 4.84758 | quality: 0.51683
+
+Epoch 16 | Train: loss: 3.90020 | quality: 0.62808
+        | Val:   loss: 4.85606 | quality: 0.51599
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-29 14:18:23,210][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed42 | val=0.5283
+[2026-04-29 14:18:23,212][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:18:23,363][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1896205.21228 | quality: -180821.25193
+        | Val:   loss: 135182.62401 | quality: -13472.93980
+Epoch 1 | Train: loss: 84.59111 | quality: -7.06661
+        | Val:   loss: 79.22278 | quality: -6.89630
+ *
+Epoch 2 | Train: loss: 61.72033 | quality: -4.88566
+        | Val:   loss: 57.96120 | quality: -4.77712
+ *
+Epoch 3 | Train: loss: 47.88433 | quality: -3.56625
+        | Val:   loss: 46.67915 | quality: -3.65261
+ *
+Epoch 4 | Train: loss: 8.44599 | quality: 0.19459
+        | Val:   loss: 8.14313 | quality: 0.18836
+ *
+Epoch 5 | Train: loss: 4.24296 | quality: 0.59539
+        | Val:   loss: 4.74789 | quality: 0.52677
+ *
+Epoch 6 | Train: loss: 4.18726 | quality: 0.60070
+        | Val:   loss: 4.79586 | quality: 0.52199
+
+Epoch 7 | Train: loss: 4.12550 | quality: 0.60659
+        | Val:   loss: 4.82756 | quality: 0.51883
+
+Epoch 8 | Train: loss: 4.04604 | quality: 0.61417
+        | Val:   loss: 4.91869 | quality: 0.50974
+
+Epoch 9 | Train: loss: 3.98737 | quality: 0.61976
+        | Val:   loss: 4.93280 | quality: 0.50834
+
+Epoch 10 | Train: loss: 3.99640 | quality: 0.61890
+        | Val:   loss: 4.93051 | quality: 0.50857
+
+Epoch 11 | Train: loss: 4.01808 | quality: 0.61684
+        | Val:   loss: 4.91937 | quality: 0.50968
+
+Epoch 12 | Train: loss: 4.02554 | quality: 0.61612
+        | Val:   loss: 4.92085 | quality: 0.50953
+
+Epoch 13 | Train: loss: 4.02073 | quality: 0.61658
+        | Val:   loss: 4.92684 | quality: 0.50893
+
+Epoch 14 | Train: loss: 4.01429 | quality: 0.61720
+        | Val:   loss: 4.93004 | quality: 0.50861
+
+Epoch 15 | Train: loss: 4.00884 | quality: 0.61772
+        | Val:   loss: 4.93216 | quality: 0.50840
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-29 14:18:31,126][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed10090 | val=0.5268
+[2026-04-29 14:18:31,129][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:18:31,282][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 21220543.92229 | quality: -2023591.44365
+        | Val:   loss: 44732.06650 | quality: -4457.54026
+Epoch 1 | Train: loss: 88.68183 | quality: -7.45670
+        | Val:   loss: 83.15014 | quality: -7.28775
+ *
+Epoch 2 | Train: loss: 28.35914 | quality: -1.70433
+        | Val:   loss: 25.19933 | quality: -1.51167
+ *
+Epoch 3 | Train: loss: 4.72207 | quality: 0.54970
+        | Val:   loss: 4.93729 | quality: 0.50789
+ *
+Epoch 4 | Train: loss: 4.33145 | quality: 0.58695
+        | Val:   loss: 4.78556 | quality: 0.52301
+ *
+Epoch 5 | Train: loss: 4.22616 | quality: 0.59699
+        | Val:   loss: 4.74677 | quality: 0.52688
+ *
+Epoch 6 | Train: loss: 4.14720 | quality: 0.60452
+        | Val:   loss: 4.75303 | quality: 0.52626
+ *
+Epoch 7 | Train: loss: 4.10760 | quality: 0.60830
+        | Val:   loss: 4.79294 | quality: 0.52228
+
+Epoch 8 | Train: loss: 4.05233 | quality: 0.61357
+        | Val:   loss: 4.80625 | quality: 0.52095
+
+Epoch 9 | Train: loss: 3.87317 | quality: 0.63065
+        | Val:   loss: 5.03560 | quality: 0.49809
+
+Epoch 10 | Train: loss: 3.83840 | quality: 0.63397
+        | Val:   loss: 5.23842 | quality: 0.47788
+
+Epoch 11 | Train: loss: 3.85437 | quality: 0.63245
+        | Val:   loss: 5.06072 | quality: 0.49559
+
+Epoch 12 | Train: loss: 3.83767 | quality: 0.63404
+        | Val:   loss: 5.03969 | quality: 0.49768
+
+Epoch 13 | Train: loss: 3.83279 | quality: 0.63450
+        | Val:   loss: 5.00357 | quality: 0.50128
+
+Epoch 14 | Train: loss: 3.87381 | quality: 0.63059
+        | Val:   loss: 4.87681 | quality: 0.51392
+
+Epoch 15 | Train: loss: 3.89536 | quality: 0.62854
+        | Val:   loss: 4.83697 | quality: 0.51789
+
+Epoch 16 | Train: loss: 3.90968 | quality: 0.62717
+        | Val:   loss: 4.82593 | quality: 0.51899
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-29 14:18:39,253][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed32874 | val=0.5263
+[2026-04-29 14:18:39,255][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:18:39,406][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2338445.36919 | quality: -222993.30195
+        | Val:   loss: 50240.85997 | quality: -5006.61343
+Epoch 1 | Train: loss: 86.10952 | quality: -7.21141
+        | Val:   loss: 80.69119 | quality: -7.04266
+ *
+Epoch 2 | Train: loss: 11.38107 | quality: -0.08530
+        | Val:   loss: 10.19260 | quality: -0.01592
+ *
+Epoch 3 | Train: loss: 4.87056 | quality: 0.53554
+        | Val:   loss: 5.02885 | quality: 0.49876
+ *
+Epoch 4 | Train: loss: 4.36390 | quality: 0.58386
+        | Val:   loss: 4.80389 | quality: 0.52119
+ *
+Epoch 5 | Train: loss: 4.24652 | quality: 0.59505
+        | Val:   loss: 4.75561 | quality: 0.52600
+ *
+Epoch 6 | Train: loss: 4.18018 | quality: 0.60138
+        | Val:   loss: 4.72697 | quality: 0.52885
+ *
+Epoch 7 | Train: loss: 4.11504 | quality: 0.60759
+        | Val:   loss: 4.74496 | quality: 0.52706
+
+Epoch 8 | Train: loss: 4.05195 | quality: 0.61361
+        | Val:   loss: 4.77717 | quality: 0.52385
+
+Epoch 9 | Train: loss: 3.96374 | quality: 0.62202
+        | Val:   loss: 4.83765 | quality: 0.51782
+
+Epoch 10 | Train: loss: 3.94155 | quality: 0.62413
+        | Val:   loss: 4.84395 | quality: 0.51719
+
+Epoch 11 | Train: loss: 3.91434 | quality: 0.62673
+        | Val:   loss: 4.88028 | quality: 0.51357
+
+Epoch 12 | Train: loss: 3.89957 | quality: 0.62814
+        | Val:   loss: 4.89516 | quality: 0.51209
+
+Epoch 13 | Train: loss: 3.89634 | quality: 0.62844
+        | Val:   loss: 4.89747 | quality: 0.51186
+
+Epoch 14 | Train: loss: 3.90093 | quality: 0.62801
+        | Val:   loss: 4.88007 | quality: 0.51359
+
+Epoch 15 | Train: loss: 3.90688 | quality: 0.62744
+        | Val:   loss: 4.86422 | quality: 0.51517
+
+Epoch 16 | Train: loss: 3.91074 | quality: 0.62707
+        | Val:   loss: 4.85585 | quality: 0.51601
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-29 14:18:47,595][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed47311 | val=0.5289
+[2026-04-29 14:18:47,597][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:18:47,944][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 44094437.15754 | quality: -4204847.38493
+        | Val:   loss: 155946.85173 | quality: -15542.55457
+Epoch 1 | Train: loss: 90.15893 | quality: -7.59756
+        | Val:   loss: 84.38837 | quality: -7.41117
+ *
+Epoch 2 | Train: loss: 18.10466 | quality: -0.72646
+        | Val:   loss: 15.80125 | quality: -0.57494
+ *
+Epoch 3 | Train: loss: 4.69534 | quality: 0.55225
+        | Val:   loss: 4.89835 | quality: 0.51177
+ *
+Epoch 4 | Train: loss: 4.33528 | quality: 0.58659
+        | Val:   loss: 4.80268 | quality: 0.52131
+ *
+Epoch 5 | Train: loss: 4.23284 | quality: 0.59636
+        | Val:   loss: 4.79010 | quality: 0.52256
+ *
+Epoch 6 | Train: loss: 4.17430 | quality: 0.60194
+        | Val:   loss: 4.74463 | quality: 0.52709
+ *
+Epoch 7 | Train: loss: 4.12574 | quality: 0.60657
+        | Val:   loss: 4.73195 | quality: 0.52836
+ *
+Epoch 8 | Train: loss: 4.03946 | quality: 0.61480
+        | Val:   loss: 4.74835 | quality: 0.52672
+
+Epoch 9 | Train: loss: 3.96639 | quality: 0.62176
+        | Val:   loss: 4.82017 | quality: 0.51956
+
+Epoch 10 | Train: loss: 3.96347 | quality: 0.62204
+        | Val:   loss: 4.80439 | quality: 0.52114
+
+Epoch 11 | Train: loss: 3.95986 | quality: 0.62239
+        | Val:   loss: 4.79258 | quality: 0.52231
+
+Epoch 12 | Train: loss: 3.94894 | quality: 0.62343
+        | Val:   loss: 4.79864 | quality: 0.52171
+
+Epoch 13 | Train: loss: 3.93483 | quality: 0.62477
+        | Val:   loss: 4.82601 | quality: 0.51898
+
+Epoch 14 | Train: loss: 3.92139 | quality: 0.62606
+        | Val:   loss: 4.86804 | quality: 0.51479
+
+Epoch 15 | Train: loss: 3.91212 | quality: 0.62694
+        | Val:   loss: 4.91769 | quality: 0.50984
+
+Epoch 16 | Train: loss: 3.90587 | quality: 0.62754
+        | Val:   loss: 4.96245 | quality: 0.50538
+
+Epoch 17 | Train: loss: 3.90250 | quality: 0.62786
+        | Val:   loss: 4.98223 | quality: 0.50341
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:18:56,544][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd8_seed47303 | val=0.5284
+[2026-04-29 14:18:56,546][HYDRA] 	#25 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:18:56,698][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 11980218.01411 | quality: -1142433.36622
+        | Val:   loss: 129228.86634 | quality: -12879.51611
+Epoch 1 | Train: loss: 73.33497 | quality: -5.99323
+        | Val:   loss: 68.45915 | quality: -5.82347
+ *
+Epoch 2 | Train: loss: 57.77239 | quality: -4.50918
+        | Val:   loss: 54.13853 | quality: -4.39610
+ *
+Epoch 3 | Train: loss: 45.28946 | quality: -3.31881
+        | Val:   loss: 44.64488 | quality: -3.44985
+ *
+Epoch 4 | Train: loss: 4.55267 | quality: 0.56586
+        | Val:   loss: 4.89992 | quality: 0.51161
+ *
+Epoch 5 | Train: loss: 4.23697 | quality: 0.59596
+        | Val:   loss: 4.78278 | quality: 0.52329
+ *
+Epoch 6 | Train: loss: 4.18074 | quality: 0.60132
+        | Val:   loss: 4.78801 | quality: 0.52277
+ *
+Epoch 7 | Train: loss: 4.13570 | quality: 0.60562
+        | Val:   loss: 4.79392 | quality: 0.52218
+ *
+Epoch 8 | Train: loss: 4.05356 | quality: 0.61345
+        | Val:   loss: 4.85610 | quality: 0.51598
+
+Epoch 9 | Train: loss: 3.94312 | quality: 0.62398
+        | Val:   loss: 4.96510 | quality: 0.50512
+
+Epoch 10 | Train: loss: 3.91328 | quality: 0.62683
+        | Val:   loss: 5.05216 | quality: 0.49644
+
+Epoch 11 | Train: loss: 3.89589 | quality: 0.62849
+        | Val:   loss: 5.08783 | quality: 0.49288
+
+Epoch 12 | Train: loss: 3.88959 | quality: 0.62909
+        | Val:   loss: 5.06079 | quality: 0.49558
+
+Epoch 13 | Train: loss: 3.87801 | quality: 0.63019
+        | Val:   loss: 5.07533 | quality: 0.49413
+
+Epoch 14 | Train: loss: 3.87436 | quality: 0.63054
+        | Val:   loss: 5.06494 | quality: 0.49517
+
+Epoch 15 | Train: loss: 3.87275 | quality: 0.63069
+        | Val:   loss: 5.05471 | quality: 0.49619
+
+Epoch 16 | Train: loss: 3.87004 | quality: 0.63095
+        | Val:   loss: 5.05253 | quality: 0.49640
+
+Epoch 17 | Train: loss: 3.87101 | quality: 0.63086
+        | Val:   loss: 5.04262 | quality: 0.49739
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:19:20,945][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed42 | val=0.5222
+[2026-04-29 14:19:20,948][HYDRA] 	#26 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:19:21,102][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 413972.58453 | quality: -39475.45249
+        | Val:   loss: 52219.86666 | quality: -5203.86523
+Epoch 1 | Train: loss: 71.91634 | quality: -5.85795
+        | Val:   loss: 67.07887 | quality: -5.68589
+ *
+Epoch 2 | Train: loss: 56.69582 | quality: -4.40652
+        | Val:   loss: 53.15940 | quality: -4.29851
+ *
+Epoch 3 | Train: loss: 44.57651 | quality: -3.25082
+        | Val:   loss: 44.24939 | quality: -3.41043
+ *
+Epoch 4 | Train: loss: 4.66039 | quality: 0.55559
+        | Val:   loss: 5.03841 | quality: 0.49781
+ *
+Epoch 5 | Train: loss: 4.27870 | quality: 0.59198
+        | Val:   loss: 4.76549 | quality: 0.52501
+ *
+Epoch 6 | Train: loss: 4.18165 | quality: 0.60124
+        | Val:   loss: 4.72361 | quality: 0.52919
+ *
+Epoch 7 | Train: loss: 4.13556 | quality: 0.60563
+        | Val:   loss: 4.70634 | quality: 0.53091
+ *
+Epoch 8 | Train: loss: 4.03321 | quality: 0.61539
+        | Val:   loss: 4.87146 | quality: 0.51445
+
+Epoch 9 | Train: loss: 3.95026 | quality: 0.62330
+        | Val:   loss: 5.02192 | quality: 0.49945
+
+Epoch 10 | Train: loss: 3.93131 | quality: 0.62511
+        | Val:   loss: 5.04937 | quality: 0.49672
+
+Epoch 11 | Train: loss: 3.90748 | quality: 0.62738
+        | Val:   loss: 5.10821 | quality: 0.49085
+
+Epoch 12 | Train: loss: 3.88883 | quality: 0.62916
+        | Val:   loss: 5.13421 | quality: 0.48826
+
+Epoch 13 | Train: loss: 3.88887 | quality: 0.62916
+        | Val:   loss: 5.09384 | quality: 0.49229
+
+Epoch 14 | Train: loss: 3.90468 | quality: 0.62765
+        | Val:   loss: 5.05450 | quality: 0.49621
+
+Epoch 15 | Train: loss: 3.91956 | quality: 0.62623
+        | Val:   loss: 5.04197 | quality: 0.49746
+
+Epoch 16 | Train: loss: 3.92992 | quality: 0.62524
+        | Val:   loss: 5.04028 | quality: 0.49762
+
+Epoch 17 | Train: loss: 3.93659 | quality: 0.62461
+        | Val:   loss: 5.03935 | quality: 0.49772
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:19:44,956][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed10090 | val=0.5309
+[2026-04-29 14:19:44,959][HYDRA] 	#27 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:19:45,134][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 17769441.42514 | quality: -1694494.08587
+        | Val:   loss: 119901.04766 | quality: -11949.79257
+Epoch 1 | Train: loss: 75.59934 | quality: -6.20916
+        | Val:   loss: 70.80862 | quality: -6.05765
+ *
+Epoch 2 | Train: loss: 19.27648 | quality: -0.83821
+        | Val:   loss: 16.64910 | quality: -0.65945
+ *
+Epoch 3 | Train: loss: 4.47439 | quality: 0.57332
+        | Val:   loss: 4.83998 | quality: 0.51759
+ *
+Epoch 4 | Train: loss: 4.27665 | quality: 0.59218
+        | Val:   loss: 4.79553 | quality: 0.52202
+ *
+Epoch 5 | Train: loss: 4.20656 | quality: 0.59886
+        | Val:   loss: 4.80840 | quality: 0.52074
+
+Epoch 6 | Train: loss: 4.14331 | quality: 0.60489
+        | Val:   loss: 4.86992 | quality: 0.51461
+
+Epoch 7 | Train: loss: 4.07662 | quality: 0.61125
+        | Val:   loss: 4.75569 | quality: 0.52599
+ *
+Epoch 8 | Train: loss: 3.97756 | quality: 0.62070
+        | Val:   loss: 4.76627 | quality: 0.52494
+
+Epoch 9 | Train: loss: 3.88241 | quality: 0.62977
+        | Val:   loss: 4.95433 | quality: 0.50619
+
+Epoch 10 | Train: loss: 3.86010 | quality: 0.63190
+        | Val:   loss: 5.01995 | quality: 0.49965
+
+Epoch 11 | Train: loss: 3.84731 | quality: 0.63312
+        | Val:   loss: 5.04410 | quality: 0.49724
+
+Epoch 12 | Train: loss: 3.82766 | quality: 0.63499
+        | Val:   loss: 5.03964 | quality: 0.49769
+
+Epoch 13 | Train: loss: 3.81617 | quality: 0.63609
+        | Val:   loss: 5.02113 | quality: 0.49953
+
+Epoch 14 | Train: loss: 3.84866 | quality: 0.63299
+        | Val:   loss: 4.94923 | quality: 0.50670
+
+Epoch 15 | Train: loss: 3.86633 | quality: 0.63131
+        | Val:   loss: 4.90667 | quality: 0.51094
+
+Epoch 16 | Train: loss: 3.88554 | quality: 0.62947
+        | Val:   loss: 4.86165 | quality: 0.51543
+
+Epoch 17 | Train: loss: 3.89643 | quality: 0.62844
+        | Val:   loss: 4.83812 | quality: 0.51777
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:20:08,941][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed32874 | val=0.5260
+[2026-04-29 14:20:08,943][HYDRA] 	#28 : model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:20:09,095][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=12 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 21715740.55692 | quality: -2070813.42682
+        | Val:   loss: 66339.37346 | quality: -6611.18652
+Epoch 1 | Train: loss: 75.69438 | quality: -6.21822
+        | Val:   loss: 70.64025 | quality: -6.04086
+ *
+Epoch 2 | Train: loss: 53.85603 | quality: -4.13571
+        | Val:   loss: 50.87192 | quality: -4.07051
+ *
+Epoch 3 | Train: loss: 34.47267 | quality: -2.28732
+        | Val:   loss: 33.92773 | quality: -2.38165
+ *
+Epoch 4 | Train: loss: 4.61976 | quality: 0.55946
+        | Val:   loss: 4.94744 | quality: 0.50688
+ *
+Epoch 5 | Train: loss: 4.25696 | quality: 0.59406
+        | Val:   loss: 4.74123 | quality: 0.52743
+ *
+Epoch 6 | Train: loss: 4.17563 | quality: 0.60181
+        | Val:   loss: 4.77271 | quality: 0.52429
+
+Epoch 7 | Train: loss: 4.09857 | quality: 0.60916
+        | Val:   loss: 4.82995 | quality: 0.51859
+
+Epoch 8 | Train: loss: 4.01315 | quality: 0.61731
+        | Val:   loss: 4.88862 | quality: 0.51274
+
+Epoch 9 | Train: loss: 3.94878 | quality: 0.62344
+        | Val:   loss: 5.03080 | quality: 0.49857
+
+Epoch 10 | Train: loss: 3.88681 | quality: 0.62935
+        | Val:   loss: 5.16886 | quality: 0.48481
+
+Epoch 11 | Train: loss: 3.82726 | quality: 0.63503
+        | Val:   loss: 5.32778 | quality: 0.46897
+
+Epoch 12 | Train: loss: 3.81319 | quality: 0.63637
+        | Val:   loss: 5.32600 | quality: 0.46915
+
+Epoch 13 | Train: loss: 3.80943 | quality: 0.63673
+        | Val:   loss: 5.22405 | quality: 0.47931
+
+Epoch 14 | Train: loss: 3.81094 | quality: 0.63659
+        | Val:   loss: 5.20333 | quality: 0.48137
+
+Epoch 15 | Train: loss: 3.81486 | quality: 0.63622
+        | Val:   loss: 5.18935 | quality: 0.48277
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-29 14:20:30,358][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=12 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed47311 | val=0.5274
+[2026-04-29 14:20:30,361][HYDRA] 	#29 : model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=abalone
+[2026-04-29 14:20:30,516][__main__][INFO] - ▶ RUN MPO2/abalone/NTN L=4 bd=12 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 3472371.22473 | quality: -331124.54502
+        | Val:   loss: 18137.21497 | quality: -1806.77481
+Epoch 1 | Train: loss: 75.55155 | quality: -6.20460
+        | Val:   loss: 70.53342 | quality: -6.03022
+ *
+Epoch 2 | Train: loss: 60.67019 | quality: -4.78551
+        | Val:   loss: 56.71197 | quality: -4.65260
+ *
+Epoch 3 | Train: loss: 17.20441 | quality: -0.64061
+        | Val:   loss: 16.12039 | quality: -0.60675
+ *
+Epoch 4 | Train: loss: 4.40673 | quality: 0.57977
+        | Val:   loss: 4.82955 | quality: 0.51863
+ *
+Epoch 5 | Train: loss: 4.23783 | quality: 0.59588
+        | Val:   loss: 4.77039 | quality: 0.52452
+ *
+Epoch 6 | Train: loss: 4.18631 | quality: 0.60079
+        | Val:   loss: 4.77796 | quality: 0.52377
+ *
+Epoch 7 | Train: loss: 4.10117 | quality: 0.60891
+        | Val:   loss: 4.77879 | quality: 0.52369
+ *
+Epoch 8 | Train: loss: 4.01207 | quality: 0.61741
+        | Val:   loss: 4.88038 | quality: 0.51356
+
+Epoch 9 | Train: loss: 3.95183 | quality: 0.62315
+        | Val:   loss: 4.94027 | quality: 0.50759
+
+Epoch 10 | Train: loss: 3.86479 | quality: 0.63145
+        | Val:   loss: 5.04196 | quality: 0.49746
+
+Epoch 11 | Train: loss: 3.88873 | quality: 0.62917
+        | Val:   loss: 4.96992 | quality: 0.50464
+
+Epoch 12 | Train: loss: 3.89865 | quality: 0.62822
+        | Val:   loss: 4.96737 | quality: 0.50489
+
+Epoch 13 | Train: loss: 3.90541 | quality: 0.62758
+        | Val:   loss: 4.93143 | quality: 0.50847
+
+Epoch 14 | Train: loss: 3.89780 | quality: 0.62831
+        | Val:   loss: 4.92418 | quality: 0.50920
+
+Epoch 15 | Train: loss: 3.89811 | quality: 0.62828
+        | Val:   loss: 4.93151 | quality: 0.50847
+
+Epoch 16 | Train: loss: 3.90226 | quality: 0.62788
+        | Val:   loss: 4.93763 | quality: 0.50786
+
+Epoch 17 | Train: loss: 3.89834 | quality: 0.62825
+        | Val:   loss: 4.94608 | quality: 0.50701
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-29 14:20:54,580][__main__][INFO] - ✓ DONE MPO2/abalone/NTN L=4 bd=12 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/abalone/MPO2_rg5_init0.1/L4_bd12_seed47303 | val=0.5237
+
+
+PS:
+
+Read file <logs/28326036_5.err> for stderr output of this job.
+
