@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-140]%20"
+#BSUB -J "ntn_grid_full[1-130]%20"
 #BSUB -W 12:00
 #BSUB -n 4
 #BSUB -R "rusage[mem=2GB]"
@@ -20,7 +20,7 @@ DATASETS=(
 
 COMPLETED_DATASETS=(
     "bike" "concrete" "energy_efficiency"
-    "iris" "obesity" "realstate" "seoulBike"
+    "iris" "obesity" "realstate" "seoulBike" "student_perf"
 )
 
 # Filter datasets
