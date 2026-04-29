@@ -3,7 +3,7 @@
 #BSUB -J "ntn_grid_full[1-140]%20"
 #BSUB -W 12:00
 #BSUB -n 4
-#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "rusage[mem=2GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I.out
 #BSUB -e logs/%J_%I.err
