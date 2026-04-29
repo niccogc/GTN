@@ -1,0 +1,3157 @@
+Task 129: Dataset=obesity, Model=tnml_f
+[2026-04-28 20:32:54,571][HYDRA] Launching 30 jobs locally
+[2026-04-28 20:32:54,571][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:32:55,012][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:32:55,019][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed42
+[2026-04-28 20:32:55,093][utils.tracking][INFO] - Loaded 15142 tracked runs from runs_tracking.csv
+[2026-04-28 20:32:55,095][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:32:56,851][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:32:56,852][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:32:56,852][__main__][INFO] -   Device: cpu
+[2026-04-28 20:32:56,852][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.09020 | quality: -2.43483
+        | Val:   loss: 12.55893 | quality: -2.48921
+Epoch 1 | Train: loss: 12.83712 | quality: -2.36843
+        | Val:   loss: 12.22071 | quality: -2.39525
+ *
+Epoch 2 | Train: loss: 12.04239 | quality: -2.15989
+        | Val:   loss: 11.66258 | quality: -2.24018
+ *
+Epoch 3 | Train: loss: 11.83574 | quality: -2.10567
+        | Val:   loss: 11.72609 | quality: -2.25783
+
+Epoch 4 | Train: loss: 11.66944 | quality: -2.06203
+        | Val:   loss: 11.86533 | quality: -2.29651
+
+Epoch 5 | Train: loss: 11.36792 | quality: -1.98291
+        | Val:   loss: 11.94399 | quality: -2.31836
+
+Epoch 6 | Train: loss: 11.14358 | quality: -1.92404
+        | Val:   loss: 12.08632 | quality: -2.35791
+
+Epoch 7 | Train: loss: 10.72329 | quality: -1.81376
+        | Val:   loss: 12.28768 | quality: -2.41385
+
+Epoch 8 | Train: loss: 10.23079 | quality: -1.68453
+        | Val:   loss: 12.96465 | quality: -2.60193
+
+Epoch 9 | Train: loss: 9.75410 | quality: -1.55945
+        | Val:   loss: 12.99457 | quality: -2.61024
+
+Epoch 10 | Train: loss: 9.62651 | quality: -1.52597
+        | Val:   loss: 13.08311 | quality: -2.63484
+
+Epoch 11 | Train: loss: 9.51579 | quality: -1.49692
+        | Val:   loss: 14.30115 | quality: -2.97325
+
+Epoch 12 | Train: loss: 9.38837 | quality: -1.46348
+        | Val:   loss: 16.12094 | quality: -3.47884
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 20:33:48,860][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed42/results.json
+[2026-04-28 20:33:48,861][__main__][INFO] - ✓ Train R²: -2.1599
+[2026-04-28 20:33:48,861][__main__][INFO] - ✓ Val R²: -2.2402
+[2026-04-28 20:33:48,863][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:33:49,006][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:33:49,010][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed10090
+[2026-04-28 20:33:49,011][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:33:50,704][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:33:50,706][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:33:50,706][__main__][INFO] -   Device: cpu
+[2026-04-28 20:33:50,706][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08043 | quality: -2.43227
+        | Val:   loss: 12.69342 | quality: -2.52658
+Epoch 1 | Train: loss: 12.67499 | quality: -2.32588
+        | Val:   loss: 12.45112 | quality: -2.45926
+ *
+Epoch 2 | Train: loss: 12.19251 | quality: -2.19928
+        | Val:   loss: 11.93828 | quality: -2.31678
+ *
+Epoch 3 | Train: loss: 11.91238 | quality: -2.12577
+        | Val:   loss: 11.84497 | quality: -2.29086
+ *
+Epoch 4 | Train: loss: 11.57602 | quality: -2.03752
+        | Val:   loss: 11.65218 | quality: -2.23729
+ *
+Epoch 5 | Train: loss: 11.36568 | quality: -1.98232
+        | Val:   loss: 11.71127 | quality: -2.25371
+
+Epoch 6 | Train: loss: 11.25339 | quality: -1.95286
+        | Val:   loss: 11.74200 | quality: -2.26225
+
+Epoch 7 | Train: loss: 10.86041 | quality: -1.84974
+        | Val:   loss: 12.12800 | quality: -2.36949
+
+Epoch 8 | Train: loss: 10.14455 | quality: -1.66190
+        | Val:   loss: 11.19015 | quality: -2.10893
+ *
+Epoch 9 | Train: loss: 9.59919 | quality: -1.51880
+        | Val:   loss: 11.24211 | quality: -2.12336
+
+Epoch 10 | Train: loss: 9.44421 | quality: -1.47813
+        | Val:   loss: 12.63001 | quality: -2.50896
+
+Epoch 11 | Train: loss: 9.38016 | quality: -1.46133
+        | Val:   loss: 13.61775 | quality: -2.78338
+
+Epoch 12 | Train: loss: 9.33958 | quality: -1.45068
+        | Val:   loss: 14.27397 | quality: -2.96570
+
+Epoch 13 | Train: loss: 9.29539 | quality: -1.43908
+        | Val:   loss: 15.34771 | quality: -3.26401
+
+Epoch 14 | Train: loss: 9.26639 | quality: -1.43147
+        | Val:   loss: 16.32073 | quality: -3.53434
+
+Epoch 15 | Train: loss: 9.24066 | quality: -1.42472
+        | Val:   loss: 17.48532 | quality: -3.85790
+
+Epoch 16 | Train: loss: 9.21482 | quality: -1.41794
+        | Val:   loss: 19.12700 | quality: -4.31400
+
+Epoch 17 | Train: loss: 9.19186 | quality: -1.41192
+        | Val:   loss: 21.27600 | quality: -4.91105
+
+Epoch 18 | Train: loss: 9.17484 | quality: -1.40745
+        | Val:   loss: 23.54002 | quality: -5.54006
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 20:35:00,150][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed10090/results.json
+[2026-04-28 20:35:00,151][__main__][INFO] - ✓ Train R²: -1.6619
+[2026-04-28 20:35:00,151][__main__][INFO] - ✓ Val R²: -2.1089
+[2026-04-28 20:35:00,154][HYDRA] 	#2 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:35:00,299][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:35:00,303][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed32874
+[2026-04-28 20:35:00,304][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:35:02,025][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:35:02,038][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:35:02,038][__main__][INFO] -   Device: cpu
+[2026-04-28 20:35:02,038][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.11110 | quality: -2.44032
+        | Val:   loss: 12.56287 | quality: -2.49031
+Epoch 1 | Train: loss: 12.58273 | quality: -2.30167
+        | Val:   loss: 12.13511 | quality: -2.37146
+ *
+Epoch 2 | Train: loss: 12.47283 | quality: -2.27284
+        | Val:   loss: 12.10814 | quality: -2.36397
+ *
+Epoch 3 | Train: loss: 12.24116 | quality: -2.21205
+        | Val:   loss: 11.85875 | quality: -2.29468
+ *
+Epoch 4 | Train: loss: 12.00754 | quality: -2.15075
+        | Val:   loss: 11.64108 | quality: -2.23421
+ *
+Epoch 5 | Train: loss: 11.90598 | quality: -2.12410
+        | Val:   loss: 11.64936 | quality: -2.23651
+
+Epoch 6 | Train: loss: 11.82911 | quality: -2.10393
+        | Val:   loss: 11.60269 | quality: -2.22354
+ *
+Epoch 7 | Train: loss: 11.37810 | quality: -1.98558
+        | Val:   loss: 11.82730 | quality: -2.28595
+
+Epoch 8 | Train: loss: 11.13720 | quality: -1.92237
+        | Val:   loss: 11.52993 | quality: -2.20333
+ *
+Epoch 9 | Train: loss: 10.97185 | quality: -1.87898
+        | Val:   loss: 11.61975 | quality: -2.22828
+
+Epoch 10 | Train: loss: 10.46541 | quality: -1.74610
+        | Val:   loss: 14.43462 | quality: -3.01033
+
+Epoch 11 | Train: loss: 10.08363 | quality: -1.64592
+        | Val:   loss: 13.48556 | quality: -2.74666
+
+Epoch 12 | Train: loss: 9.88893 | quality: -1.59483
+        | Val:   loss: 14.05471 | quality: -2.90478
+
+Epoch 13 | Train: loss: 9.77658 | quality: -1.56535
+        | Val:   loss: 14.07438 | quality: -2.91025
+
+Epoch 14 | Train: loss: 9.72721 | quality: -1.55239
+        | Val:   loss: 14.05625 | quality: -2.90521
+
+Epoch 15 | Train: loss: 9.69704 | quality: -1.54448
+        | Val:   loss: 14.06949 | quality: -2.90889
+
+Epoch 16 | Train: loss: 9.67476 | quality: -1.53863
+        | Val:   loss: 14.06657 | quality: -2.90808
+
+Epoch 17 | Train: loss: 9.65782 | quality: -1.53418
+        | Val:   loss: 14.05889 | quality: -2.90594
+
+Epoch 18 | Train: loss: 9.64492 | quality: -1.53080
+        | Val:   loss: 14.05637 | quality: -2.90524
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 20:36:12,937][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed32874/results.json
+[2026-04-28 20:36:12,937][__main__][INFO] - ✓ Train R²: -1.9224
+[2026-04-28 20:36:12,937][__main__][INFO] - ✓ Val R²: -2.2033
+[2026-04-28 20:36:12,939][HYDRA] 	#3 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:36:13,079][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:36:13,084][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed47311
+[2026-04-28 20:36:13,084][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:36:14,945][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:36:14,946][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:36:14,946][__main__][INFO] -   Device: cpu
+[2026-04-28 20:36:14,946][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08690 | quality: -2.43397
+        | Val:   loss: 12.57936 | quality: -2.49489
+Epoch 1 | Train: loss: 13.00490 | quality: -2.41245
+        | Val:   loss: 12.65895 | quality: -2.51700
+
+Epoch 2 | Train: loss: 12.88703 | quality: -2.38152
+        | Val:   loss: 12.82307 | quality: -2.56260
+
+Epoch 3 | Train: loss: 12.66963 | quality: -2.32448
+        | Val:   loss: 13.41994 | quality: -2.72843
+
+Epoch 4 | Train: loss: 12.38310 | quality: -2.24929
+        | Val:   loss: 13.70385 | quality: -2.80730
+
+Epoch 5 | Train: loss: 11.78603 | quality: -2.09262
+        | Val:   loss: 12.44431 | quality: -2.45737
+ *
+Epoch 6 | Train: loss: 11.49340 | quality: -2.01584
+        | Val:   loss: 12.90465 | quality: -2.58526
+
+Epoch 7 | Train: loss: 10.98036 | quality: -1.88122
+        | Val:   loss: 13.02105 | quality: -2.61760
+
+Epoch 8 | Train: loss: 10.64817 | quality: -1.79405
+        | Val:   loss: 12.23405 | quality: -2.39895
+ *
+Epoch 9 | Train: loss: 10.28669 | quality: -1.69920
+        | Val:   loss: 12.08291 | quality: -2.35696
+ *
+Epoch 10 | Train: loss: 9.91281 | quality: -1.60110
+        | Val:   loss: 12.28527 | quality: -2.41318
+
+Epoch 11 | Train: loss: 9.63491 | quality: -1.52817
+        | Val:   loss: 11.77240 | quality: -2.27069
+ *
+Epoch 12 | Train: loss: 9.46325 | quality: -1.48313
+        | Val:   loss: 12.73441 | quality: -2.53797
+
+Epoch 13 | Train: loss: 9.39268 | quality: -1.46461
+        | Val:   loss: 12.68531 | quality: -2.52432
+
+Epoch 14 | Train: loss: 9.35451 | quality: -1.45460
+        | Val:   loss: 12.65392 | quality: -2.51560
+
+Epoch 15 | Train: loss: 9.32845 | quality: -1.44776
+        | Val:   loss: 12.65830 | quality: -2.51682
+
+Epoch 16 | Train: loss: 9.30854 | quality: -1.44253
+        | Val:   loss: 12.68870 | quality: -2.52527
+
+Epoch 17 | Train: loss: 9.29318 | quality: -1.43851
+        | Val:   loss: 12.73526 | quality: -2.53820
+
+Epoch 18 | Train: loss: 9.28160 | quality: -1.43547
+        | Val:   loss: 12.78546 | quality: -2.55215
+
+Epoch 19 | Train: loss: 9.27306 | quality: -1.43323
+        | Val:   loss: 12.82595 | quality: -2.56340
+
+Epoch 20 | Train: loss: 9.26683 | quality: -1.43159
+        | Val:   loss: 12.84981 | quality: -2.57003
+
+
+Best epoch: 11 (val_quality=-2.270694)
+[2026-04-28 20:37:31,388][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed47311/results.json
+[2026-04-28 20:37:31,389][__main__][INFO] - ✓ Train R²: -1.5282
+[2026-04-28 20:37:31,389][__main__][INFO] - ✓ Val R²: -2.2707
+[2026-04-28 20:37:31,392][HYDRA] 	#4 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:37:31,537][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:37:31,542][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed47303
+[2026-04-28 20:37:31,542][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:37:33,393][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:37:33,394][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:37:33,394][__main__][INFO] -   Device: cpu
+[2026-04-28 20:37:33,394][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08990 | quality: -2.43475
+        | Val:   loss: 12.58192 | quality: -2.49560
+Epoch 1 | Train: loss: 12.95187 | quality: -2.39854
+        | Val:   loss: 12.42294 | quality: -2.45143
+ *
+Epoch 2 | Train: loss: 12.92720 | quality: -2.39206
+        | Val:   loss: 12.35357 | quality: -2.43216
+ *
+Epoch 3 | Train: loss: 12.82279 | quality: -2.36466
+        | Val:   loss: 12.17764 | quality: -2.38328
+ *
+Epoch 4 | Train: loss: 12.77833 | quality: -2.35300
+        | Val:   loss: 12.18807 | quality: -2.38618
+
+Epoch 5 | Train: loss: 12.59355 | quality: -2.30451
+        | Val:   loss: 12.34671 | quality: -2.43025
+
+Epoch 6 | Train: loss: 12.40330 | quality: -2.25459
+        | Val:   loss: 12.15409 | quality: -2.37674
+ *
+Epoch 7 | Train: loss: 12.05277 | quality: -2.16262
+        | Val:   loss: 11.94763 | quality: -2.31938
+ *
+Epoch 8 | Train: loss: 11.88383 | quality: -2.11828
+        | Val:   loss: 12.06190 | quality: -2.35112
+
+Epoch 9 | Train: loss: 11.18552 | quality: -1.93505
+        | Val:   loss: 13.46443 | quality: -2.74079
+
+Epoch 10 | Train: loss: 10.74065 | quality: -1.81832
+        | Val:   loss: 13.55556 | quality: -2.76610
+
+Epoch 11 | Train: loss: 10.16442 | quality: -1.66712
+        | Val:   loss: 30.80022 | quality: -7.55714
+
+Epoch 12 | Train: loss: 10.03994 | quality: -1.63445
+        | Val:   loss: 49.69959 | quality: -12.80790
+
+Epoch 13 | Train: loss: 9.91884 | quality: -1.60268
+        | Val:   loss: 64.59641 | quality: -16.94664
+
+Epoch 14 | Train: loss: 9.71970 | quality: -1.55042
+        | Val:   loss: 80.81649 | quality: -21.45302
+
+Epoch 15 | Train: loss: 9.55657 | quality: -1.50762
+        | Val:   loss: 96.93834 | quality: -25.93211
+
+Epoch 16 | Train: loss: 9.47067 | quality: -1.48508
+        | Val:   loss: 93.09309 | quality: -24.86380
+
+Epoch 17 | Train: loss: 9.41941 | quality: -1.47163
+        | Val:   loss: 86.64241 | quality: -23.07162
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 20:38:38,469][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd4_seed47303/results.json
+[2026-04-28 20:38:38,470][__main__][INFO] - ✓ Train R²: -2.1626
+[2026-04-28 20:38:38,470][__main__][INFO] - ✓ Val R²: -2.3194
+[2026-04-28 20:38:38,471][HYDRA] 	#5 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:38:38,612][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:38:38,616][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed42
+[2026-04-28 20:38:38,616][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:38:40,563][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:38:40,564][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:38:40,564][__main__][INFO] -   Device: cpu
+[2026-04-28 20:38:40,564][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08688 | quality: -2.43396
+        | Val:   loss: 12.57756 | quality: -2.49439
+Epoch 1 | Train: loss: 12.18522 | quality: -2.19737
+        | Val:   loss: 11.95544 | quality: -2.32155
+ *
+Epoch 2 | Train: loss: 11.71160 | quality: -2.07309
+        | Val:   loss: 11.71555 | quality: -2.25490
+ *
+Epoch 3 | Train: loss: 11.41237 | quality: -1.99458
+        | Val:   loss: 11.58113 | quality: -2.21755
+ *
+Epoch 4 | Train: loss: 11.10997 | quality: -1.91523
+        | Val:   loss: 11.94345 | quality: -2.31822
+
+Epoch 5 | Train: loss: 10.57878 | quality: -1.77584
+        | Val:   loss: 11.65874 | quality: -2.23912
+
+Epoch 6 | Train: loss: 10.15141 | quality: -1.66370
+        | Val:   loss: 12.29412 | quality: -2.41564
+
+Epoch 7 | Train: loss: 9.96603 | quality: -1.61506
+        | Val:   loss: 12.40117 | quality: -2.44538
+
+Epoch 8 | Train: loss: 9.63035 | quality: -1.52698
+        | Val:   loss: 11.98917 | quality: -2.33092
+
+Epoch 9 | Train: loss: 8.61515 | quality: -1.26059
+        | Val:   loss: 12.52565 | quality: -2.47997
+
+Epoch 10 | Train: loss: 8.08458 | quality: -1.12137
+        | Val:   loss: 14.26090 | quality: -2.96207
+
+Epoch 11 | Train: loss: 7.79551 | quality: -1.04552
+        | Val:   loss: 15.48882 | quality: -3.30321
+
+Epoch 12 | Train: loss: 7.63811 | quality: -1.00422
+        | Val:   loss: 16.54384 | quality: -3.59633
+
+Epoch 13 | Train: loss: 7.57099 | quality: -0.98661
+        | Val:   loss: 17.11502 | quality: -3.75502
+
+
+⏸ Early stopping at epoch 13 (best was epoch 3)
+[2026-04-28 20:39:44,949][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-28 20:39:44,949][__main__][INFO] - ✓ Train R²: -1.9946
+[2026-04-28 20:39:44,949][__main__][INFO] - ✓ Val R²: -2.2176
+[2026-04-28 20:39:44,951][HYDRA] 	#6 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:39:45,093][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:39:45,097][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed10090
+[2026-04-28 20:39:45,097][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:39:46,787][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:39:46,788][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:39:46,788][__main__][INFO] -   Device: cpu
+[2026-04-28 20:39:46,788][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08206 | quality: -2.43270
+        | Val:   loss: 12.61419 | quality: -2.50457
+Epoch 1 | Train: loss: 12.40714 | quality: -2.25560
+        | Val:   loss: 12.00124 | quality: -2.33427
+ *
+Epoch 2 | Train: loss: 12.15768 | quality: -2.19014
+        | Val:   loss: 12.11190 | quality: -2.36502
+
+Epoch 3 | Train: loss: 11.78375 | quality: -2.09202
+        | Val:   loss: 12.45546 | quality: -2.46047
+
+Epoch 4 | Train: loss: 10.88528 | quality: -1.85627
+        | Val:   loss: 13.20327 | quality: -2.66823
+
+Epoch 5 | Train: loss: 10.28736 | quality: -1.69938
+        | Val:   loss: 13.67601 | quality: -2.79957
+
+Epoch 6 | Train: loss: 9.84926 | quality: -1.58442
+        | Val:   loss: 13.91249 | quality: -2.86527
+
+Epoch 7 | Train: loss: 9.58459 | quality: -1.51497
+        | Val:   loss: 13.27937 | quality: -2.68937
+
+Epoch 8 | Train: loss: 9.06396 | quality: -1.37836
+        | Val:   loss: 12.97417 | quality: -2.60458
+
+Epoch 9 | Train: loss: 8.44922 | quality: -1.21705
+        | Val:   loss: 14.67587 | quality: -3.07736
+
+Epoch 10 | Train: loss: 7.85139 | quality: -1.06018
+        | Val:   loss: 16.59223 | quality: -3.60977
+
+Epoch 11 | Train: loss: 7.55940 | quality: -0.98357
+        | Val:   loss: 23.35078 | quality: -5.48748
+
+
+⏸ Early stopping at epoch 11 (best was epoch 1)
+[2026-04-28 20:40:39,148][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-28 20:40:39,149][__main__][INFO] - ✓ Train R²: -2.2556
+[2026-04-28 20:40:39,150][__main__][INFO] - ✓ Val R²: -2.3343
+[2026-04-28 20:40:39,153][HYDRA] 	#7 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:40:39,403][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:40:39,413][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed32874
+[2026-04-28 20:40:39,414][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:40:41,122][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:40:41,123][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:40:41,123][__main__][INFO] -   Device: cpu
+[2026-04-28 20:40:41,123][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.17582 | quality: -2.45730
+        | Val:   loss: 12.63971 | quality: -2.51166
+Epoch 1 | Train: loss: 12.13521 | quality: -2.18425
+        | Val:   loss: 11.65849 | quality: -2.23905
+ *
+Epoch 2 | Train: loss: 11.98493 | quality: -2.14481
+        | Val:   loss: 11.63461 | quality: -2.23241
+ *
+Epoch 3 | Train: loss: 11.61407 | quality: -2.04750
+        | Val:   loss: 11.36509 | quality: -2.15753
+ *
+Epoch 4 | Train: loss: 11.30989 | quality: -1.96768
+        | Val:   loss: 11.62634 | quality: -2.23011
+
+Epoch 5 | Train: loss: 11.10254 | quality: -1.91328
+        | Val:   loss: 11.91234 | quality: -2.30957
+
+Epoch 6 | Train: loss: 10.63480 | quality: -1.79054
+        | Val:   loss: 12.56801 | quality: -2.49174
+
+Epoch 7 | Train: loss: 10.10734 | quality: -1.65214
+        | Val:   loss: 13.02006 | quality: -2.61733
+
+Epoch 8 | Train: loss: 9.64701 | quality: -1.53135
+        | Val:   loss: 13.26862 | quality: -2.68638
+
+Epoch 9 | Train: loss: 9.06733 | quality: -1.37924
+        | Val:   loss: 13.94032 | quality: -2.87300
+
+Epoch 10 | Train: loss: 8.51363 | quality: -1.23395
+        | Val:   loss: 14.61030 | quality: -3.05914
+
+Epoch 11 | Train: loss: 8.06141 | quality: -1.11529
+        | Val:   loss: 15.37472 | quality: -3.27152
+
+Epoch 12 | Train: loss: 7.71213 | quality: -1.02364
+        | Val:   loss: 16.79120 | quality: -3.66505
+
+Epoch 13 | Train: loss: 7.56276 | quality: -0.98445
+        | Val:   loss: 17.93200 | quality: -3.98200
+
+
+⏸ Early stopping at epoch 13 (best was epoch 3)
+[2026-04-28 20:41:42,855][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-28 20:41:42,856][__main__][INFO] - ✓ Train R²: -2.0475
+[2026-04-28 20:41:42,856][__main__][INFO] - ✓ Val R²: -2.1575
+[2026-04-28 20:41:42,859][HYDRA] 	#8 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:41:42,997][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:41:43,002][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed47311
+[2026-04-28 20:41:43,002][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:41:44,696][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:41:44,697][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:41:44,697][__main__][INFO] -   Device: cpu
+[2026-04-28 20:41:44,697][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.11158 | quality: -2.44044
+        | Val:   loss: 12.44132 | quality: -2.45654
+Epoch 1 | Train: loss: 12.10276 | quality: -2.17573
+        | Val:   loss: 11.85702 | quality: -2.29420
+ *
+Epoch 2 | Train: loss: 11.60558 | quality: -2.04527
+        | Val:   loss: 11.52715 | quality: -2.20256
+ *
+Epoch 3 | Train: loss: 11.03752 | quality: -1.89621
+        | Val:   loss: 11.68250 | quality: -2.24572
+
+Epoch 4 | Train: loss: 10.69799 | quality: -1.80712
+        | Val:   loss: 12.10094 | quality: -2.36197
+
+Epoch 5 | Train: loss: 10.28963 | quality: -1.69997
+        | Val:   loss: 12.55345 | quality: -2.48769
+
+Epoch 6 | Train: loss: 9.97251 | quality: -1.61676
+        | Val:   loss: 12.91060 | quality: -2.58692
+
+Epoch 7 | Train: loss: 9.49616 | quality: -1.49177
+        | Val:   loss: 12.90645 | quality: -2.58576
+
+Epoch 8 | Train: loss: 9.12479 | quality: -1.39432
+        | Val:   loss: 12.70455 | quality: -2.52967
+
+Epoch 9 | Train: loss: 8.61744 | quality: -1.26119
+        | Val:   loss: 12.82364 | quality: -2.56276
+
+Epoch 10 | Train: loss: 8.12485 | quality: -1.13194
+        | Val:   loss: 13.49113 | quality: -2.74820
+
+Epoch 11 | Train: loss: 7.78954 | quality: -1.04395
+        | Val:   loss: 13.77306 | quality: -2.82653
+
+Epoch 12 | Train: loss: 7.64534 | quality: -1.00612
+        | Val:   loss: 14.40162 | quality: -3.00116
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 20:42:41,206][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-28 20:42:41,206][__main__][INFO] - ✓ Train R²: -2.0453
+[2026-04-28 20:42:41,206][__main__][INFO] - ✓ Val R²: -2.2026
+[2026-04-28 20:42:41,208][HYDRA] 	#9 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:42:41,361][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:42:41,366][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed47303
+[2026-04-28 20:42:41,366][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:42:43,058][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:42:43,058][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:42:43,058][__main__][INFO] -   Device: cpu
+[2026-04-28 20:42:43,059][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.21075 | quality: -2.46647
+        | Val:   loss: 12.80280 | quality: -2.55697
+Epoch 1 | Train: loss: 12.44321 | quality: -2.26506
+        | Val:   loss: 12.08001 | quality: -2.35616
+ *
+Epoch 2 | Train: loss: 11.92976 | quality: -2.13034
+        | Val:   loss: 11.66940 | quality: -2.24208
+ *
+Epoch 3 | Train: loss: 11.55717 | quality: -2.03257
+        | Val:   loss: 11.67230 | quality: -2.24288
+ *
+Epoch 4 | Train: loss: 11.23992 | quality: -1.94932
+        | Val:   loss: 11.73165 | quality: -2.25937
+
+Epoch 5 | Train: loss: 11.18491 | quality: -1.93489
+        | Val:   loss: 11.57242 | quality: -2.21513
+ *
+Epoch 6 | Train: loss: 10.75905 | quality: -1.82315
+        | Val:   loss: 14.76419 | quality: -3.10189
+
+Epoch 7 | Train: loss: 10.36524 | quality: -1.71981
+        | Val:   loss: 14.66866 | quality: -3.07535
+
+Epoch 8 | Train: loss: 9.90631 | quality: -1.59939
+        | Val:   loss: 14.84711 | quality: -3.12493
+
+Epoch 9 | Train: loss: 9.51272 | quality: -1.49611
+        | Val:   loss: 16.58152 | quality: -3.60680
+
+Epoch 10 | Train: loss: 9.00081 | quality: -1.36179
+        | Val:   loss: 15.53730 | quality: -3.31669
+
+Epoch 11 | Train: loss: 8.56199 | quality: -1.24664
+        | Val:   loss: 19.77256 | quality: -4.49336
+
+Epoch 12 | Train: loss: 8.21213 | quality: -1.15484
+        | Val:   loss: 22.17239 | quality: -5.16009
+
+Epoch 13 | Train: loss: 7.95830 | quality: -1.08824
+        | Val:   loss: 24.55792 | quality: -5.82286
+
+Epoch 14 | Train: loss: 7.82053 | quality: -1.05209
+        | Val:   loss: 26.20394 | quality: -6.28017
+
+Epoch 15 | Train: loss: 7.73476 | quality: -1.02958
+        | Val:   loss: 27.60523 | quality: -6.66949
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 20:43:56,861][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-28 20:43:56,862][__main__][INFO] - ✓ Train R²: -1.9349
+[2026-04-28 20:43:56,862][__main__][INFO] - ✓ Val R²: -2.2151
+[2026-04-28 20:43:56,864][HYDRA] 	#10 : model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:43:57,014][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:43:57,019][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed42
+[2026-04-28 20:43:57,019][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:43:58,762][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:43:58,772][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:43:58,772][__main__][INFO] -   Device: cpu
+[2026-04-28 20:43:58,772][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.11436 | quality: -2.44117
+        | Val:   loss: 12.60918 | quality: -2.50317
+Epoch 1 | Train: loss: 12.27772 | quality: -2.22164
+        | Val:   loss: 12.05513 | quality: -2.34924
+ *
+Epoch 2 | Train: loss: 11.74587 | quality: -2.08209
+        | Val:   loss: 11.95475 | quality: -2.32136
+ *
+Epoch 3 | Train: loss: 11.28553 | quality: -1.96129
+        | Val:   loss: 11.95743 | quality: -2.32210
+ *
+Epoch 4 | Train: loss: 10.76266 | quality: -1.82409
+        | Val:   loss: 12.14266 | quality: -2.37356
+
+Epoch 5 | Train: loss: 10.29010 | quality: -1.70010
+        | Val:   loss: 11.85601 | quality: -2.29392
+ *
+Epoch 6 | Train: loss: 9.77473 | quality: -1.56486
+        | Val:   loss: 11.95953 | quality: -2.32268
+
+Epoch 7 | Train: loss: 9.17867 | quality: -1.40846
+        | Val:   loss: 12.36732 | quality: -2.43598
+
+Epoch 8 | Train: loss: 8.75927 | quality: -1.29841
+        | Val:   loss: 12.46863 | quality: -2.46412
+
+Epoch 9 | Train: loss: 8.20355 | quality: -1.15259
+        | Val:   loss: 15.19289 | quality: -3.22100
+
+Epoch 10 | Train: loss: 7.68383 | quality: -1.01622
+        | Val:   loss: 18.32251 | quality: -4.09049
+
+Epoch 11 | Train: loss: 7.24355 | quality: -0.90069
+        | Val:   loss: 23.11619 | quality: -5.42231
+
+Epoch 12 | Train: loss: 7.02711 | quality: -0.84390
+        | Val:   loss: 28.01726 | quality: -6.78396
+
+Epoch 13 | Train: loss: 6.88337 | quality: -0.80618
+        | Val:   loss: 35.26927 | quality: -8.79876
+
+Epoch 14 | Train: loss: 6.79136 | quality: -0.78203
+        | Val:   loss: 42.45387 | quality: -10.79484
+
+Epoch 15 | Train: loss: 6.73076 | quality: -0.76613
+        | Val:   loss: 49.90123 | quality: -12.86392
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 20:45:22,366][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed42/results.json
+[2026-04-28 20:45:22,367][__main__][INFO] - ✓ Train R²: -1.7001
+[2026-04-28 20:45:22,367][__main__][INFO] - ✓ Val R²: -2.2939
+[2026-04-28 20:45:22,371][HYDRA] 	#11 : model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:45:22,514][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:45:22,518][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed10090
+[2026-04-28 20:45:22,519][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:45:24,226][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:45:24,227][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:45:24,227][__main__][INFO] -   Device: cpu
+[2026-04-28 20:45:24,227][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.01662 | quality: -2.41553
+        | Val:   loss: 13.41400 | quality: -2.72677
+Epoch 1 | Train: loss: 11.95891 | quality: -2.13798
+        | Val:   loss: 11.44922 | quality: -2.18091
+ *
+Epoch 2 | Train: loss: 11.47793 | quality: -2.01178
+        | Val:   loss: 11.68022 | quality: -2.24508
+
+Epoch 3 | Train: loss: 11.02541 | quality: -1.89304
+        | Val:   loss: 11.08500 | quality: -2.07972
+ *
+Epoch 4 | Train: loss: 10.02117 | quality: -1.62953
+        | Val:   loss: 10.43315 | quality: -1.89861
+ *
+Epoch 5 | Train: loss: 9.42035 | quality: -1.47187
+        | Val:   loss: 10.97156 | quality: -2.04820
+
+Epoch 6 | Train: loss: 8.95574 | quality: -1.34996
+        | Val:   loss: 12.39385 | quality: -2.44335
+
+Epoch 7 | Train: loss: 8.54862 | quality: -1.24313
+        | Val:   loss: 13.79882 | quality: -2.83369
+
+Epoch 8 | Train: loss: 8.27760 | quality: -1.17202
+        | Val:   loss: 14.61219 | quality: -3.05966
+
+Epoch 9 | Train: loss: 7.88693 | quality: -1.06951
+        | Val:   loss: 14.24376 | quality: -2.95731
+
+Epoch 10 | Train: loss: 7.43971 | quality: -0.95216
+        | Val:   loss: 17.52825 | quality: -3.86983
+
+Epoch 11 | Train: loss: 7.07422 | quality: -0.85625
+        | Val:   loss: 18.65431 | quality: -4.18268
+
+Epoch 12 | Train: loss: 6.81281 | quality: -0.78766
+        | Val:   loss: 19.97326 | quality: -4.54911
+
+Epoch 13 | Train: loss: 6.62387 | quality: -0.73809
+        | Val:   loss: 22.44410 | quality: -5.23558
+
+Epoch 14 | Train: loss: 6.48951 | quality: -0.70283
+        | Val:   loss: 26.77566 | quality: -6.43901
+
+
+⏸ Early stopping at epoch 14 (best was epoch 4)
+[2026-04-28 20:46:37,447][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed10090/results.json
+[2026-04-28 20:46:37,448][__main__][INFO] - ✓ Train R²: -1.6295
+[2026-04-28 20:46:37,448][__main__][INFO] - ✓ Val R²: -1.8986
+[2026-04-28 20:46:37,452][HYDRA] 	#12 : model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:46:37,593][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:46:37,597][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed32874
+[2026-04-28 20:46:37,598][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:46:39,445][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:46:39,445][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:46:39,446][__main__][INFO] -   Device: cpu
+[2026-04-28 20:46:39,446][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.18777 | quality: -2.46043
+        | Val:   loss: 12.56768 | quality: -2.49164
+Epoch 1 | Train: loss: 12.26732 | quality: -2.21891
+        | Val:   loss: 11.78526 | quality: -2.27427
+ *
+Epoch 2 | Train: loss: 11.79561 | quality: -2.09514
+        | Val:   loss: 10.90076 | quality: -2.02853
+ *
+Epoch 3 | Train: loss: 11.37554 | quality: -1.98491
+        | Val:   loss: 11.43459 | quality: -2.17684
+
+Epoch 4 | Train: loss: 10.68577 | quality: -1.80392
+        | Val:   loss: 12.48946 | quality: -2.46991
+
+Epoch 5 | Train: loss: 10.34928 | quality: -1.71562
+        | Val:   loss: 13.21423 | quality: -2.67127
+
+Epoch 6 | Train: loss: 9.97173 | quality: -1.61655
+        | Val:   loss: 15.45931 | quality: -3.29502
+
+Epoch 7 | Train: loss: 9.73729 | quality: -1.55504
+        | Val:   loss: 15.02198 | quality: -3.17351
+
+Epoch 8 | Train: loss: 9.20570 | quality: -1.41555
+        | Val:   loss: 14.86964 | quality: -3.13119
+
+Epoch 9 | Train: loss: 8.67502 | quality: -1.27630
+        | Val:   loss: 17.94148 | quality: -3.98463
+
+Epoch 10 | Train: loss: 8.30387 | quality: -1.17891
+        | Val:   loss: 19.30066 | quality: -4.36225
+
+Epoch 11 | Train: loss: 7.82367 | quality: -1.05291
+        | Val:   loss: 27.34633 | quality: -6.59756
+
+Epoch 12 | Train: loss: 7.52891 | quality: -0.97557
+        | Val:   loss: 34.30897 | quality: -8.53197
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 20:47:41,998][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed32874/results.json
+[2026-04-28 20:47:41,999][__main__][INFO] - ✓ Train R²: -2.0951
+[2026-04-28 20:47:41,999][__main__][INFO] - ✓ Val R²: -2.0285
+[2026-04-28 20:47:42,003][HYDRA] 	#13 : model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:47:42,413][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:47:42,417][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed47311
+[2026-04-28 20:47:42,417][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:47:44,105][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:47:44,106][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:47:44,106][__main__][INFO] -   Device: cpu
+[2026-04-28 20:47:44,106][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.12384 | quality: -2.44366
+        | Val:   loss: 12.61425 | quality: -2.50458
+Epoch 1 | Train: loss: 12.08682 | quality: -2.17155
+        | Val:   loss: 11.75770 | quality: -2.26661
+ *
+Epoch 2 | Train: loss: 11.53673 | quality: -2.02721
+        | Val:   loss: 11.42314 | quality: -2.17366
+ *
+Epoch 3 | Train: loss: 10.72326 | quality: -1.81375
+        | Val:   loss: 10.90353 | quality: -2.02930
+ *
+Epoch 4 | Train: loss: 10.02074 | quality: -1.62941
+        | Val:   loss: 11.15752 | quality: -2.09986
+
+Epoch 5 | Train: loss: 9.78009 | quality: -1.56627
+        | Val:   loss: 11.55850 | quality: -2.21127
+
+Epoch 6 | Train: loss: 9.31782 | quality: -1.44497
+        | Val:   loss: 12.67532 | quality: -2.52155
+
+Epoch 7 | Train: loss: 9.04487 | quality: -1.37335
+        | Val:   loss: 13.23270 | quality: -2.67640
+
+Epoch 8 | Train: loss: 8.59103 | quality: -1.25426
+        | Val:   loss: 13.11639 | quality: -2.64409
+
+Epoch 9 | Train: loss: 8.01729 | quality: -1.10372
+        | Val:   loss: 15.11712 | quality: -3.19995
+
+Epoch 10 | Train: loss: 7.53986 | quality: -0.97844
+        | Val:   loss: 16.80166 | quality: -3.66796
+
+Epoch 11 | Train: loss: 7.12635 | quality: -0.86994
+        | Val:   loss: 19.94699 | quality: -4.54182
+
+Epoch 12 | Train: loss: 6.78814 | quality: -0.78119
+        | Val:   loss: 22.91790 | quality: -5.36722
+
+Epoch 13 | Train: loss: 6.61380 | quality: -0.73544
+        | Val:   loss: 24.26812 | quality: -5.74234
+
+
+⏸ Early stopping at epoch 13 (best was epoch 3)
+[2026-04-28 20:48:51,780][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed47311/results.json
+[2026-04-28 20:48:51,780][__main__][INFO] - ✓ Train R²: -1.8138
+[2026-04-28 20:48:51,780][__main__][INFO] - ✓ Val R²: -2.0293
+[2026-04-28 20:48:51,782][HYDRA] 	#14 : model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:48:51,941][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:48:51,945][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed47303
+[2026-04-28 20:48:51,946][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:48:54,211][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:48:54,211][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:48:54,212][__main__][INFO] -   Device: cpu
+[2026-04-28 20:48:54,212][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08691 | quality: -2.43397
+        | Val:   loss: 12.58610 | quality: -2.49676
+Epoch 1 | Train: loss: 12.20059 | quality: -2.20140
+        | Val:   loss: 11.64662 | quality: -2.23575
+ *
+Epoch 2 | Train: loss: 11.87579 | quality: -2.11617
+        | Val:   loss: 11.29743 | quality: -2.13873
+ *
+Epoch 3 | Train: loss: 11.39038 | quality: -1.98881
+        | Val:   loss: 11.49275 | quality: -2.19300
+
+Epoch 4 | Train: loss: 10.75638 | quality: -1.82244
+        | Val:   loss: 11.82522 | quality: -2.28537
+
+Epoch 5 | Train: loss: 10.32134 | quality: -1.70829
+        | Val:   loss: 11.53603 | quality: -2.20502
+
+Epoch 6 | Train: loss: 9.96414 | quality: -1.61456
+        | Val:   loss: 12.48670 | quality: -2.46914
+
+Epoch 7 | Train: loss: 9.69446 | quality: -1.54380
+        | Val:   loss: 14.18827 | quality: -2.94189
+
+Epoch 8 | Train: loss: 9.17529 | quality: -1.40757
+        | Val:   loss: 15.66320 | quality: -3.35166
+
+Epoch 9 | Train: loss: 8.53666 | quality: -1.24000
+        | Val:   loss: 15.74760 | quality: -3.37511
+
+Epoch 10 | Train: loss: 8.01620 | quality: -1.10343
+        | Val:   loss: 17.17450 | quality: -3.77154
+
+Epoch 11 | Train: loss: 7.51456 | quality: -0.97180
+        | Val:   loss: 21.20334 | quality: -4.89087
+
+Epoch 12 | Train: loss: 7.15801 | quality: -0.87824
+        | Val:   loss: 40.00096 | quality: -10.11336
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 20:49:57,514][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L3_bd12_seed47303/results.json
+[2026-04-28 20:49:57,514][__main__][INFO] - ✓ Train R²: -2.1162
+[2026-04-28 20:49:57,514][__main__][INFO] - ✓ Val R²: -2.1387
+[2026-04-28 20:49:57,518][HYDRA] 	#15 : model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:49:57,660][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:49:57,664][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed42
+[2026-04-28 20:49:57,665][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:49:59,358][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:49:59,358][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:49:59,358][__main__][INFO] -   Device: cpu
+[2026-04-28 20:49:59,359][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.09020 | quality: -2.43483
+        | Val:   loss: 12.55893 | quality: -2.48921
+Epoch 1 | Train: loss: 12.83712 | quality: -2.36843
+        | Val:   loss: 12.22071 | quality: -2.39525
+ *
+Epoch 2 | Train: loss: 12.04239 | quality: -2.15989
+        | Val:   loss: 11.66258 | quality: -2.24018
+ *
+Epoch 3 | Train: loss: 11.83574 | quality: -2.10567
+        | Val:   loss: 11.72609 | quality: -2.25783
+
+Epoch 4 | Train: loss: 11.66944 | quality: -2.06203
+        | Val:   loss: 11.86533 | quality: -2.29651
+
+Epoch 5 | Train: loss: 11.36792 | quality: -1.98291
+        | Val:   loss: 11.94399 | quality: -2.31836
+
+Epoch 6 | Train: loss: 11.14358 | quality: -1.92404
+        | Val:   loss: 12.08632 | quality: -2.35791
+
+Epoch 7 | Train: loss: 10.72329 | quality: -1.81376
+        | Val:   loss: 12.28768 | quality: -2.41385
+
+Epoch 8 | Train: loss: 10.23079 | quality: -1.68453
+        | Val:   loss: 12.96465 | quality: -2.60193
+
+Epoch 9 | Train: loss: 9.75410 | quality: -1.55945
+        | Val:   loss: 12.99457 | quality: -2.61024
+
+Epoch 10 | Train: loss: 9.62651 | quality: -1.52597
+        | Val:   loss: 13.08311 | quality: -2.63484
+
+Epoch 11 | Train: loss: 9.51579 | quality: -1.49692
+        | Val:   loss: 14.30115 | quality: -2.97325
+
+Epoch 12 | Train: loss: 9.38837 | quality: -1.46348
+        | Val:   loss: 16.12094 | quality: -3.47884
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 20:50:44,890][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed42/results.json
+[2026-04-28 20:50:44,890][__main__][INFO] - ✓ Train R²: -2.1599
+[2026-04-28 20:50:44,890][__main__][INFO] - ✓ Val R²: -2.2402
+[2026-04-28 20:50:44,892][HYDRA] 	#16 : model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:50:45,035][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:50:45,039][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed10090
+[2026-04-28 20:50:45,039][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:50:46,804][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:50:46,804][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:50:46,804][__main__][INFO] -   Device: cpu
+[2026-04-28 20:50:46,804][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08043 | quality: -2.43227
+        | Val:   loss: 12.69342 | quality: -2.52658
+Epoch 1 | Train: loss: 12.67499 | quality: -2.32588
+        | Val:   loss: 12.45112 | quality: -2.45926
+ *
+Epoch 2 | Train: loss: 12.19251 | quality: -2.19928
+        | Val:   loss: 11.93828 | quality: -2.31678
+ *
+Epoch 3 | Train: loss: 11.91238 | quality: -2.12577
+        | Val:   loss: 11.84497 | quality: -2.29086
+ *
+Epoch 4 | Train: loss: 11.57602 | quality: -2.03752
+        | Val:   loss: 11.65218 | quality: -2.23729
+ *
+Epoch 5 | Train: loss: 11.36568 | quality: -1.98232
+        | Val:   loss: 11.71127 | quality: -2.25371
+
+Epoch 6 | Train: loss: 11.25339 | quality: -1.95286
+        | Val:   loss: 11.74200 | quality: -2.26225
+
+Epoch 7 | Train: loss: 10.86041 | quality: -1.84974
+        | Val:   loss: 12.12800 | quality: -2.36949
+
+Epoch 8 | Train: loss: 10.14455 | quality: -1.66190
+        | Val:   loss: 11.19015 | quality: -2.10893
+ *
+Epoch 9 | Train: loss: 9.59919 | quality: -1.51880
+        | Val:   loss: 11.24211 | quality: -2.12336
+
+Epoch 10 | Train: loss: 9.44421 | quality: -1.47813
+        | Val:   loss: 12.63001 | quality: -2.50896
+
+Epoch 11 | Train: loss: 9.38016 | quality: -1.46133
+        | Val:   loss: 13.61775 | quality: -2.78338
+
+Epoch 12 | Train: loss: 9.33958 | quality: -1.45068
+        | Val:   loss: 14.27397 | quality: -2.96570
+
+Epoch 13 | Train: loss: 9.29539 | quality: -1.43908
+        | Val:   loss: 15.34771 | quality: -3.26401
+
+Epoch 14 | Train: loss: 9.26639 | quality: -1.43147
+        | Val:   loss: 16.32073 | quality: -3.53434
+
+Epoch 15 | Train: loss: 9.24066 | quality: -1.42472
+        | Val:   loss: 17.48532 | quality: -3.85790
+
+Epoch 16 | Train: loss: 9.21482 | quality: -1.41794
+        | Val:   loss: 19.12700 | quality: -4.31400
+
+Epoch 17 | Train: loss: 9.19186 | quality: -1.41192
+        | Val:   loss: 21.27600 | quality: -4.91105
+
+Epoch 18 | Train: loss: 9.17484 | quality: -1.40745
+        | Val:   loss: 23.54002 | quality: -5.54006
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 20:51:55,664][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed10090/results.json
+[2026-04-28 20:51:55,665][__main__][INFO] - ✓ Train R²: -1.6619
+[2026-04-28 20:51:55,665][__main__][INFO] - ✓ Val R²: -2.1089
+[2026-04-28 20:51:55,667][HYDRA] 	#17 : model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:51:55,889][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:51:55,908][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed32874
+[2026-04-28 20:51:55,909][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:51:57,604][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:51:57,604][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:51:57,604][__main__][INFO] -   Device: cpu
+[2026-04-28 20:51:57,604][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.11110 | quality: -2.44032
+        | Val:   loss: 12.56287 | quality: -2.49031
+Epoch 1 | Train: loss: 12.58273 | quality: -2.30167
+        | Val:   loss: 12.13511 | quality: -2.37146
+ *
+Epoch 2 | Train: loss: 12.47283 | quality: -2.27284
+        | Val:   loss: 12.10814 | quality: -2.36397
+ *
+Epoch 3 | Train: loss: 12.24116 | quality: -2.21205
+        | Val:   loss: 11.85875 | quality: -2.29468
+ *
+Epoch 4 | Train: loss: 12.00754 | quality: -2.15075
+        | Val:   loss: 11.64108 | quality: -2.23421
+ *
+Epoch 5 | Train: loss: 11.90598 | quality: -2.12410
+        | Val:   loss: 11.64936 | quality: -2.23651
+
+Epoch 6 | Train: loss: 11.82911 | quality: -2.10393
+        | Val:   loss: 11.60269 | quality: -2.22354
+ *
+Epoch 7 | Train: loss: 11.37810 | quality: -1.98558
+        | Val:   loss: 11.82730 | quality: -2.28595
+
+Epoch 8 | Train: loss: 11.13720 | quality: -1.92237
+        | Val:   loss: 11.52993 | quality: -2.20333
+ *
+Epoch 9 | Train: loss: 10.97185 | quality: -1.87898
+        | Val:   loss: 11.61975 | quality: -2.22828
+
+Epoch 10 | Train: loss: 10.46541 | quality: -1.74610
+        | Val:   loss: 14.43462 | quality: -3.01033
+
+Epoch 11 | Train: loss: 10.08363 | quality: -1.64592
+        | Val:   loss: 13.48556 | quality: -2.74666
+
+Epoch 12 | Train: loss: 9.88893 | quality: -1.59483
+        | Val:   loss: 14.05471 | quality: -2.90478
+
+Epoch 13 | Train: loss: 9.77658 | quality: -1.56535
+        | Val:   loss: 14.07438 | quality: -2.91025
+
+Epoch 14 | Train: loss: 9.72721 | quality: -1.55239
+        | Val:   loss: 14.05625 | quality: -2.90521
+
+Epoch 15 | Train: loss: 9.69704 | quality: -1.54448
+        | Val:   loss: 14.06949 | quality: -2.90889
+
+Epoch 16 | Train: loss: 9.67476 | quality: -1.53863
+        | Val:   loss: 14.06657 | quality: -2.90808
+
+Epoch 17 | Train: loss: 9.65782 | quality: -1.53418
+        | Val:   loss: 14.05889 | quality: -2.90594
+
+Epoch 18 | Train: loss: 9.64492 | quality: -1.53080
+        | Val:   loss: 14.05637 | quality: -2.90524
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 20:53:05,820][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed32874/results.json
+[2026-04-28 20:53:05,820][__main__][INFO] - ✓ Train R²: -1.9224
+[2026-04-28 20:53:05,821][__main__][INFO] - ✓ Val R²: -2.2033
+[2026-04-28 20:53:05,823][HYDRA] 	#18 : model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:53:06,114][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:53:06,118][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed47311
+[2026-04-28 20:53:06,119][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:53:07,815][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:53:07,816][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:53:07,816][__main__][INFO] -   Device: cpu
+[2026-04-28 20:53:07,816][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08690 | quality: -2.43397
+        | Val:   loss: 12.57936 | quality: -2.49489
+Epoch 1 | Train: loss: 13.00490 | quality: -2.41245
+        | Val:   loss: 12.65895 | quality: -2.51700
+
+Epoch 2 | Train: loss: 12.88703 | quality: -2.38152
+        | Val:   loss: 12.82307 | quality: -2.56260
+
+Epoch 3 | Train: loss: 12.66963 | quality: -2.32448
+        | Val:   loss: 13.41994 | quality: -2.72843
+
+Epoch 4 | Train: loss: 12.38310 | quality: -2.24929
+        | Val:   loss: 13.70385 | quality: -2.80730
+
+Epoch 5 | Train: loss: 11.78603 | quality: -2.09262
+        | Val:   loss: 12.44431 | quality: -2.45737
+ *
+Epoch 6 | Train: loss: 11.49340 | quality: -2.01584
+        | Val:   loss: 12.90465 | quality: -2.58526
+
+Epoch 7 | Train: loss: 10.98036 | quality: -1.88122
+        | Val:   loss: 13.02105 | quality: -2.61760
+
+Epoch 8 | Train: loss: 10.64817 | quality: -1.79405
+        | Val:   loss: 12.23405 | quality: -2.39895
+ *
+Epoch 9 | Train: loss: 10.28669 | quality: -1.69920
+        | Val:   loss: 12.08291 | quality: -2.35696
+ *
+Epoch 10 | Train: loss: 9.91281 | quality: -1.60110
+        | Val:   loss: 12.28527 | quality: -2.41318
+
+Epoch 11 | Train: loss: 9.63491 | quality: -1.52817
+        | Val:   loss: 11.77240 | quality: -2.27069
+ *
+Epoch 12 | Train: loss: 9.46325 | quality: -1.48313
+        | Val:   loss: 12.73441 | quality: -2.53797
+
+Epoch 13 | Train: loss: 9.39268 | quality: -1.46461
+        | Val:   loss: 12.68531 | quality: -2.52432
+
+Epoch 14 | Train: loss: 9.35451 | quality: -1.45460
+        | Val:   loss: 12.65392 | quality: -2.51560
+
+Epoch 15 | Train: loss: 9.32845 | quality: -1.44776
+        | Val:   loss: 12.65830 | quality: -2.51682
+
+Epoch 16 | Train: loss: 9.30854 | quality: -1.44253
+        | Val:   loss: 12.68870 | quality: -2.52527
+
+Epoch 17 | Train: loss: 9.29318 | quality: -1.43851
+        | Val:   loss: 12.73526 | quality: -2.53820
+
+Epoch 18 | Train: loss: 9.28160 | quality: -1.43547
+        | Val:   loss: 12.78546 | quality: -2.55215
+
+Epoch 19 | Train: loss: 9.27306 | quality: -1.43323
+        | Val:   loss: 12.82595 | quality: -2.56340
+
+Epoch 20 | Train: loss: 9.26683 | quality: -1.43159
+        | Val:   loss: 12.84981 | quality: -2.57003
+
+
+Best epoch: 11 (val_quality=-2.270694)
+[2026-04-28 20:54:23,359][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed47311/results.json
+[2026-04-28 20:54:23,360][__main__][INFO] - ✓ Train R²: -1.5282
+[2026-04-28 20:54:23,360][__main__][INFO] - ✓ Val R²: -2.2707
+[2026-04-28 20:54:23,363][HYDRA] 	#19 : model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:54:23,507][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:54:23,511][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed47303
+[2026-04-28 20:54:23,512][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:54:25,200][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:54:25,201][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:54:25,201][__main__][INFO] -   Device: cpu
+[2026-04-28 20:54:25,201][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08990 | quality: -2.43475
+        | Val:   loss: 12.58192 | quality: -2.49560
+Epoch 1 | Train: loss: 12.95187 | quality: -2.39854
+        | Val:   loss: 12.42294 | quality: -2.45143
+ *
+Epoch 2 | Train: loss: 12.92720 | quality: -2.39206
+        | Val:   loss: 12.35357 | quality: -2.43216
+ *
+Epoch 3 | Train: loss: 12.82279 | quality: -2.36466
+        | Val:   loss: 12.17764 | quality: -2.38328
+ *
+Epoch 4 | Train: loss: 12.77833 | quality: -2.35300
+        | Val:   loss: 12.18807 | quality: -2.38618
+
+Epoch 5 | Train: loss: 12.59355 | quality: -2.30451
+        | Val:   loss: 12.34671 | quality: -2.43025
+
+Epoch 6 | Train: loss: 12.40330 | quality: -2.25459
+        | Val:   loss: 12.15409 | quality: -2.37674
+ *
+Epoch 7 | Train: loss: 12.05277 | quality: -2.16262
+        | Val:   loss: 11.94763 | quality: -2.31938
+ *
+Epoch 8 | Train: loss: 11.88383 | quality: -2.11828
+        | Val:   loss: 12.06190 | quality: -2.35112
+
+Epoch 9 | Train: loss: 11.18552 | quality: -1.93505
+        | Val:   loss: 13.46443 | quality: -2.74079
+
+Epoch 10 | Train: loss: 10.74065 | quality: -1.81832
+        | Val:   loss: 13.55556 | quality: -2.76610
+
+Epoch 11 | Train: loss: 10.16442 | quality: -1.66712
+        | Val:   loss: 30.80022 | quality: -7.55714
+
+Epoch 12 | Train: loss: 10.03994 | quality: -1.63445
+        | Val:   loss: 49.69959 | quality: -12.80790
+
+Epoch 13 | Train: loss: 9.91884 | quality: -1.60268
+        | Val:   loss: 64.59641 | quality: -16.94664
+
+Epoch 14 | Train: loss: 9.71970 | quality: -1.55042
+        | Val:   loss: 80.81649 | quality: -21.45302
+
+Epoch 15 | Train: loss: 9.55657 | quality: -1.50762
+        | Val:   loss: 96.93834 | quality: -25.93211
+
+Epoch 16 | Train: loss: 9.47067 | quality: -1.48508
+        | Val:   loss: 93.09309 | quality: -24.86380
+
+Epoch 17 | Train: loss: 9.41941 | quality: -1.47163
+        | Val:   loss: 86.64241 | quality: -23.07162
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 20:55:27,533][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd4_seed47303/results.json
+[2026-04-28 20:55:27,535][__main__][INFO] - ✓ Train R²: -2.1626
+[2026-04-28 20:55:27,535][__main__][INFO] - ✓ Val R²: -2.3194
+[2026-04-28 20:55:27,537][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:55:28,529][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:55:28,533][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed42
+[2026-04-28 20:55:28,534][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:55:30,225][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:55:30,225][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:55:30,225][__main__][INFO] -   Device: cpu
+[2026-04-28 20:55:30,226][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08688 | quality: -2.43396
+        | Val:   loss: 12.57756 | quality: -2.49439
+Epoch 1 | Train: loss: 12.18522 | quality: -2.19737
+        | Val:   loss: 11.95544 | quality: -2.32155
+ *
+Epoch 2 | Train: loss: 11.71160 | quality: -2.07309
+        | Val:   loss: 11.71555 | quality: -2.25490
+ *
+Epoch 3 | Train: loss: 11.41237 | quality: -1.99458
+        | Val:   loss: 11.58113 | quality: -2.21755
+ *
+Epoch 4 | Train: loss: 11.10997 | quality: -1.91523
+        | Val:   loss: 11.94345 | quality: -2.31822
+
+Epoch 5 | Train: loss: 10.57878 | quality: -1.77584
+        | Val:   loss: 11.65874 | quality: -2.23912
+
+Epoch 6 | Train: loss: 10.15141 | quality: -1.66370
+        | Val:   loss: 12.29412 | quality: -2.41564
+
+Epoch 7 | Train: loss: 9.96603 | quality: -1.61506
+        | Val:   loss: 12.40117 | quality: -2.44538
+
+Epoch 8 | Train: loss: 9.63035 | quality: -1.52698
+        | Val:   loss: 11.98917 | quality: -2.33092
+
+Epoch 9 | Train: loss: 8.61515 | quality: -1.26059
+        | Val:   loss: 12.52565 | quality: -2.47997
+
+Epoch 10 | Train: loss: 8.08458 | quality: -1.12137
+        | Val:   loss: 14.26090 | quality: -2.96207
+
+Epoch 11 | Train: loss: 7.79551 | quality: -1.04552
+        | Val:   loss: 15.48882 | quality: -3.30321
+
+Epoch 12 | Train: loss: 7.63811 | quality: -1.00422
+        | Val:   loss: 16.54384 | quality: -3.59633
+
+Epoch 13 | Train: loss: 7.57099 | quality: -0.98661
+        | Val:   loss: 17.11502 | quality: -3.75502
+
+
+⏸ Early stopping at epoch 13 (best was epoch 3)
+[2026-04-28 20:56:29,260][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-28 20:56:29,261][__main__][INFO] - ✓ Train R²: -1.9946
+[2026-04-28 20:56:29,261][__main__][INFO] - ✓ Val R²: -2.2176
+[2026-04-28 20:56:29,263][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:56:29,429][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:56:29,433][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed10090
+[2026-04-28 20:56:29,434][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:56:31,128][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:56:31,129][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:56:31,129][__main__][INFO] -   Device: cpu
+[2026-04-28 20:56:31,129][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08206 | quality: -2.43270
+        | Val:   loss: 12.61419 | quality: -2.50457
+Epoch 1 | Train: loss: 12.40714 | quality: -2.25560
+        | Val:   loss: 12.00124 | quality: -2.33427
+ *
+Epoch 2 | Train: loss: 12.15768 | quality: -2.19014
+        | Val:   loss: 12.11190 | quality: -2.36502
+
+Epoch 3 | Train: loss: 11.78375 | quality: -2.09202
+        | Val:   loss: 12.45546 | quality: -2.46047
+
+Epoch 4 | Train: loss: 10.88528 | quality: -1.85627
+        | Val:   loss: 13.20327 | quality: -2.66823
+
+Epoch 5 | Train: loss: 10.28736 | quality: -1.69938
+        | Val:   loss: 13.67601 | quality: -2.79957
+
+Epoch 6 | Train: loss: 9.84926 | quality: -1.58442
+        | Val:   loss: 13.91249 | quality: -2.86527
+
+Epoch 7 | Train: loss: 9.58459 | quality: -1.51497
+        | Val:   loss: 13.27937 | quality: -2.68937
+
+Epoch 8 | Train: loss: 9.06396 | quality: -1.37836
+        | Val:   loss: 12.97417 | quality: -2.60458
+
+Epoch 9 | Train: loss: 8.44922 | quality: -1.21705
+        | Val:   loss: 14.67587 | quality: -3.07736
+
+Epoch 10 | Train: loss: 7.85139 | quality: -1.06018
+        | Val:   loss: 16.59223 | quality: -3.60977
+
+Epoch 11 | Train: loss: 7.55940 | quality: -0.98357
+        | Val:   loss: 23.35078 | quality: -5.48748
+
+
+⏸ Early stopping at epoch 11 (best was epoch 1)
+[2026-04-28 20:57:20,966][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-28 20:57:20,967][__main__][INFO] - ✓ Train R²: -2.2556
+[2026-04-28 20:57:20,967][__main__][INFO] - ✓ Val R²: -2.3343
+[2026-04-28 20:57:20,969][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:57:21,168][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:57:21,174][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed32874
+[2026-04-28 20:57:21,175][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:57:22,873][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:57:22,874][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:57:22,874][__main__][INFO] -   Device: cpu
+[2026-04-28 20:57:22,874][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.17582 | quality: -2.45730
+        | Val:   loss: 12.63971 | quality: -2.51166
+Epoch 1 | Train: loss: 12.13521 | quality: -2.18425
+        | Val:   loss: 11.65849 | quality: -2.23905
+ *
+Epoch 2 | Train: loss: 11.98493 | quality: -2.14481
+        | Val:   loss: 11.63461 | quality: -2.23241
+ *
+Epoch 3 | Train: loss: 11.61407 | quality: -2.04750
+        | Val:   loss: 11.36509 | quality: -2.15753
+ *
+Epoch 4 | Train: loss: 11.30989 | quality: -1.96768
+        | Val:   loss: 11.62634 | quality: -2.23011
+
+Epoch 5 | Train: loss: 11.10254 | quality: -1.91328
+        | Val:   loss: 11.91234 | quality: -2.30957
+
+Epoch 6 | Train: loss: 10.63480 | quality: -1.79054
+        | Val:   loss: 12.56801 | quality: -2.49174
+
+Epoch 7 | Train: loss: 10.10734 | quality: -1.65214
+        | Val:   loss: 13.02006 | quality: -2.61733
+
+Epoch 8 | Train: loss: 9.64701 | quality: -1.53135
+        | Val:   loss: 13.26862 | quality: -2.68638
+
+Epoch 9 | Train: loss: 9.06733 | quality: -1.37924
+        | Val:   loss: 13.94032 | quality: -2.87300
+
+Epoch 10 | Train: loss: 8.51363 | quality: -1.23395
+        | Val:   loss: 14.61030 | quality: -3.05914
+
+Epoch 11 | Train: loss: 8.06141 | quality: -1.11529
+        | Val:   loss: 15.37472 | quality: -3.27152
+
+Epoch 12 | Train: loss: 7.71213 | quality: -1.02364
+        | Val:   loss: 16.79120 | quality: -3.66505
+
+Epoch 13 | Train: loss: 7.56276 | quality: -0.98445
+        | Val:   loss: 17.93200 | quality: -3.98200
+
+
+⏸ Early stopping at epoch 13 (best was epoch 3)
+[2026-04-28 20:58:21,733][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-28 20:58:21,734][__main__][INFO] - ✓ Train R²: -2.0475
+[2026-04-28 20:58:21,734][__main__][INFO] - ✓ Val R²: -2.1575
+[2026-04-28 20:58:21,736][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:58:21,870][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:58:21,874][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed47311
+[2026-04-28 20:58:21,875][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:58:24,884][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:58:24,884][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:58:24,885][__main__][INFO] -   Device: cpu
+[2026-04-28 20:58:24,885][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.11158 | quality: -2.44044
+        | Val:   loss: 12.44132 | quality: -2.45654
+Epoch 1 | Train: loss: 12.10276 | quality: -2.17573
+        | Val:   loss: 11.85702 | quality: -2.29420
+ *
+Epoch 2 | Train: loss: 11.60558 | quality: -2.04527
+        | Val:   loss: 11.52715 | quality: -2.20256
+ *
+Epoch 3 | Train: loss: 11.03752 | quality: -1.89621
+        | Val:   loss: 11.68250 | quality: -2.24572
+
+Epoch 4 | Train: loss: 10.69799 | quality: -1.80712
+        | Val:   loss: 12.10094 | quality: -2.36197
+
+Epoch 5 | Train: loss: 10.28963 | quality: -1.69997
+        | Val:   loss: 12.55345 | quality: -2.48769
+
+Epoch 6 | Train: loss: 9.97251 | quality: -1.61676
+        | Val:   loss: 12.91060 | quality: -2.58692
+
+Epoch 7 | Train: loss: 9.49616 | quality: -1.49177
+        | Val:   loss: 12.90645 | quality: -2.58576
+
+Epoch 8 | Train: loss: 9.12479 | quality: -1.39432
+        | Val:   loss: 12.70455 | quality: -2.52967
+
+Epoch 9 | Train: loss: 8.61744 | quality: -1.26119
+        | Val:   loss: 12.82364 | quality: -2.56276
+
+Epoch 10 | Train: loss: 8.12485 | quality: -1.13194
+        | Val:   loss: 13.49113 | quality: -2.74820
+
+Epoch 11 | Train: loss: 7.78954 | quality: -1.04395
+        | Val:   loss: 13.77306 | quality: -2.82653
+
+Epoch 12 | Train: loss: 7.64534 | quality: -1.00612
+        | Val:   loss: 14.40162 | quality: -3.00116
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 20:59:14,604][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-28 20:59:14,605][__main__][INFO] - ✓ Train R²: -2.0453
+[2026-04-28 20:59:14,605][__main__][INFO] - ✓ Val R²: -2.2026
+[2026-04-28 20:59:14,607][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 20:59:14,734][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:59:14,739][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed47303
+[2026-04-28 20:59:14,739][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:59:16,429][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:59:16,430][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:59:16,430][__main__][INFO] -   Device: cpu
+[2026-04-28 20:59:16,430][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.21075 | quality: -2.46647
+        | Val:   loss: 12.80280 | quality: -2.55697
+Epoch 1 | Train: loss: 12.44321 | quality: -2.26506
+        | Val:   loss: 12.08001 | quality: -2.35616
+ *
+Epoch 2 | Train: loss: 11.92976 | quality: -2.13034
+        | Val:   loss: 11.66940 | quality: -2.24208
+ *
+Epoch 3 | Train: loss: 11.55717 | quality: -2.03257
+        | Val:   loss: 11.67230 | quality: -2.24288
+ *
+Epoch 4 | Train: loss: 11.23992 | quality: -1.94932
+        | Val:   loss: 11.73165 | quality: -2.25937
+
+Epoch 5 | Train: loss: 11.18491 | quality: -1.93489
+        | Val:   loss: 11.57242 | quality: -2.21513
+ *
+Epoch 6 | Train: loss: 10.75905 | quality: -1.82315
+        | Val:   loss: 14.76419 | quality: -3.10189
+
+Epoch 7 | Train: loss: 10.36524 | quality: -1.71981
+        | Val:   loss: 14.66866 | quality: -3.07535
+
+Epoch 8 | Train: loss: 9.90631 | quality: -1.59939
+        | Val:   loss: 14.84711 | quality: -3.12493
+
+Epoch 9 | Train: loss: 9.51272 | quality: -1.49611
+        | Val:   loss: 16.58152 | quality: -3.60680
+
+Epoch 10 | Train: loss: 9.00081 | quality: -1.36179
+        | Val:   loss: 15.53730 | quality: -3.31669
+
+Epoch 11 | Train: loss: 8.56199 | quality: -1.24664
+        | Val:   loss: 19.77256 | quality: -4.49336
+
+Epoch 12 | Train: loss: 8.21213 | quality: -1.15484
+        | Val:   loss: 22.17239 | quality: -5.16009
+
+Epoch 13 | Train: loss: 7.95830 | quality: -1.08824
+        | Val:   loss: 24.55792 | quality: -5.82286
+
+Epoch 14 | Train: loss: 7.82053 | quality: -1.05209
+        | Val:   loss: 26.20394 | quality: -6.28017
+
+Epoch 15 | Train: loss: 7.73476 | quality: -1.02958
+        | Val:   loss: 27.60523 | quality: -6.66949
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 21:00:14,081][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-28 21:00:14,082][__main__][INFO] - ✓ Train R²: -1.9349
+[2026-04-28 21:00:14,082][__main__][INFO] - ✓ Val R²: -2.2151
+[2026-04-28 21:00:14,085][HYDRA] 	#25 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 21:00:14,216][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:00:14,220][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed42
+[2026-04-28 21:00:14,221][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 21:00:15,903][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 21:00:15,904][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 21:00:15,904][__main__][INFO] -   Device: cpu
+[2026-04-28 21:00:15,904][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.11436 | quality: -2.44117
+        | Val:   loss: 12.60918 | quality: -2.50317
+Epoch 1 | Train: loss: 12.27772 | quality: -2.22164
+        | Val:   loss: 12.05513 | quality: -2.34924
+ *
+Epoch 2 | Train: loss: 11.74587 | quality: -2.08209
+        | Val:   loss: 11.95475 | quality: -2.32136
+ *
+Epoch 3 | Train: loss: 11.28553 | quality: -1.96129
+        | Val:   loss: 11.95743 | quality: -2.32210
+ *
+Epoch 4 | Train: loss: 10.76266 | quality: -1.82409
+        | Val:   loss: 12.14266 | quality: -2.37356
+
+Epoch 5 | Train: loss: 10.29010 | quality: -1.70010
+        | Val:   loss: 11.85601 | quality: -2.29392
+ *
+Epoch 6 | Train: loss: 9.77473 | quality: -1.56486
+        | Val:   loss: 11.95953 | quality: -2.32268
+
+Epoch 7 | Train: loss: 9.17867 | quality: -1.40846
+        | Val:   loss: 12.36732 | quality: -2.43598
+
+Epoch 8 | Train: loss: 8.75927 | quality: -1.29841
+        | Val:   loss: 12.46863 | quality: -2.46412
+
+Epoch 9 | Train: loss: 8.20355 | quality: -1.15259
+        | Val:   loss: 15.19289 | quality: -3.22100
+
+Epoch 10 | Train: loss: 7.68383 | quality: -1.01622
+        | Val:   loss: 18.32251 | quality: -4.09049
+
+Epoch 11 | Train: loss: 7.24355 | quality: -0.90069
+        | Val:   loss: 23.11619 | quality: -5.42231
+
+Epoch 12 | Train: loss: 7.02711 | quality: -0.84390
+        | Val:   loss: 28.01726 | quality: -6.78396
+
+Epoch 13 | Train: loss: 6.88337 | quality: -0.80618
+        | Val:   loss: 35.26927 | quality: -8.79876
+
+Epoch 14 | Train: loss: 6.79136 | quality: -0.78203
+        | Val:   loss: 42.45387 | quality: -10.79484
+
+Epoch 15 | Train: loss: 6.73076 | quality: -0.76613
+        | Val:   loss: 49.90123 | quality: -12.86392
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 21:01:23,368][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed42/results.json
+[2026-04-28 21:01:23,369][__main__][INFO] - ✓ Train R²: -1.7001
+[2026-04-28 21:01:23,369][__main__][INFO] - ✓ Val R²: -2.2939
+[2026-04-28 21:01:23,376][HYDRA] 	#26 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 21:01:23,509][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:01:23,513][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed10090
+[2026-04-28 21:01:23,514][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 21:01:25,198][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 21:01:25,198][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 21:01:25,198][__main__][INFO] -   Device: cpu
+[2026-04-28 21:01:25,199][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.01662 | quality: -2.41553
+        | Val:   loss: 13.41400 | quality: -2.72677
+Epoch 1 | Train: loss: 11.95891 | quality: -2.13798
+        | Val:   loss: 11.44922 | quality: -2.18091
+ *
+Epoch 2 | Train: loss: 11.47793 | quality: -2.01178
+        | Val:   loss: 11.68022 | quality: -2.24508
+
+Epoch 3 | Train: loss: 11.02541 | quality: -1.89304
+        | Val:   loss: 11.08500 | quality: -2.07972
+ *
+Epoch 4 | Train: loss: 10.02117 | quality: -1.62953
+        | Val:   loss: 10.43315 | quality: -1.89861
+ *
+Epoch 5 | Train: loss: 9.42035 | quality: -1.47187
+        | Val:   loss: 10.97156 | quality: -2.04820
+
+Epoch 6 | Train: loss: 8.95574 | quality: -1.34996
+        | Val:   loss: 12.39385 | quality: -2.44335
+
+Epoch 7 | Train: loss: 8.54862 | quality: -1.24313
+        | Val:   loss: 13.79882 | quality: -2.83369
+
+Epoch 8 | Train: loss: 8.27760 | quality: -1.17202
+        | Val:   loss: 14.61219 | quality: -3.05966
+
+Epoch 9 | Train: loss: 7.88693 | quality: -1.06951
+        | Val:   loss: 14.24376 | quality: -2.95731
+
+Epoch 10 | Train: loss: 7.43971 | quality: -0.95216
+        | Val:   loss: 17.52825 | quality: -3.86983
+
+Epoch 11 | Train: loss: 7.07422 | quality: -0.85625
+        | Val:   loss: 18.65431 | quality: -4.18268
+
+Epoch 12 | Train: loss: 6.81281 | quality: -0.78766
+        | Val:   loss: 19.97326 | quality: -4.54911
+
+Epoch 13 | Train: loss: 6.62387 | quality: -0.73809
+        | Val:   loss: 22.44410 | quality: -5.23558
+
+Epoch 14 | Train: loss: 6.48951 | quality: -0.70283
+        | Val:   loss: 26.77566 | quality: -6.43901
+
+
+⏸ Early stopping at epoch 14 (best was epoch 4)
+[2026-04-28 21:02:23,448][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed10090/results.json
+[2026-04-28 21:02:23,449][__main__][INFO] - ✓ Train R²: -1.6295
+[2026-04-28 21:02:23,449][__main__][INFO] - ✓ Val R²: -1.8986
+[2026-04-28 21:02:23,451][HYDRA] 	#27 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 21:02:23,597][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:02:23,601][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed32874
+[2026-04-28 21:02:23,602][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 21:02:25,395][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 21:02:25,395][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 21:02:25,395][__main__][INFO] -   Device: cpu
+[2026-04-28 21:02:25,395][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.18777 | quality: -2.46043
+        | Val:   loss: 12.56768 | quality: -2.49164
+Epoch 1 | Train: loss: 12.26732 | quality: -2.21891
+        | Val:   loss: 11.78526 | quality: -2.27427
+ *
+Epoch 2 | Train: loss: 11.79561 | quality: -2.09514
+        | Val:   loss: 10.90076 | quality: -2.02853
+ *
+Epoch 3 | Train: loss: 11.37554 | quality: -1.98491
+        | Val:   loss: 11.43459 | quality: -2.17684
+
+Epoch 4 | Train: loss: 10.68577 | quality: -1.80392
+        | Val:   loss: 12.48946 | quality: -2.46991
+
+Epoch 5 | Train: loss: 10.34928 | quality: -1.71562
+        | Val:   loss: 13.21423 | quality: -2.67127
+
+Epoch 6 | Train: loss: 9.97173 | quality: -1.61655
+        | Val:   loss: 15.45931 | quality: -3.29502
+
+Epoch 7 | Train: loss: 9.73729 | quality: -1.55504
+        | Val:   loss: 15.02198 | quality: -3.17351
+
+Epoch 8 | Train: loss: 9.20570 | quality: -1.41555
+        | Val:   loss: 14.86964 | quality: -3.13119
+
+Epoch 9 | Train: loss: 8.67502 | quality: -1.27630
+        | Val:   loss: 17.94148 | quality: -3.98463
+
+Epoch 10 | Train: loss: 8.30387 | quality: -1.17891
+        | Val:   loss: 19.30066 | quality: -4.36225
+
+Epoch 11 | Train: loss: 7.82367 | quality: -1.05291
+        | Val:   loss: 27.34633 | quality: -6.59756
+
+Epoch 12 | Train: loss: 7.52891 | quality: -0.97557
+        | Val:   loss: 34.30897 | quality: -8.53197
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 21:03:14,972][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed32874/results.json
+[2026-04-28 21:03:14,972][__main__][INFO] - ✓ Train R²: -2.0951
+[2026-04-28 21:03:14,972][__main__][INFO] - ✓ Val R²: -2.0285
+[2026-04-28 21:03:14,974][HYDRA] 	#28 : model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 21:03:15,106][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:03:15,110][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed47311
+[2026-04-28 21:03:15,111][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 21:03:16,793][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 21:03:16,794][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 21:03:16,794][__main__][INFO] -   Device: cpu
+[2026-04-28 21:03:16,794][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.12384 | quality: -2.44366
+        | Val:   loss: 12.61425 | quality: -2.50458
+Epoch 1 | Train: loss: 12.08682 | quality: -2.17155
+        | Val:   loss: 11.75770 | quality: -2.26661
+ *
+Epoch 2 | Train: loss: 11.53673 | quality: -2.02721
+        | Val:   loss: 11.42314 | quality: -2.17366
+ *
+Epoch 3 | Train: loss: 10.72326 | quality: -1.81375
+        | Val:   loss: 10.90353 | quality: -2.02930
+ *
+Epoch 4 | Train: loss: 10.02074 | quality: -1.62941
+        | Val:   loss: 11.15752 | quality: -2.09986
+
+Epoch 5 | Train: loss: 9.78009 | quality: -1.56627
+        | Val:   loss: 11.55850 | quality: -2.21127
+
+Epoch 6 | Train: loss: 9.31782 | quality: -1.44497
+        | Val:   loss: 12.67532 | quality: -2.52155
+
+Epoch 7 | Train: loss: 9.04487 | quality: -1.37335
+        | Val:   loss: 13.23270 | quality: -2.67640
+
+Epoch 8 | Train: loss: 8.59103 | quality: -1.25426
+        | Val:   loss: 13.11639 | quality: -2.64409
+
+Epoch 9 | Train: loss: 8.01729 | quality: -1.10372
+        | Val:   loss: 15.11712 | quality: -3.19995
+
+Epoch 10 | Train: loss: 7.53986 | quality: -0.97844
+        | Val:   loss: 16.80166 | quality: -3.66796
+
+Epoch 11 | Train: loss: 7.12635 | quality: -0.86994
+        | Val:   loss: 19.94699 | quality: -4.54182
+
+Epoch 12 | Train: loss: 6.78814 | quality: -0.78119
+        | Val:   loss: 22.91790 | quality: -5.36722
+
+Epoch 13 | Train: loss: 6.61380 | quality: -0.73544
+        | Val:   loss: 24.26812 | quality: -5.74234
+
+
+⏸ Early stopping at epoch 13 (best was epoch 3)
+[2026-04-28 21:04:10,588][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed47311/results.json
+[2026-04-28 21:04:10,588][__main__][INFO] - ✓ Train R²: -1.8138
+[2026-04-28 21:04:10,588][__main__][INFO] - ✓ Val R²: -2.0293
+[2026-04-28 21:04:10,590][HYDRA] 	#29 : model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=obesity
+[2026-04-28 21:04:11,179][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:04:11,183][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed47303
+[2026-04-28 21:04:11,184][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 21:04:12,900][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 21:04:12,901][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 21:04:12,901][__main__][INFO] -   Device: cpu
+[2026-04-28 21:04:12,901][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node17', 'Node18', 'Node19', 'Node20', 'Node21', 'Node22', 'Node23', 'Node24', 'Node25', 'Node26', 'Node27', 'Node28', 'Node29', 'Node30', 'Node31', 'Node32', 'Node33', 'Node34', 'Node35', 'Node36', 'Node37', 'Node38', 'Node37', 'Node36', 'Node35', 'Node34', 'Node33', 'Node32', 'Node31', 'Node30', 'Node29', 'Node28', 'Node27', 'Node26', 'Node25', 'Node24', 'Node23', 'Node22', 'Node21', 'Node20', 'Node19', 'Node18', 'Node17', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 13.08691 | quality: -2.43397
+        | Val:   loss: 12.58610 | quality: -2.49676
+Epoch 1 | Train: loss: 12.20059 | quality: -2.20140
+        | Val:   loss: 11.64662 | quality: -2.23575
+ *
+Epoch 2 | Train: loss: 11.87579 | quality: -2.11617
+        | Val:   loss: 11.29743 | quality: -2.13873
+ *
+Epoch 3 | Train: loss: 11.39038 | quality: -1.98881
+        | Val:   loss: 11.49275 | quality: -2.19300
+
+Epoch 4 | Train: loss: 10.75638 | quality: -1.82244
+        | Val:   loss: 11.82522 | quality: -2.28537
+
+Epoch 5 | Train: loss: 10.32134 | quality: -1.70829
+        | Val:   loss: 11.53603 | quality: -2.20502
+
+Epoch 6 | Train: loss: 9.96414 | quality: -1.61456
+        | Val:   loss: 12.48670 | quality: -2.46914
+
+Epoch 7 | Train: loss: 9.69446 | quality: -1.54380
+        | Val:   loss: 14.18827 | quality: -2.94189
+
+Epoch 8 | Train: loss: 9.17529 | quality: -1.40757
+        | Val:   loss: 15.66320 | quality: -3.35166
+
+Epoch 9 | Train: loss: 8.53666 | quality: -1.24000
+        | Val:   loss: 15.74760 | quality: -3.37511
+
+Epoch 10 | Train: loss: 8.01620 | quality: -1.10343
+        | Val:   loss: 17.17450 | quality: -3.77154
+
+Epoch 11 | Train: loss: 7.51456 | quality: -0.97180
+        | Val:   loss: 21.20334 | quality: -4.89087
+
+Epoch 12 | Train: loss: 7.15801 | quality: -0.87824
+        | Val:   loss: 40.00096 | quality: -10.11336
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 21:05:02,834][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/TNML_F_rg5_init0.1/L4_bd12_seed47303/results.json
+[2026-04-28 21:05:02,838][__main__][INFO] - ✓ Train R²: -2.1162
+[2026-04-28 21:05:02,838][__main__][INFO] - ✓ Val R²: -2.1387
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28319216[129]: <ntn_grid_full[1-200]%20> in cluster <dcc> Done
+
+Job <ntn_grid_full[1-200]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Apr 28 19:35:42 2026
+Job was executed on host(s) <4*n-62-31-7>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue Apr 28 20:32:44 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Apr 28 20:32:44 2026
+Terminated at Tue Apr 28 21:05:04 2026
+Results reported at Tue Apr 28 21:05:04 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-200]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# --- DRY RUN / TEST LOGIC ---
+# Run locally with: bash your_script.sh test
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+NUM_MODELS=${#MODELS[@]}
+DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "concrete" "energy_efficiency" "hearth" "iris" "mushrooms" "obesity" "popularity" "realstate" "seoulBike" "student_dropout" "student_perf" "wine" "winequalityc"
+)
+
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
+if [ "$1" == "test" ]; then
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
+    echo "--------------------------------------"
+for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        M_IDX=$((IDV % NUM_MODELS))
+        D_IDX=$((IDV / NUM_MODELS))
+        echo "Index $i: Dataset=${DATASETS[$D_IDX]}, Model=${MODELS[$M_IDX]}"
+    done
+    exit 0
+fi
+# ----------------------------
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+DATASET_IDX=$((IDV / NUM_MODELS))
+
+CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
+CURRENT_MODEL=${MODELS[$MODEL_IDX]}
+echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL"
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python run.py --multirun +experiment=uci_ntn_sweep model=$CURRENT_MODEL dataset=$CURRENT_DATASET
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   7379.06 sec.
+    Max Memory :                                 575 MB
+    Average Memory :                             534.94 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               3521.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   1939 sec.
+    Turnaround time :                            5362 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28319216_129.err> for stderr output of this job.
+

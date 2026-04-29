@@ -1,0 +1,3352 @@
+Task 102: Dataset=iris, Model=cpda_typei
+[2026-04-28 20:24:16,288][HYDRA] Launching 30 jobs locally
+[2026-04-28 20:24:16,288][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:16,569][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:16,577][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed42
+[2026-04-28 20:24:16,634][utils.tracking][INFO] - Loaded 15142 tracked runs from runs_tracking.csv
+[2026-04-28 20:24:16,635][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:17,724][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:17,725][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:17,725][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:17,725][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.15543 | quality: 0.06667
+        | Val:   loss: 1.13672 | quality: 0.04545
+
+Epoch 1 | Train: loss: 0.58316 | quality: 0.81905
+        | Val:   loss: 0.36038 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.34403 | quality: 0.87619
+        | Val:   loss: 0.17143 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.16574 | quality: 0.96190
+        | Val:   loss: 0.07468 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08916 | quality: 0.99048
+        | Val:   loss: 0.04395 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.06232 | quality: 0.99048
+        | Val:   loss: 0.02849 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.04097 | quality: 0.99048
+        | Val:   loss: 0.01892 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.03054 | quality: 0.99048
+        | Val:   loss: 0.03311 | quality: 1.00000
+
+Epoch 8 | Train: loss: 0.02175 | quality: 1.00000
+        | Val:   loss: 0.04248 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00954 | quality: 1.00000
+        | Val:   loss: 0.06712 | quality: 0.95455
+
+Epoch 10 | Train: loss: 0.01432 | quality: 0.99048
+        | Val:   loss: 0.03817 | quality: 0.95455
+
+Epoch 11 | Train: loss: 0.00574 | quality: 1.00000
+        | Val:   loss: 0.08864 | quality: 0.95455
+
+Epoch 12 | Train: loss: 0.00395 | quality: 1.00000
+        | Val:   loss: 0.10673 | quality: 0.95455
+
+Epoch 13 | Train: loss: 0.00230 | quality: 1.00000
+        | Val:   loss: 0.13709 | quality: 0.95455
+
+Epoch 14 | Train: loss: 0.00150 | quality: 1.00000
+        | Val:   loss: 0.15614 | quality: 0.95455
+
+Epoch 15 | Train: loss: 0.00095 | quality: 1.00000
+        | Val:   loss: 0.19084 | quality: 0.95455
+
+Epoch 16 | Train: loss: 49350247.37650 | quality: 0.35238
+        | Val:   loss: 75219815.04289 | quality: 0.27273
+
+Epoch 17 | Train: loss: 3951384512433169167149011198248339868303319000162421956411392.00000 | quality: 0.48571
+        | Val:   loss: 7270897844346930119245153657193974728443679000265282931392512.00000 | quality: 0.27273
+
+Epoch 18 | Train: loss: 110619936352817471695913140952883767994877532038921622162357288497136948899553579484105543285603093924027366825938607939327343086111386827540330991311020108608975052865617719489345107843736373949068888795269630288817994448099796889247950037656000805302153245023331177248312335882631307320358862848.00000 | quality: 0.54286
+        | Val:   loss: 115350292997807531944719771166809642096225377173555431730729332599637046585162453292165371225276864758685902178061020331207873463919167830194123399490400586259420423609503060602417397736742896160717403791860091029328959449413802840036450379401058610622939264983181525090634979826057997941276147712.00000 | quality: 0.72727
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-28 20:24:18,125][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed42/results.json
+[2026-04-28 20:24:18,126][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:24:18,126][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:18,127][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:18,275][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:18,279][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed10090
+[2026-04-28 20:24:18,280][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:19,320][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:19,321][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:19,321][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:19,321][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.17434 | quality: 0.30476
+        | Val:   loss: 1.24220 | quality: 0.13636
+
+Epoch 1 | Train: loss: 0.57605 | quality: 0.80000
+        | Val:   loss: 0.35504 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.33976 | quality: 0.87619
+        | Val:   loss: 0.17019 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.16559 | quality: 0.96190
+        | Val:   loss: 0.07392 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08863 | quality: 0.99048
+        | Val:   loss: 0.04349 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.06335 | quality: 0.99048
+        | Val:   loss: 0.02891 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.04249 | quality: 0.99048
+        | Val:   loss: 0.01738 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.03167 | quality: 0.99048
+        | Val:   loss: 0.02726 | quality: 1.00000
+
+Epoch 8 | Train: loss: 95.90260 | quality: 0.55238
+        | Val:   loss: 74.20963 | quality: 0.63636
+
+Epoch 9 | Train: loss: 3766120259343875904747253792768.00000 | quality: 0.65714
+        | Val:   loss: 806617828651543018753121845248.00000 | quality: 0.86364
+
+Epoch 10 | Train: loss: 54152286130600446705715404907219761553500763103693194036093917114905753180894815120215771022804545314341697895581468294364953706376886426620145002640145767355624493940736.00000 | quality: 0.63810
+        | Val:   loss: 10554217479473312358441520973589777359712537906222475600773442259963692143689550807388621597390208037458510707681501602081039332121486397771353540853089392864437047656448.00000 | quality: 0.86364
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:19,626][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed10090/results.json
+[2026-04-28 20:24:19,626][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:19,626][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:19,628][HYDRA] 	#2 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:19,805][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:19,809][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed32874
+[2026-04-28 20:24:19,809][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:20,876][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:20,876][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:20,877][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:20,877][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.88957 | quality: 0.67619
+        | Val:   loss: 0.80410 | quality: 0.86364
+
+Epoch 1 | Train: loss: 0.61363 | quality: 0.81905
+        | Val:   loss: 0.41447 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.36447 | quality: 0.86667
+        | Val:   loss: 0.18510 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.17104 | quality: 0.96190
+        | Val:   loss: 0.07887 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08993 | quality: 0.99048
+        | Val:   loss: 0.04404 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.07766 | quality: 0.98095
+        | Val:   loss: 0.02252 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03837 | quality: 0.99048
+        | Val:   loss: 0.01499 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02432 | quality: 0.99048
+        | Val:   loss: 0.01922 | quality: 1.00000
+
+Epoch 8 | Train: loss: 0.01382 | quality: 1.00000
+        | Val:   loss: 0.04289 | quality: 0.95455
+
+Epoch 9 | Train: loss: 0.00752 | quality: 1.00000
+        | Val:   loss: 0.00438 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.17787 | quality: 0.99048
+        | Val:   loss: 0.00891 | quality: 1.00000
+
+Epoch 11 | Train: loss: 18373790044318613897216.00000 | quality: 0.69524
+        | Val:   loss: 4335738544826748502016.00000 | quality: 0.86364
+
+Epoch 12 | Train: loss: 19357075529203074224884382875491311424901558435437279254188803381911979227371485283016770268675767829336860534916414630457663146688512.00000 | quality: 0.63810
+        | Val:   loss: 3800959818777816847781056921160351065173156890996057882466061598345189213265627928792538563879344856863663584696003736603512365121536.00000 | quality: 0.86364
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 16 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 17 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 18 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 19 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-28 20:24:21,290][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed32874/results.json
+[2026-04-28 20:24:21,290][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:24:21,290][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:21,292][HYDRA] 	#3 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:21,460][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:21,464][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed47311
+[2026-04-28 20:24:21,465][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:22,525][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:22,525][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:22,525][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:22,526][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.00586 | quality: 0.47619
+        | Val:   loss: 0.91494 | quality: 0.72727
+
+Epoch 1 | Train: loss: 0.60148 | quality: 0.82857
+        | Val:   loss: 0.40104 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.35962 | quality: 0.87619
+        | Val:   loss: 0.17873 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.17050 | quality: 0.96190
+        | Val:   loss: 0.07697 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.09191 | quality: 0.99048
+        | Val:   loss: 0.04526 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.06133 | quality: 0.99048
+        | Val:   loss: 0.02526 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.04181 | quality: 0.99048
+        | Val:   loss: 0.01800 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02943 | quality: 0.99048
+        | Val:   loss: 0.03421 | quality: 1.00000
+
+Epoch 8 | Train: loss: 0.01734 | quality: 1.00000
+        | Val:   loss: 0.04059 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.02813 | quality: 0.99048
+        | Val:   loss: 0.07479 | quality: 0.90909
+
+Epoch 10 | Train: loss: 0.00762 | quality: 1.00000
+        | Val:   loss: 0.03576 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00450 | quality: 1.00000
+        | Val:   loss: 0.14088 | quality: 0.90909
+
+Epoch 12 | Train: loss: 0.00279 | quality: 1.00000
+        | Val:   loss: 0.17226 | quality: 0.90909
+
+Epoch 13 | Train: loss: 0.00172 | quality: 1.00000
+        | Val:   loss: 0.18610 | quality: 0.90909
+
+Epoch 14 | Train: loss: 0.00107 | quality: 1.00000
+        | Val:   loss: 0.24017 | quality: 0.90909
+
+Epoch 15 | Train: loss: 0.00068 | quality: 1.00000
+        | Val:   loss: 0.33888 | quality: 0.90909
+
+Epoch 16 | Train: loss: 0.00042 | quality: 1.00000
+        | Val:   loss: 0.22700 | quality: 0.95455
+
+Epoch 17 | Train: loss: 0.00028 | quality: 1.00000
+        | Val:   loss: 0.24281 | quality: 0.95455
+
+Epoch 18 | Train: loss: 344848431427933152739328.00000 | quality: 0.51429
+        | Val:   loss: 37406170516569968345088.00000 | quality: 0.77273
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-28 20:24:22,916][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed47311/results.json
+[2026-04-28 20:24:22,916][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:24:22,916][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:22,918][HYDRA] 	#4 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:23,070][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:23,074][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed47303
+[2026-04-28 20:24:23,074][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:24,212][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:24,213][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:24,213][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:24,213][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.17274 | quality: 0.21905
+        | Val:   loss: 1.09076 | quality: 0.31818
+
+Epoch 1 | Train: loss: 0.59670 | quality: 0.79048
+        | Val:   loss: 0.37689 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.35341 | quality: 0.86667
+        | Val:   loss: 0.17717 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.16706 | quality: 0.96190
+        | Val:   loss: 0.07495 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08819 | quality: 0.99048
+        | Val:   loss: 0.04332 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.06122 | quality: 0.99048
+        | Val:   loss: 0.02543 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03551 | quality: 0.99048
+        | Val:   loss: 0.01627 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02672 | quality: 1.00000
+        | Val:   loss: 0.06122 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.01414 | quality: 1.00000
+        | Val:   loss: 0.08374 | quality: 0.95455
+
+Epoch 9 | Train: loss: 0.72439 | quality: 0.99048
+        | Val:   loss: 0.09169 | quality: 0.95455
+
+Epoch 10 | Train: loss: 3285750501835488268124160.00000 | quality: 0.37143
+        | Val:   loss: 5927161043820707087122432.00000 | quality: 0.27273
+
+Epoch 11 | Train: loss: 517868922455751849125444979804854552032113411343470751908751411739800242034500030112927812817889286065431369389841115582186303432213290549248.00000 | quality: 0.55238
+        | Val:   loss: 594938957415480717428292404094291771151833107656196571951609800691037619198231050495040542287836859537067670375911579023664315890851798581248.00000 | quality: 0.72727
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:24,522][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd4_seed47303/results.json
+[2026-04-28 20:24:24,522][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:24,522][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:24,524][HYDRA] 	#5 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:24,681][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:24,686][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed42
+[2026-04-28 20:24:24,686][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:25,748][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:25,748][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:25,748][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:25,748][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.09909 | quality: 0.19048
+        | Val:   loss: 1.06539 | quality: 0.40909
+
+Epoch 1 | Train: loss: 0.53642 | quality: 0.82857
+        | Val:   loss: 0.30117 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.29384 | quality: 0.90476
+        | Val:   loss: 0.14487 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.14712 | quality: 0.97143
+        | Val:   loss: 0.06800 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08936 | quality: 0.98095
+        | Val:   loss: 0.04452 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05767 | quality: 0.99048
+        | Val:   loss: 0.02112 | quality: 1.00000
+ *
+Epoch 6 | Train: loss: 0.03903 | quality: 0.99048
+        | Val:   loss: 0.02004 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02792 | quality: 0.99048
+        | Val:   loss: 0.04944 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.01769 | quality: 1.00000
+        | Val:   loss: 0.08779 | quality: 0.95455
+
+Epoch 9 | Train: loss: 1644658601939028555727799561613725401088.00000 | quality: 0.57143
+        | Val:   loss: 10069525873254205489806300677991825408.00000 | quality: 0.86364
+
+Epoch 10 | Train: loss: 208796722220612151469086637187355701288122344096348560455285644646894838148657107623154812093291036861986943169337488162686547354715011604290781604270428118013264576109628076131428025873162300214969311952896.00000 | quality: 0.60952
+        | Val:   loss: 36363125630665683488203034692584611067140527875170035236132316703100901845981996054139515657464027454877704966480486829370358490821264319561899218253856419351008306379123232479779007867485315768880891691008.00000 | quality: 0.86364
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=1.000000)
+[2026-04-28 20:24:26,101][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-28 20:24:26,102][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:26,102][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:26,103][HYDRA] 	#6 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:26,253][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:26,257][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed10090
+[2026-04-28 20:24:26,258][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:27,313][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:27,314][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:27,314][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:27,314][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.24866 | quality: 0.31429
+        | Val:   loss: 1.39675 | quality: 0.13636
+
+Epoch 1 | Train: loss: 0.53330 | quality: 0.80000
+        | Val:   loss: 0.29957 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.29528 | quality: 0.89524
+        | Val:   loss: 0.14543 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.14684 | quality: 0.97143
+        | Val:   loss: 0.06812 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08264 | quality: 0.99048
+        | Val:   loss: 0.03898 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05767 | quality: 0.99048
+        | Val:   loss: 0.02134 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.04034 | quality: 0.99048
+        | Val:   loss: 0.01324 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02956 | quality: 0.99048
+        | Val:   loss: 0.02767 | quality: 1.00000
+
+Epoch 8 | Train: loss: 222120715.28736 | quality: 0.40000
+        | Val:   loss: 53849173.73766 | quality: 0.54545
+
+Epoch 9 | Train: loss: 83540273076032079747794487343886223700630559522816.00000 | quality: 0.33333
+        | Val:   loss: 99058653551446302134772308305780543238479831629824.00000 | quality: 0.40909
+
+Epoch 10 | Train: loss: 741270978933518433841709370773772386180783702286587195836411196771600545353219774793165385942006789737033077987001872879599953053111998765504164094707411083366490047365994682072743080819922472875211625616560908554471253975574869862992289714553830202408960.00000 | quality: 0.52381
+        | Val:   loss: 710519429084897157851202256641659166196890417328172056689643524693311792947447253347129797547316665680439351864922882665335398801405606127174082874529293415650181086118614851456535157624935675346260229603377023731846690262345370635140094069923789303447552.00000 | quality: 0.72727
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:27,631][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-28 20:24:27,631][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:27,631][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:27,633][HYDRA] 	#7 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:27,783][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:27,786][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed32874
+[2026-04-28 20:24:27,787][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:28,845][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:28,845][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:28,846][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:28,846][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.87462 | quality: 0.60952
+        | Val:   loss: 0.75826 | quality: 0.81818
+
+Epoch 1 | Train: loss: 0.55731 | quality: 0.82857
+        | Val:   loss: 0.32012 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.30605 | quality: 0.90476
+        | Val:   loss: 0.14937 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.14815 | quality: 0.97143
+        | Val:   loss: 0.06781 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.09600 | quality: 0.98095
+        | Val:   loss: 0.05073 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05865 | quality: 0.98095
+        | Val:   loss: 0.02097 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03512 | quality: 0.99048
+        | Val:   loss: 0.01388 | quality: 1.00000
+ *
+Epoch 7 | Train: loss: 0.02470 | quality: 1.00000
+        | Val:   loss: 0.03957 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.01384 | quality: 1.00000
+        | Val:   loss: 0.04863 | quality: 0.95455
+
+Epoch 9 | Train: loss: 0.00810 | quality: 1.00000
+        | Val:   loss: 0.11978 | quality: 0.95455
+
+Epoch 10 | Train: loss: 0.00441 | quality: 1.00000
+        | Val:   loss: 0.15291 | quality: 0.95455
+
+Epoch 11 | Train: loss: 0.00311 | quality: 1.00000
+        | Val:   loss: 0.23011 | quality: 0.95455
+
+Epoch 12 | Train: loss: 0.00233 | quality: 1.00000
+        | Val:   loss: 0.23367 | quality: 0.95455
+
+Epoch 13 | Train: loss: 0.00139 | quality: 1.00000
+        | Val:   loss: 0.19277 | quality: 0.95455
+
+Epoch 14 | Train: loss: 0.00083 | quality: 1.00000
+        | Val:   loss: 0.29207 | quality: 0.95455
+
+Epoch 15 | Train: loss: 0.00052 | quality: 1.00000
+        | Val:   loss: 0.35935 | quality: 0.95455
+
+Epoch 16 | Train: loss: 0.00707 | quality: 1.00000
+        | Val:   loss: 0.25058 | quality: 0.95455
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=1.000000)
+[2026-04-28 20:24:29,215][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-28 20:24:29,215][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:29,215][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:29,217][HYDRA] 	#8 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:29,383][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:29,387][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed47311
+[2026-04-28 20:24:29,387][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:30,445][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:30,446][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:30,446][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:30,446][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.02835 | quality: 0.32381
+        | Val:   loss: 0.90068 | quality: 0.59091
+
+Epoch 1 | Train: loss: 0.53239 | quality: 0.82857
+        | Val:   loss: 0.29709 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.29583 | quality: 0.89524
+        | Val:   loss: 0.14730 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.14761 | quality: 0.97143
+        | Val:   loss: 0.06843 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08052 | quality: 0.99048
+        | Val:   loss: 0.03646 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05501 | quality: 0.99048
+        | Val:   loss: 0.02118 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03877 | quality: 0.99048
+        | Val:   loss: 0.01806 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.03075 | quality: 0.99048
+        | Val:   loss: 0.06540 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.01886 | quality: 1.00000
+        | Val:   loss: 0.08406 | quality: 0.95455
+
+Epoch 9 | Train: loss: 0.03184 | quality: 0.99048
+        | Val:   loss: 0.00321 | quality: 1.00000
+
+Epoch 10 | Train: loss: 24.84129 | quality: 0.89524
+        | Val:   loss: 46.61814 | quality: 0.86364
+
+Epoch 11 | Train: loss: 7802723007753263274595083693850624.00000 | quality: 0.63810
+        | Val:   loss: 1460363831994756829174135517085696.00000 | quality: 0.86364
+
+Epoch 12 | Train: loss: 12878743513398526552652194037815174612959335739112838026114970740305735600428788871047591896654285193748446069386440864148785699554932698332478951120427726470085507705011976603172864.00000 | quality: 0.20952
+        | Val:   loss: 16523345908721440928875160083180262297833544667245417813058168443933969258133340793710707507594882412530113148210150289263915773690222988394321551566106655763102978121280207884124160.00000 | quality: 0.04545
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:30,769][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-28 20:24:30,769][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:30,769][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:30,771][HYDRA] 	#9 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:30,922][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:30,926][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed47303
+[2026-04-28 20:24:30,926][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:31,993][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:31,994][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:31,994][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:31,994][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.15192 | quality: 0.22857
+        | Val:   loss: 1.07788 | quality: 0.40909
+
+Epoch 1 | Train: loss: 0.53951 | quality: 0.82857
+        | Val:   loss: 0.30524 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.29578 | quality: 0.89524
+        | Val:   loss: 0.14612 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.14768 | quality: 0.97143
+        | Val:   loss: 0.06842 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08699 | quality: 0.98095
+        | Val:   loss: 0.04251 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05783 | quality: 0.99048
+        | Val:   loss: 0.02135 | quality: 1.00000
+ *
+Epoch 6 | Train: loss: 0.04024 | quality: 0.99048
+        | Val:   loss: 0.01709 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02997 | quality: 0.99048
+        | Val:   loss: 0.03492 | quality: 1.00000
+
+Epoch 8 | Train: loss: 0.02041 | quality: 1.00000
+        | Val:   loss: 0.06947 | quality: 0.95455
+
+Epoch 9 | Train: loss: 766216754405164115611868497648252358991036369685275043361470278157925874584533672883176626248647903457609456507683328519521173504.00000 | quality: 0.62857
+        | Val:   loss: 360778285417870333048028353867946282872409275508006422531628348114867548904929141771010120034147368217273795514294015096698961920.00000 | quality: 0.77273
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=1.000000)
+[2026-04-28 20:24:32,342][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-28 20:24:32,342][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:32,342][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:32,344][HYDRA] 	#10 : model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:32,494][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:32,498][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed42
+[2026-04-28 20:24:32,498][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:33,722][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:33,722][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:33,723][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:33,723][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.24627 | quality: 0.02857
+        | Val:   loss: 1.27300 | quality: 0.00000
+
+Epoch 1 | Train: loss: 0.50882 | quality: 0.82857
+        | Val:   loss: 0.28567 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.28095 | quality: 0.91429
+        | Val:   loss: 0.13575 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13869 | quality: 0.97143
+        | Val:   loss: 0.06688 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.07373 | quality: 0.99048
+        | Val:   loss: 0.03120 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.04591 | quality: 0.99048
+        | Val:   loss: 0.01700 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.02926 | quality: 0.99048
+        | Val:   loss: 0.02200 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.01800 | quality: 1.00000
+        | Val:   loss: 0.05134 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.01075 | quality: 1.00000
+        | Val:   loss: 0.10301 | quality: 0.95455
+
+Epoch 9 | Train: loss: 0.00644 | quality: 1.00000
+        | Val:   loss: 0.15179 | quality: 0.95455
+
+Epoch 10 | Train: loss: 0.00424 | quality: 1.00000
+        | Val:   loss: 0.25005 | quality: 0.95455
+
+Epoch 11 | Train: loss: 0.00231 | quality: 1.00000
+        | Val:   loss: 0.29525 | quality: 0.95455
+
+Epoch 12 | Train: loss: 0.00137 | quality: 1.00000
+        | Val:   loss: 0.38057 | quality: 0.95455
+
+Epoch 13 | Train: loss: 0.00088 | quality: 1.00000
+        | Val:   loss: 0.41934 | quality: 0.95455
+
+Epoch 14 | Train: loss: 0.00719 | quality: 0.99048
+        | Val:   loss: 0.51561 | quality: 0.95455
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:34,073][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed42/results.json
+[2026-04-28 20:24:34,073][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:34,073][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:34,075][HYDRA] 	#11 : model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:34,231][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:34,235][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed10090
+[2026-04-28 20:24:34,235][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:35,293][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:35,293][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:35,293][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:35,293][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.21740 | quality: 0.19048
+        | Val:   loss: 1.33628 | quality: 0.09091
+
+Epoch 1 | Train: loss: 0.50680 | quality: 0.82857
+        | Val:   loss: 0.27736 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.27818 | quality: 0.90476
+        | Val:   loss: 0.13381 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13669 | quality: 0.97143
+        | Val:   loss: 0.06655 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08157 | quality: 0.99048
+        | Val:   loss: 0.04113 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05508 | quality: 0.99048
+        | Val:   loss: 0.02114 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03816 | quality: 0.99048
+        | Val:   loss: 0.02152 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02891 | quality: 0.99048
+        | Val:   loss: 0.03980 | quality: 0.95455
+
+Epoch 8 | Train: loss: 1.85398 | quality: 0.83810
+        | Val:   loss: 2.19672 | quality: 0.68182
+
+Epoch 9 | Train: loss: 146889933481497460736.00000 | quality: 0.80000
+        | Val:   loss: 31417731730965397504.00000 | quality: 0.86364
+
+Epoch 10 | Train: loss: 38362659361379619105576297439994239567668765512642559104632876376289447085376449391382089305312475567752670317192920694784.00000 | quality: 0.46667
+        | Val:   loss: 24189590040730088515076033263527252979105168154933350728897134146770232292076722197391022955356593966424635923437988085760.00000 | quality: 0.72727
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:35,651][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed10090/results.json
+[2026-04-28 20:24:35,652][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:35,652][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:35,654][HYDRA] 	#12 : model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:35,810][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:35,814][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed32874
+[2026-04-28 20:24:35,815][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:36,934][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:36,934][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:36,935][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:36,935][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.89578 | quality: 0.50476
+        | Val:   loss: 0.78886 | quality: 0.81818
+
+Epoch 1 | Train: loss: 0.51444 | quality: 0.82857
+        | Val:   loss: 0.28721 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.28229 | quality: 0.90476
+        | Val:   loss: 0.13712 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13879 | quality: 0.97143
+        | Val:   loss: 0.06671 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.07966 | quality: 0.99048
+        | Val:   loss: 0.03795 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05174 | quality: 0.99048
+        | Val:   loss: 0.01608 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03035 | quality: 0.99048
+        | Val:   loss: 0.01984 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.01828 | quality: 1.00000
+        | Val:   loss: 0.06586 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.01009 | quality: 1.00000
+        | Val:   loss: 0.11505 | quality: 0.95455
+
+Epoch 9 | Train: loss: 0.00519 | quality: 1.00000
+        | Val:   loss: 0.16394 | quality: 0.95455
+
+Epoch 10 | Train: loss: 0.00261 | quality: 1.00000
+        | Val:   loss: 0.22394 | quality: 0.95455
+
+Epoch 11 | Train: loss: 0.00133 | quality: 1.00000
+        | Val:   loss: 0.29614 | quality: 0.95455
+
+Epoch 12 | Train: loss: 0.00070 | quality: 1.00000
+        | Val:   loss: 0.36541 | quality: 0.95455
+
+Epoch 13 | Train: loss: 0.00037 | quality: 1.00000
+        | Val:   loss: 0.42909 | quality: 0.95455
+
+Epoch 14 | Train: loss: 0.00020 | quality: 1.00000
+        | Val:   loss: 0.49323 | quality: 0.95455
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:37,262][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed32874/results.json
+[2026-04-28 20:24:37,262][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:37,262][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:37,264][HYDRA] 	#13 : model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:37,413][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:37,417][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed47311
+[2026-04-28 20:24:37,417][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:39,199][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:39,199][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:39,200][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:39,200][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.00102 | quality: 0.48571
+        | Val:   loss: 0.89493 | quality: 0.72727
+
+Epoch 1 | Train: loss: 0.53238 | quality: 0.82857
+        | Val:   loss: 0.29673 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.28319 | quality: 0.90476
+        | Val:   loss: 0.13764 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13896 | quality: 0.97143
+        | Val:   loss: 0.06753 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08113 | quality: 0.99048
+        | Val:   loss: 0.03987 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05580 | quality: 0.99048
+        | Val:   loss: 0.01955 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03821 | quality: 0.99048
+        | Val:   loss: 0.02036 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02869 | quality: 0.99048
+        | Val:   loss: 0.03894 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.01625 | quality: 1.00000
+        | Val:   loss: 0.04536 | quality: 0.95455
+
+Epoch 9 | Train: loss: 1727894870749.72925 | quality: 0.24762
+        | Val:   loss: 834534145580.76135 | quality: 0.40909
+
+Epoch 10 | Train: loss: 56512615128481718373432781835750550055100866994927551135698768502548212704346112.00000 | quality: 0.20000
+        | Val:   loss: 119277394346944805581324336982334534864512795448780492577910713785783253456650240.00000 | quality: 0.04545
+
+Epoch 11 | Train: loss: nan | quality: 0.41905
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:39,540][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed47311/results.json
+[2026-04-28 20:24:39,540][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:39,540][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:39,542][HYDRA] 	#14 : model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:39,692][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:39,696][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed47303
+[2026-04-28 20:24:39,697][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:40,743][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:40,744][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:40,744][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:40,744][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.15041 | quality: 0.23810
+        | Val:   loss: 1.11706 | quality: 0.13636
+
+Epoch 1 | Train: loss: 0.51103 | quality: 0.82857
+        | Val:   loss: 0.28567 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.27869 | quality: 0.91429
+        | Val:   loss: 0.13665 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13486 | quality: 0.97143
+        | Val:   loss: 0.06662 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.07418 | quality: 0.99048
+        | Val:   loss: 0.03228 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.04679 | quality: 0.99048
+        | Val:   loss: 0.01784 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03060 | quality: 0.99048
+        | Val:   loss: 0.02769 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02005 | quality: 1.00000
+        | Val:   loss: 0.05430 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.01172 | quality: 1.00000
+        | Val:   loss: 0.06686 | quality: 0.95455
+
+Epoch 9 | Train: loss: 0.00658 | quality: 1.00000
+        | Val:   loss: 0.10538 | quality: 0.95455
+
+Epoch 10 | Train: loss: 0.00357 | quality: 1.00000
+        | Val:   loss: 0.15490 | quality: 0.95455
+
+Epoch 11 | Train: loss: 0.00202 | quality: 1.00000
+        | Val:   loss: 0.28947 | quality: 0.90909
+
+Epoch 12 | Train: loss: 0.00114 | quality: 1.00000
+        | Val:   loss: 0.35627 | quality: 0.90909
+
+Epoch 13 | Train: loss: 0.00065 | quality: 1.00000
+        | Val:   loss: 0.40428 | quality: 0.90909
+
+Epoch 14 | Train: loss: 0.57594 | quality: 0.99048
+        | Val:   loss: 0.37440 | quality: 0.95455
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:41,075][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L3_bd12_seed47303/results.json
+[2026-04-28 20:24:41,075][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:41,075][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:41,078][HYDRA] 	#15 : model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:41,231][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:41,235][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed42
+[2026-04-28 20:24:41,236][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:42,486][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:42,487][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:42,487][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:42,487][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.15588 | quality: 0.06667
+        | Val:   loss: 1.13729 | quality: 0.04545
+
+Epoch 1 | Train: loss: 0.56054 | quality: 0.81905
+        | Val:   loss: 0.35601 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.34216 | quality: 0.87619
+        | Val:   loss: 0.17530 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.17562 | quality: 0.96190
+        | Val:   loss: 0.07811 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08950 | quality: 0.99048
+        | Val:   loss: 0.04228 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05883 | quality: 0.99048
+        | Val:   loss: 0.02642 | quality: 1.00000
+
+Epoch 6 | Train: loss: 166.66162 | quality: 0.50476
+        | Val:   loss: 168.50447 | quality: 0.54545
+
+Epoch 7 | Train: loss: 143742312255566193286591690498703522182659611085847688563911809313461301704305851150283186844086424305664.00000 | quality: 0.43810
+        | Val:   loss: 107471373591564749370506322950949494816335756741757342260439492619900349054413930175299471823081016655872.00000 | quality: 0.63636
+
+Epoch 8 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:43,044][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed42/results.json
+[2026-04-28 20:24:43,044][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:43,044][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:43,046][HYDRA] 	#16 : model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:43,204][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:43,209][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed10090
+[2026-04-28 20:24:43,209][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:44,255][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:44,256][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:44,256][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:44,256][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.17352 | quality: 0.30476
+        | Val:   loss: 1.24210 | quality: 0.13636
+
+Epoch 1 | Train: loss: 0.54851 | quality: 0.80000
+        | Val:   loss: 0.31719 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.31754 | quality: 0.93333
+        | Val:   loss: 0.17348 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.15400 | quality: 0.96190
+        | Val:   loss: 0.07751 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08716 | quality: 0.99048
+        | Val:   loss: 0.04548 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05379 | quality: 0.99048
+        | Val:   loss: 0.02113 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03435 | quality: 0.99048
+        | Val:   loss: 0.01650 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02428 | quality: 0.99048
+        | Val:   loss: 0.01724 | quality: 1.00000
+
+Epoch 8 | Train: loss: 0.01729 | quality: 1.00000
+        | Val:   loss: 0.01613 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.01100 | quality: 1.00000
+        | Val:   loss: 0.03165 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00726 | quality: 1.00000
+        | Val:   loss: 0.15730 | quality: 0.90909
+
+Epoch 11 | Train: loss: 0.00356 | quality: 1.00000
+        | Val:   loss: 0.18205 | quality: 0.95455
+
+Epoch 12 | Train: loss: 2424315601.35618 | quality: 0.45714
+        | Val:   loss: 2355173646.50471 | quality: 0.54545
+
+Epoch 13 | Train: loss: 406378521659494941300534910225895937908478451338789822847637724544561203364554614498116009845135724161220583618034286351378588145508033634724997804367650498168225792.00000 | quality: 0.31429
+        | Val:   loss: 695981177836418501177425019700254869813961857910961974112527470952094315919811347327363421675181619269440203073271065750427875795682581480213921496873623202484453376.00000 | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 16 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 17 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 18 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-28 20:24:44,966][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed10090/results.json
+[2026-04-28 20:24:44,966][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:24:44,966][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:44,968][HYDRA] 	#17 : model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:45,116][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:45,119][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed32874
+[2026-04-28 20:24:45,120][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:46,202][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:46,203][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:46,203][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:46,203][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.89075 | quality: 0.66667
+        | Val:   loss: 0.80499 | quality: 0.86364
+
+Epoch 1 | Train: loss: 0.58008 | quality: 0.81905
+        | Val:   loss: 0.36394 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.32925 | quality: 0.91429
+        | Val:   loss: 0.17487 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.15279 | quality: 0.96190
+        | Val:   loss: 0.07030 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08578 | quality: 0.98095
+        | Val:   loss: 0.03797 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.04961 | quality: 0.98095
+        | Val:   loss: 0.01859 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.03103 | quality: 0.99048
+        | Val:   loss: 0.02424 | quality: 1.00000
+ *
+Epoch 7 | Train: loss: 0.02152 | quality: 1.00000
+        | Val:   loss: 0.04121 | quality: 0.95455
+
+Epoch 8 | Train: loss: 1247881312726620149132025437154488502109488204191345212073095868676154687656297454571950603584332286708753773605447161348096.00000 | quality: 0.36190
+        | Val:   loss: 2031050599734439481100981441617445607974831811483114874476068327189564673419965763765806140127389200884233560112628592803840.00000 | quality: 0.31818
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 16 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=1.000000)
+[2026-04-28 20:24:46,815][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed32874/results.json
+[2026-04-28 20:24:46,815][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:46,815][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:46,817][HYDRA] 	#18 : model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:47,185][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:47,189][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed47311
+[2026-04-28 20:24:47,189][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:48,235][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:48,236][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:48,236][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:48,236][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.00633 | quality: 0.48571
+        | Val:   loss: 0.91724 | quality: 0.72727
+
+Epoch 1 | Train: loss: 0.56313 | quality: 0.82857
+        | Val:   loss: 0.35322 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.32853 | quality: 0.89524
+        | Val:   loss: 0.17062 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.17018 | quality: 0.96190
+        | Val:   loss: 0.07575 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08930 | quality: 0.99048
+        | Val:   loss: 0.04380 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05827 | quality: 0.99048
+        | Val:   loss: 0.02897 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.49983 | quality: 0.98095
+        | Val:   loss: 0.01795 | quality: 1.00000
+
+Epoch 7 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 8 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:48,766][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed47311/results.json
+[2026-04-28 20:24:48,766][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:48,766][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:48,767][HYDRA] 	#19 : model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:48,915][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:48,919][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed47303
+[2026-04-28 20:24:48,920][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:49,960][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:49,960][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:49,960][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:49,960][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.16892 | quality: 0.21905
+        | Val:   loss: 1.08297 | quality: 0.36364
+
+Epoch 1 | Train: loss: 0.57002 | quality: 0.79048
+        | Val:   loss: 0.34258 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.32305 | quality: 0.91429
+        | Val:   loss: 0.16957 | quality: 0.95455
+ *
+Epoch 3 | Train: loss: 0.15262 | quality: 0.96190
+        | Val:   loss: 0.07204 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.08703 | quality: 0.98095
+        | Val:   loss: 0.04170 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.05148 | quality: 0.99048
+        | Val:   loss: 0.01709 | quality: 1.00000
+ *
+Epoch 6 | Train: loss: 0.03442 | quality: 0.99048
+        | Val:   loss: 0.01404 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02604 | quality: 0.99048
+        | Val:   loss: 0.01856 | quality: 1.00000
+
+Epoch 8 | Train: loss: 0.02044 | quality: 0.99048
+        | Val:   loss: 0.01622 | quality: 1.00000
+
+Epoch 9 | Train: loss: 0.01563 | quality: 1.00000
+        | Val:   loss: 0.01469 | quality: 1.00000
+ *
+Epoch 10 | Train: loss: 0.01076 | quality: 1.00000
+        | Val:   loss: 0.01676 | quality: 1.00000
+
+Epoch 11 | Train: loss: 0.00652 | quality: 1.00000
+        | Val:   loss: 0.00749 | quality: 1.00000
+
+Epoch 12 | Train: loss: 7839375642525530324992.00000 | quality: 0.29524
+        | Val:   loss: 3623548809195678597120.00000 | quality: 0.27273
+
+Epoch 13 | Train: loss: 56902745453074779785556794812848696170018873941967037722953293501156317386680237172005382585871227433762938912967625198670320624240660486172699036501844249800918781471674929611435180568471937358724634655195722617174047758522188911704518351914280624872471164549403312026065855085783180685908667858453266432.00000 | quality: 0.33333
+        | Val:   loss: 51421665657635836182252642746700648382104028784191373164221090522354120667688926042246003878580456934771947177220931994840859881236619430541574203556993650310858360974940118115247765859067696324455297954607347118287714108192785596034345569672912047356747496608002489992810238971136423367862174703580872704.00000 | quality: 0.63636
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 16 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 17 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 18 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 19 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=1.000000)
+[2026-04-28 20:24:50,666][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd4_seed47303/results.json
+[2026-04-28 20:24:50,666][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:24:50,666][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:50,668][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:50,816][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:50,820][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed42
+[2026-04-28 20:24:50,820][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:51,953][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:51,954][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:51,954][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:51,954][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.09874 | quality: 0.20000
+        | Val:   loss: 1.06594 | quality: 0.40909
+
+Epoch 1 | Train: loss: 0.49961 | quality: 0.82857
+        | Val:   loss: 0.28443 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.25784 | quality: 0.95238
+        | Val:   loss: 0.13304 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13498 | quality: 0.97143
+        | Val:   loss: 0.07166 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.07224 | quality: 0.99048
+        | Val:   loss: 0.03458 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.03852 | quality: 0.99048
+        | Val:   loss: 0.01591 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.83500 | quality: 0.98095
+        | Val:   loss: 0.02658 | quality: 1.00000
+
+Epoch 7 | Train: loss: 7287468319485604929137732596378660152463715280875854053973683153554817967613644471692857976905230262631306762588263289278040413423276088067955850214337135812810230255204345883989985637689230471502491287413319100095893001951649350453757636247552.00000 | quality: 0.60000
+        | Val:   loss: 1218405696920096393599993072865685515162796903847807674422128934290054251395588328504868033992225494862042630165177205290377012027178622101620247945833656151202803904602654852325042275464055388000364309320269243773845002705246034401437220339712.00000 | quality: 0.86364
+
+Epoch 8 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:24:52,530][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-28 20:24:52,530][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:24:52,530][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:52,532][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:52,701][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:52,702][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed10090
+[2026-04-28 20:24:52,702][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:53,770][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:53,770][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:53,770][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:53,771][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.24751 | quality: 0.30476
+        | Val:   loss: 1.39545 | quality: 0.13636
+
+Epoch 1 | Train: loss: 0.51077 | quality: 0.80000
+        | Val:   loss: 0.27481 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.26416 | quality: 0.96190
+        | Val:   loss: 0.13167 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13159 | quality: 0.97143
+        | Val:   loss: 0.06341 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.06786 | quality: 0.99048
+        | Val:   loss: 0.03159 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.04338 | quality: 0.99048
+        | Val:   loss: 0.01578 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.02832 | quality: 0.99048
+        | Val:   loss: 0.02759 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.02091 | quality: 0.99048
+        | Val:   loss: 0.02479 | quality: 1.00000
+
+Epoch 8 | Train: loss: 0.01511 | quality: 1.00000
+        | Val:   loss: 0.01747 | quality: 1.00000
+ *
+Epoch 9 | Train: loss: 0.00998 | quality: 1.00000
+        | Val:   loss: 0.00464 | quality: 1.00000
+
+Epoch 10 | Train: loss: 0.00632 | quality: 1.00000
+        | Val:   loss: 0.35285 | quality: 0.95455
+
+Epoch 11 | Train: loss: 185200151320169500187878487413896360718975001332228255723493925918767537746493646474024878783923530760192.00000 | quality: 0.37143
+        | Val:   loss: 202239331331180062077382754120911925057308893236437601020640753243151067258327142503234979791039713247232.00000 | quality: 0.45455
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 16 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 17 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 18 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 18 (best was epoch 8)
+
+Best epoch: 8 (val_quality=1.000000)
+[2026-04-28 20:24:54,493][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-28 20:24:54,494][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:24:54,494][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:54,495][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:54,640][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:54,640][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed32874
+[2026-04-28 20:24:54,641][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:55,689][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:55,689][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:55,689][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:55,689][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.87456 | quality: 0.60952
+        | Val:   loss: 0.75902 | quality: 0.81818
+
+Epoch 1 | Train: loss: 0.51356 | quality: 0.81905
+        | Val:   loss: 0.29764 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.27551 | quality: 0.91429
+        | Val:   loss: 0.13964 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13381 | quality: 0.96190
+        | Val:   loss: 0.06195 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.06831 | quality: 0.99048
+        | Val:   loss: 0.04237 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.03877 | quality: 0.99048
+        | Val:   loss: 0.01496 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.01773 | quality: 1.00000
+        | Val:   loss: 0.02832 | quality: 1.00000
+ *
+Epoch 7 | Train: loss: 0.00842 | quality: 1.00000
+        | Val:   loss: 0.04419 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.00900 | quality: 1.00000
+        | Val:   loss: 0.09227 | quality: 0.95455
+
+Epoch 9 | Train: loss: 0.00204 | quality: 1.00000
+        | Val:   loss: 0.12076 | quality: 0.95455
+
+Epoch 10 | Train: loss: 0.00097 | quality: 1.00000
+        | Val:   loss: 0.14826 | quality: 0.95455
+
+Epoch 11 | Train: loss: 0.28467 | quality: 0.98095
+        | Val:   loss: 0.31796 | quality: 0.90909
+
+Epoch 12 | Train: loss: 4823003301686285574559669998684584190678619178139648.00000 | quality: 0.36190
+        | Val:   loss: 1301095555978979904407747146132285354316304857694208.00000 | quality: 0.13636
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 16 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=1.000000)
+[2026-04-28 20:24:56,353][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-28 20:24:56,353][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:24:56,353][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:56,354][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:56,499][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:56,500][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed47311
+[2026-04-28 20:24:56,501][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:57,643][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:57,643][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:57,644][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:57,644][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.02787 | quality: 0.32381
+        | Val:   loss: 0.90018 | quality: 0.59091
+
+Epoch 1 | Train: loss: 0.50320 | quality: 0.82857
+        | Val:   loss: 0.27093 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.25845 | quality: 0.95238
+        | Val:   loss: 0.12854 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.31523 | quality: 0.94286
+        | Val:   loss: 0.25587 | quality: 0.90909
+
+Epoch 4 | Train: loss: 0.07996 | quality: 0.99048
+        | Val:   loss: 0.03878 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.04035 | quality: 0.99048
+        | Val:   loss: 0.01848 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.02193 | quality: 1.00000
+        | Val:   loss: 0.02971 | quality: 1.00000
+ *
+Epoch 7 | Train: loss: 0.01009 | quality: 1.00000
+        | Val:   loss: 0.05843 | quality: 0.95455
+
+Epoch 8 | Train: loss: 0.00416 | quality: 1.00000
+        | Val:   loss: 0.10313 | quality: 0.95455
+
+Epoch 9 | Train: loss: 91557320187339408.00000 | quality: 0.45714
+        | Val:   loss: 12802476406403162.00000 | quality: 0.63636
+
+Epoch 10 | Train: loss: 6766710286267460506509486288234561303322755182960271075416682316518539062546068496511652501538815343885294514311983911616057949402289474677956748344259273805838234867727517533376867149800113231027891849663655190541936203315657842892701865869312.00000 | quality: 0.45714
+        | Val:   loss: 10695889190360086028266906318458352620179728809336484295159756773450638295083247598840630360313273214253712117786518082631657187791022664178346160039722554290539037963694998062438016943471673807518338784096440477706032769934639156010885186584576.00000 | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 16 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=1.000000)
+[2026-04-28 20:24:58,311][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-28 20:24:58,312][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:24:58,312][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:24:58,314][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:24:58,483][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:24:58,487][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed47303
+[2026-04-28 20:24:58,488][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:24:59,535][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:24:59,536][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:24:59,536][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:59,536][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.15453 | quality: 0.22857
+        | Val:   loss: 1.08219 | quality: 0.40909
+
+Epoch 1 | Train: loss: 0.49895 | quality: 0.82857
+        | Val:   loss: 0.29197 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.27960 | quality: 0.91429
+        | Val:   loss: 0.14149 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.13737 | quality: 0.96190
+        | Val:   loss: 0.06420 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.07229 | quality: 0.99048
+        | Val:   loss: 0.03116 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.04424 | quality: 0.99048
+        | Val:   loss: 0.01624 | quality: 1.00000
+
+Epoch 6 | Train: loss: 552.63597 | quality: 0.41905
+        | Val:   loss: 473.52848 | quality: 0.31818
+
+Epoch 7 | Train: loss: 3087588686006622105044574591500289294868282078694065363138116312148390755709297417619251607789216956957371098202112.00000 | quality: 0.28571
+        | Val:   loss: 1182437444714715873074646222692318510509392701178015426841118530332380341767492949504627261624217846565091284090880.00000 | quality: 0.54545
+
+Epoch 8 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:25:00,095][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-28 20:25:00,096][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:25:00,096][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:25:00,097][HYDRA] 	#25 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:25:00,262][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:25:00,262][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed42
+[2026-04-28 20:25:00,263][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:25:01,319][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:25:01,320][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:25:01,320][__main__][INFO] -   Device: cpu
+[2026-04-28 20:25:01,320][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.25267 | quality: 0.02857
+        | Val:   loss: 1.28121 | quality: 0.00000
+
+Epoch 1 | Train: loss: 0.47118 | quality: 0.82857
+        | Val:   loss: 0.27272 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.25610 | quality: 0.94286
+        | Val:   loss: 0.12877 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 171.80900 | quality: 0.42857
+        | Val:   loss: 100.70255 | quality: 0.36364
+
+Epoch 4 | Train: loss: 130475171047284478165261005143146496.00000 | quality: 0.41905
+        | Val:   loss: 121429596707459070077192051594625024.00000 | quality: 0.59091
+
+Epoch 5 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.54545
+
+Epoch 6 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 7 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 8 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=1.000000)
+[2026-04-28 20:25:01,852][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed42/results.json
+[2026-04-28 20:25:01,852][__main__][INFO] - ✓ Train Accuracy: 0.9429
+[2026-04-28 20:25:01,852][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:25:01,854][HYDRA] 	#26 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:25:02,003][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:25:02,004][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed10090
+[2026-04-28 20:25:02,005][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:25:03,049][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:25:03,060][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:25:03,060][__main__][INFO] -   Device: cpu
+[2026-04-28 20:25:03,061][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.22234 | quality: 0.19048
+        | Val:   loss: 1.34846 | quality: 0.09091
+
+Epoch 1 | Train: loss: 0.48573 | quality: 0.82857
+        | Val:   loss: 0.25531 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.25110 | quality: 0.96190
+        | Val:   loss: 0.12317 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.12151 | quality: 0.98095
+        | Val:   loss: 0.05933 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.06542 | quality: 0.99048
+        | Val:   loss: 0.03054 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 0.03917 | quality: 0.99048
+        | Val:   loss: 0.01985 | quality: 1.00000
+
+Epoch 6 | Train: loss: 0.02463 | quality: 0.99048
+        | Val:   loss: 0.03536 | quality: 1.00000
+
+Epoch 7 | Train: loss: 0.01530 | quality: 1.00000
+        | Val:   loss: 0.02654 | quality: 1.00000
+ *
+Epoch 8 | Train: loss: 0.01551 | quality: 0.99048
+        | Val:   loss: 0.01433 | quality: 1.00000
+
+Epoch 9 | Train: loss: 3120.02368 | quality: 0.32381
+        | Val:   loss: 4110.39694 | quality: 0.22727
+
+Epoch 10 | Train: loss: 183762074120773991144289722073250360148086565564107563788997752631853056.00000 | quality: 0.36190
+        | Val:   loss: 350421685539942973560133945741303738942683527763131834556151065512771584.00000 | quality: 0.27273
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 15 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 16 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 17 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 17 (best was epoch 7)
+
+Best epoch: 7 (val_quality=1.000000)
+[2026-04-28 20:25:03,771][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed10090/results.json
+[2026-04-28 20:25:03,771][__main__][INFO] - ✓ Train Accuracy: 1.0000
+[2026-04-28 20:25:03,771][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:25:03,773][HYDRA] 	#27 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:25:03,918][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:25:03,920][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed32874
+[2026-04-28 20:25:03,921][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:25:04,988][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:25:04,988][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:25:04,989][__main__][INFO] -   Device: cpu
+[2026-04-28 20:25:04,989][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.89986 | quality: 0.51429
+        | Val:   loss: 0.79865 | quality: 0.81818
+
+Epoch 1 | Train: loss: 0.45838 | quality: 0.83810
+        | Val:   loss: 0.26333 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.25908 | quality: 0.94286
+        | Val:   loss: 0.12971 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.12879 | quality: 0.96190
+        | Val:   loss: 0.05969 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.12310 | quality: 0.97143
+        | Val:   loss: 0.08349 | quality: 0.95455
+
+Epoch 5 | Train: loss: 456820908970125.81250 | quality: 0.50476
+        | Val:   loss: 587253850360574.50000 | quality: 0.54545
+
+Epoch 6 | Train: loss: 96890921828239801704810497797159392917324058664546960722563689375446813663320455691263028297343184445379481525042672630025577278747729452859392.00000 | quality: 0.28571
+        | Val:   loss: 190993019419429892389944503701010839993744608364292889011506211127461399095149677569630529794352873904148061728131230072748170361916209003233280.00000 | quality: 0.63636
+
+Epoch 7 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 8 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=1.000000)
+[2026-04-28 20:25:05,595][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed32874/results.json
+[2026-04-28 20:25:05,595][__main__][INFO] - ✓ Train Accuracy: 0.9619
+[2026-04-28 20:25:05,595][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:25:05,598][HYDRA] 	#28 : model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:25:05,772][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:25:05,776][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed47311
+[2026-04-28 20:25:05,777][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:25:06,845][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:25:06,846][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:25:06,846][__main__][INFO] -   Device: cpu
+[2026-04-28 20:25:06,846][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.99816 | quality: 0.48571
+        | Val:   loss: 0.88930 | quality: 0.72727
+
+Epoch 1 | Train: loss: 0.48982 | quality: 0.82857
+        | Val:   loss: 0.27503 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.25512 | quality: 0.94286
+        | Val:   loss: 0.12837 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.12334 | quality: 0.96190
+        | Val:   loss: 0.06293 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 0.07132 | quality: 0.99048
+        | Val:   loss: 0.04122 | quality: 1.00000
+ *
+Epoch 5 | Train: loss: 307.28305 | quality: 0.57143
+        | Val:   loss: 100.76459 | quality: 0.59091
+
+Epoch 6 | Train: loss: 838399329367977932487655424.00000 | quality: 0.37143
+        | Val:   loss: 159852905293766371361947648.00000 | quality: 0.22727
+
+Epoch 7 | Train: loss: nan | quality: 0.33333
+        | Val:   loss: nan | quality: 0.54545
+
+Epoch 8 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 14 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=1.000000)
+[2026-04-28 20:25:07,434][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed47311/results.json
+[2026-04-28 20:25:07,434][__main__][INFO] - ✓ Train Accuracy: 0.9905
+[2026-04-28 20:25:07,434][__main__][INFO] - ✓ Val Accuracy: 1.0000
+[2026-04-28 20:25:07,436][HYDRA] 	#29 : model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda_typei dataset=iris
+[2026-04-28 20:25:07,583][__main__][INFO] - Configuration:
+model:
+  name: CPDATypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: iris
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:25:07,587][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed47303
+[2026-04-28 20:25:07,588][__main__][INFO] - Loading dataset: iris
+[2026-04-28 20:25:08,684][__main__][INFO] -   Samples: train=105, val=22, test=23
+[2026-04-28 20:25:08,684][__main__][INFO] -   Features: 5 (including bias), Task: classification
+[2026-04-28 20:25:08,684][__main__][INFO] -   Device: cpu
+[2026-04-28 20:25:08,684][__main__][INFO] - Creating model: CPDATypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.14926 | quality: 0.23810
+        | Val:   loss: 1.11906 | quality: 0.09091
+
+Epoch 1 | Train: loss: 0.48084 | quality: 0.82857
+        | Val:   loss: 0.27002 | quality: 0.90909
+ *
+Epoch 2 | Train: loss: 0.23925 | quality: 0.94286
+        | Val:   loss: 0.12269 | quality: 1.00000
+ *
+Epoch 3 | Train: loss: 0.11291 | quality: 0.97143
+        | Val:   loss: 0.05341 | quality: 1.00000
+ *
+Epoch 4 | Train: loss: 2085.77483 | quality: 0.33333
+        | Val:   loss: 801.28235 | quality: 0.36364
+
+Epoch 5 | Train: loss: 30372011140765242868127307858806532888423869562156809715712.00000 | quality: 0.39048
+        | Val:   loss: 15438677779844167800619061383836521234985981097358257029120.00000 | quality: 0.63636
+
+Epoch 6 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 7 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 8 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 9 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 10 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 11 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 12 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+Epoch 13 | Train: loss: nan | quality: 0.29524
+        | Val:   loss: nan | quality: 0.59091
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=1.000000)
+[2026-04-28 20:25:09,254][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/iris/CPDATypeI_rg5_init0.1/L4_bd12_seed47303/results.json
+[2026-04-28 20:25:09,254][__main__][INFO] - ✓ Train Accuracy: 0.9714
+[2026-04-28 20:25:09,254][__main__][INFO] - ✓ Val Accuracy: 1.0000
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28319216[102]: <ntn_grid_full[1-200]%20> in cluster <dcc> Done
+
+Job <ntn_grid_full[1-200]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Apr 28 19:35:42 2026
+Job was executed on host(s) <4*n-62-29-14>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue Apr 28 20:24:06 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Apr 28 20:24:06 2026
+Terminated at Tue Apr 28 20:25:10 2026
+Results reported at Tue Apr 28 20:25:10 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-200]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# --- DRY RUN / TEST LOGIC ---
+# Run locally with: bash your_script.sh test
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+NUM_MODELS=${#MODELS[@]}
+DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "concrete" "energy_efficiency" "hearth" "iris" "mushrooms" "obesity" "popularity" "realstate" "seoulBike" "student_dropout" "student_perf" "wine" "winequalityc"
+)
+
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
+if [ "$1" == "test" ]; then
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
+    echo "--------------------------------------"
+for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        M_IDX=$((IDV % NUM_MODELS))
+        D_IDX=$((IDV / NUM_MODELS))
+        echo "Index $i: Dataset=${DATASETS[$D_IDX]}, Model=${MODELS[$M_IDX]}"
+    done
+    exit 0
+fi
+# ----------------------------
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+DATASET_IDX=$((IDV / NUM_MODELS))
+
+CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
+CURRENT_MODEL=${MODELS[$MODEL_IDX]}
+echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL"
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python run.py --multirun +experiment=uci_ntn_sweep model=$CURRENT_MODEL dataset=$CURRENT_DATASET
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   70.32 sec.
+    Max Memory :                                 1043 MB
+    Average Memory :                             839.00 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               3053.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   64 sec.
+    Turnaround time :                            2968 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28319216_102.err> for stderr output of this job.
+

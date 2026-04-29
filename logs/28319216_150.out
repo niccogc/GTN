@@ -1,0 +1,3358 @@
+Task 150: Dataset=realstate, Model=tnml_p
+[2026-04-28 21:09:57,559][HYDRA] Launching 30 jobs locally
+[2026-04-28 21:09:57,560][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:09:57,701][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:09:57,707][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed42
+[2026-04-28 21:09:57,767][utils.tracking][INFO] - Loaded 15142 tracked runs from runs_tracking.csv
+[2026-04-28 21:09:57,769][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:09:59,206][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:09:59,206][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:09:59,207][__main__][INFO] -   Device: cpu
+[2026-04-28 21:09:59,207][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 38142777.84939 | quality: -199139.41103
+        | Val:   loss: 115959385.58767 | quality: -695061.07959
+Epoch 1 | Train: loss: 1653.45139 | quality: -7.63254
+        | Val:   loss: 1496.97728 | quality: -7.97290
+ *
+Epoch 2 | Train: loss: 1648.06585 | quality: -7.60442
+        | Val:   loss: 1512.24745 | quality: -8.06443
+
+Epoch 3 | Train: loss: 1640.30378 | quality: -7.56390
+        | Val:   loss: 1496.08273 | quality: -7.96754
+ *
+Epoch 4 | Train: loss: 482.19783 | quality: -1.51752
+        | Val:   loss: 507.64989 | quality: -2.04286
+ *
+Epoch 5 | Train: loss: 117.65440 | quality: 0.38574
+        | Val:   loss: 177.31408 | quality: -0.06282
+ *
+Epoch 6 | Train: loss: 60.10178 | quality: 0.68621
+        | Val:   loss: 75.20686 | quality: 0.54921
+ *
+Epoch 7 | Train: loss: 52.10543 | quality: 0.72796
+        | Val:   loss: 73.50535 | quality: 0.55941
+ *
+Epoch 8 | Train: loss: 45.13193 | quality: 0.76437
+        | Val:   loss: 98.33039 | quality: 0.41061
+
+Epoch 9 | Train: loss: 38.90741 | quality: 0.79687
+        | Val:   loss: 125.10499 | quality: 0.25012
+
+Epoch 10 | Train: loss: 35.95379 | quality: 0.81229
+        | Val:   loss: 90.27136 | quality: 0.45891
+
+Epoch 11 | Train: loss: 32.48734 | quality: 0.83039
+        | Val:   loss: 125.28636 | quality: 0.24903
+
+Epoch 12 | Train: loss: 29.34435 | quality: 0.84680
+        | Val:   loss: 85.07149 | quality: 0.49008
+
+Epoch 13 | Train: loss: 26.54227 | quality: 0.86142
+        | Val:   loss: 556.15350 | quality: -2.33359
+
+Epoch 14 | Train: loss: 24.75666 | quality: 0.87075
+        | Val:   loss: 1660.40203 | quality: -8.95247
+
+Epoch 15 | Train: loss: 23.52907 | quality: 0.87716
+        | Val:   loss: 2377.54398 | quality: -13.25103
+
+Epoch 16 | Train: loss: 22.91842 | quality: 0.88034
+        | Val:   loss: 2312.25810 | quality: -12.85971
+
+Epoch 17 | Train: loss: 22.63797 | quality: 0.88181
+        | Val:   loss: 1808.36154 | quality: -9.83934
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 21:10:00,172][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed42/results.json
+[2026-04-28 21:10:00,173][__main__][INFO] - ✓ Train R²: 0.7280
+[2026-04-28 21:10:00,173][__main__][INFO] - ✓ Val R²: 0.5594
+[2026-04-28 21:10:00,174][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:00,324][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:00,328][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed10090
+[2026-04-28 21:10:00,328][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:01,518][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:01,519][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:01,519][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:01,519][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 18796376.63141 | quality: -98133.38819
+        | Val:   loss: 127805403.22468 | quality: -766066.26483
+Epoch 1 | Train: loss: 1653.85494 | quality: -7.63465
+        | Val:   loss: 1495.28448 | quality: -7.96275
+ *
+Epoch 2 | Train: loss: 1648.06218 | quality: -7.60440
+        | Val:   loss: 1512.48532 | quality: -8.06586
+
+Epoch 3 | Train: loss: 1640.29928 | quality: -7.56387
+        | Val:   loss: 1495.94774 | quality: -7.96673
+
+Epoch 4 | Train: loss: 483.78755 | quality: -1.52582
+        | Val:   loss: 507.30097 | quality: -2.04077
+ *
+Epoch 5 | Train: loss: 121.02477 | quality: 0.36814
+        | Val:   loss: 106.25674 | quality: 0.36310
+ *
+Epoch 6 | Train: loss: 56.72045 | quality: 0.70387
+        | Val:   loss: 253.44947 | quality: -0.51918
+
+Epoch 7 | Train: loss: 47.87852 | quality: 0.75003
+        | Val:   loss: 150.88911 | quality: 0.09557
+
+Epoch 8 | Train: loss: 43.63298 | quality: 0.77220
+        | Val:   loss: 133.06231 | quality: 0.20242
+
+Epoch 9 | Train: loss: 38.08231 | quality: 0.80118
+        | Val:   loss: 141.36852 | quality: 0.15264
+
+Epoch 10 | Train: loss: 33.93482 | quality: 0.82283
+        | Val:   loss: 116.29151 | quality: 0.30295
+
+Epoch 11 | Train: loss: 31.42078 | quality: 0.83595
+        | Val:   loss: 224.35814 | quality: -0.34481
+
+Epoch 12 | Train: loss: 30.32393 | quality: 0.84168
+        | Val:   loss: 400.05636 | quality: -1.39794
+
+Epoch 13 | Train: loss: 29.68693 | quality: 0.84501
+        | Val:   loss: 736.68408 | quality: -3.41569
+
+Epoch 14 | Train: loss: 29.12516 | quality: 0.84794
+        | Val:   loss: 740.38521 | quality: -3.43788
+
+Epoch 15 | Train: loss: 28.60730 | quality: 0.85064
+        | Val:   loss: 637.38874 | quality: -2.82052
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 21:10:02,223][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed10090/results.json
+[2026-04-28 21:10:02,223][__main__][INFO] - ✓ Train R²: 0.3681
+[2026-04-28 21:10:02,223][__main__][INFO] - ✓ Val R²: 0.3631
+[2026-04-28 21:10:02,225][HYDRA] 	#2 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:02,378][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:02,383][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed32874
+[2026-04-28 21:10:02,383][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:03,575][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:03,576][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:03,576][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:03,576][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 267131881.98100 | quality: -1394673.32046
+        | Val:   loss: 34452139.02911 | quality: -206505.57365
+Epoch 1 | Train: loss: 1654.93339 | quality: -7.64028
+        | Val:   loss: 1484.06206 | quality: -7.89549
+ *
+Epoch 2 | Train: loss: 1648.07718 | quality: -7.60448
+        | Val:   loss: 1514.46173 | quality: -8.07770
+
+Epoch 3 | Train: loss: 1640.28555 | quality: -7.56380
+        | Val:   loss: 1496.63330 | quality: -7.97084
+
+Epoch 4 | Train: loss: 487.83036 | quality: -1.54692
+        | Val:   loss: 516.77885 | quality: -2.09758
+ *
+Epoch 5 | Train: loss: 110.71862 | quality: 0.42195
+        | Val:   loss: 124.30558 | quality: 0.25491
+ *
+Epoch 6 | Train: loss: 53.74792 | quality: 0.71939
+        | Val:   loss: 156.71469 | quality: 0.06065
+
+Epoch 7 | Train: loss: 47.01831 | quality: 0.75452
+        | Val:   loss: 128.81225 | quality: 0.22790
+
+Epoch 8 | Train: loss: 42.54997 | quality: 0.77785
+        | Val:   loss: 112.67155 | quality: 0.32465
+ *
+Epoch 9 | Train: loss: 37.30395 | quality: 0.80524
+        | Val:   loss: 179.19597 | quality: -0.07410
+
+Epoch 10 | Train: loss: 33.49821 | quality: 0.82511
+        | Val:   loss: 189.25825 | quality: -0.13442
+
+Epoch 11 | Train: loss: 30.49473 | quality: 0.84079
+        | Val:   loss: 257.59471 | quality: -0.54403
+
+Epoch 12 | Train: loss: 28.98756 | quality: 0.84866
+        | Val:   loss: 231.01941 | quality: -0.38473
+
+Epoch 13 | Train: loss: 28.26518 | quality: 0.85243
+        | Val:   loss: 221.82360 | quality: -0.32961
+
+Epoch 14 | Train: loss: 27.73861 | quality: 0.85518
+        | Val:   loss: 218.61669 | quality: -0.31039
+
+Epoch 15 | Train: loss: 27.20769 | quality: 0.85795
+        | Val:   loss: 230.36786 | quality: -0.38083
+
+Epoch 16 | Train: loss: 26.69820 | quality: 0.86061
+        | Val:   loss: 200.93721 | quality: -0.20442
+
+Epoch 17 | Train: loss: 26.21839 | quality: 0.86312
+        | Val:   loss: 203.53069 | quality: -0.21997
+
+Epoch 18 | Train: loss: 25.74552 | quality: 0.86558
+        | Val:   loss: 214.90971 | quality: -0.28817
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 21:10:04,386][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed32874/results.json
+[2026-04-28 21:10:04,386][__main__][INFO] - ✓ Train R²: 0.7778
+[2026-04-28 21:10:04,386][__main__][INFO] - ✓ Val R²: 0.3246
+[2026-04-28 21:10:04,388][HYDRA] 	#3 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:04,539][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:04,543][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed47311
+[2026-04-28 21:10:04,544][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:05,730][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:05,730][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:05,730][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:05,731][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 361234078.06452 | quality: -1885973.40566
+        | Val:   loss: 7964644562.64932 | quality: -47740183.07269
+Epoch 1 | Train: loss: 1653.83763 | quality: -7.63455
+        | Val:   loss: 1488.43625 | quality: -7.92171
+ *
+Epoch 2 | Train: loss: 1648.00514 | quality: -7.60410
+        | Val:   loss: 1511.44780 | quality: -8.05964
+
+Epoch 3 | Train: loss: 1640.28924 | quality: -7.56382
+        | Val:   loss: 1495.59225 | quality: -7.96460
+
+Epoch 4 | Train: loss: 513.47951 | quality: -1.68084
+        | Val:   loss: 569.63937 | quality: -2.41443
+ *
+Epoch 5 | Train: loss: 92.70808 | quality: 0.51598
+        | Val:   loss: 106.00959 | quality: 0.36458
+ *
+Epoch 6 | Train: loss: 58.97512 | quality: 0.69210
+        | Val:   loss: 126.78162 | quality: 0.24007
+
+Epoch 7 | Train: loss: 51.38815 | quality: 0.73171
+        | Val:   loss: 124.61057 | quality: 0.25308
+
+Epoch 8 | Train: loss: 46.85886 | quality: 0.75535
+        | Val:   loss: 107.24358 | quality: 0.35718
+
+Epoch 9 | Train: loss: 39.17798 | quality: 0.79545
+        | Val:   loss: 119.34649 | quality: 0.28464
+
+Epoch 10 | Train: loss: 34.45774 | quality: 0.82010
+        | Val:   loss: 222.09750 | quality: -0.33126
+
+Epoch 11 | Train: loss: 29.86031 | quality: 0.84410
+        | Val:   loss: 1988.45875 | quality: -10.91885
+
+Epoch 12 | Train: loss: 27.50772 | quality: 0.85638
+        | Val:   loss: 3802.39305 | quality: -21.79159
+
+Epoch 13 | Train: loss: 26.08201 | quality: 0.86383
+        | Val:   loss: 1456.71202 | quality: -7.73155
+
+Epoch 14 | Train: loss: 24.98945 | quality: 0.86953
+        | Val:   loss: 366.63926 | quality: -1.19764
+
+Epoch 15 | Train: loss: 24.23294 | quality: 0.87348
+        | Val:   loss: 256.08752 | quality: -0.53499
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 21:10:06,410][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed47311/results.json
+[2026-04-28 21:10:06,410][__main__][INFO] - ✓ Train R²: 0.5160
+[2026-04-28 21:10:06,410][__main__][INFO] - ✓ Val R²: 0.3646
+[2026-04-28 21:10:06,412][HYDRA] 	#4 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:06,561][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:06,565][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed47303
+[2026-04-28 21:10:06,566][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:07,753][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:07,754][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:07,754][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:07,754][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 411028597.54431 | quality: -2145946.63350
+        | Val:   loss: 988125083.63698 | quality: -5922833.72396
+Epoch 1 | Train: loss: 1653.62740 | quality: -7.63346
+        | Val:   loss: 1493.12934 | quality: -7.94984
+ *
+Epoch 2 | Train: loss: 1648.02241 | quality: -7.60419
+        | Val:   loss: 1511.87710 | quality: -8.06221
+
+Epoch 3 | Train: loss: 1640.29273 | quality: -7.56384
+        | Val:   loss: 1495.79239 | quality: -7.96580
+
+Epoch 4 | Train: loss: 480.85603 | quality: -1.51051
+        | Val:   loss: 504.76883 | quality: -2.02559
+ *
+Epoch 5 | Train: loss: 118.54057 | quality: 0.38111
+        | Val:   loss: 132.41615 | quality: 0.20630
+ *
+Epoch 6 | Train: loss: 68.21501 | quality: 0.64385
+        | Val:   loss: 82.70770 | quality: 0.50425
+ *
+Epoch 7 | Train: loss: 55.86557 | quality: 0.70833
+        | Val:   loss: 90.87204 | quality: 0.45531
+
+Epoch 8 | Train: loss: 50.61306 | quality: 0.73575
+        | Val:   loss: 556.83872 | quality: -2.33770
+
+Epoch 9 | Train: loss: 42.97069 | quality: 0.77565
+        | Val:   loss: 1942.42503 | quality: -10.64292
+
+Epoch 10 | Train: loss: 37.02123 | quality: 0.80672
+        | Val:   loss: 201.06211 | quality: -0.20517
+
+Epoch 11 | Train: loss: 30.81931 | quality: 0.83909
+        | Val:   loss: 241.31513 | quality: -0.44645
+
+Epoch 12 | Train: loss: 27.74358 | quality: 0.85515
+        | Val:   loss: 116.11143 | quality: 0.30403
+
+Epoch 13 | Train: loss: 26.58957 | quality: 0.86118
+        | Val:   loss: 105.76859 | quality: 0.36602
+
+Epoch 14 | Train: loss: 25.92951 | quality: 0.86462
+        | Val:   loss: 144.77900 | quality: 0.13219
+
+Epoch 15 | Train: loss: 25.44500 | quality: 0.86715
+        | Val:   loss: 205.82291 | quality: -0.23371
+
+Epoch 16 | Train: loss: 25.08320 | quality: 0.86904
+        | Val:   loss: 276.07845 | quality: -0.65482
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 21:10:08,460][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd4_seed47303/results.json
+[2026-04-28 21:10:08,460][__main__][INFO] - ✓ Train R²: 0.6439
+[2026-04-28 21:10:08,460][__main__][INFO] - ✓ Val R²: 0.5042
+[2026-04-28 21:10:08,462][HYDRA] 	#5 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:08,609][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:08,613][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed42
+[2026-04-28 21:10:08,614][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:09,804][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:09,805][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:09,805][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:09,805][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 20353778.98761 | quality: -106264.46209
+        | Val:   loss: 26566204.71063 | quality: -159237.17981
+Epoch 1 | Train: loss: 1648.29792 | quality: -7.60563
+        | Val:   loss: 1490.04976 | quality: -7.93138
+ *
+Epoch 2 | Train: loss: 1640.91191 | quality: -7.56707
+        | Val:   loss: 1484.83178 | quality: -7.90010
+ *
+Epoch 3 | Train: loss: 1400.14466 | quality: -6.31004
+        | Val:   loss: 1693.44659 | quality: -9.15054
+
+Epoch 4 | Train: loss: 307.60065 | quality: -0.60596
+        | Val:   loss: 314.74572 | quality: -0.88659
+ *
+Epoch 5 | Train: loss: 109.69965 | quality: 0.42727
+        | Val:   loss: 125.58209 | quality: 0.24726
+ *
+Epoch 6 | Train: loss: 69.04020 | quality: 0.63955
+        | Val:   loss: 200.76500 | quality: -0.20339
+
+Epoch 7 | Train: loss: 51.48074 | quality: 0.73122
+        | Val:   loss: 74.94039 | quality: 0.55081
+ *
+Epoch 8 | Train: loss: 40.30833 | quality: 0.78955
+        | Val:   loss: 10354.28795 | quality: -61.06374
+
+Epoch 9 | Train: loss: 32.44041 | quality: 0.83063
+        | Val:   loss: 39741.67494 | quality: -237.21212
+
+Epoch 10 | Train: loss: 29.63422 | quality: 0.84528
+        | Val:   loss: 56542.04534 | quality: -337.91376
+
+Epoch 11 | Train: loss: 26.99139 | quality: 0.85908
+        | Val:   loss: 4439.47264 | quality: -25.61026
+
+Epoch 12 | Train: loss: 25.34309 | quality: 0.86769
+        | Val:   loss: 2981.54332 | quality: -16.87141
+
+Epoch 13 | Train: loss: 22.09133 | quality: 0.88466
+        | Val:   loss: 20273.48263 | quality: -120.51952
+
+Epoch 14 | Train: loss: 19.67938 | quality: 0.89726
+        | Val:   loss: 1989.02937 | quality: -10.92227
+
+Epoch 15 | Train: loss: 19.00558 | quality: 0.90077
+        | Val:   loss: 2875.68985 | quality: -16.23692
+
+Epoch 16 | Train: loss: 18.76180 | quality: 0.90205
+        | Val:   loss: 30013.10975 | quality: -178.89897
+
+Epoch 17 | Train: loss: 18.24545 | quality: 0.90474
+        | Val:   loss: 42025.04546 | quality: -250.89867
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 21:10:10,862][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-28 21:10:10,863][__main__][INFO] - ✓ Train R²: 0.7312
+[2026-04-28 21:10:10,863][__main__][INFO] - ✓ Val R²: 0.5508
+[2026-04-28 21:10:10,865][HYDRA] 	#6 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:11,015][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:11,019][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed10090
+[2026-04-28 21:10:11,019][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:12,209][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:12,209][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:12,209][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:12,210][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 46698334.77298 | quality: -243807.29362
+        | Val:   loss: 1366359737.39266 | quality: -8189977.20424
+Epoch 1 | Train: loss: 1648.63886 | quality: -7.60741
+        | Val:   loss: 1488.72921 | quality: -7.92346
+ *
+Epoch 2 | Train: loss: 1641.21892 | quality: -7.56867
+        | Val:   loss: 1487.18125 | quality: -7.91418
+ *
+Epoch 3 | Train: loss: 633.13231 | quality: -2.30553
+        | Val:   loss: 753.42658 | quality: -3.51605
+ *
+Epoch 4 | Train: loss: 98.07394 | quality: 0.48796
+        | Val:   loss: 166.40262 | quality: 0.00258
+ *
+Epoch 5 | Train: loss: 56.06974 | quality: 0.70726
+        | Val:   loss: 74.82847 | quality: 0.55148
+ *
+Epoch 6 | Train: loss: 50.99215 | quality: 0.73377
+        | Val:   loss: 65.46703 | quality: 0.60759
+ *
+Epoch 7 | Train: loss: 45.95461 | quality: 0.76007
+        | Val:   loss: 73.75740 | quality: 0.55790
+
+Epoch 8 | Train: loss: 38.63591 | quality: 0.79828
+        | Val:   loss: 97.99125 | quality: 0.41264
+
+Epoch 9 | Train: loss: 32.32003 | quality: 0.83126
+        | Val:   loss: 839.40724 | quality: -4.03142
+
+Epoch 10 | Train: loss: 27.02208 | quality: 0.85892
+        | Val:   loss: 2041.65177 | quality: -11.23769
+
+Epoch 11 | Train: loss: 24.16368 | quality: 0.87384
+        | Val:   loss: 1388.10382 | quality: -7.32031
+
+Epoch 12 | Train: loss: 22.99628 | quality: 0.87994
+        | Val:   loss: 6188.60942 | quality: -36.09461
+
+Epoch 13 | Train: loss: 19.93334 | quality: 0.89593
+        | Val:   loss: 10826.49857 | quality: -63.89417
+
+Epoch 14 | Train: loss: 18.50897 | quality: 0.90337
+        | Val:   loss: 11494.74179 | quality: -67.89963
+
+Epoch 15 | Train: loss: 17.81797 | quality: 0.90697
+        | Val:   loss: 208.17078 | quality: -0.24778
+
+Epoch 16 | Train: loss: 17.28608 | quality: 0.90975
+        | Val:   loss: 5244.64346 | quality: -30.43646
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 21:10:13,149][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-28 21:10:13,149][__main__][INFO] - ✓ Train R²: 0.7338
+[2026-04-28 21:10:13,149][__main__][INFO] - ✓ Val R²: 0.6076
+[2026-04-28 21:10:13,151][HYDRA] 	#7 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:13,299][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:13,303][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed32874
+[2026-04-28 21:10:13,304][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:14,504][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:14,513][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:14,513][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:14,513][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 222806051.95396 | quality: -1163251.68552
+        | Val:   loss: 359277766.58991 | quality: -2153514.64973
+Epoch 1 | Train: loss: 1648.40611 | quality: -7.60620
+        | Val:   loss: 1502.93765 | quality: -8.00863
+ *
+Epoch 2 | Train: loss: 1641.13840 | quality: -7.56825
+        | Val:   loss: 1490.69895 | quality: -7.93527
+ *
+Epoch 3 | Train: loss: 973.87049 | quality: -4.08450
+        | Val:   loss: 1010.32555 | quality: -5.05590
+ *
+Epoch 4 | Train: loss: 142.22995 | quality: 0.25743
+        | Val:   loss: 124.00614 | quality: 0.25671
+ *
+Epoch 5 | Train: loss: 67.66991 | quality: 0.64670
+        | Val:   loss: 216.38915 | quality: -0.29704
+
+Epoch 6 | Train: loss: 52.58288 | quality: 0.72547
+        | Val:   loss: 215.89536 | quality: -0.29408
+
+Epoch 7 | Train: loss: 47.50039 | quality: 0.75200
+        | Val:   loss: 72.07719 | quality: 0.56797
+ *
+Epoch 8 | Train: loss: 41.88244 | quality: 0.78134
+        | Val:   loss: 107.45590 | quality: 0.35591
+
+Epoch 9 | Train: loss: 32.80652 | quality: 0.82872
+        | Val:   loss: 301.44679 | quality: -0.80688
+
+Epoch 10 | Train: loss: 29.58334 | quality: 0.84555
+        | Val:   loss: 1859.06151 | quality: -10.14324
+
+Epoch 11 | Train: loss: 26.96512 | quality: 0.85922
+        | Val:   loss: 14033.29534 | quality: -83.11576
+
+Epoch 12 | Train: loss: 24.29206 | quality: 0.87317
+        | Val:   loss: 73451.97769 | quality: -439.27212
+
+Epoch 13 | Train: loss: 21.15044 | quality: 0.88958
+        | Val:   loss: 72478.72073 | quality: -433.43840
+
+Epoch 14 | Train: loss: 19.84606 | quality: 0.89639
+        | Val:   loss: 72499.85893 | quality: -433.56511
+
+Epoch 15 | Train: loss: 19.55468 | quality: 0.89791
+        | Val:   loss: 66652.76897 | quality: -398.51757
+
+Epoch 16 | Train: loss: 18.98376 | quality: 0.90089
+        | Val:   loss: 69981.72299 | quality: -418.47137
+
+Epoch 17 | Train: loss: 18.26440 | quality: 0.90464
+        | Val:   loss: 90561.89339 | quality: -541.82918
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 21:10:15,503][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-28 21:10:15,504][__main__][INFO] - ✓ Train R²: 0.7520
+[2026-04-28 21:10:15,504][__main__][INFO] - ✓ Val R²: 0.5680
+[2026-04-28 21:10:15,506][HYDRA] 	#8 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:15,659][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:15,663][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed47311
+[2026-04-28 21:10:15,664][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:16,853][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:16,854][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:16,854][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:16,854][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 320282290.18273 | quality: -1672167.37655
+        | Val:   loss: 2113333346.00489 | quality: -12667346.82094
+Epoch 1 | Train: loss: 1648.83717 | quality: -7.60845
+        | Val:   loss: 1518.16301 | quality: -8.09989
+ *
+Epoch 2 | Train: loss: 1641.30327 | quality: -7.56911
+        | Val:   loss: 1498.43415 | quality: -7.98163
+ *
+Epoch 3 | Train: loss: 1161.60991 | quality: -5.06467
+        | Val:   loss: 1818.94557 | quality: -9.90278
+
+Epoch 4 | Train: loss: 211.87318 | quality: -0.10617
+        | Val:   loss: 469.61171 | quality: -1.81486
+ *
+Epoch 5 | Train: loss: 97.28760 | quality: 0.49207
+        | Val:   loss: 6844.56547 | quality: -40.02642
+
+Epoch 6 | Train: loss: 65.00568 | quality: 0.66061
+        | Val:   loss: 2940.54939 | quality: -16.62569
+
+Epoch 7 | Train: loss: 50.74086 | quality: 0.73509
+        | Val:   loss: 1857.04922 | quality: -10.13118
+
+Epoch 8 | Train: loss: 44.02490 | quality: 0.77015
+        | Val:   loss: 2093.52844 | quality: -11.54864
+
+Epoch 9 | Train: loss: 35.22085 | quality: 0.81611
+        | Val:   loss: 14383.33139 | quality: -85.21388
+
+Epoch 10 | Train: loss: 31.65880 | quality: 0.83471
+        | Val:   loss: 22242.41274 | quality: -132.32131
+
+Epoch 11 | Train: loss: 30.35660 | quality: 0.84151
+        | Val:   loss: 49618.79551 | quality: -296.41571
+
+Epoch 12 | Train: loss: 29.76487 | quality: 0.84460
+        | Val:   loss: 13151.87556 | quality: -77.83251
+
+Epoch 13 | Train: loss: 28.30744 | quality: 0.85221
+        | Val:   loss: 493.31845 | quality: -1.95696
+
+Epoch 14 | Train: loss: 27.96740 | quality: 0.85398
+        | Val:   loss: 16059.64265 | quality: -95.26171
+
+
+⏸ Early stopping at epoch 14 (best was epoch 4)
+[2026-04-28 21:10:17,663][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-28 21:10:17,663][__main__][INFO] - ✓ Train R²: -0.1062
+[2026-04-28 21:10:17,663][__main__][INFO] - ✓ Val R²: -1.8149
+[2026-04-28 21:10:17,665][HYDRA] 	#9 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:17,814][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:17,818][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed47303
+[2026-04-28 21:10:17,819][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:19,009][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:19,010][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:19,010][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:19,010][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 25626063.26634 | quality: -133790.63920
+        | Val:   loss: 38469966.33745 | quality: -230588.48328
+Epoch 1 | Train: loss: 1648.50715 | quality: -7.60672
+        | Val:   loss: 1511.11810 | quality: -8.05766
+ *
+Epoch 2 | Train: loss: 1641.21878 | quality: -7.56867
+        | Val:   loss: 1495.24147 | quality: -7.96250
+ *
+Epoch 3 | Train: loss: 1115.97223 | quality: -4.82640
+        | Val:   loss: 1335.06839 | quality: -7.00242
+ *
+Epoch 4 | Train: loss: 265.88476 | quality: -0.38816
+        | Val:   loss: 860.76588 | quality: -4.15944
+ *
+Epoch 5 | Train: loss: 88.28626 | quality: 0.53906
+        | Val:   loss: 1019.14523 | quality: -5.10877
+
+Epoch 6 | Train: loss: 57.88413 | quality: 0.69779
+        | Val:   loss: 122.73514 | quality: 0.26432
+ *
+Epoch 7 | Train: loss: 48.98162 | quality: 0.74427
+        | Val:   loss: 271.49712 | quality: -0.62736
+
+Epoch 8 | Train: loss: 40.12221 | quality: 0.79053
+        | Val:   loss: 596.35963 | quality: -2.57459
+
+Epoch 9 | Train: loss: 34.69395 | quality: 0.81887
+        | Val:   loss: 942.43594 | quality: -4.64897
+
+Epoch 10 | Train: loss: 31.84470 | quality: 0.83374
+        | Val:   loss: 597.00327 | quality: -2.57845
+
+Epoch 11 | Train: loss: 29.76729 | quality: 0.84459
+        | Val:   loss: 1807.99320 | quality: -9.83713
+
+Epoch 12 | Train: loss: 27.95519 | quality: 0.85405
+        | Val:   loss: 5897.12112 | quality: -34.34742
+
+Epoch 13 | Train: loss: 26.66769 | quality: 0.86077
+        | Val:   loss: 12692.29968 | quality: -75.07781
+
+Epoch 14 | Train: loss: 25.61550 | quality: 0.86626
+        | Val:   loss: 5326.85121 | quality: -30.92922
+
+Epoch 15 | Train: loss: 24.31109 | quality: 0.87307
+        | Val:   loss: 2909.86712 | quality: -16.44178
+
+Epoch 16 | Train: loss: 23.75018 | quality: 0.87600
+        | Val:   loss: 2547.24882 | quality: -14.26824
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 21:10:19,915][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-28 21:10:19,916][__main__][INFO] - ✓ Train R²: 0.6978
+[2026-04-28 21:10:19,916][__main__][INFO] - ✓ Val R²: 0.2643
+[2026-04-28 21:10:19,918][HYDRA] 	#10 : model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:20,066][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:20,070][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed42
+[2026-04-28 21:10:20,071][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:21,267][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:21,268][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:21,268][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:21,268][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 79901623.58068 | quality: -417159.02502
+        | Val:   loss: 268795113.01458 | quality: -1611160.43630
+Epoch 1 | Train: loss: 1643.80403 | quality: -7.58217
+        | Val:   loss: 1499.48562 | quality: -7.98794
+ *
+Epoch 2 | Train: loss: 1635.64437 | quality: -7.53957
+        | Val:   loss: 1454.30169 | quality: -7.71710
+ *
+Epoch 3 | Train: loss: 1632.40100 | quality: -7.52264
+        | Val:   loss: 1517.68503 | quality: -8.09702
+
+Epoch 4 | Train: loss: 268.65978 | quality: -0.40265
+        | Val:   loss: 993.76821 | quality: -4.95666
+ *
+Epoch 5 | Train: loss: 61.53680 | quality: 0.67872
+        | Val:   loss: 96.58472 | quality: 0.42107
+ *
+Epoch 6 | Train: loss: 45.11603 | quality: 0.76445
+        | Val:   loss: 82.57248 | quality: 0.50506
+ *
+Epoch 7 | Train: loss: 38.42167 | quality: 0.79940
+        | Val:   loss: 81.39378 | quality: 0.51212
+ *
+Epoch 8 | Train: loss: 31.20225 | quality: 0.83710
+        | Val:   loss: 95.37041 | quality: 0.42835
+
+Epoch 9 | Train: loss: 24.84141 | quality: 0.87030
+        | Val:   loss: 652.93018 | quality: -2.91367
+
+Epoch 10 | Train: loss: 21.90916 | quality: 0.88561
+        | Val:   loss: 950.57354 | quality: -4.69775
+
+Epoch 11 | Train: loss: 17.82732 | quality: 0.90692
+        | Val:   loss: 177.35313 | quality: -0.06306
+
+Epoch 12 | Train: loss: 16.64483 | quality: 0.91310
+        | Val:   loss: 243.34209 | quality: -0.45860
+
+Epoch 13 | Train: loss: 15.81348 | quality: 0.91744
+        | Val:   loss: 707.98101 | quality: -3.24365
+
+Epoch 14 | Train: loss: 15.31554 | quality: 0.92004
+        | Val:   loss: 511.41241 | quality: -2.06541
+
+Epoch 15 | Train: loss: 15.05465 | quality: 0.92140
+        | Val:   loss: 321.42829 | quality: -0.92665
+
+Epoch 16 | Train: loss: 14.63630 | quality: 0.92359
+        | Val:   loss: 446.40766 | quality: -1.67577
+
+Epoch 17 | Train: loss: 13.71732 | quality: 0.92838
+        | Val:   loss: 323.13659 | quality: -0.93688
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 21:10:22,854][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed42/results.json
+[2026-04-28 21:10:22,855][__main__][INFO] - ✓ Train R²: 0.7994
+[2026-04-28 21:10:22,855][__main__][INFO] - ✓ Val R²: 0.5121
+[2026-04-28 21:10:22,859][HYDRA] 	#11 : model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:23,010][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:23,014][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed10090
+[2026-04-28 21:10:23,015][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:24,240][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:24,241][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:24,241][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:24,241][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 198330078.54084 | quality: -1035464.57403
+        | Val:   loss: 209833271.13547 | quality: -1257742.38199
+Epoch 1 | Train: loss: 1644.34625 | quality: -7.58500
+        | Val:   loss: 1513.31429 | quality: -8.07083
+ *
+Epoch 2 | Train: loss: 1635.90223 | quality: -7.54092
+        | Val:   loss: 1455.63110 | quality: -7.72507
+ *
+Epoch 3 | Train: loss: 1632.95946 | quality: -7.52555
+        | Val:   loss: 1524.42762 | quality: -8.13744
+
+Epoch 4 | Train: loss: 351.97219 | quality: -0.83762
+        | Val:   loss: 2263.80557 | quality: -12.56928
+
+Epoch 5 | Train: loss: 80.95349 | quality: 0.57735
+        | Val:   loss: 170.62526 | quality: -0.02273
+ *
+Epoch 6 | Train: loss: 52.61030 | quality: 0.72533
+        | Val:   loss: 318.48604 | quality: -0.90901
+
+Epoch 7 | Train: loss: 43.10004 | quality: 0.77498
+        | Val:   loss: 965.70091 | quality: -4.78842
+
+Epoch 8 | Train: loss: 35.26641 | quality: 0.81588
+        | Val:   loss: 6091.08189 | quality: -35.51002
+
+Epoch 9 | Train: loss: 29.90230 | quality: 0.84388
+        | Val:   loss: 740.14265 | quality: -3.43642
+
+Epoch 10 | Train: loss: 27.30671 | quality: 0.85743
+        | Val:   loss: 4937.93068 | quality: -28.59802
+
+Epoch 11 | Train: loss: 23.88517 | quality: 0.87530
+        | Val:   loss: 2071.27892 | quality: -11.41527
+
+Epoch 12 | Train: loss: 18.77170 | quality: 0.90199
+        | Val:   loss: 903.41396 | quality: -4.41508
+
+Epoch 13 | Train: loss: 17.17770 | quality: 0.91032
+        | Val:   loss: 16614.86804 | quality: -98.58974
+
+Epoch 14 | Train: loss: 16.16578 | quality: 0.91560
+        | Val:   loss: 610.67723 | quality: -2.66041
+
+Epoch 15 | Train: loss: 16.47808 | quality: 0.91397
+        | Val:   loss: 2878.04950 | quality: -16.25107
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 21:10:25,544][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed10090/results.json
+[2026-04-28 21:10:25,544][__main__][INFO] - ✓ Train R²: 0.5773
+[2026-04-28 21:10:25,545][__main__][INFO] - ✓ Val R²: -0.0227
+[2026-04-28 21:10:25,546][HYDRA] 	#12 : model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:25,694][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:25,699][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed32874
+[2026-04-28 21:10:25,700][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:26,903][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:26,904][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:26,904][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:26,904][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 27443327.79041 | quality: -143278.43282
+        | Val:   loss: 593593425.57082 | quality: -3558005.78589
+Epoch 1 | Train: loss: 1643.80676 | quality: -7.58218
+        | Val:   loss: 1495.26294 | quality: -7.96263
+ *
+Epoch 2 | Train: loss: 1635.50145 | quality: -7.53882
+        | Val:   loss: 1454.89014 | quality: -7.72063
+ *
+Epoch 3 | Train: loss: 1632.71912 | quality: -7.52430
+        | Val:   loss: 1520.18256 | quality: -8.11199
+
+Epoch 4 | Train: loss: 256.97954 | quality: -0.34167
+        | Val:   loss: 708.14845 | quality: -3.24465
+ *
+Epoch 5 | Train: loss: 58.24689 | quality: 0.69590
+        | Val:   loss: 83.29093 | quality: 0.50075
+ *
+Epoch 6 | Train: loss: 43.01570 | quality: 0.77542
+        | Val:   loss: 132.90366 | quality: 0.20337
+
+Epoch 7 | Train: loss: 39.45815 | quality: 0.79399
+        | Val:   loss: 78.78511 | quality: 0.52776
+ *
+Epoch 8 | Train: loss: 33.03748 | quality: 0.82751
+        | Val:   loss: 2595.66158 | quality: -14.55843
+
+Epoch 9 | Train: loss: 28.43837 | quality: 0.85153
+        | Val:   loss: 1624.21406 | quality: -8.73556
+
+Epoch 10 | Train: loss: 25.50404 | quality: 0.86685
+        | Val:   loss: 134.62598 | quality: 0.19305
+
+Epoch 11 | Train: loss: 21.71930 | quality: 0.88661
+        | Val:   loss: 16695.86007 | quality: -99.07520
+
+Epoch 12 | Train: loss: 18.65677 | quality: 0.90259
+        | Val:   loss: 37962.52400 | quality: -226.54787
+
+Epoch 13 | Train: loss: 17.55133 | quality: 0.90837
+        | Val:   loss: 207.84788 | quality: -0.24584
+
+Epoch 14 | Train: loss: 17.32747 | quality: 0.90953
+        | Val:   loss: 4517.30874 | quality: -26.07681
+
+Epoch 15 | Train: loss: 17.11873 | quality: 0.91062
+        | Val:   loss: 11568.73953 | quality: -68.34318
+
+Epoch 16 | Train: loss: 16.66673 | quality: 0.91298
+        | Val:   loss: 9202.54050 | quality: -54.16015
+
+Epoch 17 | Train: loss: 16.34244 | quality: 0.91468
+        | Val:   loss: 3550.29983 | quality: -20.28054
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 21:10:28,331][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed32874/results.json
+[2026-04-28 21:10:28,331][__main__][INFO] - ✓ Train R²: 0.7940
+[2026-04-28 21:10:28,331][__main__][INFO] - ✓ Val R²: 0.5278
+[2026-04-28 21:10:28,335][HYDRA] 	#13 : model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:28,481][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:28,485][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed47311
+[2026-04-28 21:10:28,485][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:29,670][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:29,671][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:29,671][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:29,671][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 8215653.80670 | quality: -42892.27543
+        | Val:   loss: 219148448.96278 | quality: -1313577.68018
+Epoch 1 | Train: loss: 1646.71184 | quality: -7.59735
+        | Val:   loss: 1503.95580 | quality: -8.01473
+ *
+Epoch 2 | Train: loss: 1635.51649 | quality: -7.53890
+        | Val:   loss: 1458.36430 | quality: -7.74145
+ *
+Epoch 3 | Train: loss: 1633.64727 | quality: -7.52914
+        | Val:   loss: 1541.29005 | quality: -8.23851
+
+Epoch 4 | Train: loss: 1525.73070 | quality: -6.96572
+        | Val:   loss: 2811.44141 | quality: -15.85182
+
+Epoch 5 | Train: loss: 593.33428 | quality: -2.09775
+        | Val:   loss: 46141.06119 | quality: -275.57013
+
+Epoch 6 | Train: loss: 169.97866 | quality: 0.11255
+        | Val:   loss: 86947.74357 | quality: -520.16592
+
+Epoch 7 | Train: loss: 65.78020 | quality: 0.65657
+        | Val:   loss: 76980.53809 | quality: -460.42236
+
+Epoch 8 | Train: loss: 43.73305 | quality: 0.77167
+        | Val:   loss: 91122.60325 | quality: -545.19008
+
+Epoch 9 | Train: loss: 34.54230 | quality: 0.81966
+        | Val:   loss: 4008.59965 | quality: -23.02760
+
+Epoch 10 | Train: loss: 27.48132 | quality: 0.85652
+        | Val:   loss: 86182.95741 | quality: -515.58178
+
+Epoch 11 | Train: loss: 24.26381 | quality: 0.87332
+        | Val:   loss: 15053.98497 | quality: -89.23378
+
+Epoch 12 | Train: loss: 21.90727 | quality: 0.88562
+        | Val:   loss: 15878.39961 | quality: -94.17534
+
+
+⏸ Early stopping at epoch 12 (best was epoch 2)
+[2026-04-28 21:10:30,892][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed47311/results.json
+[2026-04-28 21:10:30,893][__main__][INFO] - ✓ Train R²: -7.5389
+[2026-04-28 21:10:30,893][__main__][INFO] - ✓ Val R²: -7.7415
+[2026-04-28 21:10:30,896][HYDRA] 	#14 : model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:31,047][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:31,052][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed47303
+[2026-04-28 21:10:31,052][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:32,270][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:32,270][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:32,271][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:32,271][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 28432382.58066 | quality: -148442.20925
+        | Val:   loss: 19871640.34303 | quality: -119109.87310
+Epoch 1 | Train: loss: 1643.66094 | quality: -7.58142
+        | Val:   loss: 1498.41410 | quality: -7.98151
+ *
+Epoch 2 | Train: loss: 1635.56459 | quality: -7.53915
+        | Val:   loss: 1454.82215 | quality: -7.72022
+ *
+Epoch 3 | Train: loss: 1632.77066 | quality: -7.52457
+        | Val:   loss: 1515.03627 | quality: -8.08115
+
+Epoch 4 | Train: loss: 257.82770 | quality: -0.34610
+        | Val:   loss: 1007.24728 | quality: -5.03745
+ *
+Epoch 5 | Train: loss: 58.96774 | quality: 0.69213
+        | Val:   loss: 77.04056 | quality: 0.53822
+ *
+Epoch 6 | Train: loss: 48.56845 | quality: 0.74643
+        | Val:   loss: 126.43631 | quality: 0.24214
+
+Epoch 7 | Train: loss: 41.41189 | quality: 0.78379
+        | Val:   loss: 3519.34795 | quality: -20.09502
+
+Epoch 8 | Train: loss: 33.72216 | quality: 0.82394
+        | Val:   loss: 4001.79106 | quality: -22.98679
+
+Epoch 9 | Train: loss: 28.12797 | quality: 0.85315
+        | Val:   loss: 8211.25012 | quality: -48.21834
+
+Epoch 10 | Train: loss: 26.67440 | quality: 0.86074
+        | Val:   loss: 2165.06372 | quality: -11.97742
+
+Epoch 11 | Train: loss: 22.90256 | quality: 0.88043
+        | Val:   loss: 2473.10360 | quality: -13.82382
+
+Epoch 12 | Train: loss: 19.34950 | quality: 0.89898
+        | Val:   loss: 476.76067 | quality: -1.85771
+
+Epoch 13 | Train: loss: 17.55852 | quality: 0.90833
+        | Val:   loss: 624.86332 | quality: -2.74544
+
+Epoch 14 | Train: loss: 16.81361 | quality: 0.91222
+        | Val:   loss: 4980.39927 | quality: -28.85258
+
+Epoch 15 | Train: loss: 16.41055 | quality: 0.91432
+        | Val:   loss: 7953.21071 | quality: -46.67165
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 21:10:33,615][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L3_bd12_seed47303/results.json
+[2026-04-28 21:10:33,615][__main__][INFO] - ✓ Train R²: 0.6921
+[2026-04-28 21:10:33,615][__main__][INFO] - ✓ Val R²: 0.5382
+[2026-04-28 21:10:33,617][HYDRA] 	#15 : model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:33,766][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:33,770][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed42
+[2026-04-28 21:10:33,771][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:34,972][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:34,972][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:34,973][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:34,973][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1506668407909.40332 | quality: -7866195985.71104
+        | Val:   loss: 13984756188563.04492 | quality: -83824812192.70052
+Epoch 1 | Train: loss: 1653.28055 | quality: -7.63165
+        | Val:   loss: 1513.72442 | quality: -8.07328
+ *
+Epoch 2 | Train: loss: 1647.07292 | quality: -7.59924
+        | Val:   loss: 1607.84427 | quality: -8.63744
+
+Epoch 3 | Train: loss: 1644.22181 | quality: -7.58435
+        | Val:   loss: 1693.76084 | quality: -9.15242
+
+Epoch 4 | Train: loss: 1635.93280 | quality: -7.54108
+        | Val:   loss: 1593.80855 | quality: -8.55331
+
+Epoch 5 | Train: loss: 1633.99085 | quality: -7.53094
+        | Val:   loss: 1644.78504 | quality: -8.85886
+
+Epoch 6 | Train: loss: 883.46798 | quality: -3.61252
+        | Val:   loss: 6126.51462 | quality: -35.72241
+
+Epoch 7 | Train: loss: 171.45306 | quality: 0.10486
+        | Val:   loss: 7597.39742 | quality: -44.53890
+
+Epoch 8 | Train: loss: 60.65895 | quality: 0.68330
+        | Val:   loss: 310.76843 | quality: -0.86275
+ *
+Epoch 9 | Train: loss: 54.38527 | quality: 0.71606
+        | Val:   loss: 3027.46398 | quality: -17.14666
+
+Epoch 10 | Train: loss: 47.39708 | quality: 0.75254
+        | Val:   loss: 5753.90589 | quality: -33.48899
+
+Epoch 11 | Train: loss: 40.14347 | quality: 0.79041
+        | Val:   loss: 12581.75916 | quality: -74.41523
+
+Epoch 12 | Train: loss: 36.94631 | quality: 0.80711
+        | Val:   loss: 3311.54324 | quality: -18.84943
+
+Epoch 13 | Train: loss: 35.92821 | quality: 0.81242
+        | Val:   loss: 29634.51578 | quality: -176.62968
+
+Epoch 14 | Train: loss: 35.38406 | quality: 0.81526
+        | Val:   loss: 62519.65523 | quality: -373.74363
+
+Epoch 15 | Train: loss: 34.72652 | quality: 0.81870
+        | Val:   loss: 71374.01096 | quality: -426.81676
+
+Epoch 16 | Train: loss: 34.39522 | quality: 0.82043
+        | Val:   loss: 57201.75599 | quality: -341.86808
+
+Epoch 17 | Train: loss: 34.13073 | quality: 0.82181
+        | Val:   loss: 42063.21412 | quality: -251.12746
+
+Epoch 18 | Train: loss: 33.68770 | quality: 0.82412
+        | Val:   loss: 30220.80283 | quality: -180.14389
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 21:10:35,866][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed42/results.json
+[2026-04-28 21:10:35,866][__main__][INFO] - ✓ Train R²: 0.6833
+[2026-04-28 21:10:35,866][__main__][INFO] - ✓ Val R²: -0.8628
+[2026-04-28 21:10:35,868][HYDRA] 	#16 : model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:36,121][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:36,126][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed10090
+[2026-04-28 21:10:36,126][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:38,314][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:38,315][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:38,315][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:38,315][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 43908850474.59315 | quality: -229244616.84103
+        | Val:   loss: 14632455523.19763 | quality: -87707129.50885
+Epoch 1 | Train: loss: 1653.47168 | quality: -7.63264
+        | Val:   loss: 1489.48348 | quality: -7.92798
+ *
+Epoch 2 | Train: loss: 1647.02459 | quality: -7.59898
+        | Val:   loss: 1604.74343 | quality: -8.61885
+
+Epoch 3 | Train: loss: 1644.19356 | quality: -7.58420
+        | Val:   loss: 1690.64783 | quality: -9.13377
+
+Epoch 4 | Train: loss: 1635.08803 | quality: -7.53666
+        | Val:   loss: 1827.53634 | quality: -9.95428
+
+Epoch 5 | Train: loss: 1633.83999 | quality: -7.53015
+        | Val:   loss: 1911.01245 | quality: -10.45463
+
+Epoch 6 | Train: loss: 931.03624 | quality: -3.86087
+        | Val:   loss: 11466.04892 | quality: -67.72765
+
+Epoch 7 | Train: loss: 311.63436 | quality: -0.62702
+        | Val:   loss: 528.38701 | quality: -2.16716
+ *
+Epoch 8 | Train: loss: 104.99189 | quality: 0.45185
+        | Val:   loss: 504.08998 | quality: -2.02152
+ *
+Epoch 9 | Train: loss: 65.12457 | quality: 0.65999
+        | Val:   loss: 5761.52054 | quality: -33.53463
+
+Epoch 10 | Train: loss: 54.47354 | quality: 0.71560
+        | Val:   loss: 183850.71936 | quality: -1101.00363
+
+Epoch 11 | Train: loss: 48.30797 | quality: 0.74779
+        | Val:   loss: 104314.41625 | quality: -624.26198
+
+Epoch 12 | Train: loss: 46.00822 | quality: 0.75979
+        | Val:   loss: 34036.78595 | quality: -203.01694
+
+Epoch 13 | Train: loss: 42.79706 | quality: 0.77656
+        | Val:   loss: 6064.29469 | quality: -35.34946
+
+Epoch 14 | Train: loss: 40.75559 | quality: 0.78722
+        | Val:   loss: 17475.20270 | quality: -103.74659
+
+Epoch 15 | Train: loss: 42.63866 | quality: 0.77739
+        | Val:   loss: 24888.40519 | quality: -148.18143
+
+Epoch 16 | Train: loss: 38.92246 | quality: 0.79679
+        | Val:   loss: 24026.18098 | quality: -143.01324
+
+Epoch 17 | Train: loss: 39.44834 | quality: 0.79404
+        | Val:   loss: 62571.49374 | quality: -374.05435
+
+Epoch 18 | Train: loss: 39.81448 | quality: 0.79213
+        | Val:   loss: 125925.20157 | quality: -753.79731
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 21:10:39,153][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed10090/results.json
+[2026-04-28 21:10:39,153][__main__][INFO] - ✓ Train R²: 0.4518
+[2026-04-28 21:10:39,153][__main__][INFO] - ✓ Val R²: -2.0215
+[2026-04-28 21:10:39,155][HYDRA] 	#17 : model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:39,306][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:39,310][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed32874
+[2026-04-28 21:10:39,311][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:40,500][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:40,501][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:40,501][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:40,501][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 10983134797.28035 | quality: -57342072.68412
+        | Val:   loss: 761889387643.43298 | quality: -4566774991.03127
+Epoch 1 | Train: loss: 1653.28732 | quality: -7.63168
+        | Val:   loss: 1505.12536 | quality: -8.02174
+ *
+Epoch 2 | Train: loss: 1647.05351 | quality: -7.59914
+        | Val:   loss: 1606.22950 | quality: -8.62776
+
+Epoch 3 | Train: loss: 1644.21113 | quality: -7.58430
+        | Val:   loss: 1692.46326 | quality: -9.14465
+
+Epoch 4 | Train: loss: 1635.18711 | quality: -7.53718
+        | Val:   loss: 1739.16469 | quality: -9.42458
+
+Epoch 5 | Train: loss: 1634.33824 | quality: -7.53275
+        | Val:   loss: 1764.08914 | quality: -9.57397
+
+Epoch 6 | Train: loss: 688.38005 | quality: -2.59398
+        | Val:   loss: 4439.91806 | quality: -25.61293
+
+Epoch 7 | Train: loss: 206.20860 | quality: -0.07660
+        | Val:   loss: 2090.09834 | quality: -11.52808
+
+Epoch 8 | Train: loss: 107.13798 | quality: 0.44064
+        | Val:   loss: 2901.56607 | quality: -16.39203
+
+Epoch 9 | Train: loss: 58.26346 | quality: 0.69581
+        | Val:   loss: 3067.42780 | quality: -17.38620
+
+Epoch 10 | Train: loss: 55.34341 | quality: 0.71106
+        | Val:   loss: 2140.60829 | quality: -11.83083
+
+Epoch 11 | Train: loss: 49.57745 | quality: 0.74116
+        | Val:   loss: 13469.38118 | quality: -79.73565
+
+
+⏸ Early stopping at epoch 11 (best was epoch 1)
+[2026-04-28 21:10:41,016][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed32874/results.json
+[2026-04-28 21:10:41,017][__main__][INFO] - ✓ Train R²: -7.6317
+[2026-04-28 21:10:41,017][__main__][INFO] - ✓ Val R²: -8.0217
+[2026-04-28 21:10:41,018][HYDRA] 	#18 : model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:41,170][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:41,175][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed47311
+[2026-04-28 21:10:41,175][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:42,363][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:42,364][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:42,364][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:42,364][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 175875515441.60617 | quality: -918232084.08576
+        | Val:   loss: 23434547899125.78906 | quality: -140466987767.79736
+Epoch 1 | Train: loss: 1653.51526 | quality: -7.63287
+        | Val:   loss: 1488.32238 | quality: -7.92102
+ *
+Epoch 2 | Train: loss: 1647.02494 | quality: -7.59899
+        | Val:   loss: 1604.24658 | quality: -8.61588
+
+Epoch 3 | Train: loss: 1644.21232 | quality: -7.58430
+        | Val:   loss: 1691.98481 | quality: -9.14178
+
+Epoch 4 | Train: loss: 1641.07610 | quality: -7.56793
+        | Val:   loss: 1594.32174 | quality: -8.55639
+
+Epoch 5 | Train: loss: 581.54695 | quality: -2.03621
+        | Val:   loss: 5182.06154 | quality: -30.06134
+
+Epoch 6 | Train: loss: 246.80510 | quality: -0.28855
+        | Val:   loss: 1424.24058 | quality: -7.53692
+ *
+Epoch 7 | Train: loss: 88.08766 | quality: 0.54010
+        | Val:   loss: 245.29964 | quality: -0.47033
+ *
+Epoch 8 | Train: loss: 54.63863 | quality: 0.71474
+        | Val:   loss: 1238.99817 | quality: -6.42657
+
+Epoch 9 | Train: loss: 47.09145 | quality: 0.75414
+        | Val:   loss: 13908.16429 | quality: -82.36572
+
+Epoch 10 | Train: loss: 44.68222 | quality: 0.76672
+        | Val:   loss: 8052.68048 | quality: -47.26787
+
+Epoch 11 | Train: loss: 41.52800 | quality: 0.78319
+        | Val:   loss: 181.61226 | quality: -0.08859
+ *
+Epoch 12 | Train: loss: 37.60938 | quality: 0.80364
+        | Val:   loss: 224.28650 | quality: -0.34438
+
+Epoch 13 | Train: loss: 36.74661 | quality: 0.80815
+        | Val:   loss: 144.40912 | quality: 0.13441
+ *
+Epoch 14 | Train: loss: 37.27723 | quality: 0.80538
+        | Val:   loss: 723.41123 | quality: -3.33614
+
+Epoch 15 | Train: loss: 39.62982 | quality: 0.79310
+        | Val:   loss: 1115.94515 | quality: -5.68899
+
+Epoch 16 | Train: loss: 38.47382 | quality: 0.79913
+        | Val:   loss: 20863.69649 | quality: -124.05727
+
+Epoch 17 | Train: loss: 34.59754 | quality: 0.81937
+        | Val:   loss: 5098.14906 | quality: -29.55837
+
+Epoch 18 | Train: loss: 33.15903 | quality: 0.82688
+        | Val:   loss: 1656.92021 | quality: -8.93160
+
+Epoch 19 | Train: loss: 32.71046 | quality: 0.82922
+        | Val:   loss: 168.18987 | quality: -0.00813
+
+Epoch 20 | Train: loss: 32.30735 | quality: 0.83133
+        | Val:   loss: 212.19508 | quality: -0.27190
+
+
+Best epoch: 13 (val_quality=0.134410)
+[2026-04-28 21:10:43,293][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed47311/results.json
+[2026-04-28 21:10:43,293][__main__][INFO] - ✓ Train R²: 0.8081
+[2026-04-28 21:10:43,293][__main__][INFO] - ✓ Val R²: 0.1344
+[2026-04-28 21:10:43,294][HYDRA] 	#19 : model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:43,442][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:43,446][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed47303
+[2026-04-28 21:10:43,447][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:44,631][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:44,631][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:44,631][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:44,632][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 8333297316.46751 | quality: -43507481.84277
+        | Val:   loss: 76302840093.15224 | quality: -457360224.26337
+Epoch 1 | Train: loss: 1653.53275 | quality: -7.63296
+        | Val:   loss: 1500.69647 | quality: -7.99519
+ *
+Epoch 2 | Train: loss: 1647.05779 | quality: -7.59916
+        | Val:   loss: 1607.60052 | quality: -8.63598
+
+Epoch 3 | Train: loss: 1644.21355 | quality: -7.58431
+        | Val:   loss: 1693.11657 | quality: -9.14856
+
+Epoch 4 | Train: loss: 1638.54484 | quality: -7.55471
+        | Val:   loss: 1453.73164 | quality: -7.71369
+ *
+Epoch 5 | Train: loss: 1635.06495 | quality: -7.53654
+        | Val:   loss: 1449.61684 | quality: -7.68902
+ *
+Epoch 6 | Train: loss: 1135.26278 | quality: -4.92712
+        | Val:   loss: 4587.95928 | quality: -26.50029
+
+Epoch 7 | Train: loss: 489.56401 | quality: -1.55597
+        | Val:   loss: 733.28962 | quality: -3.39535
+ *
+Epoch 8 | Train: loss: 201.05858 | quality: -0.04971
+        | Val:   loss: 3504919.99883 | quality: -21007.53649
+
+Epoch 9 | Train: loss: 106.74577 | quality: 0.44269
+        | Val:   loss: 314.40845 | quality: -0.88457
+ *
+Epoch 10 | Train: loss: 51.31356 | quality: 0.73210
+        | Val:   loss: 42748.74655 | quality: -255.23655
+
+Epoch 11 | Train: loss: 47.02765 | quality: 0.75447
+        | Val:   loss: 1096.47732 | quality: -5.57230
+
+Epoch 12 | Train: loss: 42.90900 | quality: 0.77598
+        | Val:   loss: 19918.72884 | quality: -118.39312
+
+Epoch 13 | Train: loss: 40.81663 | quality: 0.78690
+        | Val:   loss: 53037.49066 | quality: -316.90742
+
+Epoch 14 | Train: loss: 39.17426 | quality: 0.79547
+        | Val:   loss: 50097.18773 | quality: -299.28320
+
+Epoch 15 | Train: loss: 38.33737 | quality: 0.79984
+        | Val:   loss: 14989.41174 | quality: -88.84673
+
+Epoch 16 | Train: loss: 37.85181 | quality: 0.80238
+        | Val:   loss: 520.75422 | quality: -2.12141
+
+Epoch 17 | Train: loss: 37.49723 | quality: 0.80423
+        | Val:   loss: 3942.28636 | quality: -22.63012
+
+Epoch 18 | Train: loss: 37.14665 | quality: 0.80606
+        | Val:   loss: 18418.79893 | quality: -109.40252
+
+Epoch 19 | Train: loss: 36.72902 | quality: 0.80824
+        | Val:   loss: 73656.90991 | quality: -440.50049
+
+
+⏸ Early stopping at epoch 19 (best was epoch 9)
+[2026-04-28 21:10:45,518][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd4_seed47303/results.json
+[2026-04-28 21:10:45,518][__main__][INFO] - ✓ Train R²: 0.4427
+[2026-04-28 21:10:45,518][__main__][INFO] - ✓ Val R²: -0.8846
+[2026-04-28 21:10:45,519][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:45,668][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:45,672][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed42
+[2026-04-28 21:10:45,673][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:46,978][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:46,979][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:46,979][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:46,979][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 53960847139.17680 | quality: -281725292.35416
+        | Val:   loss: 781786017012.73792 | quality: -4686035648.68461
+Epoch 1 | Train: loss: 1648.44641 | quality: -7.60641
+        | Val:   loss: 1513.92346 | quality: -8.07448
+ *
+Epoch 2 | Train: loss: 1643.84963 | quality: -7.58241
+        | Val:   loss: 1605.21876 | quality: -8.62170
+
+Epoch 3 | Train: loss: 1638.72496 | quality: -7.55565
+        | Val:   loss: 1936.78514 | quality: -10.60912
+
+Epoch 4 | Train: loss: 1635.30355 | quality: -7.53779
+        | Val:   loss: 1456.17399 | quality: -7.72833
+ *
+Epoch 5 | Train: loss: 1624.83692 | quality: -7.48314
+        | Val:   loss: 1436.10376 | quality: -7.60802
+ *
+Epoch 6 | Train: loss: 531.85832 | quality: -1.77679
+        | Val:   loss: 45509.16513 | quality: -271.78253
+
+Epoch 7 | Train: loss: 299.13015 | quality: -0.56173
+        | Val:   loss: 3357.72786 | quality: -19.12626
+
+Epoch 8 | Train: loss: 129.93823 | quality: 0.32160
+        | Val:   loss: 97549.81504 | quality: -583.71487
+
+Epoch 9 | Train: loss: 71.73315 | quality: 0.62549
+        | Val:   loss: 31035.83560 | quality: -185.02921
+
+Epoch 10 | Train: loss: 55.02471 | quality: 0.71272
+        | Val:   loss: 591.65208 | quality: -2.54637
+ *
+Epoch 11 | Train: loss: 45.68728 | quality: 0.76147
+        | Val:   loss: 17335.06048 | quality: -102.90658
+
+Epoch 12 | Train: loss: 42.33213 | quality: 0.77899
+        | Val:   loss: 41746.33035 | quality: -249.22805
+
+Epoch 13 | Train: loss: 38.88914 | quality: 0.79696
+        | Val:   loss: 204097.46628 | quality: -1222.36289
+
+Epoch 14 | Train: loss: 35.35422 | quality: 0.81542
+        | Val:   loss: 108289.55932 | quality: -648.08904
+
+Epoch 15 | Train: loss: 34.84189 | quality: 0.81809
+        | Val:   loss: 35954.74105 | quality: -214.51319
+
+Epoch 16 | Train: loss: 33.49143 | quality: 0.82514
+        | Val:   loss: 10571.91554 | quality: -62.36820
+
+Epoch 17 | Train: loss: 32.69141 | quality: 0.82932
+        | Val:   loss: 19451.01283 | quality: -115.58963
+
+Epoch 18 | Train: loss: 31.83652 | quality: 0.83378
+        | Val:   loss: 34990.84299 | quality: -208.73557
+
+Epoch 19 | Train: loss: 31.00777 | quality: 0.83811
+        | Val:   loss: 48473.65537 | quality: -289.55173
+
+Epoch 20 | Train: loss: 31.22827 | quality: 0.83696
+        | Val:   loss: 111030.72032 | quality: -664.51960
+
+
+⏸ Early stopping at epoch 20 (best was epoch 10)
+[2026-04-28 21:10:48,224][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-28 21:10:48,224][__main__][INFO] - ✓ Train R²: 0.7127
+[2026-04-28 21:10:48,224][__main__][INFO] - ✓ Val R²: -2.5464
+[2026-04-28 21:10:48,226][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:48,372][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:48,376][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed10090
+[2026-04-28 21:10:48,377][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:49,563][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:49,564][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:49,564][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:49,564][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 22555158783.51810 | quality: -117758690.01067
+        | Val:   loss: 27387485716.91500 | quality: -164160947.94493
+Epoch 1 | Train: loss: 1648.61120 | quality: -7.60727
+        | Val:   loss: 1514.41789 | quality: -8.07744
+ *
+Epoch 2 | Train: loss: 1644.04863 | quality: -7.58345
+        | Val:   loss: 1596.85073 | quality: -8.57154
+
+Epoch 3 | Train: loss: 1639.72713 | quality: -7.56089
+        | Val:   loss: 1463.76036 | quality: -7.77380
+ *
+Epoch 4 | Train: loss: 1635.81016 | quality: -7.54043
+        | Val:   loss: 1452.49998 | quality: -7.70630
+ *
+Epoch 5 | Train: loss: 1617.05415 | quality: -7.44251
+        | Val:   loss: 7419.94867 | quality: -43.47527
+
+Epoch 6 | Train: loss: 350.09954 | quality: -0.82784
+        | Val:   loss: 364027.46085 | quality: -2180.98538
+
+Epoch 7 | Train: loss: 114.04693 | quality: 0.40457
+        | Val:   loss: 129313.88554 | quality: -774.10913
+
+Epoch 8 | Train: loss: 88.57492 | quality: 0.53756
+        | Val:   loss: 183149.24156 | quality: -1096.79896
+
+Epoch 9 | Train: loss: 52.97556 | quality: 0.72342
+        | Val:   loss: 22038.82802 | quality: -131.10102
+
+Epoch 10 | Train: loss: 46.16760 | quality: 0.75896
+        | Val:   loss: 162068.82855 | quality: -970.44269
+
+Epoch 11 | Train: loss: 48.35017 | quality: 0.74757
+        | Val:   loss: 356807.42295 | quality: -2137.70838
+
+Epoch 12 | Train: loss: 47.50717 | quality: 0.75197
+        | Val:   loss: 46773.27789 | quality: -279.35964
+
+Epoch 13 | Train: loss: 44.50867 | quality: 0.76762
+        | Val:   loss: 228718.58953 | quality: -1369.94223
+
+Epoch 14 | Train: loss: 40.12487 | quality: 0.79051
+        | Val:   loss: 160.61257 | quality: 0.03729
+ *
+Epoch 15 | Train: loss: 36.58129 | quality: 0.80901
+        | Val:   loss: 18598.67875 | quality: -110.48072
+
+Epoch 16 | Train: loss: 34.88195 | quality: 0.81788
+        | Val:   loss: 10116.29399 | quality: -59.63720
+
+Epoch 17 | Train: loss: 33.87056 | quality: 0.82316
+        | Val:   loss: 886.45783 | quality: -4.31344
+
+Epoch 18 | Train: loss: 34.20919 | quality: 0.82140
+        | Val:   loss: 91753.89288 | quality: -548.97404
+
+Epoch 19 | Train: loss: 34.09497 | quality: 0.82199
+        | Val:   loss: 40247.58815 | quality: -240.24457
+
+Epoch 20 | Train: loss: 33.60841 | quality: 0.82453
+        | Val:   loss: 79442.36389 | quality: -475.17857
+
+
+Best epoch: 14 (val_quality=0.037286)
+[2026-04-28 21:10:50,730][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-28 21:10:50,730][__main__][INFO] - ✓ Train R²: 0.7905
+[2026-04-28 21:10:50,730][__main__][INFO] - ✓ Val R²: 0.0373
+[2026-04-28 21:10:50,733][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:50,880][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:50,884][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed32874
+[2026-04-28 21:10:50,885][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:52,082][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:52,083][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:52,083][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:52,083][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 152029271856.83768 | quality: -793732741.96116
+        | Val:   loss: 2789902674595.40332 | quality: -16722713257.87822
+Epoch 1 | Train: loss: 1648.36488 | quality: -7.60598
+        | Val:   loss: 1505.52132 | quality: -8.02411
+ *
+Epoch 2 | Train: loss: 1643.26688 | quality: -7.57937
+        | Val:   loss: 1574.94674 | quality: -8.44025
+
+Epoch 3 | Train: loss: 1639.16144 | quality: -7.55793
+        | Val:   loss: 1569.93986 | quality: -8.41024
+
+Epoch 4 | Train: loss: 1635.35940 | quality: -7.53808
+        | Val:   loss: 1451.80038 | quality: -7.70211
+ *
+Epoch 5 | Train: loss: 1630.30151 | quality: -7.51167
+        | Val:   loss: 1440.33519 | quality: -7.63339
+ *
+Epoch 6 | Train: loss: 781.12123 | quality: -3.07817
+        | Val:   loss: 72483.78831 | quality: -433.46878
+
+Epoch 7 | Train: loss: 145.08950 | quality: 0.24250
+        | Val:   loss: 9455.89030 | quality: -55.67873
+
+Epoch 8 | Train: loss: 85.13371 | quality: 0.55552
+        | Val:   loss: 6834.51231 | quality: -39.96616
+
+Epoch 9 | Train: loss: 59.91799 | quality: 0.68717
+        | Val:   loss: 24800.90387 | quality: -147.65694
+
+Epoch 10 | Train: loss: 52.45934 | quality: 0.72611
+        | Val:   loss: 416011.84019 | quality: -2492.58043
+
+Epoch 11 | Train: loss: 45.85789 | quality: 0.76058
+        | Val:   loss: 255513.49126 | quality: -1530.55122
+
+Epoch 12 | Train: loss: 37.84738 | quality: 0.80240
+        | Val:   loss: 122330.01580 | quality: -732.24772
+
+Epoch 13 | Train: loss: 37.09949 | quality: 0.80631
+        | Val:   loss: 115.14166 | quality: 0.30984
+ *
+Epoch 14 | Train: loss: 39.14834 | quality: 0.79561
+        | Val:   loss: 27750.97538 | quality: -165.33971
+
+Epoch 15 | Train: loss: 36.18897 | quality: 0.81106
+        | Val:   loss: 281620.66631 | quality: -1687.03797
+
+Epoch 16 | Train: loss: 35.86106 | quality: 0.81277
+        | Val:   loss: 57118.11932 | quality: -341.36676
+
+Epoch 17 | Train: loss: 33.57514 | quality: 0.82471
+        | Val:   loss: 60635.78185 | quality: -362.45167
+
+Epoch 18 | Train: loss: 32.52295 | quality: 0.83020
+        | Val:   loss: 132478.09543 | quality: -793.07544
+
+Epoch 19 | Train: loss: 31.80711 | quality: 0.83394
+        | Val:   loss: 166271.74934 | quality: -995.63505
+
+Epoch 20 | Train: loss: 29.68493 | quality: 0.84502
+        | Val:   loss: 153741.93334 | quality: -920.53117
+
+
+Best epoch: 13 (val_quality=0.309839)
+[2026-04-28 21:10:53,224][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-28 21:10:53,224][__main__][INFO] - ✓ Train R²: 0.8063
+[2026-04-28 21:10:53,224][__main__][INFO] - ✓ Val R²: 0.3098
+[2026-04-28 21:10:53,226][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:53,373][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:53,377][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed47311
+[2026-04-28 21:10:53,378][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:54,825][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:54,826][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:54,826][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:54,826][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 4482253762.70463 | quality: -23401489.58314
+        | Val:   loss: 2658123221990.17529 | quality: -15932825488.89046
+Epoch 1 | Train: loss: 1648.14495 | quality: -7.60483
+        | Val:   loss: 1526.60429 | quality: -8.15049
+ *
+Epoch 2 | Train: loss: 1643.47812 | quality: -7.58047
+        | Val:   loss: 1572.37348 | quality: -8.42483
+
+Epoch 3 | Train: loss: 1639.30192 | quality: -7.55867
+        | Val:   loss: 1561.08847 | quality: -8.35718
+
+Epoch 4 | Train: loss: 1635.26567 | quality: -7.53759
+        | Val:   loss: 1471.44191 | quality: -7.81984
+ *
+Epoch 5 | Train: loss: 1628.91513 | quality: -7.50444
+        | Val:   loss: 1439.66593 | quality: -7.62938
+ *
+Epoch 6 | Train: loss: 556.67725 | quality: -1.90637
+        | Val:   loss: 57347.15714 | quality: -342.73961
+
+Epoch 7 | Train: loss: 120.29282 | quality: 0.37196
+        | Val:   loss: 2604.85208 | quality: -14.61352
+
+Epoch 8 | Train: loss: 85.71240 | quality: 0.55250
+        | Val:   loss: 61700.37358 | quality: -368.83285
+
+Epoch 9 | Train: loss: 59.35043 | quality: 0.69014
+        | Val:   loss: 534825.28959 | quality: -3204.74981
+
+Epoch 10 | Train: loss: 65.90442 | quality: 0.65592
+        | Val:   loss: 198670.59978 | quality: -1189.83418
+
+Epoch 11 | Train: loss: 64.38306 | quality: 0.66386
+        | Val:   loss: 330080.42560 | quality: -1977.50640
+
+Epoch 12 | Train: loss: 40.80715 | quality: 0.78695
+        | Val:   loss: 25487.62274 | quality: -151.77315
+
+Epoch 13 | Train: loss: 37.20847 | quality: 0.80574
+        | Val:   loss: 35274.67428 | quality: -210.43686
+
+Epoch 14 | Train: loss: 36.13058 | quality: 0.81137
+        | Val:   loss: 100851.13813 | quality: -603.50305
+
+Epoch 15 | Train: loss: 36.08720 | quality: 0.81159
+        | Val:   loss: 121532.61966 | quality: -727.46812
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 21:10:55,694][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-28 21:10:55,694][__main__][INFO] - ✓ Train R²: -7.5044
+[2026-04-28 21:10:55,694][__main__][INFO] - ✓ Val R²: -7.6294
+[2026-04-28 21:10:55,696][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:55,863][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:55,868][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed47303
+[2026-04-28 21:10:55,868][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:57,266][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:57,280][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:57,280][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:57,280][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 77477957078.38559 | quality: -404506253.87942
+        | Val:   loss: 2419900386577.55371 | quality: -14504914685.90879
+Epoch 1 | Train: loss: 1647.79086 | quality: -7.60299
+        | Val:   loss: 1524.61871 | quality: -8.13858
+ *
+Epoch 2 | Train: loss: 1643.23810 | quality: -7.57922
+        | Val:   loss: 1577.85585 | quality: -8.45769
+
+Epoch 3 | Train: loss: 1640.41952 | quality: -7.56450
+        | Val:   loss: 1584.60574 | quality: -8.49815
+
+Epoch 4 | Train: loss: 1635.58869 | quality: -7.53928
+        | Val:   loss: 1834.21637 | quality: -9.99432
+
+Epoch 5 | Train: loss: 1631.20822 | quality: -7.51641
+        | Val:   loss: 1463.86191 | quality: -7.77441
+ *
+Epoch 6 | Train: loss: 459.20192 | quality: -1.39746
+        | Val:   loss: 51996.29670 | quality: -310.66649
+
+Epoch 7 | Train: loss: 105.02186 | quality: 0.45169
+        | Val:   loss: 636.64069 | quality: -2.81603
+ *
+Epoch 8 | Train: loss: 51.37036 | quality: 0.73180
+        | Val:   loss: 72944.78599 | quality: -436.23200
+
+Epoch 9 | Train: loss: 40.19260 | quality: 0.79016
+        | Val:   loss: 11066.47033 | quality: -65.33257
+
+Epoch 10 | Train: loss: 38.59325 | quality: 0.79851
+        | Val:   loss: 8541.52556 | quality: -50.19802
+
+Epoch 11 | Train: loss: 35.35626 | quality: 0.81541
+        | Val:   loss: 2368.53242 | quality: -13.19701
+
+Epoch 12 | Train: loss: 34.22789 | quality: 0.82130
+        | Val:   loss: 95.04617 | quality: 0.43029
+ *
+Epoch 13 | Train: loss: 32.06086 | quality: 0.83261
+        | Val:   loss: 4987.33757 | quality: -28.89417
+
+Epoch 14 | Train: loss: 31.04582 | quality: 0.83791
+        | Val:   loss: 928.67443 | quality: -4.56649
+
+Epoch 15 | Train: loss: 30.82483 | quality: 0.83907
+        | Val:   loss: 16459.80827 | quality: -97.66031
+
+Epoch 16 | Train: loss: 30.20828 | quality: 0.84228
+        | Val:   loss: 165538.32570 | quality: -991.23890
+
+Epoch 17 | Train: loss: 29.62866 | quality: 0.84531
+        | Val:   loss: 255761.10948 | quality: -1532.03545
+
+Epoch 18 | Train: loss: 29.56101 | quality: 0.84566
+        | Val:   loss: 139854.90660 | quality: -837.29215
+
+Epoch 19 | Train: loss: 30.78666 | quality: 0.83927
+        | Val:   loss: 285010.15763 | quality: -1707.35463
+
+Epoch 20 | Train: loss: 30.41979 | quality: 0.84118
+        | Val:   loss: 17450.76426 | quality: -103.60011
+
+
+Best epoch: 12 (val_quality=0.430292)
+[2026-04-28 21:10:58,505][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-28 21:10:58,517][__main__][INFO] - ✓ Train R²: 0.8213
+[2026-04-28 21:10:58,517][__main__][INFO] - ✓ Val R²: 0.4303
+[2026-04-28 21:10:58,523][HYDRA] 	#25 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:10:58,776][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:10:58,780][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed42
+[2026-04-28 21:10:58,781][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:10:59,974][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:10:59,974][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:10:59,974][__main__][INFO] -   Device: cpu
+[2026-04-28 21:10:59,974][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 7894915076.49297 | quality: -41218723.01659
+        | Val:   loss: 177971582060.45776 | quality: -1066763998.37771
+Epoch 1 | Train: loss: 1646.73782 | quality: -7.59749
+        | Val:   loss: 1509.13895 | quality: -8.04580
+ *
+Epoch 2 | Train: loss: 1641.15653 | quality: -7.56835
+        | Val:   loss: 1719.77899 | quality: -9.30838
+
+Epoch 3 | Train: loss: 1636.92536 | quality: -7.54626
+        | Val:   loss: 1571.87975 | quality: -8.42187
+
+Epoch 4 | Train: loss: 1631.45757 | quality: -7.51771
+        | Val:   loss: 1445.57098 | quality: -7.66477
+ *
+Epoch 5 | Train: loss: 294.91892 | quality: -0.53975
+        | Val:   loss: 3397.36881 | quality: -19.36387
+
+Epoch 6 | Train: loss: 84.83291 | quality: 0.55709
+        | Val:   loss: 428.30365 | quality: -1.56726
+ *
+Epoch 7 | Train: loss: 55.35420 | quality: 0.71100
+        | Val:   loss: 2486.20706 | quality: -13.90236
+
+Epoch 8 | Train: loss: 44.43860 | quality: 0.76799
+        | Val:   loss: 6402.48749 | quality: -37.37659
+
+Epoch 9 | Train: loss: 37.62749 | quality: 0.80355
+        | Val:   loss: 12037.78122 | quality: -71.15462
+
+Epoch 10 | Train: loss: 35.44503 | quality: 0.81494
+        | Val:   loss: 31244.51528 | quality: -186.28003
+
+Epoch 11 | Train: loss: 32.92509 | quality: 0.82810
+        | Val:   loss: 47690.39161 | quality: -284.85683
+
+Epoch 12 | Train: loss: 32.08586 | quality: 0.83248
+        | Val:   loss: 71882.47789 | quality: -429.86452
+
+Epoch 13 | Train: loss: 31.35364 | quality: 0.83631
+        | Val:   loss: 88316.30609 | quality: -528.36910
+
+Epoch 14 | Train: loss: 31.49801 | quality: 0.83555
+        | Val:   loss: 16880.17847 | quality: -100.18001
+
+Epoch 15 | Train: loss: 29.95233 | quality: 0.84362
+        | Val:   loss: 164125.40929 | quality: -982.76986
+
+Epoch 16 | Train: loss: 28.49883 | quality: 0.85121
+        | Val:   loss: 547184.71709 | quality: -3278.83238
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 21:11:01,706][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed42/results.json
+[2026-04-28 21:11:01,707][__main__][INFO] - ✓ Train R²: 0.5571
+[2026-04-28 21:11:01,707][__main__][INFO] - ✓ Val R²: -1.5673
+[2026-04-28 21:11:01,710][HYDRA] 	#26 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:11:01,862][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:11:01,866][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed10090
+[2026-04-28 21:11:01,867][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:11:03,065][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:11:03,066][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:11:03,066][__main__][INFO] -   Device: cpu
+[2026-04-28 21:11:03,066][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 183936350080.73770 | quality: -960317060.94929
+        | Val:   loss: 10589241449954.72852 | quality: -63472052271.32571
+Epoch 1 | Train: loss: 1647.49128 | quality: -7.60142
+        | Val:   loss: 1521.71253 | quality: -8.12116
+ *
+Epoch 2 | Train: loss: 1639.41390 | quality: -7.55925
+        | Val:   loss: 2159.28016 | quality: -11.94275
+
+Epoch 3 | Train: loss: 1636.85159 | quality: -7.54587
+        | Val:   loss: 2335.48502 | quality: -12.99893
+
+Epoch 4 | Train: loss: 1633.86594 | quality: -7.53028
+        | Val:   loss: 1551.59099 | quality: -8.30026
+
+Epoch 5 | Train: loss: 479.30025 | quality: -1.50239
+        | Val:   loss: 9820.90563 | quality: -57.86664
+
+Epoch 6 | Train: loss: 123.52307 | quality: 0.35510
+        | Val:   loss: 7571.38257 | quality: -44.38297
+
+Epoch 7 | Train: loss: 54.72676 | quality: 0.71428
+        | Val:   loss: 1765.44034 | quality: -9.58207
+
+Epoch 8 | Train: loss: 43.75402 | quality: 0.77156
+        | Val:   loss: 556.20722 | quality: -2.33391
+ *
+Epoch 9 | Train: loss: 34.30864 | quality: 0.82088
+        | Val:   loss: 5084.37683 | quality: -29.47582
+
+Epoch 10 | Train: loss: 36.35397 | quality: 0.81020
+        | Val:   loss: 12438.80323 | quality: -73.55835
+
+Epoch 11 | Train: loss: 34.85930 | quality: 0.81800
+        | Val:   loss: 20763.34686 | quality: -123.45577
+
+Epoch 12 | Train: loss: 30.47636 | quality: 0.84089
+        | Val:   loss: 104449.23562 | quality: -625.07009
+
+Epoch 13 | Train: loss: 30.21163 | quality: 0.84227
+        | Val:   loss: 197672.90879 | quality: -1183.85401
+
+Epoch 14 | Train: loss: 31.49262 | quality: 0.83558
+        | Val:   loss: 67557.84334 | quality: -403.94260
+
+Epoch 15 | Train: loss: 29.91622 | quality: 0.84381
+        | Val:   loss: 18943.66451 | quality: -112.54857
+
+Epoch 16 | Train: loss: 30.09928 | quality: 0.84285
+        | Val:   loss: 147528.48067 | quality: -883.28765
+
+Epoch 17 | Train: loss: 26.05582 | quality: 0.86396
+        | Val:   loss: 9088.74386 | quality: -53.47805
+
+Epoch 18 | Train: loss: 24.18391 | quality: 0.87374
+        | Val:   loss: 46911.72062 | quality: -280.18947
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 21:11:05,026][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed10090/results.json
+[2026-04-28 21:11:05,027][__main__][INFO] - ✓ Train R²: 0.7716
+[2026-04-28 21:11:05,027][__main__][INFO] - ✓ Val R²: -2.3339
+[2026-04-28 21:11:05,028][HYDRA] 	#27 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:11:05,191][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:11:05,194][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed32874
+[2026-04-28 21:11:05,195][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:11:06,383][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:11:06,384][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:11:06,384][__main__][INFO] -   Device: cpu
+[2026-04-28 21:11:06,384][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 15175833573.12276 | quality: -79231819.69871
+        | Val:   loss: 1629507371329.21753 | quality: -9767288575.80267
+Epoch 1 | Train: loss: 1647.33918 | quality: -7.60063
+        | Val:   loss: 1518.28700 | quality: -8.10063
+ *
+Epoch 2 | Train: loss: 1640.42853 | quality: -7.56455
+        | Val:   loss: 1808.29564 | quality: -9.83895
+
+Epoch 3 | Train: loss: 1636.87118 | quality: -7.54597
+        | Val:   loss: 1668.45453 | quality: -9.00074
+
+Epoch 4 | Train: loss: 1631.05204 | quality: -7.51559
+        | Val:   loss: 1857.33949 | quality: -10.13292
+
+Epoch 5 | Train: loss: 340.05086 | quality: -0.77538
+        | Val:   loss: 413.61744 | quality: -1.47923
+ *
+Epoch 6 | Train: loss: 77.16878 | quality: 0.59711
+        | Val:   loss: 27261.04166 | quality: -162.40304
+
+Epoch 7 | Train: loss: 50.34332 | quality: 0.73716
+        | Val:   loss: 440.53534 | quality: -1.64057
+
+Epoch 8 | Train: loss: 48.73401 | quality: 0.74556
+        | Val:   loss: 20466.72226 | quality: -121.67780
+
+Epoch 9 | Train: loss: 37.49506 | quality: 0.80424
+        | Val:   loss: 38577.37548 | quality: -230.23330
+
+Epoch 10 | Train: loss: 32.10315 | quality: 0.83239
+        | Val:   loss: 28833.99247 | quality: -171.83133
+
+Epoch 11 | Train: loss: 29.07156 | quality: 0.84822
+        | Val:   loss: 922.32703 | quality: -4.52844
+
+Epoch 12 | Train: loss: 24.95737 | quality: 0.86970
+        | Val:   loss: 3968.62177 | quality: -22.78797
+
+Epoch 13 | Train: loss: 21.88077 | quality: 0.88576
+        | Val:   loss: 2416.72203 | quality: -13.48586
+
+Epoch 14 | Train: loss: 20.62654 | quality: 0.89231
+        | Val:   loss: 1523.46867 | quality: -8.13169
+
+Epoch 15 | Train: loss: 22.01779 | quality: 0.88505
+        | Val:   loss: 46110.47792 | quality: -275.38681
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 21:11:07,981][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed32874/results.json
+[2026-04-28 21:11:07,982][__main__][INFO] - ✓ Train R²: -0.7754
+[2026-04-28 21:11:07,982][__main__][INFO] - ✓ Val R²: -1.4792
+[2026-04-28 21:11:07,983][HYDRA] 	#28 : model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:11:08,134][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:11:08,138][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed47311
+[2026-04-28 21:11:08,139][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:11:09,325][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:11:09,325][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:11:09,325][__main__][INFO] -   Device: cpu
+[2026-04-28 21:11:09,325][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 191901683278.04663 | quality: -1001903432.37685
+        | Val:   loss: 1715711396848.36914 | quality: -10283996636.49760
+Epoch 1 | Train: loss: 1647.62519 | quality: -7.60212
+        | Val:   loss: 1525.98758 | quality: -8.14679
+ *
+Epoch 2 | Train: loss: 1638.83984 | quality: -7.55625
+        | Val:   loss: 1468.82064 | quality: -7.80413
+ *
+Epoch 3 | Train: loss: 1637.44043 | quality: -7.54895
+        | Val:   loss: 1521.00792 | quality: -8.11694
+
+Epoch 4 | Train: loss: 1632.07689 | quality: -7.52094
+        | Val:   loss: 1568.79723 | quality: -8.40339
+
+Epoch 5 | Train: loss: 380.52973 | quality: -0.98672
+        | Val:   loss: 45237.85491 | quality: -270.15630
+
+Epoch 6 | Train: loss: 75.70657 | quality: 0.60474
+        | Val:   loss: 105.41927 | quality: 0.36812
+ *
+Epoch 7 | Train: loss: 46.52764 | quality: 0.75708
+        | Val:   loss: 268.72904 | quality: -0.61077
+
+Epoch 8 | Train: loss: 40.63485 | quality: 0.78785
+        | Val:   loss: 2691.73186 | quality: -15.13428
+
+Epoch 9 | Train: loss: 35.31720 | quality: 0.81561
+        | Val:   loss: 3521.38222 | quality: -20.10721
+
+Epoch 10 | Train: loss: 31.20566 | quality: 0.83708
+        | Val:   loss: 187457.83583 | quality: -1122.62473
+
+Epoch 11 | Train: loss: 30.03928 | quality: 0.84317
+        | Val:   loss: 28027.81460 | quality: -166.99909
+
+Epoch 12 | Train: loss: 29.30928 | quality: 0.84698
+        | Val:   loss: 48487.19861 | quality: -289.63291
+
+Epoch 13 | Train: loss: 40.18378 | quality: 0.79020
+        | Val:   loss: 249029.03981 | quality: -1491.68333
+
+Epoch 14 | Train: loss: 36.14699 | quality: 0.81128
+        | Val:   loss: 44476.05955 | quality: -265.59008
+
+Epoch 15 | Train: loss: 32.22973 | quality: 0.83173
+        | Val:   loss: 14635.79083 | quality: -86.72712
+
+Epoch 16 | Train: loss: 30.10210 | quality: 0.84284
+        | Val:   loss: 83070.33827 | quality: -496.92470
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 21:11:11,041][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed47311/results.json
+[2026-04-28 21:11:11,041][__main__][INFO] - ✓ Train R²: 0.6047
+[2026-04-28 21:11:11,041][__main__][INFO] - ✓ Val R²: 0.3681
+[2026-04-28 21:11:11,045][HYDRA] 	#29 : model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=realstate
+[2026-04-28 21:11:11,196][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: realstate
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 21:11:11,199][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed47303
+[2026-04-28 21:11:11,200][__main__][INFO] - Loading dataset: realstate
+[2026-04-28 21:11:12,391][__main__][INFO] -   Samples: train=289, val=62, test=63
+[2026-04-28 21:11:12,391][__main__][INFO] -   Features: 7 (including bias), Task: regression
+[2026-04-28 21:11:12,391][__main__][INFO] -   Device: cpu
+[2026-04-28 21:11:12,391][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 14704276407.13222 | quality: -76769857.22101
+        | Val:   loss: 2559222134551.27979 | quality: -15340011072.35467
+Epoch 1 | Train: loss: 1646.40939 | quality: -7.59577
+        | Val:   loss: 1567.90403 | quality: -8.39804
+ *
+Epoch 2 | Train: loss: 1642.32433 | quality: -7.57444
+        | Val:   loss: 1659.03781 | quality: -8.94429
+
+Epoch 3 | Train: loss: 1636.84652 | quality: -7.54585
+        | Val:   loss: 1456.58754 | quality: -7.73080
+ *
+Epoch 4 | Train: loss: 1632.92664 | quality: -7.52538
+        | Val:   loss: 1445.37041 | quality: -7.66357
+ *
+Epoch 5 | Train: loss: 465.28390 | quality: -1.42921
+        | Val:   loss: 6851.76641 | quality: -40.06958
+
+Epoch 6 | Train: loss: 166.00345 | quality: 0.13331
+        | Val:   loss: 1521.91256 | quality: -8.12236
+
+Epoch 7 | Train: loss: 73.20331 | quality: 0.61781
+        | Val:   loss: 2064.78503 | quality: -11.37635
+
+Epoch 8 | Train: loss: 53.37630 | quality: 0.72133
+        | Val:   loss: 11153.00208 | quality: -65.85124
+
+Epoch 9 | Train: loss: 40.90062 | quality: 0.78646
+        | Val:   loss: 6481.18752 | quality: -37.84832
+
+Epoch 10 | Train: loss: 35.39857 | quality: 0.81519
+        | Val:   loss: 10807.83133 | quality: -63.78228
+
+Epoch 11 | Train: loss: 31.47379 | quality: 0.83568
+        | Val:   loss: 6634.87471 | quality: -38.76953
+
+Epoch 12 | Train: loss: 28.08211 | quality: 0.85339
+        | Val:   loss: 1425471.05621 | quality: -8543.29223
+
+Epoch 13 | Train: loss: 25.90333 | quality: 0.86476
+        | Val:   loss: 5549210.21618 | quality: -33261.03889
+
+Epoch 14 | Train: loss: 24.08376 | quality: 0.87426
+        | Val:   loss: 1132245.55564 | quality: -6785.69473
+
+
+⏸ Early stopping at epoch 14 (best was epoch 4)
+[2026-04-28 21:11:13,953][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/realstate/TNML_P_rg5_init0.1/L4_bd12_seed47303/results.json
+[2026-04-28 21:11:13,954][__main__][INFO] - ✓ Train R²: -7.5254
+[2026-04-28 21:11:13,954][__main__][INFO] - ✓ Val R²: -7.6636
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28319216[150]: <ntn_grid_full[1-200]%20> in cluster <dcc> Done
+
+Job <ntn_grid_full[1-200]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Apr 28 19:35:42 2026
+Job was executed on host(s) <4*n-62-28-33>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue Apr 28 21:09:48 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Apr 28 21:09:48 2026
+Terminated at Tue Apr 28 21:11:14 2026
+Results reported at Tue Apr 28 21:11:14 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-200]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# --- DRY RUN / TEST LOGIC ---
+# Run locally with: bash your_script.sh test
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+NUM_MODELS=${#MODELS[@]}
+DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "concrete" "energy_efficiency" "hearth" "iris" "mushrooms" "obesity" "popularity" "realstate" "seoulBike" "student_dropout" "student_perf" "wine" "winequalityc"
+)
+
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
+if [ "$1" == "test" ]; then
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
+    echo "--------------------------------------"
+for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        M_IDX=$((IDV % NUM_MODELS))
+        D_IDX=$((IDV / NUM_MODELS))
+        echo "Index $i: Dataset=${DATASETS[$D_IDX]}, Model=${MODELS[$M_IDX]}"
+    done
+    exit 0
+fi
+# ----------------------------
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+DATASET_IDX=$((IDV / NUM_MODELS))
+
+CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
+CURRENT_MODEL=${MODELS[$MODEL_IDX]}
+echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL"
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python run.py --multirun +experiment=uci_ntn_sweep model=$CURRENT_MODEL dataset=$CURRENT_DATASET
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   144.03 sec.
+    Max Memory :                                 413 MB
+    Average Memory :                             413.00 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               3683.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   86 sec.
+    Turnaround time :                            5732 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28319216_150.err> for stderr output of this job.
+

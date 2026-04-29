@@ -1,0 +1,3442 @@
+Task 20: Dataset=ai4i, Model=tnml_p
+[2026-04-28 19:40:44,743][HYDRA] Launching 30 jobs locally
+[2026-04-28 19:40:44,744][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:40:45,048][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:40:45,063][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed42
+[2026-04-28 19:40:45,161][utils.tracking][INFO] - Loaded 15142 tracked runs from runs_tracking.csv
+[2026-04-28 19:40:45,163][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:40:47,133][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:40:47,133][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:40:47,133][__main__][INFO] -   Device: cpu
+[2026-04-28 19:40:47,133][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 297567494313.56464 | quality: -8775773478025.07031
+        | Val:   loss: 1648957679.44234 | quality: -51174548671.34850
+Epoch 1 | Train: loss: 0.03497 | quality: -0.03119
+        | Val:   loss: 0.03342 | quality: -0.03719
+ *
+Epoch 2 | Train: loss: 0.03484 | quality: -0.02748
+        | Val:   loss: 0.03299 | quality: -0.02394
+ *
+Epoch 3 | Train: loss: 0.03297 | quality: 0.02774
+        | Val:   loss: 0.03122 | quality: 0.03126
+ *
+Epoch 4 | Train: loss: 0.02610 | quality: 0.23038
+        | Val:   loss: 0.02379 | quality: 0.26178
+ *
+Epoch 5 | Train: loss: 0.02400 | quality: 0.29231
+        | Val:   loss: 0.02281 | quality: 0.29197
+ *
+Epoch 6 | Train: loss: 0.02311 | quality: 0.31833
+        | Val:   loss: 0.02237 | quality: 0.30574
+ *
+Epoch 7 | Train: loss: 0.02257 | quality: 0.33451
+        | Val:   loss: 0.02209 | quality: 0.31454
+ *
+Epoch 8 | Train: loss: 0.02185 | quality: 0.35562
+        | Val:   loss: 0.02211 | quality: 0.31391
+ *
+Epoch 9 | Train: loss: 0.02119 | quality: 0.37518
+        | Val:   loss: 0.02222 | quality: 0.31052
+
+Epoch 10 | Train: loss: 0.02013 | quality: 0.40622
+        | Val:   loss: 0.02147 | quality: 0.33372
+ *
+Epoch 11 | Train: loss: 0.01943 | quality: 0.42686
+        | Val:   loss: 0.02314 | quality: 0.28186
+
+Epoch 12 | Train: loss: 0.01941 | quality: 0.42750
+        | Val:   loss: 0.02720 | quality: 0.15578
+
+Epoch 13 | Train: loss: 0.01988 | quality: 0.41361
+        | Val:   loss: 0.02931 | quality: 0.09033
+
+Epoch 14 | Train: loss: 0.02016 | quality: 0.40552
+        | Val:   loss: 0.02970 | quality: 0.07813
+
+Epoch 15 | Train: loss: 0.02029 | quality: 0.40175
+        | Val:   loss: 0.03106 | quality: 0.03603
+
+Epoch 16 | Train: loss: 0.02034 | quality: 0.40016
+        | Val:   loss: 0.03637 | quality: -0.12863
+
+Epoch 17 | Train: loss: 0.02032 | quality: 0.40077
+        | Val:   loss: 0.04068 | quality: -0.26260
+
+Epoch 18 | Train: loss: 0.02025 | quality: 0.40280
+        | Val:   loss: 0.04364 | quality: -0.35445
+
+Epoch 19 | Train: loss: 0.02020 | quality: 0.40429
+        | Val:   loss: 0.04594 | quality: -0.42579
+
+Epoch 20 | Train: loss: 0.02016 | quality: 0.40544
+        | Val:   loss: 0.04785 | quality: -0.48505
+
+
+⏸ Early stopping at epoch 20 (best was epoch 10)
+[2026-04-28 19:41:29,786][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed42/results.json
+[2026-04-28 19:41:29,786][__main__][INFO] - ✓ Train R²: 0.4062
+[2026-04-28 19:41:29,786][__main__][INFO] - ✓ Val R²: 0.3337
+[2026-04-28 19:41:29,789][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:41:29,955][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:41:29,959][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed10090
+[2026-04-28 19:41:29,960][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:41:31,852][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:41:31,853][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:41:31,853][__main__][INFO] -   Device: cpu
+[2026-04-28 19:41:31,854][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 410631422.75340 | quality: -12110221773.58026
+        | Val:   loss: 218207596.82946 | quality: -6771959900.60397
+Epoch 1 | Train: loss: 0.03464 | quality: -0.02154
+        | Val:   loss: 0.03300 | quality: -0.02409
+ *
+Epoch 2 | Train: loss: 0.03444 | quality: -0.01558
+        | Val:   loss: 0.03293 | quality: -0.02200
+ *
+Epoch 3 | Train: loss: 0.03327 | quality: 0.01892
+        | Val:   loss: 0.03167 | quality: 0.01729
+ *
+Epoch 4 | Train: loss: 0.02693 | quality: 0.20583
+        | Val:   loss: 0.02503 | quality: 0.22318
+ *
+Epoch 5 | Train: loss: 0.02319 | quality: 0.31596
+        | Val:   loss: 0.02170 | quality: 0.32653
+ *
+Epoch 6 | Train: loss: 0.02240 | quality: 0.33926
+        | Val:   loss: 0.02098 | quality: 0.34894
+ *
+Epoch 7 | Train: loss: 0.02207 | quality: 0.34915
+        | Val:   loss: 0.02091 | quality: 0.35117
+ *
+Epoch 8 | Train: loss: 0.02163 | quality: 0.36215
+        | Val:   loss: 0.02293 | quality: 0.28835
+
+Epoch 9 | Train: loss: 0.02056 | quality: 0.39351
+        | Val:   loss: 0.02268 | quality: 0.29613
+
+Epoch 10 | Train: loss: 0.02000 | quality: 0.41023
+        | Val:   loss: 0.02150 | quality: 0.33282
+
+Epoch 11 | Train: loss: 0.01946 | quality: 0.42604
+        | Val:   loss: 0.02236 | quality: 0.30593
+
+Epoch 12 | Train: loss: 0.01940 | quality: 0.42791
+        | Val:   loss: 0.02272 | quality: 0.29495
+
+Epoch 13 | Train: loss: 0.01931 | quality: 0.43040
+        | Val:   loss: 0.02435 | quality: 0.24426
+
+Epoch 14 | Train: loss: 0.01918 | quality: 0.43425
+        | Val:   loss: 0.02575 | quality: 0.20082
+
+Epoch 15 | Train: loss: 0.01905 | quality: 0.43825
+        | Val:   loss: 0.02636 | quality: 0.18207
+
+Epoch 16 | Train: loss: 0.01894 | quality: 0.44136
+        | Val:   loss: 0.02647 | quality: 0.17848
+
+Epoch 17 | Train: loss: 0.01890 | quality: 0.44262
+        | Val:   loss: 0.02662 | quality: 0.17377
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 19:42:08,373][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed10090/results.json
+[2026-04-28 19:42:08,373][__main__][INFO] - ✓ Train R²: 0.3491
+[2026-04-28 19:42:08,373][__main__][INFO] - ✓ Val R²: 0.3512
+[2026-04-28 19:42:08,376][HYDRA] 	#2 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:42:08,541][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:42:08,546][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed32874
+[2026-04-28 19:42:08,546][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:42:10,397][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:42:10,398][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:42:10,398][__main__][INFO] -   Device: cpu
+[2026-04-28 19:42:10,398][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 337771337.88498 | quality: -9961453468.52728
+        | Val:   loss: 27425406.87301 | quality: -851133315.74858
+Epoch 1 | Train: loss: 0.03459 | quality: -0.02009
+        | Val:   loss: 0.03303 | quality: -0.02499
+ *
+Epoch 2 | Train: loss: 0.03441 | quality: -0.01475
+        | Val:   loss: 0.03290 | quality: -0.02111
+ *
+Epoch 3 | Train: loss: 0.03288 | quality: 0.03026
+        | Val:   loss: 0.03123 | quality: 0.03068
+ *
+Epoch 4 | Train: loss: 0.02716 | quality: 0.19894
+        | Val:   loss: 0.02459 | quality: 0.23671
+ *
+Epoch 5 | Train: loss: 0.02442 | quality: 0.27976
+        | Val:   loss: 0.02234 | quality: 0.30655
+ *
+Epoch 6 | Train: loss: 0.02275 | quality: 0.32897
+        | Val:   loss: 0.02138 | quality: 0.33651
+ *
+Epoch 7 | Train: loss: 0.02187 | quality: 0.35499
+        | Val:   loss: 0.02094 | quality: 0.35003
+ *
+Epoch 8 | Train: loss: 0.02079 | quality: 0.38697
+        | Val:   loss: 0.02467 | quality: 0.23448
+
+Epoch 9 | Train: loss: 0.01958 | quality: 0.42265
+        | Val:   loss: 0.02712 | quality: 0.15840
+
+Epoch 10 | Train: loss: 0.01861 | quality: 0.45103
+        | Val:   loss: 0.02461 | quality: 0.23612
+
+Epoch 11 | Train: loss: 0.01905 | quality: 0.43831
+        | Val:   loss: 0.02504 | quality: 0.22283
+
+Epoch 12 | Train: loss: 0.01936 | quality: 0.42904
+        | Val:   loss: 0.02392 | quality: 0.25759
+
+Epoch 13 | Train: loss: 0.01962 | quality: 0.42143
+        | Val:   loss: 0.02192 | quality: 0.31966
+
+Epoch 14 | Train: loss: 0.01968 | quality: 0.41957
+        | Val:   loss: 0.02112 | quality: 0.34469
+
+Epoch 15 | Train: loss: 0.01960 | quality: 0.42210
+        | Val:   loss: 0.02093 | quality: 0.35045
+ *
+Epoch 16 | Train: loss: 0.01939 | quality: 0.42816
+        | Val:   loss: 0.02087 | quality: 0.35237
+ *
+Epoch 17 | Train: loss: 0.01920 | quality: 0.43375
+        | Val:   loss: 0.02080 | quality: 0.35451
+ *
+Epoch 18 | Train: loss: 0.01848 | quality: 0.45505
+        | Val:   loss: 0.02163 | quality: 0.32881
+
+Epoch 19 | Train: loss: 0.01824 | quality: 0.46203
+        | Val:   loss: 0.02166 | quality: 0.32778
+
+Epoch 20 | Train: loss: 0.01773 | quality: 0.47712
+        | Val:   loss: 0.02305 | quality: 0.28465
+
+
+Best epoch: 17 (val_quality=0.354514)
+[2026-04-28 19:42:52,204][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed32874/results.json
+[2026-04-28 19:42:52,205][__main__][INFO] - ✓ Train R²: 0.4338
+[2026-04-28 19:42:52,205][__main__][INFO] - ✓ Val R²: 0.3545
+[2026-04-28 19:42:52,208][HYDRA] 	#3 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:42:52,392][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:42:52,397][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed47311
+[2026-04-28 19:42:52,398][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:42:54,284][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:42:54,284][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:42:54,285][__main__][INFO] -   Device: cpu
+[2026-04-28 19:42:54,285][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 47114796.55676 | quality: -1389495793.89241
+        | Val:   loss: 50657557.15794 | quality: -1572131083.21194
+Epoch 1 | Train: loss: 0.03468 | quality: -0.02286
+        | Val:   loss: 0.03362 | quality: -0.04353
+ *
+Epoch 2 | Train: loss: 0.03455 | quality: -0.01885
+        | Val:   loss: 0.03357 | quality: -0.04175
+ *
+Epoch 3 | Train: loss: 0.03444 | quality: -0.01571
+        | Val:   loss: 0.03354 | quality: -0.04105
+ *
+Epoch 4 | Train: loss: 0.03396 | quality: -0.00165
+        | Val:   loss: 0.03267 | quality: -0.01397
+ *
+Epoch 5 | Train: loss: 0.02813 | quality: 0.17050
+        | Val:   loss: 0.02628 | quality: 0.18437
+ *
+Epoch 6 | Train: loss: 0.02323 | quality: 0.31479
+        | Val:   loss: 0.02189 | quality: 0.32058
+ *
+Epoch 7 | Train: loss: 0.02201 | quality: 0.35076
+        | Val:   loss: 0.02126 | quality: 0.34006
+ *
+Epoch 8 | Train: loss: 0.02175 | quality: 0.35859
+        | Val:   loss: 0.02191 | quality: 0.32010
+
+Epoch 9 | Train: loss: 0.02090 | quality: 0.38353
+        | Val:   loss: 0.02500 | quality: 0.22406
+
+Epoch 10 | Train: loss: 0.02084 | quality: 0.38551
+        | Val:   loss: 0.02322 | quality: 0.27951
+
+Epoch 11 | Train: loss: 0.02165 | quality: 0.36151
+        | Val:   loss: 0.02321 | quality: 0.27971
+
+Epoch 12 | Train: loss: 0.02175 | quality: 0.35864
+        | Val:   loss: 0.02743 | quality: 0.14877
+
+Epoch 13 | Train: loss: 0.02173 | quality: 0.35920
+        | Val:   loss: 0.02927 | quality: 0.09150
+
+Epoch 14 | Train: loss: 0.02165 | quality: 0.36164
+        | Val:   loss: 0.02871 | quality: 0.10886
+
+Epoch 15 | Train: loss: 0.02147 | quality: 0.36680
+        | Val:   loss: 0.02750 | quality: 0.14664
+
+Epoch 16 | Train: loss: 0.02126 | quality: 0.37309
+        | Val:   loss: 0.02652 | quality: 0.17698
+
+Epoch 17 | Train: loss: 0.02106 | quality: 0.37889
+        | Val:   loss: 0.02603 | quality: 0.19209
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 19:43:30,527][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed47311/results.json
+[2026-04-28 19:43:30,528][__main__][INFO] - ✓ Train R²: 0.3508
+[2026-04-28 19:43:30,528][__main__][INFO] - ✓ Val R²: 0.3401
+[2026-04-28 19:43:30,530][HYDRA] 	#4 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:43:30,720][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:43:30,724][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed47303
+[2026-04-28 19:43:30,725][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:43:32,638][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:43:32,639][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:43:32,639][__main__][INFO] -   Device: cpu
+[2026-04-28 19:43:32,639][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 3820187432.48649 | quality: -112663850022.13464
+        | Val:   loss: 56787613.55817 | quality: -1762374212.87425
+Epoch 1 | Train: loss: 0.03461 | quality: -0.02073
+        | Val:   loss: 0.03308 | quality: -0.02670
+ *
+Epoch 2 | Train: loss: 0.03443 | quality: -0.01543
+        | Val:   loss: 0.03291 | quality: -0.02141
+ *
+Epoch 3 | Train: loss: 0.03351 | quality: 0.01167
+        | Val:   loss: 0.03186 | quality: 0.01122
+ *
+Epoch 4 | Train: loss: 0.03013 | quality: 0.11140
+        | Val:   loss: 0.02773 | quality: 0.13933
+ *
+Epoch 5 | Train: loss: 0.02453 | quality: 0.27653
+        | Val:   loss: 0.02272 | quality: 0.29494
+ *
+Epoch 6 | Train: loss: 0.02438 | quality: 0.28085
+        | Val:   loss: 0.02269 | quality: 0.29579
+ *
+Epoch 7 | Train: loss: 0.02385 | quality: 0.29649
+        | Val:   loss: 0.02229 | quality: 0.30835
+ *
+Epoch 8 | Train: loss: 0.02250 | quality: 0.33656
+        | Val:   loss: 0.02144 | quality: 0.33456
+ *
+Epoch 9 | Train: loss: 0.02169 | quality: 0.36030
+        | Val:   loss: 0.02228 | quality: 0.30844
+
+Epoch 10 | Train: loss: 0.02151 | quality: 0.36559
+        | Val:   loss: 0.02409 | quality: 0.25243
+
+Epoch 11 | Train: loss: 0.02112 | quality: 0.37703
+        | Val:   loss: 0.02819 | quality: 0.12505
+
+Epoch 12 | Train: loss: 0.02067 | quality: 0.39033
+        | Val:   loss: 0.02967 | quality: 0.07909
+
+Epoch 13 | Train: loss: 0.02015 | quality: 0.40589
+        | Val:   loss: 0.02325 | quality: 0.27853
+
+Epoch 14 | Train: loss: 0.01950 | quality: 0.42486
+        | Val:   loss: 0.02231 | quality: 0.30771
+
+Epoch 15 | Train: loss: 0.01909 | quality: 0.43696
+        | Val:   loss: 0.02301 | quality: 0.28588
+
+Epoch 16 | Train: loss: 0.01879 | quality: 0.44595
+        | Val:   loss: 0.02351 | quality: 0.27023
+
+Epoch 17 | Train: loss: 0.01854 | quality: 0.45312
+        | Val:   loss: 0.02382 | quality: 0.26085
+
+Epoch 18 | Train: loss: 0.01842 | quality: 0.45665
+        | Val:   loss: 0.02420 | quality: 0.24890
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 19:44:10,616][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd4_seed47303/results.json
+[2026-04-28 19:44:10,617][__main__][INFO] - ✓ Train R²: 0.3366
+[2026-04-28 19:44:10,617][__main__][INFO] - ✓ Val R²: 0.3346
+[2026-04-28 19:44:10,620][HYDRA] 	#5 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:44:10,789][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:44:10,793][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed42
+[2026-04-28 19:44:10,794][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:44:12,911][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:44:12,913][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:44:12,913][__main__][INFO] -   Device: cpu
+[2026-04-28 19:44:12,913][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 7494008918.94974 | quality: -221011118389.87061
+        | Val:   loss: 758188330.15055 | quality: -23529982658.84451
+Epoch 1 | Train: loss: 0.03454 | quality: -0.01871
+        | Val:   loss: 0.03365 | quality: -0.04426
+ *
+Epoch 2 | Train: loss: 0.03436 | quality: -0.01321
+        | Val:   loss: 0.03330 | quality: -0.03340
+ *
+Epoch 3 | Train: loss: 0.03267 | quality: 0.03650
+        | Val:   loss: 0.03325 | quality: -0.03204
+ *
+Epoch 4 | Train: loss: 0.02977 | quality: 0.12199
+        | Val:   loss: 0.03088 | quality: 0.04154
+ *
+Epoch 5 | Train: loss: 0.02322 | quality: 0.31519
+        | Val:   loss: 0.02262 | quality: 0.29800
+ *
+Epoch 6 | Train: loss: 0.02294 | quality: 0.32358
+        | Val:   loss: 0.02362 | quality: 0.26686
+
+Epoch 7 | Train: loss: 0.02185 | quality: 0.35574
+        | Val:   loss: 0.02405 | quality: 0.25358
+
+Epoch 8 | Train: loss: 0.01964 | quality: 0.42072
+        | Val:   loss: 0.02730 | quality: 0.15272
+
+Epoch 9 | Train: loss: 0.01671 | quality: 0.50727
+        | Val:   loss: 0.02613 | quality: 0.18898
+
+Epoch 10 | Train: loss: 0.01555 | quality: 0.54146
+        | Val:   loss: 0.03298 | quality: -0.02359
+
+Epoch 11 | Train: loss: 0.01474 | quality: 0.56524
+        | Val:   loss: 0.03628 | quality: -0.12582
+
+Epoch 12 | Train: loss: 0.01433 | quality: 0.57740
+        | Val:   loss: 0.04122 | quality: -0.27914
+
+Epoch 13 | Train: loss: 0.01456 | quality: 0.57046
+        | Val:   loss: 0.05418 | quality: -0.68154
+
+Epoch 14 | Train: loss: 0.01494 | quality: 0.55933
+        | Val:   loss: 0.06740 | quality: -1.09175
+
+Epoch 15 | Train: loss: 0.01521 | quality: 0.55129
+        | Val:   loss: 0.06098 | quality: -0.89239
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 19:44:55,940][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-28 19:44:55,941][__main__][INFO] - ✓ Train R²: 0.3152
+[2026-04-28 19:44:55,941][__main__][INFO] - ✓ Val R²: 0.2980
+[2026-04-28 19:44:55,944][HYDRA] 	#6 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:44:56,126][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:44:56,130][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed10090
+[2026-04-28 19:44:56,131][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:44:57,979][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:44:57,979][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:44:57,979][__main__][INFO] -   Device: cpu
+[2026-04-28 19:44:57,980][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 5392857239.77797 | quality: -159044567836.62015
+        | Val:   loss: 1561755320.32011 | quality: -48468268560.65849
+Epoch 1 | Train: loss: 0.03447 | quality: -0.01648
+        | Val:   loss: 0.03304 | quality: -0.02523
+ *
+Epoch 2 | Train: loss: 0.03381 | quality: 0.00300
+        | Val:   loss: 0.03214 | quality: 0.00247
+ *
+Epoch 3 | Train: loss: 0.02920 | quality: 0.13886
+        | Val:   loss: 0.02622 | quality: 0.18628
+ *
+Epoch 4 | Train: loss: 0.02381 | quality: 0.29790
+        | Val:   loss: 0.02182 | quality: 0.32280
+ *
+Epoch 5 | Train: loss: 0.02332 | quality: 0.31223
+        | Val:   loss: 0.02107 | quality: 0.34595
+ *
+Epoch 6 | Train: loss: 0.02267 | quality: 0.33150
+        | Val:   loss: 0.02164 | quality: 0.32836
+
+Epoch 7 | Train: loss: 0.02155 | quality: 0.36440
+        | Val:   loss: 0.02415 | quality: 0.25058
+
+Epoch 8 | Train: loss: 0.02064 | quality: 0.39119
+        | Val:   loss: 0.02652 | quality: 0.17685
+
+Epoch 9 | Train: loss: 0.01857 | quality: 0.45230
+        | Val:   loss: 0.02786 | quality: 0.13547
+
+Epoch 10 | Train: loss: 0.01750 | quality: 0.48383
+        | Val:   loss: 0.04769 | quality: -0.48010
+
+Epoch 11 | Train: loss: 0.01692 | quality: 0.50094
+        | Val:   loss: 0.06267 | quality: -0.94495
+
+Epoch 12 | Train: loss: 0.01643 | quality: 0.51559
+        | Val:   loss: 0.10110 | quality: -2.13769
+
+Epoch 13 | Train: loss: 0.01596 | quality: 0.52942
+        | Val:   loss: 0.12427 | quality: -2.85656
+
+Epoch 14 | Train: loss: 0.01555 | quality: 0.54143
+        | Val:   loss: 0.14555 | quality: -3.51720
+
+Epoch 15 | Train: loss: 0.01534 | quality: 0.54759
+        | Val:   loss: 0.14564 | quality: -3.51991
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 19:45:41,412][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-28 19:45:41,413][__main__][INFO] - ✓ Train R²: 0.3122
+[2026-04-28 19:45:41,413][__main__][INFO] - ✓ Val R²: 0.3460
+[2026-04-28 19:45:41,416][HYDRA] 	#7 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:45:41,588][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:45:41,593][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed32874
+[2026-04-28 19:45:41,593][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:45:43,438][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:45:43,439][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:45:43,439][__main__][INFO] -   Device: cpu
+[2026-04-28 19:45:43,439][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 14509876387.00835 | quality: -427921029008.85443
+        | Val:   loss: 834116404.68377 | quality: -25886371178.84109
+Epoch 1 | Train: loss: 0.03454 | quality: -0.01867
+        | Val:   loss: 0.03341 | quality: -0.03691
+ *
+Epoch 2 | Train: loss: 0.03438 | quality: -0.01386
+        | Val:   loss: 0.03342 | quality: -0.03715
+ *
+Epoch 3 | Train: loss: 0.03360 | quality: 0.00921
+        | Val:   loss: 0.03331 | quality: -0.03370
+ *
+Epoch 4 | Train: loss: 0.03161 | quality: 0.06774
+        | Val:   loss: 0.03039 | quality: 0.05697
+ *
+Epoch 5 | Train: loss: 0.02374 | quality: 0.30001
+        | Val:   loss: 0.02334 | quality: 0.27551
+ *
+Epoch 6 | Train: loss: 0.02211 | quality: 0.34803
+        | Val:   loss: 0.02106 | quality: 0.34648
+ *
+Epoch 7 | Train: loss: 0.02138 | quality: 0.36937
+        | Val:   loss: 0.02174 | quality: 0.32518
+
+Epoch 8 | Train: loss: 0.01764 | quality: 0.47991
+        | Val:   loss: 0.02031 | quality: 0.36965
+ *
+Epoch 9 | Train: loss: 0.01603 | quality: 0.52731
+        | Val:   loss: 0.02071 | quality: 0.35715
+
+Epoch 10 | Train: loss: 0.01485 | quality: 0.56212
+        | Val:   loss: 0.03184 | quality: 0.01173
+
+Epoch 11 | Train: loss: 0.01429 | quality: 0.57860
+        | Val:   loss: 0.05282 | quality: -0.63924
+
+Epoch 12 | Train: loss: 0.01432 | quality: 0.57757
+        | Val:   loss: 0.06339 | quality: -0.96721
+
+Epoch 13 | Train: loss: 0.01448 | quality: 0.57299
+        | Val:   loss: 0.08269 | quality: -1.56621
+
+Epoch 14 | Train: loss: 0.01445 | quality: 0.57385
+        | Val:   loss: 0.07674 | quality: -1.38164
+
+Epoch 15 | Train: loss: 0.01435 | quality: 0.57668
+        | Val:   loss: 0.07396 | quality: -1.29542
+
+Epoch 16 | Train: loss: 0.01439 | quality: 0.57548
+        | Val:   loss: 0.07501 | quality: -1.32791
+
+Epoch 17 | Train: loss: 0.01446 | quality: 0.57356
+        | Val:   loss: 0.06686 | quality: -1.07494
+
+Epoch 18 | Train: loss: 0.01446 | quality: 0.57363
+        | Val:   loss: 0.06102 | quality: -0.89376
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 19:46:35,464][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-28 19:46:35,465][__main__][INFO] - ✓ Train R²: 0.4799
+[2026-04-28 19:46:35,465][__main__][INFO] - ✓ Val R²: 0.3697
+[2026-04-28 19:46:35,468][HYDRA] 	#8 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:46:35,635][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:46:35,639][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed47311
+[2026-04-28 19:46:35,640][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:46:37,664][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:46:37,665][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:46:37,665][__main__][INFO] -   Device: cpu
+[2026-04-28 19:46:37,665][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 4693487996.14522 | quality: -138418974729.49127
+        | Val:   loss: 90054853.16980 | quality: -2794805787.02841
+Epoch 1 | Train: loss: 0.03452 | quality: -0.01801
+        | Val:   loss: 0.03319 | quality: -0.02997
+ *
+Epoch 2 | Train: loss: 0.03375 | quality: 0.00473
+        | Val:   loss: 0.03234 | quality: -0.00367
+ *
+Epoch 3 | Train: loss: 0.02640 | quality: 0.22150
+        | Val:   loss: 0.02387 | quality: 0.25924
+ *
+Epoch 4 | Train: loss: 0.02330 | quality: 0.31284
+        | Val:   loss: 0.02176 | quality: 0.32468
+ *
+Epoch 5 | Train: loss: 0.02534 | quality: 0.25270
+        | Val:   loss: 0.02301 | quality: 0.28585
+
+Epoch 6 | Train: loss: 0.02355 | quality: 0.30534
+        | Val:   loss: 0.02170 | quality: 0.32662
+ *
+Epoch 7 | Train: loss: 0.02193 | quality: 0.35332
+        | Val:   loss: 0.02131 | quality: 0.33877
+ *
+Epoch 8 | Train: loss: 0.02131 | quality: 0.37141
+        | Val:   loss: 0.02655 | quality: 0.17592
+
+Epoch 9 | Train: loss: 0.01974 | quality: 0.41772
+        | Val:   loss: 0.02959 | quality: 0.08168
+
+Epoch 10 | Train: loss: 0.01812 | quality: 0.46558
+        | Val:   loss: 0.02751 | quality: 0.14639
+
+Epoch 11 | Train: loss: 0.01663 | quality: 0.50942
+        | Val:   loss: 0.02379 | quality: 0.26155
+
+Epoch 12 | Train: loss: 0.01596 | quality: 0.52930
+        | Val:   loss: 0.02219 | quality: 0.31120
+
+Epoch 13 | Train: loss: 0.01600 | quality: 0.52811
+        | Val:   loss: 0.03063 | quality: 0.04934
+
+Epoch 14 | Train: loss: 0.01625 | quality: 0.52087
+        | Val:   loss: 0.03280 | quality: -0.01789
+
+Epoch 15 | Train: loss: 0.01634 | quality: 0.51823
+        | Val:   loss: 0.03945 | quality: -0.22428
+
+Epoch 16 | Train: loss: 0.01634 | quality: 0.51809
+        | Val:   loss: 0.03736 | quality: -0.15946
+
+Epoch 17 | Train: loss: 0.01627 | quality: 0.52010
+        | Val:   loss: 0.03903 | quality: -0.21114
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-04-28 19:47:26,192][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-28 19:47:26,193][__main__][INFO] - ✓ Train R²: 0.3533
+[2026-04-28 19:47:26,193][__main__][INFO] - ✓ Val R²: 0.3388
+[2026-04-28 19:47:26,196][HYDRA] 	#9 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:47:26,362][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:47:26,366][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed47303
+[2026-04-28 19:47:26,367][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:47:29,150][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:47:29,151][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:47:29,151][__main__][INFO] -   Device: cpu
+[2026-04-28 19:47:29,151][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1320446682.60068 | quality: -38942227217.21790
+        | Val:   loss: 386864075.98052 | quality: -12006126494.94724
+Epoch 1 | Train: loss: 0.03448 | quality: -0.01691
+        | Val:   loss: 0.03310 | quality: -0.02737
+ *
+Epoch 2 | Train: loss: 0.03371 | quality: 0.00574
+        | Val:   loss: 0.03219 | quality: 0.00098
+ *
+Epoch 3 | Train: loss: 0.03119 | quality: 0.08022
+        | Val:   loss: 0.02929 | quality: 0.09085
+ *
+Epoch 4 | Train: loss: 0.02567 | quality: 0.24302
+        | Val:   loss: 0.02361 | quality: 0.26742
+ *
+Epoch 5 | Train: loss: 0.02377 | quality: 0.29884
+        | Val:   loss: 0.02167 | quality: 0.32759
+ *
+Epoch 6 | Train: loss: 0.02292 | quality: 0.32401
+        | Val:   loss: 0.02122 | quality: 0.34139
+ *
+Epoch 7 | Train: loss: 0.02181 | quality: 0.35669
+        | Val:   loss: 0.02178 | quality: 0.32411
+
+Epoch 8 | Train: loss: 0.02102 | quality: 0.37995
+        | Val:   loss: 0.02530 | quality: 0.21493
+
+Epoch 9 | Train: loss: 0.01890 | quality: 0.44260
+        | Val:   loss: 0.02791 | quality: 0.13392
+
+Epoch 10 | Train: loss: 0.01678 | quality: 0.50504
+        | Val:   loss: 0.03751 | quality: -0.16425
+
+Epoch 11 | Train: loss: 0.01593 | quality: 0.53009
+        | Val:   loss: 0.05502 | quality: -0.70761
+
+Epoch 12 | Train: loss: 0.01603 | quality: 0.52724
+        | Val:   loss: 0.05354 | quality: -0.66157
+
+Epoch 13 | Train: loss: 0.01623 | quality: 0.52144
+        | Val:   loss: 0.05446 | quality: -0.69016
+
+Epoch 14 | Train: loss: 0.01606 | quality: 0.52644
+        | Val:   loss: 0.05811 | quality: -0.80335
+
+Epoch 15 | Train: loss: 0.01578 | quality: 0.53464
+        | Val:   loss: 0.04677 | quality: -0.45157
+
+Epoch 16 | Train: loss: 0.01556 | quality: 0.54120
+        | Val:   loss: 0.04985 | quality: -0.54696
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 19:48:15,339][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-28 19:48:15,340][__main__][INFO] - ✓ Train R²: 0.3240
+[2026-04-28 19:48:15,340][__main__][INFO] - ✓ Val R²: 0.3414
+[2026-04-28 19:48:15,343][HYDRA] 	#10 : model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:48:15,538][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:48:15,542][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed42
+[2026-04-28 19:48:15,543][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:48:17,392][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:48:17,393][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:48:17,393][__main__][INFO] -   Device: cpu
+[2026-04-28 19:48:17,393][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 8843710428.07148 | quality: -260816120392.27655
+        | Val:   loss: 564838521.68205 | quality: -17529471361.54630
+Epoch 1 | Train: loss: 0.03430 | quality: -0.01152
+        | Val:   loss: 0.03299 | quality: -0.02379
+ *
+Epoch 2 | Train: loss: 0.03063 | quality: 0.09669
+        | Val:   loss: 0.02953 | quality: 0.08356
+ *
+Epoch 3 | Train: loss: 0.02551 | quality: 0.24764
+        | Val:   loss: 0.02429 | quality: 0.24625
+ *
+Epoch 4 | Train: loss: 0.02393 | quality: 0.29417
+        | Val:   loss: 0.02272 | quality: 0.29496
+ *
+Epoch 5 | Train: loss: 0.02285 | quality: 0.32608
+        | Val:   loss: 0.02183 | quality: 0.32261
+ *
+Epoch 6 | Train: loss: 0.02165 | quality: 0.36165
+        | Val:   loss: 0.02171 | quality: 0.32639
+ *
+Epoch 7 | Train: loss: 0.02061 | quality: 0.39215
+        | Val:   loss: 0.02471 | quality: 0.23303
+
+Epoch 8 | Train: loss: 0.01713 | quality: 0.49479
+        | Val:   loss: 0.03271 | quality: -0.01508
+
+Epoch 9 | Train: loss: 0.01547 | quality: 0.54383
+        | Val:   loss: 0.06962 | quality: -1.16060
+
+Epoch 10 | Train: loss: 0.01437 | quality: 0.57633
+        | Val:   loss: 0.14453 | quality: -3.48536
+
+Epoch 11 | Train: loss: 0.01431 | quality: 0.57809
+        | Val:   loss: 0.16089 | quality: -3.99326
+
+Epoch 12 | Train: loss: 0.01392 | quality: 0.58954
+        | Val:   loss: 0.11936 | quality: -2.70421
+
+Epoch 13 | Train: loss: 0.01391 | quality: 0.58991
+        | Val:   loss: 0.08142 | quality: -1.52679
+
+Epoch 14 | Train: loss: 0.01384 | quality: 0.59189
+        | Val:   loss: 0.09033 | quality: -1.80342
+
+Epoch 15 | Train: loss: 0.01398 | quality: 0.58764
+        | Val:   loss: 0.07515 | quality: -1.33225
+
+Epoch 16 | Train: loss: 0.01411 | quality: 0.58383
+        | Val:   loss: 0.05377 | quality: -0.66877
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 19:49:19,474][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed42/results.json
+[2026-04-28 19:49:19,475][__main__][INFO] - ✓ Train R²: 0.3617
+[2026-04-28 19:49:19,475][__main__][INFO] - ✓ Val R²: 0.3264
+[2026-04-28 19:49:19,478][HYDRA] 	#11 : model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:49:19,662][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:49:19,666][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed10090
+[2026-04-28 19:49:19,667][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:49:21,514][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:49:21,515][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:49:21,515][__main__][INFO] -   Device: cpu
+[2026-04-28 19:49:21,515][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 470324437.84981 | quality: -13870670709.42564
+        | Val:   loss: 2222306.11131 | quality: -68968119.69573
+Epoch 1 | Train: loss: 0.03437 | quality: -0.01376
+        | Val:   loss: 0.03304 | quality: -0.02544
+ *
+Epoch 2 | Train: loss: 0.03364 | quality: 0.00793
+        | Val:   loss: 0.03337 | quality: -0.03576
+
+Epoch 3 | Train: loss: 0.03155 | quality: 0.06940
+        | Val:   loss: 0.03142 | quality: 0.02495
+ *
+Epoch 4 | Train: loss: 0.02508 | quality: 0.26023
+        | Val:   loss: 0.02558 | quality: 0.20629
+ *
+Epoch 5 | Train: loss: 0.02272 | quality: 0.32995
+        | Val:   loss: 0.02239 | quality: 0.30518
+ *
+Epoch 6 | Train: loss: 0.02175 | quality: 0.35853
+        | Val:   loss: 0.02194 | quality: 0.31906
+ *
+Epoch 7 | Train: loss: 0.02026 | quality: 0.40241
+        | Val:   loss: 0.02405 | quality: 0.25361
+
+Epoch 8 | Train: loss: 0.01725 | quality: 0.49140
+        | Val:   loss: 0.05057 | quality: -0.56937
+
+Epoch 9 | Train: loss: 0.01552 | quality: 0.54230
+        | Val:   loss: 0.07782 | quality: -1.41519
+
+Epoch 10 | Train: loss: 0.01482 | quality: 0.56279
+        | Val:   loss: 0.14594 | quality: -3.52927
+
+Epoch 11 | Train: loss: 0.01447 | quality: 0.57315
+        | Val:   loss: 0.16059 | quality: -3.98373
+
+Epoch 12 | Train: loss: 0.01437 | quality: 0.57613
+        | Val:   loss: 0.18194 | quality: -4.64639
+
+Epoch 13 | Train: loss: 0.01413 | quality: 0.58333
+        | Val:   loss: 0.13604 | quality: -3.22178
+
+Epoch 14 | Train: loss: 0.01395 | quality: 0.58860
+        | Val:   loss: 0.13004 | quality: -3.03585
+
+Epoch 15 | Train: loss: 0.01383 | quality: 0.59214
+        | Val:   loss: 0.14322 | quality: -3.44481
+
+Epoch 16 | Train: loss: 0.01375 | quality: 0.59458
+        | Val:   loss: 0.14072 | quality: -3.36729
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 19:50:26,251][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed10090/results.json
+[2026-04-28 19:50:26,252][__main__][INFO] - ✓ Train R²: 0.3585
+[2026-04-28 19:50:26,252][__main__][INFO] - ✓ Val R²: 0.3191
+[2026-04-28 19:50:26,254][HYDRA] 	#12 : model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:50:26,428][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:50:26,432][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed32874
+[2026-04-28 19:50:26,433][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:50:28,344][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:50:28,344][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:50:28,344][__main__][INFO] -   Device: cpu
+[2026-04-28 19:50:28,344][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 627450372.08267 | quality: -18504582788.87375
+        | Val:   loss: 154518153.07680 | quality: -4795390956.55585
+Epoch 1 | Train: loss: 0.03434 | quality: -0.01269
+        | Val:   loss: 0.03306 | quality: -0.02595
+ *
+Epoch 2 | Train: loss: 0.03109 | quality: 0.08324
+        | Val:   loss: 0.02918 | quality: 0.09444
+ *
+Epoch 3 | Train: loss: 0.02849 | quality: 0.15965
+        | Val:   loss: 0.02786 | quality: 0.13536
+ *
+Epoch 4 | Train: loss: 0.02501 | quality: 0.26227
+        | Val:   loss: 0.02421 | quality: 0.24855
+ *
+Epoch 5 | Train: loss: 0.02305 | quality: 0.32031
+        | Val:   loss: 0.02202 | quality: 0.31663
+ *
+Epoch 6 | Train: loss: 0.02180 | quality: 0.35696
+        | Val:   loss: 0.02457 | quality: 0.23750
+
+Epoch 7 | Train: loss: 0.02081 | quality: 0.38619
+        | Val:   loss: 0.03728 | quality: -0.15708
+
+Epoch 8 | Train: loss: 0.01861 | quality: 0.45105
+        | Val:   loss: 0.03318 | quality: -0.02969
+
+Epoch 9 | Train: loss: 0.01604 | quality: 0.52684
+        | Val:   loss: 0.04543 | quality: -0.40990
+
+Epoch 10 | Train: loss: 0.01498 | quality: 0.55827
+        | Val:   loss: 0.03805 | quality: -0.18072
+
+Epoch 11 | Train: loss: 0.01463 | quality: 0.56846
+        | Val:   loss: 0.03941 | quality: -0.22304
+
+Epoch 12 | Train: loss: 0.01444 | quality: 0.57421
+        | Val:   loss: 0.06123 | quality: -0.90020
+
+Epoch 13 | Train: loss: 0.01433 | quality: 0.57732
+        | Val:   loss: 0.07273 | quality: -1.25705
+
+Epoch 14 | Train: loss: 0.01445 | quality: 0.57385
+        | Val:   loss: 0.09917 | quality: -2.07764
+
+Epoch 15 | Train: loss: 0.01478 | quality: 0.56405
+        | Val:   loss: 0.08826 | quality: -1.73903
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 19:51:30,224][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed32874/results.json
+[2026-04-28 19:51:30,225][__main__][INFO] - ✓ Train R²: 0.3203
+[2026-04-28 19:51:30,225][__main__][INFO] - ✓ Val R²: 0.3166
+[2026-04-28 19:51:30,228][HYDRA] 	#13 : model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:51:30,647][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:51:30,651][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed47311
+[2026-04-28 19:51:30,652][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:51:32,500][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:51:32,501][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:51:32,501][__main__][INFO] -   Device: cpu
+[2026-04-28 19:51:32,501][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 736622714.43638 | quality: -21724261567.20206
+        | Val:   loss: 221862963.86161 | quality: -6885402325.73957
+Epoch 1 | Train: loss: 0.03437 | quality: -0.01374
+        | Val:   loss: 0.03305 | quality: -0.02581
+ *
+Epoch 2 | Train: loss: 0.03307 | quality: 0.02469
+        | Val:   loss: 0.03150 | quality: 0.02237
+ *
+Epoch 3 | Train: loss: 0.03207 | quality: 0.05421
+        | Val:   loss: 0.03125 | quality: 0.03007
+ *
+Epoch 4 | Train: loss: 0.02958 | quality: 0.12762
+        | Val:   loss: 0.02966 | quality: 0.07951
+ *
+Epoch 5 | Train: loss: 0.02482 | quality: 0.26813
+        | Val:   loss: 0.02540 | quality: 0.21166
+ *
+Epoch 6 | Train: loss: 0.02212 | quality: 0.34755
+        | Val:   loss: 0.02343 | quality: 0.27275
+ *
+Epoch 7 | Train: loss: 0.02058 | quality: 0.39306
+        | Val:   loss: 0.02613 | quality: 0.18922
+
+Epoch 8 | Train: loss: 0.01838 | quality: 0.45798
+        | Val:   loss: 0.03302 | quality: -0.02470
+
+Epoch 9 | Train: loss: 0.01711 | quality: 0.49550
+        | Val:   loss: 0.04382 | quality: -0.35992
+
+Epoch 10 | Train: loss: 0.01660 | quality: 0.51050
+        | Val:   loss: 0.06861 | quality: -1.12931
+
+Epoch 11 | Train: loss: 0.01639 | quality: 0.51670
+        | Val:   loss: 0.08538 | quality: -1.64971
+
+Epoch 12 | Train: loss: 0.01581 | quality: 0.53362
+        | Val:   loss: 0.09767 | quality: -2.03102
+
+Epoch 13 | Train: loss: 0.01515 | quality: 0.55333
+        | Val:   loss: 0.06622 | quality: -1.05510
+
+Epoch 14 | Train: loss: 0.01493 | quality: 0.55983
+        | Val:   loss: 0.05263 | quality: -0.63340
+
+Epoch 15 | Train: loss: 0.01490 | quality: 0.56068
+        | Val:   loss: 0.03525 | quality: -0.09403
+
+Epoch 16 | Train: loss: 0.01513 | quality: 0.55366
+        | Val:   loss: 0.03351 | quality: -0.04003
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 19:52:37,558][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed47311/results.json
+[2026-04-28 19:52:37,558][__main__][INFO] - ✓ Train R²: 0.3476
+[2026-04-28 19:52:37,558][__main__][INFO] - ✓ Val R²: 0.2728
+[2026-04-28 19:52:37,561][HYDRA] 	#14 : model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:52:37,730][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:52:37,734][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed47303
+[2026-04-28 19:52:37,735][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:52:39,595][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:52:39,595][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:52:39,595][__main__][INFO] -   Device: cpu
+[2026-04-28 19:52:39,595][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1225535463.96313 | quality: -36143133326.91261
+        | Val:   loss: 800224208.32311 | quality: -24834544395.23449
+Epoch 1 | Train: loss: 0.03432 | quality: -0.01226
+        | Val:   loss: 0.03298 | quality: -0.02350
+ *
+Epoch 2 | Train: loss: 0.03205 | quality: 0.05475
+        | Val:   loss: 0.03070 | quality: 0.04739
+ *
+Epoch 3 | Train: loss: 0.02800 | quality: 0.17411
+        | Val:   loss: 0.02740 | quality: 0.14956
+ *
+Epoch 4 | Train: loss: 0.02485 | quality: 0.26727
+        | Val:   loss: 0.02376 | quality: 0.26269
+ *
+Epoch 5 | Train: loss: 0.02276 | quality: 0.32887
+        | Val:   loss: 0.02180 | quality: 0.32357
+ *
+Epoch 6 | Train: loss: 0.02157 | quality: 0.36400
+        | Val:   loss: 0.02285 | quality: 0.29095
+
+Epoch 7 | Train: loss: 0.02079 | quality: 0.38700
+        | Val:   loss: 0.02480 | quality: 0.23045
+
+Epoch 8 | Train: loss: 0.01998 | quality: 0.41069
+        | Val:   loss: 0.04138 | quality: -0.28411
+
+Epoch 9 | Train: loss: 0.01772 | quality: 0.47734
+        | Val:   loss: 0.06270 | quality: -0.94583
+
+Epoch 10 | Train: loss: 0.01629 | quality: 0.51954
+        | Val:   loss: 0.05162 | quality: -0.60203
+
+Epoch 11 | Train: loss: 0.01534 | quality: 0.54751
+        | Val:   loss: 0.06982 | quality: -1.16690
+
+Epoch 12 | Train: loss: 0.01530 | quality: 0.54873
+        | Val:   loss: 0.12860 | quality: -2.99101
+
+Epoch 13 | Train: loss: 0.01583 | quality: 0.53306
+        | Val:   loss: 0.07393 | quality: -1.29430
+
+Epoch 14 | Train: loss: 0.01619 | quality: 0.52246
+        | Val:   loss: 0.04072 | quality: -0.26363
+
+Epoch 15 | Train: loss: 0.01553 | quality: 0.54194
+        | Val:   loss: 0.05234 | quality: -0.62444
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 19:53:40,078][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L3_bd12_seed47303/results.json
+[2026-04-28 19:53:40,079][__main__][INFO] - ✓ Train R²: 0.3289
+[2026-04-28 19:53:40,079][__main__][INFO] - ✓ Val R²: 0.3236
+[2026-04-28 19:53:40,081][HYDRA] 	#15 : model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:53:40,253][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:53:40,257][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed42
+[2026-04-28 19:53:40,258][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:53:42,256][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:53:42,256][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:53:42,256][__main__][INFO] -   Device: cpu
+[2026-04-28 19:53:42,256][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 12022542554499.26367 | quality: -354565307382112.75000
+        | Val:   loss: 380587506036.35406 | quality: -11811336394230.67773
+Epoch 1 | Train: loss: 0.03469 | quality: -0.02318
+        | Val:   loss: 0.03350 | quality: -0.03976
+ *
+Epoch 2 | Train: loss: 0.03458 | quality: -0.01968
+        | Val:   loss: 0.03347 | quality: -0.03882
+ *
+Epoch 3 | Train: loss: 0.03437 | quality: -0.01366
+        | Val:   loss: 0.03364 | quality: -0.04393
+
+Epoch 4 | Train: loss: 0.03416 | quality: -0.00743
+        | Val:   loss: 0.03468 | quality: -0.07632
+
+Epoch 5 | Train: loss: 0.03373 | quality: 0.00520
+        | Val:   loss: 0.03689 | quality: -0.14472
+
+Epoch 6 | Train: loss: 0.03340 | quality: 0.01496
+        | Val:   loss: 0.04167 | quality: -0.29324
+
+Epoch 7 | Train: loss: 0.03173 | quality: 0.06416
+        | Val:   loss: 0.04557 | quality: -0.41437
+
+Epoch 8 | Train: loss: 0.02781 | quality: 0.17970
+        | Val:   loss: 0.24444 | quality: -6.58611
+
+Epoch 9 | Train: loss: 0.02496 | quality: 0.26375
+        | Val:   loss: 0.07020 | quality: -1.17869
+
+Epoch 10 | Train: loss: 0.02349 | quality: 0.30726
+        | Val:   loss: 0.03051 | quality: 0.05321
+ *
+Epoch 11 | Train: loss: 0.02335 | quality: 0.31138
+        | Val:   loss: 0.03979 | quality: -0.23471
+
+Epoch 12 | Train: loss: 0.02382 | quality: 0.29742
+        | Val:   loss: 0.04445 | quality: -0.37941
+
+Epoch 13 | Train: loss: 0.02449 | quality: 0.27770
+        | Val:   loss: 0.07035 | quality: -1.18332
+
+Epoch 14 | Train: loss: 0.02543 | quality: 0.25012
+        | Val:   loss: 0.13216 | quality: -3.10166
+
+Epoch 15 | Train: loss: 0.02622 | quality: 0.22676
+        | Val:   loss: 0.18679 | quality: -4.79679
+
+Epoch 16 | Train: loss: 0.02685 | quality: 0.20800
+        | Val:   loss: 0.21542 | quality: -5.68541
+
+Epoch 17 | Train: loss: 0.02752 | quality: 0.18826
+        | Val:   loss: 0.17673 | quality: -4.48485
+
+Epoch 18 | Train: loss: 0.02840 | quality: 0.16249
+        | Val:   loss: 0.08238 | quality: -1.55672
+
+Epoch 19 | Train: loss: 0.03002 | quality: 0.11466
+        | Val:   loss: 0.08377 | quality: -1.59972
+
+Epoch 20 | Train: loss: 0.02957 | quality: 0.12801
+        | Val:   loss: 0.16314 | quality: -4.06282
+
+
+⏸ Early stopping at epoch 20 (best was epoch 10)
+[2026-04-28 19:54:27,182][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed42/results.json
+[2026-04-28 19:54:27,182][__main__][INFO] - ✓ Train R²: 0.3073
+[2026-04-28 19:54:27,182][__main__][INFO] - ✓ Val R²: 0.0532
+[2026-04-28 19:54:27,184][HYDRA] 	#16 : model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:54:27,355][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:54:27,360][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed10090
+[2026-04-28 19:54:27,360][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:54:29,355][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:54:29,356][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:54:29,356][__main__][INFO] -   Device: cpu
+[2026-04-28 19:54:29,356][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 19354208108413.92188 | quality: -570788642750866.37500
+        | Val:   loss: 363446910765.29956 | quality: -11279386885818.64062
+Epoch 1 | Train: loss: 0.03499 | quality: -0.03201
+        | Val:   loss: 0.03334 | quality: -0.03469
+ *
+Epoch 2 | Train: loss: 0.03468 | quality: -0.02281
+        | Val:   loss: 0.03298 | quality: -0.02346
+ *
+Epoch 3 | Train: loss: 0.03416 | quality: -0.00743
+        | Val:   loss: 0.03263 | quality: -0.01253
+ *
+Epoch 4 | Train: loss: 0.03338 | quality: 0.01549
+        | Val:   loss: 0.03182 | quality: 0.01243
+ *
+Epoch 5 | Train: loss: 0.03136 | quality: 0.07516
+        | Val:   loss: 0.02940 | quality: 0.08749
+ *
+Epoch 6 | Train: loss: 0.02601 | quality: 0.23287
+        | Val:   loss: 0.02544 | quality: 0.21055
+ *
+Epoch 7 | Train: loss: 0.02351 | quality: 0.30675
+        | Val:   loss: 0.02445 | quality: 0.24112
+ *
+Epoch 8 | Train: loss: 0.02328 | quality: 0.31335
+        | Val:   loss: 0.02897 | quality: 0.10096
+
+Epoch 9 | Train: loss: 0.02268 | quality: 0.33112
+        | Val:   loss: 0.02294 | quality: 0.28806
+ *
+Epoch 10 | Train: loss: 0.02566 | quality: 0.24336
+        | Val:   loss: 0.02539 | quality: 0.21199
+
+Epoch 11 | Train: loss: 0.02584 | quality: 0.23805
+        | Val:   loss: 0.02789 | quality: 0.13434
+
+Epoch 12 | Train: loss: 0.02705 | quality: 0.20221
+        | Val:   loss: 0.02519 | quality: 0.21824
+
+Epoch 13 | Train: loss: 0.02967 | quality: 0.12488
+        | Val:   loss: 0.02893 | quality: 0.10218
+
+Epoch 14 | Train: loss: 0.03175 | quality: 0.06364
+        | Val:   loss: 0.03115 | quality: 0.03315
+
+Epoch 15 | Train: loss: 0.03136 | quality: 0.07525
+        | Val:   loss: 0.03041 | quality: 0.05623
+
+Epoch 16 | Train: loss: 0.03193 | quality: 0.05846
+        | Val:   loss: 0.03428 | quality: -0.06375
+
+Epoch 17 | Train: loss: 0.03197 | quality: 0.05706
+        | Val:   loss: 0.04149 | quality: -0.28758
+
+Epoch 18 | Train: loss: 0.03136 | quality: 0.07525
+        | Val:   loss: 0.03697 | quality: -0.14725
+
+Epoch 19 | Train: loss: 0.03099 | quality: 0.08603
+        | Val:   loss: 0.03358 | quality: -0.04210
+
+
+⏸ Early stopping at epoch 19 (best was epoch 9)
+[2026-04-28 19:55:10,908][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed10090/results.json
+[2026-04-28 19:55:10,909][__main__][INFO] - ✓ Train R²: 0.3311
+[2026-04-28 19:55:10,909][__main__][INFO] - ✓ Val R²: 0.2881
+[2026-04-28 19:55:10,911][HYDRA] 	#17 : model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:55:11,078][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:55:11,082][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed32874
+[2026-04-28 19:55:11,083][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:55:13,097][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:55:13,098][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:55:13,098][__main__][INFO] -   Device: cpu
+[2026-04-28 19:55:13,098][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 182989708858686.25000 | quality: -5396678953318614.00000
+        | Val:   loss: 9934494679899.58789 | quality: -308311903858951.68750
+Epoch 1 | Train: loss: 0.03496 | quality: -0.03097
+        | Val:   loss: 0.03319 | quality: -0.03016
+ *
+Epoch 2 | Train: loss: 0.03456 | quality: -0.01918
+        | Val:   loss: 0.03314 | quality: -0.02862
+ *
+Epoch 3 | Train: loss: 0.03425 | quality: -0.01023
+        | Val:   loss: 0.03292 | quality: -0.02170
+ *
+Epoch 4 | Train: loss: 0.03329 | quality: 0.01819
+        | Val:   loss: 0.03193 | quality: 0.00906
+ *
+Epoch 5 | Train: loss: 0.03123 | quality: 0.07892
+        | Val:   loss: 0.02968 | quality: 0.07884
+ *
+Epoch 6 | Train: loss: 0.02854 | quality: 0.15822
+        | Val:   loss: 0.02649 | quality: 0.17789
+ *
+Epoch 7 | Train: loss: 0.02778 | quality: 0.18084
+        | Val:   loss: 0.03001 | quality: 0.06862
+
+Epoch 8 | Train: loss: 0.02594 | quality: 0.23512
+        | Val:   loss: 0.02890 | quality: 0.10298
+
+Epoch 9 | Train: loss: 0.02491 | quality: 0.26524
+        | Val:   loss: 0.02678 | quality: 0.16875
+
+Epoch 10 | Train: loss: 0.02575 | quality: 0.24051
+        | Val:   loss: 0.02561 | quality: 0.20508
+ *
+Epoch 11 | Train: loss: 0.02705 | quality: 0.20224
+        | Val:   loss: 0.02631 | quality: 0.18361
+
+Epoch 12 | Train: loss: 0.02771 | quality: 0.18284
+        | Val:   loss: 0.02684 | quality: 0.16712
+
+Epoch 13 | Train: loss: 0.02852 | quality: 0.15896
+        | Val:   loss: 0.02695 | quality: 0.16369
+
+Epoch 14 | Train: loss: 0.02954 | quality: 0.12878
+        | Val:   loss: 0.02743 | quality: 0.14859
+
+Epoch 15 | Train: loss: 0.03051 | quality: 0.10026
+        | Val:   loss: 0.02859 | quality: 0.11262
+
+Epoch 16 | Train: loss: 0.03126 | quality: 0.07798
+        | Val:   loss: 0.02971 | quality: 0.07781
+
+Epoch 17 | Train: loss: 0.03178 | quality: 0.06290
+        | Val:   loss: 0.03027 | quality: 0.06069
+
+Epoch 18 | Train: loss: 0.03207 | quality: 0.05417
+        | Val:   loss: 0.03097 | quality: 0.03899
+
+Epoch 19 | Train: loss: 0.03217 | quality: 0.05131
+        | Val:   loss: 0.03130 | quality: 0.02858
+
+Epoch 20 | Train: loss: 0.03223 | quality: 0.04948
+        | Val:   loss: 0.03148 | quality: 0.02291
+
+
+⏸ Early stopping at epoch 20 (best was epoch 10)
+[2026-04-28 19:55:56,657][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed32874/results.json
+[2026-04-28 19:55:56,658][__main__][INFO] - ✓ Train R²: 0.2405
+[2026-04-28 19:55:56,658][__main__][INFO] - ✓ Val R²: 0.2051
+[2026-04-28 19:55:56,660][HYDRA] 	#18 : model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:55:56,837][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:55:56,841][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed47311
+[2026-04-28 19:55:56,842][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:55:58,697][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:55:58,698][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:55:58,698][__main__][INFO] -   Device: cpu
+[2026-04-28 19:55:58,698][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 56218541282070.53125 | quality: -1657980770697433.25000
+        | Val:   loss: 3419319066.56091 | quality: -106116798616.40753
+Epoch 1 | Train: loss: 0.03498 | quality: -0.03150
+        | Val:   loss: 0.03323 | quality: -0.03138
+ *
+Epoch 2 | Train: loss: 0.03456 | quality: -0.01933
+        | Val:   loss: 0.03316 | quality: -0.02907
+ *
+Epoch 3 | Train: loss: 0.03426 | quality: -0.01044
+        | Val:   loss: 0.03294 | quality: -0.02235
+ *
+Epoch 4 | Train: loss: 0.03332 | quality: 0.01725
+        | Val:   loss: 0.03198 | quality: 0.00738
+ *
+Epoch 5 | Train: loss: 0.03064 | quality: 0.09636
+        | Val:   loss: 0.02884 | quality: 0.10503
+ *
+Epoch 6 | Train: loss: 0.02669 | quality: 0.21283
+        | Val:   loss: 0.02563 | quality: 0.20449
+ *
+Epoch 7 | Train: loss: 0.02451 | quality: 0.27725
+        | Val:   loss: 0.02437 | quality: 0.24354
+ *
+Epoch 8 | Train: loss: 0.02365 | quality: 0.30247
+        | Val:   loss: 0.02341 | quality: 0.27361
+ *
+Epoch 9 | Train: loss: 0.02391 | quality: 0.29472
+        | Val:   loss: 0.02811 | quality: 0.12768
+
+Epoch 10 | Train: loss: 0.02308 | quality: 0.31930
+        | Val:   loss: 0.02931 | quality: 0.09045
+
+Epoch 11 | Train: loss: 0.02282 | quality: 0.32696
+        | Val:   loss: 0.03037 | quality: 0.05751
+
+Epoch 12 | Train: loss: 0.02436 | quality: 0.28172
+        | Val:   loss: 0.03148 | quality: 0.02317
+
+Epoch 13 | Train: loss: 0.02701 | quality: 0.20334
+        | Val:   loss: 0.02740 | quality: 0.14966
+
+Epoch 14 | Train: loss: 0.02820 | quality: 0.16822
+        | Val:   loss: 0.02711 | quality: 0.15880
+
+Epoch 15 | Train: loss: 0.02885 | quality: 0.14923
+        | Val:   loss: 0.02882 | quality: 0.10555
+
+Epoch 16 | Train: loss: 0.02855 | quality: 0.15797
+        | Val:   loss: 0.02756 | quality: 0.14476
+
+Epoch 17 | Train: loss: 0.02779 | quality: 0.18038
+        | Val:   loss: 0.02817 | quality: 0.12566
+
+Epoch 18 | Train: loss: 0.02783 | quality: 0.17912
+        | Val:   loss: 0.02781 | quality: 0.13697
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 19:56:37,354][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed47311/results.json
+[2026-04-28 19:56:37,355][__main__][INFO] - ✓ Train R²: 0.3025
+[2026-04-28 19:56:37,355][__main__][INFO] - ✓ Val R²: 0.2736
+[2026-04-28 19:56:37,357][HYDRA] 	#19 : model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:56:37,535][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:56:37,539][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed47303
+[2026-04-28 19:56:37,540][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:56:39,388][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:56:39,389][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:56:39,389][__main__][INFO] -   Device: cpu
+[2026-04-28 19:56:39,389][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 667284552450134.50000 | quality: -19679360782322664.00000
+        | Val:   loss: 6617642907623.99902 | quality: -205375124719364.46875
+Epoch 1 | Train: loss: 0.03499 | quality: -0.03197
+        | Val:   loss: 0.03333 | quality: -0.03449
+ *
+Epoch 2 | Train: loss: 0.03459 | quality: -0.01997
+        | Val:   loss: 0.03306 | quality: -0.02603
+ *
+Epoch 3 | Train: loss: 0.03424 | quality: -0.00968
+        | Val:   loss: 0.03279 | quality: -0.01749
+ *
+Epoch 4 | Train: loss: 0.03339 | quality: 0.01528
+        | Val:   loss: 0.03183 | quality: 0.01218
+ *
+Epoch 5 | Train: loss: 0.03109 | quality: 0.08313
+        | Val:   loss: 0.02955 | quality: 0.08306
+ *
+Epoch 6 | Train: loss: 0.02768 | quality: 0.18373
+        | Val:   loss: 0.02853 | quality: 0.11449
+ *
+Epoch 7 | Train: loss: 0.02517 | quality: 0.25782
+        | Val:   loss: 0.02671 | quality: 0.17121
+ *
+Epoch 8 | Train: loss: 0.02373 | quality: 0.30002
+        | Val:   loss: 0.02356 | quality: 0.26875
+ *
+Epoch 9 | Train: loss: 0.02279 | quality: 0.32802
+        | Val:   loss: 0.02625 | quality: 0.18527
+
+Epoch 10 | Train: loss: 0.02519 | quality: 0.25714
+        | Val:   loss: 0.02927 | quality: 0.09157
+
+Epoch 11 | Train: loss: 0.02784 | quality: 0.17900
+        | Val:   loss: 0.02855 | quality: 0.11381
+
+Epoch 12 | Train: loss: 0.03060 | quality: 0.09765
+        | Val:   loss: 0.02830 | quality: 0.12169
+
+Epoch 13 | Train: loss: 0.03118 | quality: 0.08041
+        | Val:   loss: 0.02964 | quality: 0.08016
+
+Epoch 14 | Train: loss: 0.03065 | quality: 0.09610
+        | Val:   loss: 0.02927 | quality: 0.09154
+
+Epoch 15 | Train: loss: 0.03127 | quality: 0.07777
+        | Val:   loss: 0.02999 | quality: 0.06919
+
+Epoch 16 | Train: loss: 0.03161 | quality: 0.06791
+        | Val:   loss: 0.03095 | quality: 0.03942
+
+Epoch 17 | Train: loss: 0.03169 | quality: 0.06527
+        | Val:   loss: 0.03208 | quality: 0.00454
+
+Epoch 18 | Train: loss: 0.03184 | quality: 0.06089
+        | Val:   loss: 0.03371 | quality: -0.04615
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 19:57:18,086][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd4_seed47303/results.json
+[2026-04-28 19:57:18,086][__main__][INFO] - ✓ Train R²: 0.3000
+[2026-04-28 19:57:18,087][__main__][INFO] - ✓ Val R²: 0.2688
+[2026-04-28 19:57:18,089][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:57:18,252][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:57:18,256][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed42
+[2026-04-28 19:57:18,257][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:57:20,777][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:57:20,778][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:57:20,778][__main__][INFO] -   Device: cpu
+[2026-04-28 19:57:20,778][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 5562069014681.94824 | quality: -164034911993984.78125
+        | Val:   loss: 55832489283.35147 | quality: -1732732426034.04541
+Epoch 1 | Train: loss: 0.03462 | quality: -0.02096
+        | Val:   loss: 0.03327 | quality: -0.03240
+ *
+Epoch 2 | Train: loss: 0.03439 | quality: -0.01431
+        | Val:   loss: 0.03316 | quality: -0.02921
+ *
+Epoch 3 | Train: loss: 0.03298 | quality: 0.02750
+        | Val:   loss: 0.03173 | quality: 0.01528
+ *
+Epoch 4 | Train: loss: 0.02890 | quality: 0.14772
+        | Val:   loss: 0.02780 | quality: 0.13712
+ *
+Epoch 5 | Train: loss: 0.02647 | quality: 0.21939
+        | Val:   loss: 0.03537 | quality: -0.09768
+
+Epoch 6 | Train: loss: 0.02590 | quality: 0.23616
+        | Val:   loss: 0.03582 | quality: -0.11159
+
+Epoch 7 | Train: loss: 0.02658 | quality: 0.21604
+        | Val:   loss: 0.03559 | quality: -0.10465
+
+Epoch 8 | Train: loss: 0.02469 | quality: 0.27178
+        | Val:   loss: 0.04228 | quality: -0.31218
+
+Epoch 9 | Train: loss: 0.02247 | quality: 0.33738
+        | Val:   loss: 0.02779 | quality: 0.13750
+ *
+Epoch 10 | Train: loss: 0.02134 | quality: 0.37064
+        | Val:   loss: 0.02329 | quality: 0.27726
+ *
+Epoch 11 | Train: loss: 0.02145 | quality: 0.36742
+        | Val:   loss: 0.02352 | quality: 0.27009
+
+Epoch 12 | Train: loss: 0.02573 | quality: 0.24124
+        | Val:   loss: 0.02574 | quality: 0.20115
+
+Epoch 13 | Train: loss: 0.02465 | quality: 0.27316
+        | Val:   loss: 0.03034 | quality: 0.05854
+
+Epoch 14 | Train: loss: 0.02399 | quality: 0.29251
+        | Val:   loss: 0.03565 | quality: -0.10650
+
+Epoch 15 | Train: loss: 0.02542 | quality: 0.25044
+        | Val:   loss: 0.04744 | quality: -0.47237
+
+Epoch 16 | Train: loss: 0.02585 | quality: 0.23749
+        | Val:   loss: 0.05317 | quality: -0.65004
+
+Epoch 17 | Train: loss: 0.02673 | quality: 0.21164
+        | Val:   loss: 0.04723 | quality: -0.46567
+
+Epoch 18 | Train: loss: 0.02752 | quality: 0.18846
+        | Val:   loss: 0.04423 | quality: -0.37277
+
+Epoch 19 | Train: loss: 0.02818 | quality: 0.16888
+        | Val:   loss: 0.03501 | quality: -0.08657
+
+Epoch 20 | Train: loss: 0.02855 | quality: 0.15815
+        | Val:   loss: 0.03117 | quality: 0.03278
+
+
+⏸ Early stopping at epoch 20 (best was epoch 10)
+[2026-04-28 19:58:16,643][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-28 19:58:16,644][__main__][INFO] - ✓ Train R²: 0.3706
+[2026-04-28 19:58:16,644][__main__][INFO] - ✓ Val R²: 0.2773
+[2026-04-28 19:58:16,647][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:58:16,812][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:58:16,816][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed10090
+[2026-04-28 19:58:16,817][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:58:18,832][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:58:18,833][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:58:18,833][__main__][INFO] -   Device: cpu
+[2026-04-28 19:58:18,833][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 50880457293894.10938 | quality: -1500551559570125.00000
+        | Val:   loss: 14293843739.29002 | quality: -443602047080.41443
+Epoch 1 | Train: loss: 0.03462 | quality: -0.02114
+        | Val:   loss: 0.03328 | quality: -0.03298
+ *
+Epoch 2 | Train: loss: 0.03443 | quality: -0.01553
+        | Val:   loss: 0.03322 | quality: -0.03108
+ *
+Epoch 3 | Train: loss: 0.03328 | quality: 0.01854
+        | Val:   loss: 0.03224 | quality: -0.00051
+ *
+Epoch 4 | Train: loss: 0.02893 | quality: 0.14675
+        | Val:   loss: 0.02879 | quality: 0.10663
+ *
+Epoch 5 | Train: loss: 0.02721 | quality: 0.19763
+        | Val:   loss: 0.03023 | quality: 0.06177
+
+Epoch 6 | Train: loss: 0.02789 | quality: 0.17740
+        | Val:   loss: 0.02908 | quality: 0.09736
+
+Epoch 7 | Train: loss: 0.02616 | quality: 0.22852
+        | Val:   loss: 0.02833 | quality: 0.12067
+ *
+Epoch 8 | Train: loss: 0.02365 | quality: 0.30240
+        | Val:   loss: 0.02444 | quality: 0.24148
+ *
+Epoch 9 | Train: loss: 0.02151 | quality: 0.36575
+        | Val:   loss: 0.02099 | quality: 0.34849
+ *
+Epoch 10 | Train: loss: 0.02156 | quality: 0.36429
+        | Val:   loss: 0.02189 | quality: 0.32055
+
+Epoch 11 | Train: loss: 0.02245 | quality: 0.33804
+        | Val:   loss: 0.02188 | quality: 0.32107
+
+Epoch 12 | Train: loss: 0.02604 | quality: 0.23208
+        | Val:   loss: 0.02402 | quality: 0.25450
+
+Epoch 13 | Train: loss: 0.02797 | quality: 0.17503
+        | Val:   loss: 0.02667 | quality: 0.17245
+
+Epoch 14 | Train: loss: 0.02372 | quality: 0.30051
+        | Val:   loss: 0.02924 | quality: 0.09246
+
+Epoch 15 | Train: loss: 0.02496 | quality: 0.26378
+        | Val:   loss: 0.04706 | quality: -0.46041
+
+Epoch 16 | Train: loss: 0.02497 | quality: 0.26370
+        | Val:   loss: 0.08277 | quality: -1.56870
+
+Epoch 17 | Train: loss: 0.02559 | quality: 0.24543
+        | Val:   loss: 0.18937 | quality: -4.87692
+
+Epoch 18 | Train: loss: 0.02620 | quality: 0.22728
+        | Val:   loss: 0.23826 | quality: -6.39428
+
+Epoch 19 | Train: loss: 0.02671 | quality: 0.21216
+        | Val:   loss: 0.20871 | quality: -5.47711
+
+
+⏸ Early stopping at epoch 19 (best was epoch 9)
+[2026-04-28 19:59:12,812][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-28 19:59:12,812][__main__][INFO] - ✓ Train R²: 0.3658
+[2026-04-28 19:59:12,813][__main__][INFO] - ✓ Val R²: 0.3485
+[2026-04-28 19:59:12,815][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 19:59:12,984][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:59:12,988][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed32874
+[2026-04-28 19:59:12,988][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 19:59:14,831][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 19:59:14,831][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 19:59:14,831][__main__][INFO] -   Device: cpu
+[2026-04-28 19:59:14,831][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 431930146719955.00000 | quality: -12738357510080020.00000
+        | Val:   loss: 108692925854808.87500 | quality: -3373228733425102.00000
+Epoch 1 | Train: loss: 0.03459 | quality: -0.02009
+        | Val:   loss: 0.03323 | quality: -0.03123
+ *
+Epoch 2 | Train: loss: 0.03435 | quality: -0.01303
+        | Val:   loss: 0.03300 | quality: -0.02415
+ *
+Epoch 3 | Train: loss: 0.03350 | quality: 0.01209
+        | Val:   loss: 0.03206 | quality: 0.00506
+ *
+Epoch 4 | Train: loss: 0.03260 | quality: 0.03857
+        | Val:   loss: 0.03101 | quality: 0.03763
+ *
+Epoch 5 | Train: loss: 0.03072 | quality: 0.09394
+        | Val:   loss: 0.03032 | quality: 0.05910
+ *
+Epoch 6 | Train: loss: 0.02421 | quality: 0.28610
+        | Val:   loss: 0.02476 | quality: 0.23149
+ *
+Epoch 7 | Train: loss: 0.02592 | quality: 0.23544
+        | Val:   loss: 0.02723 | quality: 0.15486
+
+Epoch 8 | Train: loss: 0.02547 | quality: 0.24895
+        | Val:   loss: 0.03025 | quality: 0.06109
+
+Epoch 9 | Train: loss: 0.02256 | quality: 0.33475
+        | Val:   loss: 0.06329 | quality: -0.96415
+
+Epoch 10 | Train: loss: 0.02200 | quality: 0.35121
+        | Val:   loss: 0.07295 | quality: -1.26402
+
+Epoch 11 | Train: loss: 0.02244 | quality: 0.33824
+        | Val:   loss: 0.08117 | quality: -1.51918
+
+Epoch 12 | Train: loss: 0.02306 | quality: 0.31989
+        | Val:   loss: 0.06121 | quality: -0.89967
+
+Epoch 13 | Train: loss: 0.02304 | quality: 0.32044
+        | Val:   loss: 0.04416 | quality: -0.37060
+
+Epoch 14 | Train: loss: 0.02299 | quality: 0.32186
+        | Val:   loss: 0.03575 | quality: -0.10962
+
+Epoch 15 | Train: loss: 0.02339 | quality: 0.31016
+        | Val:   loss: 0.02917 | quality: 0.09463
+
+Epoch 16 | Train: loss: 0.02360 | quality: 0.30404
+        | Val:   loss: 0.02844 | quality: 0.11750
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 20:00:00,011][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-28 20:00:00,011][__main__][INFO] - ✓ Train R²: 0.2861
+[2026-04-28 20:00:00,011][__main__][INFO] - ✓ Val R²: 0.2315
+[2026-04-28 20:00:00,015][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 20:00:00,201][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:00:00,205][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed47311
+[2026-04-28 20:00:00,206][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 20:00:02,052][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 20:00:02,052][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 20:00:02,052][__main__][INFO] -   Device: cpu
+[2026-04-28 20:00:02,053][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 204523238735588.59375 | quality: -6031739516025336.00000
+        | Val:   loss: 17395222866742.35938 | quality: -539851744140279.12500
+Epoch 1 | Train: loss: 0.03458 | quality: -0.01990
+        | Val:   loss: 0.03324 | quality: -0.03162
+ *
+Epoch 2 | Train: loss: 0.03436 | quality: -0.01326
+        | Val:   loss: 0.03301 | quality: -0.02444
+ *
+Epoch 3 | Train: loss: 0.03345 | quality: 0.01349
+        | Val:   loss: 0.03204 | quality: 0.00560
+ *
+Epoch 4 | Train: loss: 0.03250 | quality: 0.04149
+        | Val:   loss: 0.03080 | quality: 0.04414
+ *
+Epoch 5 | Train: loss: 0.03083 | quality: 0.09075
+        | Val:   loss: 0.03048 | quality: 0.05393
+ *
+Epoch 6 | Train: loss: 0.02472 | quality: 0.27087
+        | Val:   loss: 0.02331 | quality: 0.27647
+ *
+Epoch 7 | Train: loss: 0.02488 | quality: 0.26625
+        | Val:   loss: 0.02650 | quality: 0.17749
+
+Epoch 8 | Train: loss: 0.02466 | quality: 0.27281
+        | Val:   loss: 0.02913 | quality: 0.09597
+
+Epoch 9 | Train: loss: 0.02342 | quality: 0.30919
+        | Val:   loss: 0.03009 | quality: 0.06605
+
+Epoch 10 | Train: loss: 0.02354 | quality: 0.30573
+        | Val:   loss: 0.03153 | quality: 0.02153
+
+Epoch 11 | Train: loss: 0.02385 | quality: 0.29648
+        | Val:   loss: 0.03182 | quality: 0.01235
+
+Epoch 12 | Train: loss: 0.02422 | quality: 0.28575
+        | Val:   loss: 0.03190 | quality: 0.01009
+
+Epoch 13 | Train: loss: 0.02398 | quality: 0.29268
+        | Val:   loss: 0.03354 | quality: -0.04102
+
+Epoch 14 | Train: loss: 0.02431 | quality: 0.28317
+        | Val:   loss: 0.03205 | quality: 0.00534
+
+Epoch 15 | Train: loss: 0.02450 | quality: 0.27756
+        | Val:   loss: 0.03216 | quality: 0.00208
+
+Epoch 16 | Train: loss: 0.02464 | quality: 0.27320
+        | Val:   loss: 0.04668 | quality: -0.44879
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 20:00:47,382][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-28 20:00:47,382][__main__][INFO] - ✓ Train R²: 0.2709
+[2026-04-28 20:00:47,383][__main__][INFO] - ✓ Val R²: 0.2765
+[2026-04-28 20:00:47,386][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 20:00:47,553][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:00:47,557][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed47303
+[2026-04-28 20:00:47,558][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 20:00:49,455][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 20:00:49,455][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 20:00:49,455][__main__][INFO] -   Device: cpu
+[2026-04-28 20:00:49,455][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 166857684522451.81250 | quality: -4920918011608982.00000
+        | Val:   loss: 1492937083735.85474 | quality: -46332530184904.83594
+Epoch 1 | Train: loss: 0.03457 | quality: -0.01960
+        | Val:   loss: 0.03314 | quality: -0.02843
+ *
+Epoch 2 | Train: loss: 0.03432 | quality: -0.01219
+        | Val:   loss: 0.03293 | quality: -0.02197
+ *
+Epoch 3 | Train: loss: 0.03345 | quality: 0.01352
+        | Val:   loss: 0.03339 | quality: -0.03638
+
+Epoch 4 | Train: loss: 0.03338 | quality: 0.01571
+        | Val:   loss: 0.04070 | quality: -0.26300
+
+Epoch 5 | Train: loss: 0.03300 | quality: 0.02678
+        | Val:   loss: 0.04787 | quality: -0.48565
+
+Epoch 6 | Train: loss: 0.03267 | quality: 0.03645
+        | Val:   loss: 0.04909 | quality: -0.52347
+
+Epoch 7 | Train: loss: 0.02932 | quality: 0.13529
+        | Val:   loss: 0.04612 | quality: -0.43133
+
+Epoch 8 | Train: loss: 0.02376 | quality: 0.29942
+        | Val:   loss: 0.03405 | quality: -0.05682
+
+Epoch 9 | Train: loss: 0.02222 | quality: 0.34474
+        | Val:   loss: 0.03086 | quality: 0.04217
+ *
+Epoch 10 | Train: loss: 0.02158 | quality: 0.36363
+        | Val:   loss: 0.03057 | quality: 0.05119
+ *
+Epoch 11 | Train: loss: 0.02163 | quality: 0.36200
+        | Val:   loss: 0.02644 | quality: 0.17930
+ *
+Epoch 12 | Train: loss: 0.02451 | quality: 0.27723
+        | Val:   loss: 0.04859 | quality: -0.50801
+
+Epoch 13 | Train: loss: 0.02616 | quality: 0.22854
+        | Val:   loss: 0.03040 | quality: 0.05667
+
+Epoch 14 | Train: loss: 0.02669 | quality: 0.21296
+        | Val:   loss: 0.02707 | quality: 0.16000
+
+Epoch 15 | Train: loss: 0.02684 | quality: 0.20842
+        | Val:   loss: 0.02811 | quality: 0.12757
+
+Epoch 16 | Train: loss: 0.02676 | quality: 0.21077
+        | Val:   loss: 0.03086 | quality: 0.04237
+
+Epoch 17 | Train: loss: 0.02676 | quality: 0.21071
+        | Val:   loss: 0.03132 | quality: 0.02799
+
+Epoch 18 | Train: loss: 0.02667 | quality: 0.21343
+        | Val:   loss: 0.03362 | quality: -0.04352
+
+Epoch 19 | Train: loss: 0.02656 | quality: 0.21684
+        | Val:   loss: 0.03343 | quality: -0.03736
+
+Epoch 20 | Train: loss: 0.02778 | quality: 0.18082
+        | Val:   loss: 0.03802 | quality: -0.17980
+
+
+Best epoch: 11 (val_quality=0.179301)
+[2026-04-28 20:01:44,078][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-28 20:01:44,078][__main__][INFO] - ✓ Train R²: 0.3620
+[2026-04-28 20:01:44,079][__main__][INFO] - ✓ Val R²: 0.1793
+[2026-04-28 20:01:44,081][HYDRA] 	#25 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 20:01:44,246][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:01:44,250][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed42
+[2026-04-28 20:01:44,251][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 20:01:46,268][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 20:01:46,269][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 20:01:46,269][__main__][INFO] -   Device: cpu
+[2026-04-28 20:01:46,269][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 3204142717501.50439 | quality: -94495639535242.01562
+        | Val:   loss: 313477938264.78760 | quality: -9728625670285.51172
+Epoch 1 | Train: loss: 0.03453 | quality: -0.01844
+        | Val:   loss: 0.03330 | quality: -0.03338
+ *
+Epoch 2 | Train: loss: 0.03433 | quality: -0.01246
+        | Val:   loss: 0.03322 | quality: -0.03110
+ *
+Epoch 3 | Train: loss: 0.03361 | quality: 0.00884
+        | Val:   loss: 0.03255 | quality: -0.01011
+ *
+Epoch 4 | Train: loss: 0.02772 | quality: 0.18244
+        | Val:   loss: 0.03178 | quality: 0.01388
+ *
+Epoch 5 | Train: loss: 0.03265 | quality: 0.03696
+        | Val:   loss: 0.03227 | quality: -0.00152
+
+Epoch 6 | Train: loss: 0.03256 | quality: 0.03967
+        | Val:   loss: 0.03277 | quality: -0.01704
+
+Epoch 7 | Train: loss: 0.03003 | quality: 0.11431
+        | Val:   loss: 0.03109 | quality: 0.03498
+ *
+Epoch 8 | Train: loss: 0.02729 | quality: 0.19528
+        | Val:   loss: 0.04466 | quality: -0.38610
+
+Epoch 9 | Train: loss: 0.02599 | quality: 0.23348
+        | Val:   loss: 0.03511 | quality: -0.08966
+
+Epoch 10 | Train: loss: 0.02547 | quality: 0.24887
+        | Val:   loss: 0.03822 | quality: -0.18625
+
+Epoch 11 | Train: loss: 0.02498 | quality: 0.26316
+        | Val:   loss: 0.04204 | quality: -0.30455
+
+Epoch 12 | Train: loss: 0.02467 | quality: 0.27231
+        | Val:   loss: 0.04730 | quality: -0.46801
+
+Epoch 13 | Train: loss: 0.02469 | quality: 0.27186
+        | Val:   loss: 0.05615 | quality: -0.74267
+
+Epoch 14 | Train: loss: 0.02545 | quality: 0.24951
+        | Val:   loss: 0.05154 | quality: -0.59964
+
+Epoch 15 | Train: loss: 0.02708 | quality: 0.20142
+        | Val:   loss: 0.02714 | quality: 0.15771
+ *
+Epoch 16 | Train: loss: 0.02776 | quality: 0.18126
+        | Val:   loss: 0.02797 | quality: 0.13210
+
+Epoch 17 | Train: loss: 0.02847 | quality: 0.16040
+        | Val:   loss: 0.03281 | quality: -0.01837
+
+Epoch 18 | Train: loss: 0.02854 | quality: 0.15821
+        | Val:   loss: 0.03636 | quality: -0.12855
+
+Epoch 19 | Train: loss: 0.02818 | quality: 0.16878
+        | Val:   loss: 0.04051 | quality: -0.25712
+
+Epoch 20 | Train: loss: 0.02773 | quality: 0.18233
+        | Val:   loss: 0.04569 | quality: -0.41799
+
+
+Best epoch: 15 (val_quality=0.157707)
+[2026-04-28 20:03:14,068][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed42/results.json
+[2026-04-28 20:03:14,068][__main__][INFO] - ✓ Train R²: 0.2014
+[2026-04-28 20:03:14,068][__main__][INFO] - ✓ Val R²: 0.1577
+[2026-04-28 20:03:14,071][HYDRA] 	#26 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 20:03:14,359][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:03:14,363][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed10090
+[2026-04-28 20:03:14,364][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 20:03:16,607][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 20:03:16,607][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 20:03:16,607][__main__][INFO] -   Device: cpu
+[2026-04-28 20:03:16,607][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 101017141128906.65625 | quality: -2979167969909084.00000
+        | Val:   loss: 351134087924.66125 | quality: -10897264797660.90039
+Epoch 1 | Train: loss: 0.03457 | quality: -0.01954
+        | Val:   loss: 0.03324 | quality: -0.03164
+ *
+Epoch 2 | Train: loss: 0.03419 | quality: -0.00834
+        | Val:   loss: 0.03292 | quality: -0.02167
+ *
+Epoch 3 | Train: loss: 0.03236 | quality: 0.04555
+        | Val:   loss: 0.03091 | quality: 0.04082
+ *
+Epoch 4 | Train: loss: 0.03050 | quality: 0.10046
+        | Val:   loss: 0.02943 | quality: 0.08658
+ *
+Epoch 5 | Train: loss: 0.03199 | quality: 0.05653
+        | Val:   loss: 0.03129 | quality: 0.02896
+
+Epoch 6 | Train: loss: 0.03109 | quality: 0.08314
+        | Val:   loss: 0.03270 | quality: -0.01477
+
+Epoch 7 | Train: loss: 0.02865 | quality: 0.15512
+        | Val:   loss: 0.03488 | quality: -0.08248
+
+Epoch 8 | Train: loss: 0.02590 | quality: 0.23617
+        | Val:   loss: 0.03217 | quality: 0.00168
+
+Epoch 9 | Train: loss: 0.02215 | quality: 0.34666
+        | Val:   loss: 0.02783 | quality: 0.13622
+ *
+Epoch 10 | Train: loss: 0.02167 | quality: 0.36081
+        | Val:   loss: 0.03487 | quality: -0.08230
+
+Epoch 11 | Train: loss: 0.02213 | quality: 0.34721
+        | Val:   loss: 0.03189 | quality: 0.01029
+
+Epoch 12 | Train: loss: 0.02249 | quality: 0.33680
+        | Val:   loss: 0.03492 | quality: -0.08385
+
+Epoch 13 | Train: loss: 0.02337 | quality: 0.31077
+        | Val:   loss: 0.02625 | quality: 0.18524
+ *
+Epoch 14 | Train: loss: 0.02406 | quality: 0.29049
+        | Val:   loss: 0.03474 | quality: -0.07808
+
+Epoch 15 | Train: loss: 0.02497 | quality: 0.26369
+        | Val:   loss: 0.08095 | quality: -1.51216
+
+Epoch 16 | Train: loss: 0.02426 | quality: 0.28447
+        | Val:   loss: 0.04250 | quality: -0.31883
+
+Epoch 17 | Train: loss: 0.02436 | quality: 0.28144
+        | Val:   loss: 0.04806 | quality: -0.49164
+
+Epoch 18 | Train: loss: 0.02418 | quality: 0.28696
+        | Val:   loss: 0.03991 | quality: -0.23853
+
+Epoch 19 | Train: loss: 0.02412 | quality: 0.28852
+        | Val:   loss: 0.03448 | quality: -0.07022
+
+Epoch 20 | Train: loss: 0.02384 | quality: 0.29698
+        | Val:   loss: 0.04641 | quality: -0.44028
+
+
+Best epoch: 13 (val_quality=0.185241)
+[2026-04-28 20:04:43,867][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed10090/results.json
+[2026-04-28 20:04:43,868][__main__][INFO] - ✓ Train R²: 0.3108
+[2026-04-28 20:04:43,868][__main__][INFO] - ✓ Val R²: 0.1852
+[2026-04-28 20:04:43,870][HYDRA] 	#27 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 20:04:44,046][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:04:44,050][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed32874
+[2026-04-28 20:04:44,051][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 20:04:45,896][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 20:04:45,897][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 20:04:45,897][__main__][INFO] -   Device: cpu
+[2026-04-28 20:04:45,897][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 135673394443103.56250 | quality: -4001240052695104.00000
+        | Val:   loss: 382256213889.20685 | quality: -11863123879319.21094
+Epoch 1 | Train: loss: 0.03453 | quality: -0.01833
+        | Val:   loss: 0.03328 | quality: -0.03295
+ *
+Epoch 2 | Train: loss: 0.03431 | quality: -0.01195
+        | Val:   loss: 0.03318 | quality: -0.02964
+ *
+Epoch 3 | Train: loss: 0.03271 | quality: 0.03538
+        | Val:   loss: 0.03075 | quality: 0.04581
+ *
+Epoch 4 | Train: loss: 0.02785 | quality: 0.17862
+        | Val:   loss: 0.02753 | quality: 0.14555
+ *
+Epoch 5 | Train: loss: 0.03273 | quality: 0.03478
+        | Val:   loss: 0.03165 | quality: 0.01771
+
+Epoch 6 | Train: loss: 0.03255 | quality: 0.04013
+        | Val:   loss: 0.03563 | quality: -0.10565
+
+Epoch 7 | Train: loss: 0.02865 | quality: 0.15516
+        | Val:   loss: 0.02914 | quality: 0.09550
+
+Epoch 8 | Train: loss: 0.02680 | quality: 0.20970
+        | Val:   loss: 0.03004 | quality: 0.06773
+
+Epoch 9 | Train: loss: 0.02495 | quality: 0.26420
+        | Val:   loss: 0.03065 | quality: 0.04865
+
+Epoch 10 | Train: loss: 0.02306 | quality: 0.31985
+        | Val:   loss: 0.03096 | quality: 0.03921
+
+Epoch 11 | Train: loss: 0.02186 | quality: 0.35543
+        | Val:   loss: 0.03265 | quality: -0.01323
+
+Epoch 12 | Train: loss: 0.02180 | quality: 0.35715
+        | Val:   loss: 0.02758 | quality: 0.14414
+
+Epoch 13 | Train: loss: 0.02241 | quality: 0.33899
+        | Val:   loss: 0.05877 | quality: -0.82386
+
+Epoch 14 | Train: loss: 0.02253 | quality: 0.33569
+        | Val:   loss: 0.03472 | quality: -0.07754
+
+
+⏸ Early stopping at epoch 14 (best was epoch 4)
+[2026-04-28 20:05:42,880][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed32874/results.json
+[2026-04-28 20:05:42,881][__main__][INFO] - ✓ Train R²: 0.1786
+[2026-04-28 20:05:42,881][__main__][INFO] - ✓ Val R²: 0.1456
+[2026-04-28 20:05:42,883][HYDRA] 	#28 : model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 20:05:43,045][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:05:43,049][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed47311
+[2026-04-28 20:05:43,049][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 20:05:44,887][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 20:05:44,887][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 20:05:44,887][__main__][INFO] -   Device: cpu
+[2026-04-28 20:05:44,887][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2072377793830189.75000 | quality: -61117959545610600.00000
+        | Val:   loss: 177284831673880.96875 | quality: -5501943051948029.00000
+Epoch 1 | Train: loss: 0.03458 | quality: -0.01980
+        | Val:   loss: 0.03325 | quality: -0.03195
+ *
+Epoch 2 | Train: loss: 0.03417 | quality: -0.00781
+        | Val:   loss: 0.03298 | quality: -0.02358
+ *
+Epoch 3 | Train: loss: 0.03267 | quality: 0.03662
+        | Val:   loss: 0.03148 | quality: 0.02307
+ *
+Epoch 4 | Train: loss: 0.03289 | quality: 0.03010
+        | Val:   loss: 0.03427 | quality: -0.06342
+
+Epoch 5 | Train: loss: 0.03250 | quality: 0.04160
+        | Val:   loss: 0.03330 | quality: -0.03335
+
+Epoch 6 | Train: loss: 0.03179 | quality: 0.06252
+        | Val:   loss: 0.03051 | quality: 0.05306
+ *
+Epoch 7 | Train: loss: 0.03222 | quality: 0.04966
+        | Val:   loss: 0.03111 | quality: 0.03464
+
+Epoch 8 | Train: loss: 0.03082 | quality: 0.09096
+        | Val:   loss: 0.03249 | quality: -0.00826
+
+Epoch 9 | Train: loss: 0.02991 | quality: 0.11781
+        | Val:   loss: 0.03492 | quality: -0.08378
+
+Epoch 10 | Train: loss: 0.02990 | quality: 0.11820
+        | Val:   loss: 0.03601 | quality: -0.11769
+
+Epoch 11 | Train: loss: 0.02993 | quality: 0.11744
+        | Val:   loss: 0.03635 | quality: -0.12806
+
+Epoch 12 | Train: loss: 0.02991 | quality: 0.11776
+        | Val:   loss: 0.03614 | quality: -0.12168
+
+Epoch 13 | Train: loss: 0.02997 | quality: 0.11599
+        | Val:   loss: 0.03560 | quality: -0.10486
+
+Epoch 14 | Train: loss: 0.03010 | quality: 0.11217
+        | Val:   loss: 0.03544 | quality: -0.10000
+
+Epoch 15 | Train: loss: 0.03015 | quality: 0.11069
+        | Val:   loss: 0.03602 | quality: -0.11777
+
+Epoch 16 | Train: loss: 0.03028 | quality: 0.10711
+        | Val:   loss: 0.03589 | quality: -0.11371
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 20:06:50,474][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed47311/results.json
+[2026-04-28 20:06:50,474][__main__][INFO] - ✓ Train R²: 0.0625
+[2026-04-28 20:06:50,474][__main__][INFO] - ✓ Val R²: 0.0531
+[2026-04-28 20:06:50,476][HYDRA] 	#29 : model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_p dataset=ai4i
+[2026-04-28 20:06:50,667][__main__][INFO] - Configuration:
+model:
+  name: TNML_P
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: ai4i
+  task: regression
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:06:50,671][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed47303
+[2026-04-28 20:06:50,672][__main__][INFO] - Loading dataset: ai4i
+[2026-04-28 20:06:52,528][__main__][INFO] -   Samples: train=7000, val=1500, test=1500
+[2026-04-28 20:06:52,529][__main__][INFO] -   Features: 10 (including bias), Task: regression
+[2026-04-28 20:06:52,529][__main__][INFO] -   Device: cpu
+[2026-04-28 20:06:52,529][__main__][INFO] - Creating model: TNML_P
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 7049255788936.76562 | quality: -207894589209345.28125
+        | Val:   loss: 500861902439.19159 | quality: -15543990075698.04883
+Epoch 1 | Train: loss: 0.03455 | quality: -0.01887
+        | Val:   loss: 0.03330 | quality: -0.03358
+ *
+Epoch 2 | Train: loss: 0.03431 | quality: -0.01182
+        | Val:   loss: 0.03328 | quality: -0.03278
+ *
+Epoch 3 | Train: loss: 0.03382 | quality: 0.00256
+        | Val:   loss: 0.03245 | quality: -0.00721
+ *
+Epoch 4 | Train: loss: 0.03276 | quality: 0.03378
+        | Val:   loss: 0.03155 | quality: 0.02077
+ *
+Epoch 5 | Train: loss: 0.03098 | quality: 0.08641
+        | Val:   loss: 0.02840 | quality: 0.11873
+ *
+Epoch 6 | Train: loss: 0.02722 | quality: 0.19723
+        | Val:   loss: 0.02602 | quality: 0.19253
+ *
+Epoch 7 | Train: loss: 0.02510 | quality: 0.25977
+        | Val:   loss: 0.03147 | quality: 0.02341
+
+Epoch 8 | Train: loss: 0.02209 | quality: 0.34867
+        | Val:   loss: 0.02223 | quality: 0.30998
+ *
+Epoch 9 | Train: loss: 0.02098 | quality: 0.38112
+        | Val:   loss: 0.15887 | quality: -3.93036
+
+Epoch 10 | Train: loss: 0.02095 | quality: 0.38221
+        | Val:   loss: 0.22838 | quality: -6.08751
+
+Epoch 11 | Train: loss: 0.02384 | quality: 0.29701
+        | Val:   loss: 0.06983 | quality: -1.16715
+
+Epoch 12 | Train: loss: 0.02395 | quality: 0.29363
+        | Val:   loss: 0.03739 | quality: -0.16045
+
+Epoch 13 | Train: loss: 0.02376 | quality: 0.29940
+        | Val:   loss: 0.02867 | quality: 0.11027
+
+Epoch 14 | Train: loss: 0.02351 | quality: 0.30674
+        | Val:   loss: 0.02970 | quality: 0.07833
+
+Epoch 15 | Train: loss: 0.02309 | quality: 0.31890
+        | Val:   loss: 0.03647 | quality: -0.13178
+
+Epoch 16 | Train: loss: 0.02309 | quality: 0.31901
+        | Val:   loss: 0.13027 | quality: -3.04296
+
+Epoch 17 | Train: loss: 0.02393 | quality: 0.29422
+        | Val:   loss: 0.10956 | quality: -2.40012
+
+Epoch 18 | Train: loss: 0.02450 | quality: 0.27745
+        | Val:   loss: 0.05755 | quality: -0.78593
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 20:08:07,402][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/TNML_P_rg5_init0.1/L4_bd12_seed47303/results.json
+[2026-04-28 20:08:07,403][__main__][INFO] - ✓ Train R²: 0.3487
+[2026-04-28 20:08:07,403][__main__][INFO] - ✓ Val R²: 0.3100
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28319216[20]: <ntn_grid_full[1-200]%20> in cluster <dcc> Done
+
+Job <ntn_grid_full[1-200]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Apr 28 19:35:42 2026
+Job was executed on host(s) <4*n-62-21-91>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue Apr 28 19:40:28 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Apr 28 19:40:28 2026
+Terminated at Tue Apr 28 20:08:08 2026
+Results reported at Tue Apr 28 20:08:08 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-200]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# --- DRY RUN / TEST LOGIC ---
+# Run locally with: bash your_script.sh test
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+NUM_MODELS=${#MODELS[@]}
+DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "concrete" "energy_efficiency" "hearth" "iris" "mushrooms" "obesity" "popularity" "realstate" "seoulBike" "student_dropout" "student_perf" "wine" "winequalityc"
+)
+
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
+if [ "$1" == "test" ]; then
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
+    echo "--------------------------------------"
+for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        M_IDX=$((IDV % NUM_MODELS))
+        D_IDX=$((IDV / NUM_MODELS))
+        echo "Index $i: Dataset=${DATASETS[$D_IDX]}, Model=${MODELS[$M_IDX]}"
+    done
+    exit 0
+fi
+# ----------------------------
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+DATASET_IDX=$((IDV / NUM_MODELS))
+
+CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
+CURRENT_MODEL=${MODELS[$MODEL_IDX]}
+echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL"
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python run.py --multirun +experiment=uci_ntn_sweep model=$CURRENT_MODEL dataset=$CURRENT_DATASET
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   6313.96 sec.
+    Max Memory :                                 556 MB
+    Average Memory :                             499.75 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               3540.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   1660 sec.
+    Turnaround time :                            1946 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28319216_20.err> for stderr output of this job.
+

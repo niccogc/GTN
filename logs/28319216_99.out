@@ -1,0 +1,735 @@
+Task 99: Dataset=hearth, Model=tnml_f
+[2026-04-28 20:23:41,614][HYDRA] Launching 30 jobs locally
+[2026-04-28 20:23:41,614][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=hearth
+[2026-04-28 20:23:41,924][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: hearth
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:23:41,931][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed42
+[2026-04-28 20:23:41,989][utils.tracking][INFO] - Loaded 15142 tracked runs from runs_tracking.csv
+[2026-04-28 20:23:41,991][__main__][INFO] - Loading dataset: hearth
+[2026-04-28 20:23:43,078][__main__][INFO] -   Samples: train=212, val=45, test=46
+[2026-04-28 20:23:43,079][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-28 20:23:43,079][__main__][INFO] -   Device: cpu
+[2026-04-28 20:23:43,079][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.63176 | quality: 0.19340
+        | Val:   loss: 1.64081 | quality: 0.20000
+Epoch 1 | Train: loss: 1.56552 | quality: 0.38208
+        | Val:   loss: 1.64279 | quality: 0.31111
+ *
+Epoch 2 | Train: loss: 1.53771 | quality: 0.41038
+        | Val:   loss: 1.74242 | quality: 0.40000
+ *
+Epoch 3 | Train: loss: 1.50132 | quality: 0.41509
+        | Val:   loss: 1.82344 | quality: 0.33333
+
+Epoch 4 | Train: loss: 1.46976 | quality: 0.41981
+        | Val:   loss: 1.87212 | quality: 0.33333
+
+Epoch 5 | Train: loss: 1.44250 | quality: 0.40566
+        | Val:   loss: 2.07634 | quality: 0.33333
+
+Epoch 6 | Train: loss: 1.40008 | quality: 0.45755
+        | Val:   loss: 2.27265 | quality: 0.35556
+
+Epoch 7 | Train: loss: 1.37333 | quality: 0.46698
+        | Val:   loss: 2.96264 | quality: 0.26667
+
+Epoch 8 | Train: loss: 1.35040 | quality: 0.46226
+        | Val:   loss: 4.18183 | quality: 0.28889
+
+Epoch 9 | Train: loss: 1.28151 | quality: 0.50943
+        | Val:   loss: 7.39060 | quality: 0.31111
+
+Epoch 10 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+ *
+Epoch 11 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 12 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 13 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 14 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 15 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 16 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 17 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 18 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 19 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 20 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+
+⏸ Early stopping at epoch 20 (best was epoch 10)
+[2026-04-28 20:23:45,548][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed42/results.json
+[2026-04-28 20:23:45,548][__main__][INFO] - ✓ Train Accuracy: 0.5472
+[2026-04-28 20:23:45,548][__main__][INFO] - ✓ Val Accuracy: 0.5111
+[2026-04-28 20:23:45,576][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=hearth
+[2026-04-28 20:23:45,752][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: hearth
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:23:45,756][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed10090
+[2026-04-28 20:23:45,756][__main__][INFO] - Loading dataset: hearth
+[2026-04-28 20:23:46,839][__main__][INFO] -   Samples: train=212, val=45, test=46
+[2026-04-28 20:23:46,840][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-28 20:23:46,840][__main__][INFO] -   Device: cpu
+[2026-04-28 20:23:46,840][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.63911 | quality: 0.19811
+        | Val:   loss: 1.60768 | quality: 0.31111
+Epoch 1 | Train: loss: 1.54380 | quality: 0.33962
+        | Val:   loss: 1.62917 | quality: 0.26667
+
+Epoch 2 | Train: loss: 1.50479 | quality: 0.42925
+        | Val:   loss: 1.69662 | quality: 0.15556
+
+Epoch 3 | Train: loss: 1.46494 | quality: 0.46226
+        | Val:   loss: 1.83073 | quality: 0.15556
+
+Epoch 4 | Train: loss: 1.43355 | quality: 0.44811
+        | Val:   loss: 1.91462 | quality: 0.17778
+
+Epoch 5 | Train: loss: 1.41405 | quality: 0.43868
+        | Val:   loss: 2.04324 | quality: 0.17778
+
+Epoch 6 | Train: loss: 1.35276 | quality: 0.44340
+        | Val:   loss: 2.52213 | quality: 0.28889
+
+Epoch 7 | Train: loss: 1.31477 | quality: 0.47170
+        | Val:   loss: 2.90629 | quality: 0.28889
+
+Epoch 8 | Train: loss: 1133044727077612991635202768896.00000 | quality: 0.33491
+        | Val:   loss: 1604235349649812424794054852608.00000 | quality: 0.28889
+
+Epoch 9 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+ *
+Epoch 10 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 11 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 12 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 13 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 14 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 15 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 16 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 17 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 18 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 19 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+
+⏸ Early stopping at epoch 19 (best was epoch 9)
+[2026-04-28 20:23:48,945][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed10090/results.json
+[2026-04-28 20:23:48,946][__main__][INFO] - ✓ Train Accuracy: 0.5472
+[2026-04-28 20:23:48,946][__main__][INFO] - ✓ Val Accuracy: 0.5111
+[2026-04-28 20:23:48,970][HYDRA] 	#2 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=hearth
+[2026-04-28 20:23:49,119][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: hearth
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:23:49,123][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed32874
+[2026-04-28 20:23:49,123][__main__][INFO] - Loading dataset: hearth
+[2026-04-28 20:23:50,167][__main__][INFO] -   Samples: train=212, val=45, test=46
+[2026-04-28 20:23:50,167][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-28 20:23:50,167][__main__][INFO] -   Device: cpu
+[2026-04-28 20:23:50,167][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.64620 | quality: 0.28302
+        | Val:   loss: 1.67414 | quality: 0.35556
+Epoch 1 | Train: loss: 1.56252 | quality: 0.34434
+        | Val:   loss: 1.59318 | quality: 0.35556
+ *
+Epoch 2 | Train: loss: 1.53959 | quality: 0.36792
+        | Val:   loss: 1.60806 | quality: 0.44444
+ *
+Epoch 3 | Train: loss: 1.52065 | quality: 0.40566
+        | Val:   loss: 1.67001 | quality: 0.40000
+
+Epoch 4 | Train: loss: 1.46938 | quality: 0.43868
+        | Val:   loss: 1.96796 | quality: 0.31111
+
+Epoch 5 | Train: loss: 1.41822 | quality: 0.40566
+        | Val:   loss: 2.68491 | quality: 0.31111
+
+Epoch 6 | Train: loss: 1.37539 | quality: 0.44340
+        | Val:   loss: 4.61023 | quality: 0.24444
+
+Epoch 7 | Train: loss: 1.32015 | quality: 0.48113
+        | Val:   loss: 6.31438 | quality: 0.31111
+
+Epoch 8 | Train: loss: 1.31322 | quality: 0.50472
+        | Val:   loss: 14.41211 | quality: 0.33333
+
+Epoch 9 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+ *
+Epoch 10 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 11 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 12 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 13 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 14 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 15 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 16 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 17 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 18 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 19 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+
+⏸ Early stopping at epoch 19 (best was epoch 9)
+[2026-04-28 20:23:52,285][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed32874/results.json
+[2026-04-28 20:23:52,286][__main__][INFO] - ✓ Train Accuracy: 0.5472
+[2026-04-28 20:23:52,286][__main__][INFO] - ✓ Val Accuracy: 0.5111
+[2026-04-28 20:23:52,309][HYDRA] 	#3 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=hearth
+[2026-04-28 20:23:52,473][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: hearth
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:23:52,477][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed47311
+[2026-04-28 20:23:52,477][__main__][INFO] - Loading dataset: hearth
+[2026-04-28 20:23:53,518][__main__][INFO] -   Samples: train=212, val=45, test=46
+[2026-04-28 20:23:53,519][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-28 20:23:53,519][__main__][INFO] -   Device: cpu
+[2026-04-28 20:23:53,519][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.65605 | quality: 0.18868
+        | Val:   loss: 1.94364 | quality: 0.26667
+Epoch 1 | Train: loss: 1.53031 | quality: 0.38679
+        | Val:   loss: 1.61894 | quality: 0.46667
+ *
+Epoch 2 | Train: loss: 1.49973 | quality: 0.37264
+        | Val:   loss: 1.69963 | quality: 0.33333
+
+Epoch 3 | Train: loss: 1.46180 | quality: 0.41038
+        | Val:   loss: 1.88126 | quality: 0.28889
+
+Epoch 4 | Train: loss: 1.42990 | quality: 0.39151
+        | Val:   loss: 1.96251 | quality: 0.26667
+
+Epoch 5 | Train: loss: 1.40140 | quality: 0.41038
+        | Val:   loss: 2.26170 | quality: 0.28889
+
+Epoch 6 | Train: loss: 1.38115 | quality: 0.40094
+        | Val:   loss: 2.64135 | quality: 0.31111
+
+Epoch 7 | Train: loss: 1.36356 | quality: 0.41509
+        | Val:   loss: 3.06673 | quality: 0.37778
+
+Epoch 8 | Train: loss: 1.33744 | quality: 0.42925
+        | Val:   loss: 4.21410 | quality: 0.35556
+
+Epoch 9 | Train: loss: 1.37133 | quality: 0.46698
+        | Val:   loss: 4.57302 | quality: 0.35556
+
+Epoch 10 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+ *
+Epoch 11 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 12 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 13 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 14 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 15 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 16 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 17 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 18 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 19 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 20 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+
+⏸ Early stopping at epoch 20 (best was epoch 10)
+[2026-04-28 20:23:55,713][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed47311/results.json
+[2026-04-28 20:23:55,714][__main__][INFO] - ✓ Train Accuracy: 0.5472
+[2026-04-28 20:23:55,714][__main__][INFO] - ✓ Val Accuracy: 0.5111
+[2026-04-28 20:23:55,735][HYDRA] 	#4 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=hearth
+[2026-04-28 20:23:55,884][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: hearth
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:23:55,888][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed47303
+[2026-04-28 20:23:55,888][__main__][INFO] - Loading dataset: hearth
+[2026-04-28 20:23:56,936][__main__][INFO] -   Samples: train=212, val=45, test=46
+[2026-04-28 20:23:56,936][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-28 20:23:56,936][__main__][INFO] -   Device: cpu
+[2026-04-28 20:23:56,936][__main__][INFO] - Creating model: TNML_F
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.77191 | quality: 0.20283
+        | Val:   loss: 1.62492 | quality: 0.33333
+Epoch 1 | Train: loss: 1.55971 | quality: 0.37736
+        | Val:   loss: 1.59624 | quality: 0.37778
+ *
+Epoch 2 | Train: loss: 1.53980 | quality: 0.39623
+        | Val:   loss: 1.62814 | quality: 0.40000
+ *
+Epoch 3 | Train: loss: 1.51800 | quality: 0.37264
+        | Val:   loss: 1.70932 | quality: 0.37778
+
+Epoch 4 | Train: loss: 1.47205 | quality: 0.39151
+        | Val:   loss: 2.04614 | quality: 0.28889
+
+Epoch 5 | Train: loss: 1.44006 | quality: 0.41509
+        | Val:   loss: 2.37672 | quality: 0.26667
+
+Epoch 6 | Train: loss: 1.39008 | quality: 0.44340
+        | Val:   loss: 3.36428 | quality: 0.24444
+
+Epoch 7 | Train: loss: 1.35291 | quality: 0.42925
+        | Val:   loss: 6.50756 | quality: 0.26667
+
+Epoch 8 | Train: loss: 1.30149 | quality: 0.48113
+        | Val:   loss: 9.33958 | quality: 0.22222
+
+Epoch 9 | Train: loss: 550524050330861387040588196857873845150243707917807300680009271603661282879435410888864903724824787483121580043026673700559209024531378208768.00000 | quality: 0.29245
+        | Val:   loss: 332985852045497535991569944678453976626121664067774123859158847665674095081019588857478094502710014070222665723473579010687376969479510556672.00000 | quality: 0.37778
+
+Epoch 10 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+ *
+Epoch 11 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 12 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 13 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 14 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 15 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 16 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 17 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 18 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 19 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+Epoch 20 | Train: loss: nan | quality: 0.54717
+        | Val:   loss: nan | quality: 0.51111
+
+
+⏸ Early stopping at epoch 20 (best was epoch 10)
+[2026-04-28 20:23:59,135][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd4_seed47303/results.json
+[2026-04-28 20:23:59,135][__main__][INFO] - ✓ Train Accuracy: 0.5472
+[2026-04-28 20:23:59,135][__main__][INFO] - ✓ Val Accuracy: 0.5111
+[2026-04-28 20:23:59,160][HYDRA] 	#5 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=tnml_f dataset=hearth
+[2026-04-28 20:23:59,309][__main__][INFO] - Configuration:
+model:
+  name: TNML_F
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: hearth
+  task: classification
+  cap: 50
+  size: small
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:23:59,313][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/hearth/TNML_F_rg5_init0.1/L3_bd8_seed42
+[2026-04-28 20:23:59,314][__main__][INFO] - Loading dataset: hearth
+[2026-04-28 20:24:01,529][__main__][INFO] -   Samples: train=212, val=45, test=46
+[2026-04-28 20:24:01,529][__main__][INFO] -   Features: 12 (including bias), Task: classification
+[2026-04-28 20:24:01,529][__main__][INFO] -   Device: cpu
+[2026-04-28 20:24:01,530][__main__][INFO] - Creating model: TNML_F
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28319216[99]: <ntn_grid_full[1-200]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_full[1-200]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Apr 28 19:35:42 2026
+Job was executed on host(s) <4*n-62-29-14>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue Apr 28 20:23:32 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Apr 28 20:23:32 2026
+Terminated at Tue Apr 28 20:24:04 2026
+Results reported at Tue Apr 28 20:24:04 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-200]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# --- DRY RUN / TEST LOGIC ---
+# Run locally with: bash your_script.sh test
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+NUM_MODELS=${#MODELS[@]}
+DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "concrete" "energy_efficiency" "hearth" "iris" "mushrooms" "obesity" "popularity" "realstate" "seoulBike" "student_dropout" "student_perf" "wine" "winequalityc"
+)
+
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
+if [ "$1" == "test" ]; then
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
+    echo "--------------------------------------"
+for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        M_IDX=$((IDV % NUM_MODELS))
+        D_IDX=$((IDV / NUM_MODELS))
+        echo "Index $i: Dataset=${DATASETS[$D_IDX]}, Model=${MODELS[$M_IDX]}"
+    done
+    exit 0
+fi
+# ----------------------------
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+DATASET_IDX=$((IDV / NUM_MODELS))
+
+CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
+CURRENT_MODEL=${MODELS[$MODEL_IDX]}
+echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL"
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python run.py --multirun +experiment=uci_ntn_sweep model=$CURRENT_MODEL dataset=$CURRENT_DATASET
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   59.97 sec.
+    Max Memory :                                 4096 MB
+    Average Memory :                             2730.67 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   32 sec.
+    Turnaround time :                            2902 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28319216_99.err> for stderr output of this job.
+

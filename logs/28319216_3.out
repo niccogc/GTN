@@ -1,0 +1,149 @@
+Task 3: Dataset=adult, Model=lmpo2
+[2026-04-28 19:39:20,289][HYDRA] Launching 90 jobs locally
+[2026-04-28 19:39:20,289][HYDRA] 	#0 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2 dataset=adult
+[2026-04-28 19:39:20,446][__main__][INFO] - Configuration:
+model:
+  name: LMPO2
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+  reduction_factor: 0.3
+  reduced_dim: null
+  bond_dim_mpo: 1
+dataset:
+  name: adult
+  task: classification
+  cap: 50
+  size: large
+  batch_size: 128
+slurm:
+  partition: titans
+  time: '24:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '24:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:39:20,460][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/adult/LMPO2_rg5_init0.1/L3_bd4_seed42_rf0.3_bondmpo1
+[2026-04-28 19:39:20,553][utils.tracking][INFO] - Loaded 15142 tracked runs from runs_tracking.csv
+[2026-04-28 19:39:20,555][__main__][INFO] - Loading dataset: adult
+[2026-04-28 19:39:23,514][__main__][INFO] -   Samples: train=34189, val=7326, test=7327
+[2026-04-28 19:39:23,515][__main__][INFO] -   Features: 48 (including bias), Task: classification
+[2026-04-28 19:39:23,515][__main__][INFO] -   Device: cpu
+[2026-04-28 19:39:23,515][__main__][INFO] - Creating model: LMPO2
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28319216[3]: <ntn_grid_full[1-200]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_full[1-200]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Apr 28 19:35:42 2026
+Job was executed on host(s) <4*n-62-30-24>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue Apr 28 19:35:43 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Apr 28 19:35:43 2026
+Terminated at Tue Apr 28 19:39:30 2026
+Results reported at Tue Apr 28 19:39:30 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-200]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# --- DRY RUN / TEST LOGIC ---
+# Run locally with: bash your_script.sh test
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+NUM_MODELS=${#MODELS[@]}
+DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "concrete" "energy_efficiency" "hearth" "iris" "mushrooms" "obesity" "popularity" "realstate" "seoulBike" "student_dropout" "student_perf" "wine" "winequalityc"
+)
+
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
+if [ "$1" == "test" ]; then
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
+    echo "--------------------------------------"
+for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        M_IDX=$((IDV % NUM_MODELS))
+        D_IDX=$((IDV / NUM_MODELS))
+        echo "Index $i: Dataset=${DATASETS[$D_IDX]}, Model=${MODELS[$M_IDX]}"
+    done
+    exit 0
+fi
+# ----------------------------
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+DATASET_IDX=$((IDV / NUM_MODELS))
+
+CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
+CURRENT_MODEL=${MODELS[$MODEL_IDX]}
+echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL"
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python run.py --multirun +experiment=uci_ntn_sweep model=$CURRENT_MODEL dataset=$CURRENT_DATASET
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   38.71 sec.
+    Max Memory :                                 4096 MB
+    Average Memory :                             2737.00 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   227 sec.
+    Turnaround time :                            228 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28319216_3.err> for stderr output of this job.
+

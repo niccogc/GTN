@@ -1,0 +1,3639 @@
+Task 46: Dataset=bike, Model=mpo2_typei
+[2026-04-28 19:56:04,899][HYDRA] Launching 30 jobs locally
+[2026-04-28 19:56:04,899][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:56:05,252][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:56:05,268][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed42
+[2026-04-28 19:56:05,381][utils.tracking][INFO] - Loaded 15142 tracked runs from runs_tracking.csv
+[2026-04-28 19:56:05,384][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:56:08,000][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:56:08,000][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:56:08,000][__main__][INFO] -   Device: cpu
+[2026-04-28 19:56:08,000][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70006.62833 | quality: -1.09287
+        | Val:   loss: 66132.05972 | quality: -1.04285
+
+Epoch 1 | Train: loss: 41130.94123 | quality: -0.22962
+        | Val:   loss: 38732.02532 | quality: -0.19645
+ *
+Epoch 2 | Train: loss: 27276.83546 | quality: 0.18455
+        | Val:   loss: 26172.49256 | quality: 0.19152
+ *
+Epoch 3 | Train: loss: 21852.33524 | quality: 0.34672
+        | Val:   loss: 21312.16263 | quality: 0.34166
+ *
+Epoch 4 | Train: loss: 16487.96394 | quality: 0.50709
+        | Val:   loss: 16191.07527 | quality: 0.49985
+ *
+Epoch 5 | Train: loss: 13800.47000 | quality: 0.58743
+        | Val:   loss: 13520.97507 | quality: 0.58233
+ *
+Epoch 6 | Train: loss: 12895.88440 | quality: 0.61447
+        | Val:   loss: 12627.84032 | quality: 0.60992
+ *
+Epoch 7 | Train: loss: 12562.08389 | quality: 0.62445
+        | Val:   loss: 12356.15509 | quality: 0.61831
+ *
+Epoch 8 | Train: loss: 12412.19499 | quality: 0.62893
+        | Val:   loss: 12249.29318 | quality: 0.62161
+ *
+Epoch 9 | Train: loss: 12322.20865 | quality: 0.63162
+        | Val:   loss: 12180.77627 | quality: 0.62373
+ *
+Epoch 10 | Train: loss: 12261.37714 | quality: 0.63344
+        | Val:   loss: 12124.49356 | quality: 0.62547
+ *
+Epoch 11 | Train: loss: 12216.71569 | quality: 0.63478
+        | Val:   loss: 12084.71042 | quality: 0.62670
+ *
+Epoch 12 | Train: loss: 12183.32891 | quality: 0.63577
+        | Val:   loss: 12057.38682 | quality: 0.62754
+
+Epoch 13 | Train: loss: 12158.62384 | quality: 0.63651
+        | Val:   loss: 12039.32132 | quality: 0.62810
+ *
+Epoch 14 | Train: loss: 12140.15472 | quality: 0.63707
+        | Val:   loss: 12027.55069 | quality: 0.62846
+
+Epoch 15 | Train: loss: 12125.83866 | quality: 0.63749
+        | Val:   loss: 12019.70535 | quality: 0.62871
+
+Epoch 16 | Train: loss: 12114.27305 | quality: 0.63784
+        | Val:   loss: 12014.32586 | quality: 0.62887
+ *
+Epoch 17 | Train: loss: 12104.59791 | quality: 0.63813
+        | Val:   loss: 12010.51699 | quality: 0.62899
+
+Epoch 18 | Train: loss: 12096.27648 | quality: 0.63838
+        | Val:   loss: 12007.66897 | quality: 0.62908
+
+Epoch 19 | Train: loss: 12088.95217 | quality: 0.63860
+        | Val:   loss: 12005.34743 | quality: 0.62915
+
+Epoch 20 | Train: loss: 12082.37360 | quality: 0.63879
+        | Val:   loss: 12003.25092 | quality: 0.62921
+
+
+Best epoch: 16 (val_quality=0.628872)
+[2026-04-28 19:56:20,346][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed42/results.json
+[2026-04-28 19:56:20,347][__main__][INFO] - ✓ Train R²: 0.6378
+[2026-04-28 19:56:20,347][__main__][INFO] - ✓ Val R²: 0.6289
+[2026-04-28 19:56:20,350][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:56:20,534][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:56:20,538][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed10090
+[2026-04-28 19:56:20,539][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:56:23,042][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:56:23,043][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:56:23,043][__main__][INFO] -   Device: cpu
+[2026-04-28 19:56:23,043][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69985.20789 | quality: -1.09223
+        | Val:   loss: 66099.83439 | quality: -1.04185
+
+Epoch 1 | Train: loss: 39159.06426 | quality: -0.17067
+        | Val:   loss: 36927.45378 | quality: -0.14071
+ *
+Epoch 2 | Train: loss: 27908.20810 | quality: 0.16567
+        | Val:   loss: 26778.83132 | quality: 0.17279
+ *
+Epoch 3 | Train: loss: 21468.30813 | quality: 0.35820
+        | Val:   loss: 20982.85752 | quality: 0.35183
+ *
+Epoch 4 | Train: loss: 16518.88029 | quality: 0.50616
+        | Val:   loss: 16183.07480 | quality: 0.50010
+ *
+Epoch 5 | Train: loss: 13586.50821 | quality: 0.59383
+        | Val:   loss: 13325.88778 | quality: 0.58836
+ *
+Epoch 6 | Train: loss: 12661.61292 | quality: 0.62148
+        | Val:   loss: 12400.50676 | quality: 0.61694
+ *
+Epoch 7 | Train: loss: 12393.74842 | quality: 0.62948
+        | Val:   loss: 12159.32294 | quality: 0.62439
+ *
+Epoch 8 | Train: loss: 12283.35755 | quality: 0.63278
+        | Val:   loss: 12090.78661 | quality: 0.62651
+ *
+Epoch 9 | Train: loss: 12220.93612 | quality: 0.63465
+        | Val:   loss: 12059.13012 | quality: 0.62749
+ *
+Epoch 10 | Train: loss: 12178.87887 | quality: 0.63591
+        | Val:   loss: 12033.81162 | quality: 0.62827
+ *
+Epoch 11 | Train: loss: 12147.94403 | quality: 0.63683
+        | Val:   loss: 12014.01465 | quality: 0.62888
+
+Epoch 12 | Train: loss: 12124.19493 | quality: 0.63754
+        | Val:   loss: 11998.57526 | quality: 0.62936
+ *
+Epoch 13 | Train: loss: 12105.77910 | quality: 0.63809
+        | Val:   loss: 11986.83852 | quality: 0.62972
+
+Epoch 14 | Train: loss: 12091.21987 | quality: 0.63853
+        | Val:   loss: 11977.57622 | quality: 0.63001
+
+Epoch 15 | Train: loss: 12079.43526 | quality: 0.63888
+        | Val:   loss: 11969.81736 | quality: 0.63025
+ *
+Epoch 16 | Train: loss: 12069.72760 | quality: 0.63917
+        | Val:   loss: 11963.16225 | quality: 0.63045
+
+Epoch 17 | Train: loss: 12061.64047 | quality: 0.63941
+        | Val:   loss: 11957.45349 | quality: 0.63063
+
+Epoch 18 | Train: loss: 12054.85380 | quality: 0.63962
+        | Val:   loss: 11952.58947 | quality: 0.63078
+
+Epoch 19 | Train: loss: 12049.12615 | quality: 0.63979
+        | Val:   loss: 11948.47129 | quality: 0.63091
+
+Epoch 20 | Train: loss: 12044.26709 | quality: 0.63993
+        | Val:   loss: 11944.99436 | quality: 0.63101
+ *
+
+Best epoch: 20 (val_quality=0.631014)
+[2026-04-28 19:56:35,553][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed10090/results.json
+[2026-04-28 19:56:35,554][__main__][INFO] - ✓ Train R²: 0.6399
+[2026-04-28 19:56:35,554][__main__][INFO] - ✓ Val R²: 0.6310
+[2026-04-28 19:56:35,557][HYDRA] 	#2 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:56:35,828][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:56:35,833][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed32874
+[2026-04-28 19:56:35,834][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:56:38,596][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:56:38,597][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:56:38,597][__main__][INFO] -   Device: cpu
+[2026-04-28 19:56:38,597][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70047.90230 | quality: -1.09411
+        | Val:   loss: 66167.16014 | quality: -1.04393
+
+Epoch 1 | Train: loss: 40671.63796 | quality: -0.21589
+        | Val:   loss: 38442.10850 | quality: -0.18749
+ *
+Epoch 2 | Train: loss: 27056.43284 | quality: 0.19114
+        | Val:   loss: 25934.51774 | quality: 0.19887
+ *
+Epoch 3 | Train: loss: 21048.60211 | quality: 0.37074
+        | Val:   loss: 20555.35449 | quality: 0.36504
+ *
+Epoch 4 | Train: loss: 16902.03940 | quality: 0.49471
+        | Val:   loss: 16465.30580 | quality: 0.49138
+ *
+Epoch 5 | Train: loss: 13609.61267 | quality: 0.59314
+        | Val:   loss: 13266.88763 | quality: 0.59018
+ *
+Epoch 6 | Train: loss: 12717.38845 | quality: 0.61981
+        | Val:   loss: 12390.83929 | quality: 0.61724
+ *
+Epoch 7 | Train: loss: 12405.15532 | quality: 0.62914
+        | Val:   loss: 12121.35740 | quality: 0.62557
+ *
+Epoch 8 | Train: loss: 12267.58627 | quality: 0.63326
+        | Val:   loss: 12047.40867 | quality: 0.62785
+ *
+Epoch 9 | Train: loss: 12196.64319 | quality: 0.63538
+        | Val:   loss: 12028.79642 | quality: 0.62843
+ *
+Epoch 10 | Train: loss: 12154.90068 | quality: 0.63662
+        | Val:   loss: 12020.04667 | quality: 0.62870
+ *
+Epoch 11 | Train: loss: 12128.00049 | quality: 0.63743
+        | Val:   loss: 12017.28462 | quality: 0.62878
+
+Epoch 12 | Train: loss: 12109.67896 | quality: 0.63798
+        | Val:   loss: 12015.98587 | quality: 0.62882
+ *
+Epoch 13 | Train: loss: 12096.59707 | quality: 0.63837
+        | Val:   loss: 12014.43886 | quality: 0.62887
+
+Epoch 14 | Train: loss: 12086.84127 | quality: 0.63866
+        | Val:   loss: 12012.42534 | quality: 0.62893
+
+Epoch 15 | Train: loss: 12079.27037 | quality: 0.63889
+        | Val:   loss: 12010.11913 | quality: 0.62900
+
+Epoch 16 | Train: loss: 12073.19181 | quality: 0.63907
+        | Val:   loss: 12007.69599 | quality: 0.62908
+ *
+Epoch 17 | Train: loss: 12068.17220 | quality: 0.63922
+        | Val:   loss: 12005.26723 | quality: 0.62915
+
+Epoch 18 | Train: loss: 12063.92669 | quality: 0.63934
+        | Val:   loss: 12002.88599 | quality: 0.62923
+
+Epoch 19 | Train: loss: 12060.25738 | quality: 0.63945
+        | Val:   loss: 12000.56447 | quality: 0.62930
+
+Epoch 20 | Train: loss: 12057.02062 | quality: 0.63955
+        | Val:   loss: 11998.29179 | quality: 0.62937
+
+
+Best epoch: 16 (val_quality=0.629077)
+[2026-04-28 19:56:51,006][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed32874/results.json
+[2026-04-28 19:56:51,007][__main__][INFO] - ✓ Train R²: 0.6391
+[2026-04-28 19:56:51,007][__main__][INFO] - ✓ Val R²: 0.6291
+[2026-04-28 19:56:51,010][HYDRA] 	#3 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:56:51,215][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:56:51,219][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed47311
+[2026-04-28 19:56:51,220][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:56:53,874][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:56:53,874][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:56:53,874][__main__][INFO] -   Device: cpu
+[2026-04-28 19:56:53,875][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69854.36892 | quality: -1.08832
+        | Val:   loss: 65976.55554 | quality: -1.03804
+
+Epoch 1 | Train: loss: 39779.18702 | quality: -0.18921
+        | Val:   loss: 37441.35022 | quality: -0.15658
+ *
+Epoch 2 | Train: loss: 27717.65802 | quality: 0.17137
+        | Val:   loss: 26548.44182 | quality: 0.17991
+ *
+Epoch 3 | Train: loss: 21815.83726 | quality: 0.34781
+        | Val:   loss: 21366.83470 | quality: 0.33997
+ *
+Epoch 4 | Train: loss: 17368.51726 | quality: 0.48076
+        | Val:   loss: 17016.88394 | quality: 0.47434
+ *
+Epoch 5 | Train: loss: 14207.59876 | quality: 0.57526
+        | Val:   loss: 13884.76845 | quality: 0.57109
+ *
+Epoch 6 | Train: loss: 13339.42600 | quality: 0.60121
+        | Val:   loss: 13012.87599 | quality: 0.59803
+ *
+Epoch 7 | Train: loss: 12711.24641 | quality: 0.61999
+        | Val:   loss: 12355.69239 | quality: 0.61833
+ *
+Epoch 8 | Train: loss: 12420.70056 | quality: 0.62868
+        | Val:   loss: 12093.21428 | quality: 0.62644
+ *
+Epoch 9 | Train: loss: 12291.04439 | quality: 0.63255
+        | Val:   loss: 12004.52058 | quality: 0.62918
+ *
+Epoch 10 | Train: loss: 12227.97651 | quality: 0.63444
+        | Val:   loss: 11967.74342 | quality: 0.63031
+ *
+Epoch 11 | Train: loss: 12191.10604 | quality: 0.63554
+        | Val:   loss: 11951.63588 | quality: 0.63081
+ *
+Epoch 12 | Train: loss: 12163.89165 | quality: 0.63636
+        | Val:   loss: 11942.05980 | quality: 0.63110
+
+Epoch 13 | Train: loss: 12141.40795 | quality: 0.63703
+        | Val:   loss: 11935.84570 | quality: 0.63130
+ *
+Epoch 14 | Train: loss: 12123.12507 | quality: 0.63757
+        | Val:   loss: 11932.20712 | quality: 0.63141
+
+Epoch 15 | Train: loss: 12108.58456 | quality: 0.63801
+        | Val:   loss: 11929.56553 | quality: 0.63149
+
+Epoch 16 | Train: loss: 12096.83823 | quality: 0.63836
+        | Val:   loss: 11926.95305 | quality: 0.63157
+ *
+Epoch 17 | Train: loss: 12087.10598 | quality: 0.63865
+        | Val:   loss: 11924.09795 | quality: 0.63166
+
+Epoch 18 | Train: loss: 12078.85731 | quality: 0.63890
+        | Val:   loss: 11921.00163 | quality: 0.63176
+
+Epoch 19 | Train: loss: 12071.73919 | quality: 0.63911
+        | Val:   loss: 11917.78396 | quality: 0.63185
+
+Epoch 20 | Train: loss: 12065.51144 | quality: 0.63930
+        | Val:   loss: 11914.59375 | quality: 0.63195
+
+
+Best epoch: 16 (val_quality=0.631571)
+[2026-04-28 19:57:07,084][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed47311/results.json
+[2026-04-28 19:57:07,084][__main__][INFO] - ✓ Train R²: 0.6384
+[2026-04-28 19:57:07,085][__main__][INFO] - ✓ Val R²: 0.6316
+[2026-04-28 19:57:07,087][HYDRA] 	#4 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:57:07,274][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:57:07,278][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed47303
+[2026-04-28 19:57:07,279][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:57:10,030][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:57:10,030][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:57:10,030][__main__][INFO] -   Device: cpu
+[2026-04-28 19:57:10,030][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70016.85499 | quality: -1.09318
+        | Val:   loss: 66130.48046 | quality: -1.04280
+
+Epoch 1 | Train: loss: 42196.57119 | quality: -0.26148
+        | Val:   loss: 39900.45880 | quality: -0.23254
+ *
+Epoch 2 | Train: loss: 26893.42169 | quality: 0.19601
+        | Val:   loss: 25809.95574 | quality: 0.20272
+ *
+Epoch 3 | Train: loss: 21084.66169 | quality: 0.36967
+        | Val:   loss: 20695.66107 | quality: 0.36070
+ *
+Epoch 4 | Train: loss: 16148.34051 | quality: 0.51724
+        | Val:   loss: 15900.14802 | quality: 0.50884
+ *
+Epoch 5 | Train: loss: 13776.91005 | quality: 0.58813
+        | Val:   loss: 13427.42185 | quality: 0.58522
+ *
+Epoch 6 | Train: loss: 12769.63821 | quality: 0.61825
+        | Val:   loss: 12450.75893 | quality: 0.61539
+ *
+Epoch 7 | Train: loss: 12419.44218 | quality: 0.62872
+        | Val:   loss: 12183.12365 | quality: 0.62366
+ *
+Epoch 8 | Train: loss: 12253.83895 | quality: 0.63367
+        | Val:   loss: 12058.54268 | quality: 0.62751
+ *
+Epoch 9 | Train: loss: 12173.29075 | quality: 0.63608
+        | Val:   loss: 12010.24771 | quality: 0.62900
+ *
+Epoch 10 | Train: loss: 12133.20705 | quality: 0.63727
+        | Val:   loss: 11991.96556 | quality: 0.62956
+ *
+Epoch 11 | Train: loss: 12108.10843 | quality: 0.63802
+        | Val:   loss: 11979.81342 | quality: 0.62994
+
+Epoch 12 | Train: loss: 12090.75761 | quality: 0.63854
+        | Val:   loss: 11970.60201 | quality: 0.63022
+ *
+Epoch 13 | Train: loss: 12078.08343 | quality: 0.63892
+        | Val:   loss: 11963.71323 | quality: 0.63044
+
+Epoch 14 | Train: loss: 12068.41585 | quality: 0.63921
+        | Val:   loss: 11958.69557 | quality: 0.63059
+
+Epoch 15 | Train: loss: 12060.76753 | quality: 0.63944
+        | Val:   loss: 11955.05113 | quality: 0.63070
+
+Epoch 16 | Train: loss: 12054.54757 | quality: 0.63962
+        | Val:   loss: 11952.35451 | quality: 0.63079
+ *
+Epoch 17 | Train: loss: 12049.39019 | quality: 0.63978
+        | Val:   loss: 11950.30248 | quality: 0.63085
+
+Epoch 18 | Train: loss: 12045.05305 | quality: 0.63991
+        | Val:   loss: 11948.69842 | quality: 0.63090
+
+Epoch 19 | Train: loss: 12041.36338 | quality: 0.64002
+        | Val:   loss: 11947.41941 | quality: 0.63094
+
+Epoch 20 | Train: loss: 12038.19144 | quality: 0.64011
+        | Val:   loss: 11946.38748 | quality: 0.63097
+
+
+Best epoch: 16 (val_quality=0.630787)
+[2026-04-28 19:57:22,337][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd4_seed47303/results.json
+[2026-04-28 19:57:22,338][__main__][INFO] - ✓ Train R²: 0.6396
+[2026-04-28 19:57:22,338][__main__][INFO] - ✓ Val R²: 0.6308
+[2026-04-28 19:57:22,340][HYDRA] 	#5 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:57:22,525][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:57:22,530][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed42
+[2026-04-28 19:57:22,530][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:57:25,181][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:57:25,181][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:57:25,181][__main__][INFO] -   Device: cpu
+[2026-04-28 19:57:25,181][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70013.62905 | quality: -1.09308
+        | Val:   loss: 66143.14599 | quality: -1.04319
+
+Epoch 1 | Train: loss: 34304.89223 | quality: -0.02556
+        | Val:   loss: 32413.35853 | quality: -0.00126
+ *
+Epoch 2 | Train: loss: 24665.03564 | quality: 0.26263
+        | Val:   loss: 23966.07060 | quality: 0.25968
+ *
+Epoch 3 | Train: loss: 18872.26319 | quality: 0.43581
+        | Val:   loss: 18373.25384 | quality: 0.43244
+ *
+Epoch 4 | Train: loss: 13939.57692 | quality: 0.58327
+        | Val:   loss: 13578.69183 | quality: 0.58055
+ *
+Epoch 5 | Train: loss: 12582.37560 | quality: 0.62385
+        | Val:   loss: 12271.30728 | quality: 0.62093
+ *
+Epoch 6 | Train: loss: 12211.69868 | quality: 0.63493
+        | Val:   loss: 11995.69128 | quality: 0.62945
+ *
+Epoch 7 | Train: loss: 12055.49029 | quality: 0.63960
+        | Val:   loss: 11963.05670 | quality: 0.63046
+ *
+Epoch 8 | Train: loss: 11967.79274 | quality: 0.64222
+        | Val:   loss: 11984.20829 | quality: 0.62980
+ *
+Epoch 9 | Train: loss: 11923.01906 | quality: 0.64356
+        | Val:   loss: 11997.11598 | quality: 0.62940
+ *
+Epoch 10 | Train: loss: 11898.32638 | quality: 0.64430
+        | Val:   loss: 11994.49846 | quality: 0.62948
+
+Epoch 11 | Train: loss: 11880.96299 | quality: 0.64481
+        | Val:   loss: 11990.63589 | quality: 0.62960
+ *
+Epoch 12 | Train: loss: 11868.38989 | quality: 0.64519
+        | Val:   loss: 11987.43075 | quality: 0.62970
+
+Epoch 13 | Train: loss: 11858.89106 | quality: 0.64547
+        | Val:   loss: 11985.62561 | quality: 0.62976
+
+Epoch 14 | Train: loss: 11851.45973 | quality: 0.64570
+        | Val:   loss: 11984.96294 | quality: 0.62978
+
+Epoch 15 | Train: loss: 11845.46848 | quality: 0.64588
+        | Val:   loss: 11985.17159 | quality: 0.62977
+ *
+Epoch 16 | Train: loss: 11840.52026 | quality: 0.64602
+        | Val:   loss: 11985.97067 | quality: 0.62975
+
+Epoch 17 | Train: loss: 11836.36338 | quality: 0.64615
+        | Val:   loss: 11987.15665 | quality: 0.62971
+
+Epoch 18 | Train: loss: 11832.82876 | quality: 0.64625
+        | Val:   loss: 11988.59671 | quality: 0.62967
+
+Epoch 19 | Train: loss: 11829.79590 | quality: 0.64634
+        | Val:   loss: 11990.19440 | quality: 0.62962
+
+Epoch 20 | Train: loss: 11827.17536 | quality: 0.64642
+        | Val:   loss: 11991.87511 | quality: 0.62957
+
+
+Best epoch: 15 (val_quality=0.629773)
+[2026-04-28 19:57:42,274][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-28 19:57:42,275][__main__][INFO] - ✓ Train R²: 0.6459
+[2026-04-28 19:57:42,275][__main__][INFO] - ✓ Val R²: 0.6298
+[2026-04-28 19:57:42,278][HYDRA] 	#6 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:57:42,478][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:57:42,482][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed10090
+[2026-04-28 19:57:42,483][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:57:45,388][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:57:45,388][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:57:45,388][__main__][INFO] -   Device: cpu
+[2026-04-28 19:57:45,388][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70069.72125 | quality: -1.09476
+        | Val:   loss: 66191.97096 | quality: -1.04470
+
+Epoch 1 | Train: loss: 33875.88032 | quality: -0.01273
+        | Val:   loss: 32185.40877 | quality: 0.00578
+ *
+Epoch 2 | Train: loss: 24594.45672 | quality: 0.26474
+        | Val:   loss: 23882.53357 | quality: 0.26226
+ *
+Epoch 3 | Train: loss: 18724.98114 | quality: 0.44021
+        | Val:   loss: 18140.38270 | quality: 0.43964
+ *
+Epoch 4 | Train: loss: 13771.83991 | quality: 0.58829
+        | Val:   loss: 13441.37035 | quality: 0.58479
+ *
+Epoch 5 | Train: loss: 12529.78849 | quality: 0.62542
+        | Val:   loss: 12243.77243 | quality: 0.62178
+ *
+Epoch 6 | Train: loss: 12179.22529 | quality: 0.63590
+        | Val:   loss: 12013.20513 | quality: 0.62891
+ *
+Epoch 7 | Train: loss: 12028.16858 | quality: 0.64041
+        | Val:   loss: 11971.82397 | quality: 0.63019
+ *
+Epoch 8 | Train: loss: 11940.08558 | quality: 0.64305
+        | Val:   loss: 11961.21188 | quality: 0.63051
+ *
+Epoch 9 | Train: loss: 11900.81103 | quality: 0.64422
+        | Val:   loss: 11969.46021 | quality: 0.63026
+ *
+Epoch 10 | Train: loss: 11882.24959 | quality: 0.64478
+        | Val:   loss: 11967.70721 | quality: 0.63031
+
+Epoch 11 | Train: loss: 11869.54332 | quality: 0.64516
+        | Val:   loss: 11967.26037 | quality: 0.63033
+
+Epoch 12 | Train: loss: 11860.02975 | quality: 0.64544
+        | Val:   loss: 11968.38674 | quality: 0.63029
+ *
+Epoch 13 | Train: loss: 11852.47078 | quality: 0.64567
+        | Val:   loss: 11970.57400 | quality: 0.63022
+
+Epoch 14 | Train: loss: 11846.27660 | quality: 0.64585
+        | Val:   loss: 11973.18691 | quality: 0.63014
+
+Epoch 15 | Train: loss: 11841.12402 | quality: 0.64601
+        | Val:   loss: 11975.79583 | quality: 0.63006
+
+Epoch 16 | Train: loss: 11836.80225 | quality: 0.64613
+        | Val:   loss: 11978.16694 | quality: 0.62999
+
+Epoch 17 | Train: loss: 11833.15614 | quality: 0.64624
+        | Val:   loss: 11980.21492 | quality: 0.62993
+
+Epoch 18 | Train: loss: 11830.06437 | quality: 0.64634
+        | Val:   loss: 11981.95536 | quality: 0.62987
+
+Epoch 19 | Train: loss: 11827.42939 | quality: 0.64641
+        | Val:   loss: 11983.46594 | quality: 0.62983
+
+Epoch 20 | Train: loss: 11825.17210 | quality: 0.64648
+        | Val:   loss: 11984.85183 | quality: 0.62978
+ *
+
+Best epoch: 20 (val_quality=0.629783)
+[2026-04-28 19:58:02,404][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-28 19:58:02,405][__main__][INFO] - ✓ Train R²: 0.6465
+[2026-04-28 19:58:02,405][__main__][INFO] - ✓ Val R²: 0.6298
+[2026-04-28 19:58:02,408][HYDRA] 	#7 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:58:02,602][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:58:02,606][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed32874
+[2026-04-28 19:58:02,607][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:58:05,185][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:58:05,186][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:58:05,186][__main__][INFO] -   Device: cpu
+[2026-04-28 19:58:05,186][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70000.43898 | quality: -1.09269
+        | Val:   loss: 66112.17586 | quality: -1.04223
+
+Epoch 1 | Train: loss: 34148.91487 | quality: -0.02089
+        | Val:   loss: 32073.88085 | quality: 0.00922
+ *
+Epoch 2 | Train: loss: 24535.06473 | quality: 0.26652
+        | Val:   loss: 23825.85160 | quality: 0.26401
+ *
+Epoch 3 | Train: loss: 18634.84317 | quality: 0.44290
+        | Val:   loss: 18145.63977 | quality: 0.43947
+ *
+Epoch 4 | Train: loss: 13795.02736 | quality: 0.58759
+        | Val:   loss: 13447.57937 | quality: 0.58460
+ *
+Epoch 5 | Train: loss: 12592.75118 | quality: 0.62354
+        | Val:   loss: 12310.32195 | quality: 0.61973
+ *
+Epoch 6 | Train: loss: 12186.70960 | quality: 0.63567
+        | Val:   loss: 12010.99627 | quality: 0.62898
+ *
+Epoch 7 | Train: loss: 12035.96277 | quality: 0.64018
+        | Val:   loss: 11962.07953 | quality: 0.63049
+ *
+Epoch 8 | Train: loss: 11959.57550 | quality: 0.64246
+        | Val:   loss: 11957.69656 | quality: 0.63062
+ *
+Epoch 9 | Train: loss: 11912.69455 | quality: 0.64387
+        | Val:   loss: 11973.43547 | quality: 0.63014
+ *
+Epoch 10 | Train: loss: 11888.55080 | quality: 0.64459
+        | Val:   loss: 11977.56018 | quality: 0.63001
+
+Epoch 11 | Train: loss: 11871.71792 | quality: 0.64509
+        | Val:   loss: 11978.79781 | quality: 0.62997
+ *
+Epoch 12 | Train: loss: 11859.55188 | quality: 0.64545
+        | Val:   loss: 11980.28620 | quality: 0.62992
+
+Epoch 13 | Train: loss: 11850.50077 | quality: 0.64572
+        | Val:   loss: 11982.07748 | quality: 0.62987
+
+Epoch 14 | Train: loss: 11843.58581 | quality: 0.64593
+        | Val:   loss: 11983.88112 | quality: 0.62981
+
+Epoch 15 | Train: loss: 11838.16211 | quality: 0.64609
+        | Val:   loss: 11985.65792 | quality: 0.62976
+ *
+Epoch 16 | Train: loss: 11833.80804 | quality: 0.64622
+        | Val:   loss: 11987.44073 | quality: 0.62970
+
+Epoch 17 | Train: loss: 11830.24558 | quality: 0.64633
+        | Val:   loss: 11989.24351 | quality: 0.62965
+
+Epoch 18 | Train: loss: 11827.28796 | quality: 0.64642
+        | Val:   loss: 11991.04549 | quality: 0.62959
+
+Epoch 19 | Train: loss: 11824.80586 | quality: 0.64649
+        | Val:   loss: 11992.80875 | quality: 0.62954
+
+Epoch 20 | Train: loss: 11822.70582 | quality: 0.64656
+        | Val:   loss: 11994.49940 | quality: 0.62948
+
+
+Best epoch: 15 (val_quality=0.629758)
+[2026-04-28 19:58:22,253][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-28 19:58:22,254][__main__][INFO] - ✓ Train R²: 0.6461
+[2026-04-28 19:58:22,254][__main__][INFO] - ✓ Val R²: 0.6298
+[2026-04-28 19:58:22,256][HYDRA] 	#8 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:58:22,450][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:58:22,455][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed47311
+[2026-04-28 19:58:22,456][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:58:24,950][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:58:24,952][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:58:24,952][__main__][INFO] -   Device: cpu
+[2026-04-28 19:58:24,953][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69850.35147 | quality: -1.08820
+        | Val:   loss: 65976.50749 | quality: -1.03804
+
+Epoch 1 | Train: loss: 34557.45006 | quality: -0.03311
+        | Val:   loss: 32789.71572 | quality: -0.01289
+ *
+Epoch 2 | Train: loss: 24308.04226 | quality: 0.27330
+        | Val:   loss: 23647.23466 | quality: 0.26953
+ *
+Epoch 3 | Train: loss: 18619.08995 | quality: 0.44338
+        | Val:   loss: 18096.32776 | quality: 0.44100
+ *
+Epoch 4 | Train: loss: 13825.78268 | quality: 0.58667
+        | Val:   loss: 13469.29886 | quality: 0.58393
+ *
+Epoch 5 | Train: loss: 12547.09896 | quality: 0.62490
+        | Val:   loss: 12285.06581 | quality: 0.62051
+ *
+Epoch 6 | Train: loss: 12174.40405 | quality: 0.63604
+        | Val:   loss: 12007.24487 | quality: 0.62909
+ *
+Epoch 7 | Train: loss: 12027.70294 | quality: 0.64043
+        | Val:   loss: 11955.15379 | quality: 0.63070
+ *
+Epoch 8 | Train: loss: 11950.56013 | quality: 0.64273
+        | Val:   loss: 11966.56177 | quality: 0.63035
+ *
+Epoch 9 | Train: loss: 11912.17003 | quality: 0.64388
+        | Val:   loss: 11977.75449 | quality: 0.63000
+ *
+Epoch 10 | Train: loss: 11892.93258 | quality: 0.64446
+        | Val:   loss: 11972.95766 | quality: 0.63015
+
+Epoch 11 | Train: loss: 11879.37831 | quality: 0.64486
+        | Val:   loss: 11969.91622 | quality: 0.63024
+
+Epoch 12 | Train: loss: 11868.90606 | quality: 0.64517
+        | Val:   loss: 11967.89000 | quality: 0.63031
+ *
+Epoch 13 | Train: loss: 11860.44249 | quality: 0.64543
+        | Val:   loss: 11966.86518 | quality: 0.63034
+
+Epoch 14 | Train: loss: 11853.42392 | quality: 0.64564
+        | Val:   loss: 11966.67383 | quality: 0.63034
+
+Epoch 15 | Train: loss: 11847.56591 | quality: 0.64581
+        | Val:   loss: 11967.31275 | quality: 0.63032
+
+Epoch 16 | Train: loss: 11842.67421 | quality: 0.64596
+        | Val:   loss: 11968.76258 | quality: 0.63028
+
+Epoch 17 | Train: loss: 11838.57756 | quality: 0.64608
+        | Val:   loss: 11970.87947 | quality: 0.63021
+
+Epoch 18 | Train: loss: 11835.12366 | quality: 0.64618
+        | Val:   loss: 11973.45399 | quality: 0.63013
+ *
+Epoch 19 | Train: loss: 11832.18486 | quality: 0.64627
+        | Val:   loss: 11976.27492 | quality: 0.63005
+
+Epoch 20 | Train: loss: 11829.65988 | quality: 0.64635
+        | Val:   loss: 11979.16237 | quality: 0.62996
+
+
+Best epoch: 18 (val_quality=0.630135)
+[2026-04-28 19:58:41,886][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-28 19:58:41,887][__main__][INFO] - ✓ Train R²: 0.6462
+[2026-04-28 19:58:41,887][__main__][INFO] - ✓ Val R²: 0.6301
+[2026-04-28 19:58:41,889][HYDRA] 	#9 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:58:42,073][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:58:42,077][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed47303
+[2026-04-28 19:58:42,078][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:58:44,581][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:58:44,582][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:58:44,582][__main__][INFO] -   Device: cpu
+[2026-04-28 19:58:44,582][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70051.15211 | quality: -1.09420
+        | Val:   loss: 66156.72174 | quality: -1.04361
+
+Epoch 1 | Train: loss: 34970.99049 | quality: -0.04547
+        | Val:   loss: 33141.57899 | quality: -0.02376
+ *
+Epoch 2 | Train: loss: 24988.03881 | quality: 0.25297
+        | Val:   loss: 24271.46369 | quality: 0.25024
+ *
+Epoch 3 | Train: loss: 18931.74579 | quality: 0.43403
+        | Val:   loss: 18345.17145 | quality: 0.43331
+ *
+Epoch 4 | Train: loss: 13892.69723 | quality: 0.58467
+        | Val:   loss: 13508.00551 | quality: 0.58273
+ *
+Epoch 5 | Train: loss: 12582.34724 | quality: 0.62385
+        | Val:   loss: 12265.57442 | quality: 0.62111
+ *
+Epoch 6 | Train: loss: 12208.09302 | quality: 0.63503
+        | Val:   loss: 12000.46917 | quality: 0.62930
+ *
+Epoch 7 | Train: loss: 12045.05106 | quality: 0.63991
+        | Val:   loss: 11952.81950 | quality: 0.63077
+ *
+Epoch 8 | Train: loss: 11954.69991 | quality: 0.64261
+        | Val:   loss: 11962.67627 | quality: 0.63047
+ *
+Epoch 9 | Train: loss: 11909.73529 | quality: 0.64395
+        | Val:   loss: 11982.94839 | quality: 0.62984
+ *
+Epoch 10 | Train: loss: 11887.50763 | quality: 0.64462
+        | Val:   loss: 11982.75779 | quality: 0.62985
+
+Epoch 11 | Train: loss: 11872.73170 | quality: 0.64506
+        | Val:   loss: 11985.18960 | quality: 0.62977
+ *
+Epoch 12 | Train: loss: 11862.24254 | quality: 0.64537
+        | Val:   loss: 11989.42672 | quality: 0.62964
+
+Epoch 13 | Train: loss: 11854.18723 | quality: 0.64561
+        | Val:   loss: 11993.36973 | quality: 0.62952
+
+Epoch 14 | Train: loss: 11847.73011 | quality: 0.64581
+        | Val:   loss: 11996.34435 | quality: 0.62943
+
+Epoch 15 | Train: loss: 11842.43612 | quality: 0.64597
+        | Val:   loss: 11998.66057 | quality: 0.62936
+
+Epoch 16 | Train: loss: 11838.03122 | quality: 0.64610
+        | Val:   loss: 12000.57598 | quality: 0.62930
+ *
+Epoch 17 | Train: loss: 11834.32548 | quality: 0.64621
+        | Val:   loss: 12002.24244 | quality: 0.62925
+
+Epoch 18 | Train: loss: 11831.18043 | quality: 0.64630
+        | Val:   loss: 12003.74637 | quality: 0.62920
+
+Epoch 19 | Train: loss: 11828.49195 | quality: 0.64638
+        | Val:   loss: 12005.13642 | quality: 0.62916
+
+Epoch 20 | Train: loss: 11826.17994 | quality: 0.64645
+        | Val:   loss: 12006.43884 | quality: 0.62912
+
+
+Best epoch: 16 (val_quality=0.629297)
+[2026-04-28 19:59:01,515][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-28 19:59:01,516][__main__][INFO] - ✓ Train R²: 0.6461
+[2026-04-28 19:59:01,516][__main__][INFO] - ✓ Val R²: 0.6293
+[2026-04-28 19:59:01,519][HYDRA] 	#10 : model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:59:01,703][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:59:01,708][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed42
+[2026-04-28 19:59:01,709][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:59:04,452][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:59:04,453][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:59:04,453][__main__][INFO] -   Device: cpu
+[2026-04-28 19:59:04,453][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69980.38619 | quality: -1.09209
+        | Val:   loss: 66093.58155 | quality: -1.04166
+
+Epoch 1 | Train: loss: 31342.90628 | quality: 0.06299
+        | Val:   loss: 30013.45683 | quality: 0.07287
+ *
+Epoch 2 | Train: loss: 22732.51440 | quality: 0.32040
+        | Val:   loss: 22330.07669 | quality: 0.31021
+ *
+Epoch 3 | Train: loss: 17882.44345 | quality: 0.46540
+        | Val:   loss: 17345.85571 | quality: 0.46418
+ *
+Epoch 4 | Train: loss: 13123.79411 | quality: 0.60766
+        | Val:   loss: 12735.08463 | quality: 0.60661
+ *
+Epoch 5 | Train: loss: 12355.15603 | quality: 0.63064
+        | Val:   loss: 12042.50867 | quality: 0.62800
+ *
+Epoch 6 | Train: loss: 12105.06091 | quality: 0.63811
+        | Val:   loss: 11943.09378 | quality: 0.63107
+ *
+Epoch 7 | Train: loss: 11977.44393 | quality: 0.64193
+        | Val:   loss: 11949.52339 | quality: 0.63087
+ *
+Epoch 8 | Train: loss: 11915.51598 | quality: 0.64378
+        | Val:   loss: 11966.79789 | quality: 0.63034
+ *
+Epoch 9 | Train: loss: 11882.35160 | quality: 0.64477
+        | Val:   loss: 11985.76609 | quality: 0.62975
+
+Epoch 10 | Train: loss: 11864.62126 | quality: 0.64530
+        | Val:   loss: 11985.64886 | quality: 0.62976
+ *
+Epoch 11 | Train: loss: 11852.32667 | quality: 0.64567
+        | Val:   loss: 11987.77608 | quality: 0.62969
+
+Epoch 12 | Train: loss: 11843.31247 | quality: 0.64594
+        | Val:   loss: 11990.35711 | quality: 0.62961
+
+Epoch 13 | Train: loss: 11836.30113 | quality: 0.64615
+        | Val:   loss: 11993.35216 | quality: 0.62952
+
+Epoch 14 | Train: loss: 11830.76645 | quality: 0.64631
+        | Val:   loss: 11996.68298 | quality: 0.62942
+ *
+Epoch 15 | Train: loss: 11826.32584 | quality: 0.64645
+        | Val:   loss: 11999.66704 | quality: 0.62932
+
+Epoch 16 | Train: loss: 11822.71700 | quality: 0.64656
+        | Val:   loss: 12002.24248 | quality: 0.62925
+
+Epoch 17 | Train: loss: 11819.74824 | quality: 0.64664
+        | Val:   loss: 12004.64099 | quality: 0.62917
+
+Epoch 18 | Train: loss: 11817.28252 | quality: 0.64672
+        | Val:   loss: 12006.94026 | quality: 0.62910
+
+Epoch 19 | Train: loss: 11815.23004 | quality: 0.64678
+        | Val:   loss: 12009.07135 | quality: 0.62903
+
+Epoch 20 | Train: loss: 11813.50294 | quality: 0.64683
+        | Val:   loss: 12011.08018 | quality: 0.62897
+
+
+Best epoch: 14 (val_quality=0.629417)
+[2026-04-28 19:59:41,535][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed42/results.json
+[2026-04-28 19:59:41,536][__main__][INFO] - ✓ Train R²: 0.6463
+[2026-04-28 19:59:41,536][__main__][INFO] - ✓ Val R²: 0.6294
+[2026-04-28 19:59:41,539][HYDRA] 	#11 : model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 19:59:41,725][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 19:59:41,729][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed10090
+[2026-04-28 19:59:41,730][__main__][INFO] - Loading dataset: bike
+[2026-04-28 19:59:44,295][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 19:59:44,296][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 19:59:44,296][__main__][INFO] -   Device: cpu
+[2026-04-28 19:59:44,296][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70023.71783 | quality: -1.09338
+        | Val:   loss: 66148.21720 | quality: -1.04335
+
+Epoch 1 | Train: loss: 31048.84545 | quality: 0.07178
+        | Val:   loss: 29494.97638 | quality: 0.08889
+ *
+Epoch 2 | Train: loss: 22501.21213 | quality: 0.32732
+        | Val:   loss: 21986.91552 | quality: 0.32081
+ *
+Epoch 3 | Train: loss: 17680.98891 | quality: 0.47142
+        | Val:   loss: 17144.57231 | quality: 0.47040
+ *
+Epoch 4 | Train: loss: 13150.00373 | quality: 0.60688
+        | Val:   loss: 12769.47202 | quality: 0.60555
+ *
+Epoch 5 | Train: loss: 12348.22463 | quality: 0.63085
+        | Val:   loss: 12074.69589 | quality: 0.62701
+ *
+Epoch 6 | Train: loss: 12088.56712 | quality: 0.63861
+        | Val:   loss: 11943.11462 | quality: 0.63107
+ *
+Epoch 7 | Train: loss: 11970.42874 | quality: 0.64214
+        | Val:   loss: 11943.19322 | quality: 0.63107
+ *
+Epoch 8 | Train: loss: 11912.59732 | quality: 0.64387
+        | Val:   loss: 11961.91316 | quality: 0.63049
+ *
+Epoch 9 | Train: loss: 11877.86637 | quality: 0.64491
+        | Val:   loss: 11983.77216 | quality: 0.62982
+ *
+Epoch 10 | Train: loss: 11861.72211 | quality: 0.64539
+        | Val:   loss: 11983.76619 | quality: 0.62982
+
+Epoch 11 | Train: loss: 11849.96582 | quality: 0.64574
+        | Val:   loss: 11984.61170 | quality: 0.62979
+
+Epoch 12 | Train: loss: 11840.92246 | quality: 0.64601
+        | Val:   loss: 11986.31425 | quality: 0.62974
+ *
+Epoch 13 | Train: loss: 11834.04913 | quality: 0.64622
+        | Val:   loss: 11989.40513 | quality: 0.62964
+
+Epoch 14 | Train: loss: 11828.67207 | quality: 0.64638
+        | Val:   loss: 11991.76928 | quality: 0.62957
+
+Epoch 15 | Train: loss: 11824.35871 | quality: 0.64651
+        | Val:   loss: 11994.64614 | quality: 0.62948
+
+Epoch 16 | Train: loss: 11820.91778 | quality: 0.64661
+        | Val:   loss: 11996.74634 | quality: 0.62942
+
+Epoch 17 | Train: loss: 11818.13731 | quality: 0.64669
+        | Val:   loss: 11999.35664 | quality: 0.62933
+
+Epoch 18 | Train: loss: 11815.84189 | quality: 0.64676
+        | Val:   loss: 12001.65832 | quality: 0.62926
+
+Epoch 19 | Train: loss: 11813.94817 | quality: 0.64682
+        | Val:   loss: 12003.85003 | quality: 0.62920
+
+Epoch 20 | Train: loss: 11812.37569 | quality: 0.64686
+        | Val:   loss: 12005.90635 | quality: 0.62913
+
+
+Best epoch: 12 (val_quality=0.629737)
+[2026-04-28 20:00:21,142][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed10090/results.json
+[2026-04-28 20:00:21,143][__main__][INFO] - ✓ Train R²: 0.6460
+[2026-04-28 20:00:21,143][__main__][INFO] - ✓ Val R²: 0.6297
+[2026-04-28 20:00:21,147][HYDRA] 	#12 : model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:00:21,335][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:00:21,340][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed32874
+[2026-04-28 20:00:21,341][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:00:23,836][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:00:23,837][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:00:23,837][__main__][INFO] -   Device: cpu
+[2026-04-28 20:00:23,837][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70115.48320 | quality: -1.09613
+        | Val:   loss: 66233.26875 | quality: -1.04597
+
+Epoch 1 | Train: loss: 30918.61547 | quality: 0.07568
+        | Val:   loss: 29682.88443 | quality: 0.08308
+ *
+Epoch 2 | Train: loss: 22263.49132 | quality: 0.33442
+        | Val:   loss: 21867.94263 | quality: 0.32449
+ *
+Epoch 3 | Train: loss: 17784.77543 | quality: 0.46832
+        | Val:   loss: 17275.04825 | quality: 0.46637
+ *
+Epoch 4 | Train: loss: 13133.26968 | quality: 0.60738
+        | Val:   loss: 12725.24993 | quality: 0.60691
+ *
+Epoch 5 | Train: loss: 12343.72590 | quality: 0.63098
+        | Val:   loss: 12056.01976 | quality: 0.62758
+ *
+Epoch 6 | Train: loss: 12090.88366 | quality: 0.63854
+        | Val:   loss: 11940.18109 | quality: 0.63116
+ *
+Epoch 7 | Train: loss: 11971.02385 | quality: 0.64212
+        | Val:   loss: 11926.91409 | quality: 0.63157
+ *
+Epoch 8 | Train: loss: 11910.31419 | quality: 0.64394
+        | Val:   loss: 11955.08213 | quality: 0.63070
+ *
+Epoch 9 | Train: loss: 11875.24138 | quality: 0.64499
+        | Val:   loss: 11982.35587 | quality: 0.62986
+ *
+Epoch 10 | Train: loss: 11859.26810 | quality: 0.64546
+        | Val:   loss: 11982.63734 | quality: 0.62985
+
+Epoch 11 | Train: loss: 11848.15139 | quality: 0.64580
+        | Val:   loss: 11984.41702 | quality: 0.62980
+
+Epoch 12 | Train: loss: 11840.10218 | quality: 0.64604
+        | Val:   loss: 11986.33313 | quality: 0.62974
+ *
+Epoch 13 | Train: loss: 11833.85627 | quality: 0.64622
+        | Val:   loss: 11988.39922 | quality: 0.62967
+
+Epoch 14 | Train: loss: 11828.88779 | quality: 0.64637
+        | Val:   loss: 11990.54589 | quality: 0.62961
+
+Epoch 15 | Train: loss: 11824.89859 | quality: 0.64649
+        | Val:   loss: 11992.66983 | quality: 0.62954
+
+Epoch 16 | Train: loss: 11821.65315 | quality: 0.64659
+        | Val:   loss: 11994.67933 | quality: 0.62948
+
+Epoch 17 | Train: loss: 11818.98506 | quality: 0.64667
+        | Val:   loss: 11996.64023 | quality: 0.62942
+
+Epoch 18 | Train: loss: 11816.77189 | quality: 0.64673
+        | Val:   loss: 11998.55255 | quality: 0.62936
+
+Epoch 19 | Train: loss: 11814.92221 | quality: 0.64679
+        | Val:   loss: 12000.39192 | quality: 0.62930
+
+Epoch 20 | Train: loss: 11813.36599 | quality: 0.64684
+        | Val:   loss: 12002.12788 | quality: 0.62925
+
+
+Best epoch: 12 (val_quality=0.629737)
+[2026-04-28 20:01:00,724][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed32874/results.json
+[2026-04-28 20:01:00,725][__main__][INFO] - ✓ Train R²: 0.6460
+[2026-04-28 20:01:00,725][__main__][INFO] - ✓ Val R²: 0.6297
+[2026-04-28 20:01:00,728][HYDRA] 	#13 : model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:01:00,919][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:01:00,924][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed47311
+[2026-04-28 20:01:00,924][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:01:03,420][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:01:03,421][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:01:03,421][__main__][INFO] -   Device: cpu
+[2026-04-28 20:01:03,421][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69899.26091 | quality: -1.08966
+        | Val:   loss: 66025.62107 | quality: -1.03956
+
+Epoch 1 | Train: loss: 31785.47317 | quality: 0.04976
+        | Val:   loss: 30207.26989 | quality: 0.06688
+ *
+Epoch 2 | Train: loss: 22529.12079 | quality: 0.32648
+        | Val:   loss: 22032.65609 | quality: 0.31940
+ *
+Epoch 3 | Train: loss: 17627.49011 | quality: 0.47302
+        | Val:   loss: 17071.75717 | quality: 0.47265
+ *
+Epoch 4 | Train: loss: 13145.25199 | quality: 0.60702
+        | Val:   loss: 12761.66572 | quality: 0.60579
+ *
+Epoch 5 | Train: loss: 12338.00487 | quality: 0.63115
+        | Val:   loss: 12054.29766 | quality: 0.62764
+ *
+Epoch 6 | Train: loss: 12091.49212 | quality: 0.63852
+        | Val:   loss: 11933.58560 | quality: 0.63137
+ *
+Epoch 7 | Train: loss: 11977.06233 | quality: 0.64194
+        | Val:   loss: 11926.77924 | quality: 0.63158
+ *
+Epoch 8 | Train: loss: 11915.23392 | quality: 0.64379
+        | Val:   loss: 11954.19232 | quality: 0.63073
+ *
+Epoch 9 | Train: loss: 11879.41169 | quality: 0.64486
+        | Val:   loss: 11977.23153 | quality: 0.63002
+ *
+Epoch 10 | Train: loss: 11862.41538 | quality: 0.64537
+        | Val:   loss: 11978.68103 | quality: 0.62997
+
+Epoch 11 | Train: loss: 11850.28530 | quality: 0.64573
+        | Val:   loss: 11981.22103 | quality: 0.62989
+
+Epoch 12 | Train: loss: 11840.91283 | quality: 0.64601
+        | Val:   loss: 11982.96696 | quality: 0.62984
+ *
+Epoch 13 | Train: loss: 11834.00007 | quality: 0.64622
+        | Val:   loss: 11985.32880 | quality: 0.62977
+
+Epoch 14 | Train: loss: 11828.61054 | quality: 0.64638
+        | Val:   loss: 11988.32956 | quality: 0.62968
+
+Epoch 15 | Train: loss: 11824.28529 | quality: 0.64651
+        | Val:   loss: 11992.28862 | quality: 0.62955
+
+Epoch 16 | Train: loss: 11820.85553 | quality: 0.64661
+        | Val:   loss: 11995.57848 | quality: 0.62945
+
+Epoch 17 | Train: loss: 11818.07848 | quality: 0.64669
+        | Val:   loss: 11998.61002 | quality: 0.62936
+
+Epoch 18 | Train: loss: 11815.82080 | quality: 0.64676
+        | Val:   loss: 12001.28194 | quality: 0.62928
+
+Epoch 19 | Train: loss: 11813.96280 | quality: 0.64682
+        | Val:   loss: 12003.69966 | quality: 0.62920
+
+Epoch 20 | Train: loss: 11812.42972 | quality: 0.64686
+        | Val:   loss: 12005.91065 | quality: 0.62913
+
+
+Best epoch: 12 (val_quality=0.629841)
+[2026-04-28 20:01:41,296][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed47311/results.json
+[2026-04-28 20:01:41,297][__main__][INFO] - ✓ Train R²: 0.6460
+[2026-04-28 20:01:41,297][__main__][INFO] - ✓ Val R²: 0.6298
+[2026-04-28 20:01:41,300][HYDRA] 	#14 : model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:01:41,527][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:01:41,531][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed47303
+[2026-04-28 20:01:41,532][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:01:44,031][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:01:44,031][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:01:44,031][__main__][INFO] -   Device: cpu
+[2026-04-28 20:01:44,031][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3)]
+Total nodes: 6
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70039.93826 | quality: -1.09387
+        | Val:   loss: 66139.47364 | quality: -1.04308
+
+Epoch 1 | Train: loss: 31423.23811 | quality: 0.06059
+        | Val:   loss: 30007.09592 | quality: 0.07307
+ *
+Epoch 2 | Train: loss: 22681.37442 | quality: 0.32193
+        | Val:   loss: 22158.74915 | quality: 0.31551
+ *
+Epoch 3 | Train: loss: 17825.90888 | quality: 0.46709
+        | Val:   loss: 17271.66126 | quality: 0.46647
+ *
+Epoch 4 | Train: loss: 13208.25154 | quality: 0.60513
+        | Val:   loss: 12807.47488 | quality: 0.60437
+ *
+Epoch 5 | Train: loss: 12371.17528 | quality: 0.63016
+        | Val:   loss: 12081.21291 | quality: 0.62681
+ *
+Epoch 6 | Train: loss: 12091.98794 | quality: 0.63851
+        | Val:   loss: 11943.98958 | quality: 0.63104
+ *
+Epoch 7 | Train: loss: 11974.98925 | quality: 0.64200
+        | Val:   loss: 11940.35817 | quality: 0.63116
+ *
+Epoch 8 | Train: loss: 11912.77641 | quality: 0.64386
+        | Val:   loss: 11963.91642 | quality: 0.63043
+ *
+Epoch 9 | Train: loss: 11878.15077 | quality: 0.64490
+        | Val:   loss: 11983.51242 | quality: 0.62982
+ *
+Epoch 10 | Train: loss: 11860.85278 | quality: 0.64542
+        | Val:   loss: 11982.48659 | quality: 0.62986
+
+Epoch 11 | Train: loss: 11848.55186 | quality: 0.64578
+        | Val:   loss: 11984.23765 | quality: 0.62980
+
+Epoch 12 | Train: loss: 11840.02461 | quality: 0.64604
+        | Val:   loss: 11986.46279 | quality: 0.62973
+ *
+Epoch 13 | Train: loss: 11833.51770 | quality: 0.64623
+        | Val:   loss: 11989.71934 | quality: 0.62963
+
+Epoch 14 | Train: loss: 11828.42786 | quality: 0.64638
+        | Val:   loss: 11992.86539 | quality: 0.62954
+
+Epoch 15 | Train: loss: 11824.34605 | quality: 0.64651
+        | Val:   loss: 11995.62252 | quality: 0.62945
+
+Epoch 16 | Train: loss: 11820.97878 | quality: 0.64661
+        | Val:   loss: 11998.29095 | quality: 0.62937
+
+Epoch 17 | Train: loss: 11818.20074 | quality: 0.64669
+        | Val:   loss: 12000.81635 | quality: 0.62929
+
+Epoch 18 | Train: loss: 11815.88686 | quality: 0.64676
+        | Val:   loss: 12003.14593 | quality: 0.62922
+
+Epoch 19 | Train: loss: 11813.98591 | quality: 0.64682
+        | Val:   loss: 12005.31498 | quality: 0.62915
+
+Epoch 20 | Train: loss: 11812.40321 | quality: 0.64686
+        | Val:   loss: 12007.29763 | quality: 0.62909
+
+
+Best epoch: 12 (val_quality=0.629733)
+[2026-04-28 20:02:21,274][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L3_bd12_seed47303/results.json
+[2026-04-28 20:02:21,275][__main__][INFO] - ✓ Train R²: 0.6460
+[2026-04-28 20:02:21,275][__main__][INFO] - ✓ Val R²: 0.6297
+[2026-04-28 20:02:21,277][HYDRA] 	#15 : model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:02:21,473][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:02:21,478][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed42
+[2026-04-28 20:02:21,479][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:02:23,978][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:02:23,979][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:02:23,979][__main__][INFO] -   Device: cpu
+[2026-04-28 20:02:23,979][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70012.73529 | quality: -1.09306
+        | Val:   loss: 66142.84776 | quality: -1.04318
+
+Epoch 1 | Train: loss: 37391.52085 | quality: -0.11783
+        | Val:   loss: 35470.86582 | quality: -0.09571
+ *
+Epoch 2 | Train: loss: 25903.69482 | quality: 0.22560
+        | Val:   loss: 25118.60097 | quality: 0.22408
+ *
+Epoch 3 | Train: loss: 18846.79944 | quality: 0.43657
+        | Val:   loss: 18473.83323 | quality: 0.42934
+ *
+Epoch 4 | Train: loss: 14343.38892 | quality: 0.57120
+        | Val:   loss: 14210.06682 | quality: 0.56104
+ *
+Epoch 5 | Train: loss: 12452.89746 | quality: 0.62772
+        | Val:   loss: 12503.45997 | quality: 0.61376
+ *
+Epoch 6 | Train: loss: 11299.36652 | quality: 0.66220
+        | Val:   loss: 11318.82791 | quality: 0.65036
+ *
+Epoch 7 | Train: loss: 10861.53530 | quality: 0.67529
+        | Val:   loss: 10940.30669 | quality: 0.66205
+ *
+Epoch 8 | Train: loss: 10678.75808 | quality: 0.68075
+        | Val:   loss: 10821.26447 | quality: 0.66573
+ *
+Epoch 9 | Train: loss: 10585.47009 | quality: 0.68354
+        | Val:   loss: 10792.74446 | quality: 0.66661
+ *
+Epoch 10 | Train: loss: 10528.18373 | quality: 0.68526
+        | Val:   loss: 10769.23353 | quality: 0.66733
+ *
+Epoch 11 | Train: loss: 10488.09521 | quality: 0.68645
+        | Val:   loss: 10742.65061 | quality: 0.66815
+ *
+Epoch 12 | Train: loss: 10457.69647 | quality: 0.68736
+        | Val:   loss: 10718.20996 | quality: 0.66891
+
+Epoch 13 | Train: loss: 10433.16133 | quality: 0.68810
+        | Val:   loss: 10697.99980 | quality: 0.66953
+ *
+Epoch 14 | Train: loss: 10412.51807 | quality: 0.68871
+        | Val:   loss: 10682.28928 | quality: 0.67002
+
+Epoch 15 | Train: loss: 10394.79357 | quality: 0.68924
+        | Val:   loss: 10670.91366 | quality: 0.67037
+ *
+Epoch 16 | Train: loss: 10379.45568 | quality: 0.68970
+        | Val:   loss: 10663.40525 | quality: 0.67060
+
+Epoch 17 | Train: loss: 10366.12110 | quality: 0.69010
+        | Val:   loss: 10659.02083 | quality: 0.67074
+
+Epoch 18 | Train: loss: 10354.45796 | quality: 0.69045
+        | Val:   loss: 10656.93320 | quality: 0.67080
+ *
+Epoch 19 | Train: loss: 10344.17483 | quality: 0.69076
+        | Val:   loss: 10656.42926 | quality: 0.67082
+
+Epoch 20 | Train: loss: 10335.02615 | quality: 0.69103
+        | Val:   loss: 10656.97484 | quality: 0.67080
+
+
+Best epoch: 18 (val_quality=0.670803)
+[2026-04-28 20:02:48,441][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed42/results.json
+[2026-04-28 20:02:48,441][__main__][INFO] - ✓ Train R²: 0.6904
+[2026-04-28 20:02:48,441][__main__][INFO] - ✓ Val R²: 0.6708
+[2026-04-28 20:02:48,443][HYDRA] 	#16 : model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:02:48,622][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:02:48,626][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed10090
+[2026-04-28 20:02:48,626][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:02:51,431][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:02:51,432][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:02:51,432][__main__][INFO] -   Device: cpu
+[2026-04-28 20:02:51,432][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69984.22367 | quality: -1.09220
+        | Val:   loss: 66095.50631 | quality: -1.04172
+
+Epoch 1 | Train: loss: 35501.73896 | quality: -0.06134
+        | Val:   loss: 33949.72017 | quality: -0.04872
+ *
+Epoch 2 | Train: loss: 26331.87135 | quality: 0.21280
+        | Val:   loss: 25699.60681 | quality: 0.20613
+ *
+Epoch 3 | Train: loss: 20022.14026 | quality: 0.40143
+        | Val:   loss: 19689.76426 | quality: 0.39177
+ *
+Epoch 4 | Train: loss: 14772.00316 | quality: 0.55839
+        | Val:   loss: 14733.16842 | quality: 0.54489
+ *
+Epoch 5 | Train: loss: 12189.06651 | quality: 0.63560
+        | Val:   loss: 12165.60545 | quality: 0.62420
+ *
+Epoch 6 | Train: loss: 11270.48677 | quality: 0.66306
+        | Val:   loss: 11365.34364 | quality: 0.64892
+ *
+Epoch 7 | Train: loss: 10927.73963 | quality: 0.67331
+        | Val:   loss: 11071.51125 | quality: 0.65800
+ *
+Epoch 8 | Train: loss: 10754.37257 | quality: 0.67849
+        | Val:   loss: 10942.40888 | quality: 0.66198
+ *
+Epoch 9 | Train: loss: 10655.66516 | quality: 0.68144
+        | Val:   loss: 10880.76634 | quality: 0.66389
+ *
+Epoch 10 | Train: loss: 10592.02750 | quality: 0.68335
+        | Val:   loss: 10841.36153 | quality: 0.66511
+ *
+Epoch 11 | Train: loss: 10548.50767 | quality: 0.68465
+        | Val:   loss: 10817.33566 | quality: 0.66585
+ *
+Epoch 12 | Train: loss: 10516.85809 | quality: 0.68559
+        | Val:   loss: 10800.95429 | quality: 0.66635
+
+Epoch 13 | Train: loss: 10492.30651 | quality: 0.68633
+        | Val:   loss: 10789.39811 | quality: 0.66671
+ *
+Epoch 14 | Train: loss: 10472.26447 | quality: 0.68693
+        | Val:   loss: 10781.40946 | quality: 0.66696
+
+Epoch 15 | Train: loss: 10455.30655 | quality: 0.68743
+        | Val:   loss: 10776.13154 | quality: 0.66712
+ *
+Epoch 16 | Train: loss: 10440.62247 | quality: 0.68787
+        | Val:   loss: 10772.83216 | quality: 0.66722
+
+Epoch 17 | Train: loss: 10427.71252 | quality: 0.68826
+        | Val:   loss: 10770.89646 | quality: 0.66728
+
+Epoch 18 | Train: loss: 10416.22902 | quality: 0.68860
+        | Val:   loss: 10769.85210 | quality: 0.66731
+ *
+Epoch 19 | Train: loss: 10405.90639 | quality: 0.68891
+        | Val:   loss: 10769.37393 | quality: 0.66733
+
+Epoch 20 | Train: loss: 10396.53457 | quality: 0.68919
+        | Val:   loss: 10769.26166 | quality: 0.66733
+
+
+Best epoch: 18 (val_quality=0.667315)
+[2026-04-28 20:03:15,739][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed10090/results.json
+[2026-04-28 20:03:15,740][__main__][INFO] - ✓ Train R²: 0.6886
+[2026-04-28 20:03:15,740][__main__][INFO] - ✓ Val R²: 0.6673
+[2026-04-28 20:03:15,742][HYDRA] 	#17 : model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:03:16,257][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:03:16,261][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed32874
+[2026-04-28 20:03:16,261][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:03:18,804][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:03:18,805][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:03:18,805][__main__][INFO] -   Device: cpu
+[2026-04-28 20:03:18,805][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70049.36893 | quality: -1.09415
+        | Val:   loss: 66167.02162 | quality: -1.04393
+
+Epoch 1 | Train: loss: 37849.41897 | quality: -0.13152
+        | Val:   loss: 35932.84606 | quality: -0.10998
+ *
+Epoch 2 | Train: loss: 25282.88310 | quality: 0.24416
+        | Val:   loss: 24723.78904 | quality: 0.23627
+ *
+Epoch 3 | Train: loss: 19013.45511 | quality: 0.43159
+        | Val:   loss: 18627.61619 | quality: 0.42458
+ *
+Epoch 4 | Train: loss: 14396.63262 | quality: 0.56961
+        | Val:   loss: 14229.24854 | quality: 0.56045
+ *
+Epoch 5 | Train: loss: 12346.48190 | quality: 0.63090
+        | Val:   loss: 12259.22101 | quality: 0.62131
+ *
+Epoch 6 | Train: loss: 11243.61689 | quality: 0.66387
+        | Val:   loss: 11170.43827 | quality: 0.65494
+ *
+Epoch 7 | Train: loss: 10888.86560 | quality: 0.67447
+        | Val:   loss: 10930.26806 | quality: 0.66236
+ *
+Epoch 8 | Train: loss: 10712.95736 | quality: 0.67973
+        | Val:   loss: 10822.74112 | quality: 0.66568
+ *
+Epoch 9 | Train: loss: 10607.19742 | quality: 0.68289
+        | Val:   loss: 10776.21520 | quality: 0.66712
+ *
+Epoch 10 | Train: loss: 10540.46403 | quality: 0.68489
+        | Val:   loss: 10754.14410 | quality: 0.66780
+ *
+Epoch 11 | Train: loss: 10493.43312 | quality: 0.68629
+        | Val:   loss: 10742.32371 | quality: 0.66816
+ *
+Epoch 12 | Train: loss: 10458.32563 | quality: 0.68734
+        | Val:   loss: 10734.03020 | quality: 0.66842
+ *
+Epoch 13 | Train: loss: 10430.72690 | quality: 0.68817
+        | Val:   loss: 10727.18778 | quality: 0.66863
+
+Epoch 14 | Train: loss: 10408.21339 | quality: 0.68884
+        | Val:   loss: 10721.98391 | quality: 0.66879
+ *
+Epoch 15 | Train: loss: 10389.40999 | quality: 0.68940
+        | Val:   loss: 10718.81978 | quality: 0.66889
+
+Epoch 16 | Train: loss: 10373.39309 | quality: 0.68988
+        | Val:   loss: 10717.59915 | quality: 0.66893
+ *
+Epoch 17 | Train: loss: 10359.49311 | quality: 0.69030
+        | Val:   loss: 10717.75070 | quality: 0.66892
+
+Epoch 18 | Train: loss: 10347.23710 | quality: 0.69067
+        | Val:   loss: 10718.63072 | quality: 0.66890
+
+Epoch 19 | Train: loss: 10336.30944 | quality: 0.69099
+        | Val:   loss: 10719.77011 | quality: 0.66886
+ *
+Epoch 20 | Train: loss: 10326.50076 | quality: 0.69129
+        | Val:   loss: 10720.89022 | quality: 0.66883
+
+
+Best epoch: 19 (val_quality=0.668862)
+[2026-04-28 20:03:43,624][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed32874/results.json
+[2026-04-28 20:03:43,625][__main__][INFO] - ✓ Train R²: 0.6910
+[2026-04-28 20:03:43,625][__main__][INFO] - ✓ Val R²: 0.6689
+[2026-04-28 20:03:43,628][HYDRA] 	#18 : model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:03:43,808][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:03:43,813][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed47311
+[2026-04-28 20:03:43,813][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:03:46,324][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:03:46,325][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:03:46,325][__main__][INFO] -   Device: cpu
+[2026-04-28 20:03:46,325][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69867.81711 | quality: -1.08872
+        | Val:   loss: 65991.99332 | quality: -1.03852
+
+Epoch 1 | Train: loss: 38684.91021 | quality: -0.15650
+        | Val:   loss: 36440.35432 | quality: -0.12566
+ *
+Epoch 2 | Train: loss: 26415.36229 | quality: 0.21030
+        | Val:   loss: 25611.71868 | quality: 0.20884
+ *
+Epoch 3 | Train: loss: 19790.53654 | quality: 0.40835
+        | Val:   loss: 19634.87231 | quality: 0.39347
+ *
+Epoch 4 | Train: loss: 14313.63654 | quality: 0.57209
+        | Val:   loss: 14286.39731 | quality: 0.55869
+ *
+Epoch 5 | Train: loss: 12700.51871 | quality: 0.62031
+        | Val:   loss: 12725.30613 | quality: 0.60691
+ *
+Epoch 6 | Train: loss: 11508.87618 | quality: 0.65594
+        | Val:   loss: 11495.06331 | quality: 0.64491
+ *
+Epoch 7 | Train: loss: 10991.37500 | quality: 0.67141
+        | Val:   loss: 11004.12542 | quality: 0.66008
+ *
+Epoch 8 | Train: loss: 10771.72060 | quality: 0.67798
+        | Val:   loss: 10844.54638 | quality: 0.66501
+ *
+Epoch 9 | Train: loss: 10644.71392 | quality: 0.68177
+        | Val:   loss: 10769.91444 | quality: 0.66731
+ *
+Epoch 10 | Train: loss: 10569.57993 | quality: 0.68402
+        | Val:   loss: 10739.66855 | quality: 0.66825
+ *
+Epoch 11 | Train: loss: 10519.57712 | quality: 0.68551
+        | Val:   loss: 10726.82126 | quality: 0.66864
+ *
+Epoch 12 | Train: loss: 10483.91387 | quality: 0.68658
+        | Val:   loss: 10721.44560 | quality: 0.66881
+ *
+Epoch 13 | Train: loss: 10457.05247 | quality: 0.68738
+        | Val:   loss: 10719.38463 | quality: 0.66887
+
+Epoch 14 | Train: loss: 10435.94074 | quality: 0.68801
+        | Val:   loss: 10718.45078 | quality: 0.66890
+ *
+Epoch 15 | Train: loss: 10418.74394 | quality: 0.68853
+        | Val:   loss: 10717.55110 | quality: 0.66893
+
+Epoch 16 | Train: loss: 10404.29402 | quality: 0.68896
+        | Val:   loss: 10716.30580 | quality: 0.66897
+
+Epoch 17 | Train: loss: 10391.83692 | quality: 0.68933
+        | Val:   loss: 10714.71644 | quality: 0.66902
+ *
+Epoch 18 | Train: loss: 10380.88749 | quality: 0.68966
+        | Val:   loss: 10712.93072 | quality: 0.66907
+
+Epoch 19 | Train: loss: 10371.13178 | quality: 0.68995
+        | Val:   loss: 10711.11351 | quality: 0.66913
+
+Epoch 20 | Train: loss: 10362.36034 | quality: 0.69021
+        | Val:   loss: 10709.39492 | quality: 0.66918
+
+
+Best epoch: 17 (val_quality=0.669018)
+[2026-04-28 20:04:10,478][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed47311/results.json
+[2026-04-28 20:04:10,479][__main__][INFO] - ✓ Train R²: 0.6893
+[2026-04-28 20:04:10,479][__main__][INFO] - ✓ Val R²: 0.6690
+[2026-04-28 20:04:10,481][HYDRA] 	#19 : model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:04:10,663][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:04:10,667][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed47303
+[2026-04-28 20:04:10,668][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:04:13,154][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:04:13,155][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:04:13,155][__main__][INFO] -   Device: cpu
+[2026-04-28 20:04:13,155][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70009.52624 | quality: -1.09296
+        | Val:   loss: 66121.23294 | quality: -1.04251
+
+Epoch 1 | Train: loss: 39523.61482 | quality: -0.18157
+        | Val:   loss: 37397.35721 | quality: -0.15522
+ *
+Epoch 2 | Train: loss: 26175.90675 | quality: 0.21746
+        | Val:   loss: 25119.71386 | quality: 0.22404
+ *
+Epoch 3 | Train: loss: 18753.66055 | quality: 0.43935
+        | Val:   loss: 18364.32405 | quality: 0.43272
+ *
+Epoch 4 | Train: loss: 14218.51832 | quality: 0.57493
+        | Val:   loss: 14203.26687 | quality: 0.56125
+ *
+Epoch 5 | Train: loss: 12541.27817 | quality: 0.62507
+        | Val:   loss: 12516.74533 | quality: 0.61335
+ *
+Epoch 6 | Train: loss: 11346.26161 | quality: 0.66080
+        | Val:   loss: 11419.06562 | quality: 0.64726
+ *
+Epoch 7 | Train: loss: 10937.53728 | quality: 0.67302
+        | Val:   loss: 11106.29824 | quality: 0.65692
+ *
+Epoch 8 | Train: loss: 10760.80703 | quality: 0.67830
+        | Val:   loss: 10977.74198 | quality: 0.66089
+ *
+Epoch 9 | Train: loss: 10660.62637 | quality: 0.68130
+        | Val:   loss: 10913.14899 | quality: 0.66289
+ *
+Epoch 10 | Train: loss: 10597.27675 | quality: 0.68319
+        | Val:   loss: 10868.82302 | quality: 0.66426
+ *
+Epoch 11 | Train: loss: 10553.60075 | quality: 0.68450
+        | Val:   loss: 10841.87569 | quality: 0.66509
+ *
+Epoch 12 | Train: loss: 10521.64509 | quality: 0.68545
+        | Val:   loss: 10826.86904 | quality: 0.66555
+
+Epoch 13 | Train: loss: 10496.72423 | quality: 0.68620
+        | Val:   loss: 10818.44155 | quality: 0.66581
+ *
+Epoch 14 | Train: loss: 10476.28264 | quality: 0.68681
+        | Val:   loss: 10813.33271 | quality: 0.66597
+
+Epoch 15 | Train: loss: 10459.07626 | quality: 0.68732
+        | Val:   loss: 10809.94773 | quality: 0.66608
+ *
+Epoch 16 | Train: loss: 10444.44300 | quality: 0.68776
+        | Val:   loss: 10807.50926 | quality: 0.66615
+
+Epoch 17 | Train: loss: 10431.88454 | quality: 0.68813
+        | Val:   loss: 10805.62695 | quality: 0.66621
+
+Epoch 18 | Train: loss: 10420.98425 | quality: 0.68846
+        | Val:   loss: 10804.12931 | quality: 0.66626
+ *
+Epoch 19 | Train: loss: 10411.41144 | quality: 0.68875
+        | Val:   loss: 10802.97300 | quality: 0.66629
+
+Epoch 20 | Train: loss: 10402.90783 | quality: 0.68900
+        | Val:   loss: 10802.14444 | quality: 0.66632
+
+
+Best epoch: 18 (val_quality=0.666256)
+[2026-04-28 20:04:36,969][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd4_seed47303/results.json
+[2026-04-28 20:04:36,970][__main__][INFO] - ✓ Train R²: 0.6885
+[2026-04-28 20:04:36,970][__main__][INFO] - ✓ Val R²: 0.6663
+[2026-04-28 20:04:36,973][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:04:37,148][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:04:37,153][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed42
+[2026-04-28 20:04:37,153][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:04:39,640][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:04:39,641][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:04:39,641][__main__][INFO] -   Device: cpu
+[2026-04-28 20:04:39,641][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70081.10224 | quality: -1.09510
+        | Val:   loss: 66219.10889 | quality: -1.04554
+
+Epoch 1 | Train: loss: 31043.00349 | quality: 0.07196
+        | Val:   loss: 29720.49282 | quality: 0.08192
+ *
+Epoch 2 | Train: loss: 21668.10543 | quality: 0.35222
+        | Val:   loss: 21122.55108 | quality: 0.34752
+ *
+Epoch 3 | Train: loss: 15265.43726 | quality: 0.54363
+        | Val:   loss: 14958.69167 | quality: 0.53792
+ *
+Epoch 4 | Train: loss: 12228.43859 | quality: 0.63443
+        | Val:   loss: 12179.70709 | quality: 0.62376
+ *
+Epoch 5 | Train: loss: 10912.27698 | quality: 0.67377
+        | Val:   loss: 10976.85904 | quality: 0.66092
+ *
+Epoch 6 | Train: loss: 10449.70102 | quality: 0.68760
+        | Val:   loss: 10700.71832 | quality: 0.66945
+ *
+Epoch 7 | Train: loss: 10197.87103 | quality: 0.69513
+        | Val:   loss: 10712.24213 | quality: 0.66909
+ *
+Epoch 8 | Train: loss: 10050.95802 | quality: 0.69952
+        | Val:   loss: 10786.81551 | quality: 0.66679
+
+Epoch 9 | Train: loss: 9963.23605 | quality: 0.70215
+        | Val:   loss: 10847.23285 | quality: 0.66492
+
+Epoch 10 | Train: loss: 9916.60356 | quality: 0.70354
+        | Val:   loss: 10862.91268 | quality: 0.66444
+
+Epoch 11 | Train: loss: 9885.55712 | quality: 0.70447
+        | Val:   loss: 10872.09080 | quality: 0.66416
+
+Epoch 12 | Train: loss: 9862.52848 | quality: 0.70516
+        | Val:   loss: 10877.15126 | quality: 0.66400
+
+Epoch 13 | Train: loss: 9845.01664 | quality: 0.70568
+        | Val:   loss: 10881.80066 | quality: 0.66386
+
+Epoch 14 | Train: loss: 9831.29608 | quality: 0.70609
+        | Val:   loss: 10886.37655 | quality: 0.66372
+
+Epoch 15 | Train: loss: 9820.15709 | quality: 0.70642
+        | Val:   loss: 10890.57320 | quality: 0.66359
+
+Epoch 16 | Train: loss: 9810.82530 | quality: 0.70670
+        | Val:   loss: 10894.46292 | quality: 0.66347
+
+Epoch 17 | Train: loss: 9802.79707 | quality: 0.70694
+        | Val:   loss: 10898.29596 | quality: 0.66335
+
+
+Early stopping at epoch 17 (best was epoch 7)
+
+Best epoch: 7 (val_quality=0.669094)
+[2026-04-28 20:05:15,725][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-28 20:05:15,726][__main__][INFO] - ✓ Train R²: 0.6951
+[2026-04-28 20:05:15,726][__main__][INFO] - ✓ Val R²: 0.6691
+[2026-04-28 20:05:15,729][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:05:15,915][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:05:15,919][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed10090
+[2026-04-28 20:05:15,920][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:05:18,411][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:05:18,412][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:05:18,412][__main__][INFO] -   Device: cpu
+[2026-04-28 20:05:18,412][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70143.56366 | quality: -1.09697
+        | Val:   loss: 66276.71433 | quality: -1.04732
+
+Epoch 1 | Train: loss: 31171.55833 | quality: 0.06811
+        | Val:   loss: 30147.71284 | quality: 0.06872
+ *
+Epoch 2 | Train: loss: 22210.96259 | quality: 0.33600
+        | Val:   loss: 21783.84088 | quality: 0.32709
+ *
+Epoch 3 | Train: loss: 15215.96707 | quality: 0.54511
+        | Val:   loss: 14977.39076 | quality: 0.53734
+ *
+Epoch 4 | Train: loss: 12181.63019 | quality: 0.63583
+        | Val:   loss: 12100.62048 | quality: 0.62621
+ *
+Epoch 5 | Train: loss: 10923.51840 | quality: 0.67344
+        | Val:   loss: 11066.97407 | quality: 0.65814
+ *
+Epoch 6 | Train: loss: 10438.02110 | quality: 0.68795
+        | Val:   loss: 10815.15213 | quality: 0.66592
+ *
+Epoch 7 | Train: loss: 10186.02473 | quality: 0.69549
+        | Val:   loss: 10797.07412 | quality: 0.66647
+ *
+Epoch 8 | Train: loss: 10026.56302 | quality: 0.70025
+        | Val:   loss: 10850.09811 | quality: 0.66484
+
+Epoch 9 | Train: loss: 9933.41764 | quality: 0.70304
+        | Val:   loss: 10874.66703 | quality: 0.66408
+
+Epoch 10 | Train: loss: 9884.41029 | quality: 0.70450
+        | Val:   loss: 10873.00526 | quality: 0.66413
+
+Epoch 11 | Train: loss: 9852.18714 | quality: 0.70547
+        | Val:   loss: 10874.09211 | quality: 0.66409
+
+Epoch 12 | Train: loss: 9828.48997 | quality: 0.70617
+        | Val:   loss: 10875.45674 | quality: 0.66405
+
+Epoch 13 | Train: loss: 9810.38834 | quality: 0.70671
+        | Val:   loss: 10880.98190 | quality: 0.66388
+
+Epoch 14 | Train: loss: 9796.06584 | quality: 0.70714
+        | Val:   loss: 10889.34136 | quality: 0.66362
+
+Epoch 15 | Train: loss: 9784.16965 | quality: 0.70750
+        | Val:   loss: 10898.85730 | quality: 0.66333
+
+Epoch 16 | Train: loss: 9773.86703 | quality: 0.70781
+        | Val:   loss: 10908.44444 | quality: 0.66303
+
+Epoch 17 | Train: loss: 9764.73082 | quality: 0.70808
+        | Val:   loss: 10917.67570 | quality: 0.66275
+
+
+Early stopping at epoch 17 (best was epoch 7)
+
+Best epoch: 7 (val_quality=0.666474)
+[2026-04-28 20:05:55,923][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-28 20:05:55,924][__main__][INFO] - ✓ Train R²: 0.6955
+[2026-04-28 20:05:55,924][__main__][INFO] - ✓ Val R²: 0.6665
+[2026-04-28 20:05:55,927][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:05:56,114][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:05:56,119][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed32874
+[2026-04-28 20:05:56,120][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:05:58,606][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:05:58,607][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:05:58,607][__main__][INFO] -   Device: cpu
+[2026-04-28 20:05:58,607][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69942.74167 | quality: -1.09096
+        | Val:   loss: 66055.15576 | quality: -1.04047
+
+Epoch 1 | Train: loss: 31113.76808 | quality: 0.06984
+        | Val:   loss: 29548.86615 | quality: 0.08722
+ *
+Epoch 2 | Train: loss: 21393.66932 | quality: 0.36043
+        | Val:   loss: 20859.22563 | quality: 0.35565
+ *
+Epoch 3 | Train: loss: 14471.36735 | quality: 0.56737
+        | Val:   loss: 14303.76985 | quality: 0.55815
+ *
+Epoch 4 | Train: loss: 11920.31326 | quality: 0.64364
+        | Val:   loss: 11897.28508 | quality: 0.63249
+ *
+Epoch 5 | Train: loss: 10834.12556 | quality: 0.67611
+        | Val:   loss: 10920.74954 | quality: 0.66265
+ *
+Epoch 6 | Train: loss: 10428.80428 | quality: 0.68823
+        | Val:   loss: 10740.15042 | quality: 0.66823
+ *
+Epoch 7 | Train: loss: 10185.43992 | quality: 0.69550
+        | Val:   loss: 10775.95682 | quality: 0.66713
+
+Epoch 8 | Train: loss: 10034.03484 | quality: 0.70003
+        | Val:   loss: 10853.25296 | quality: 0.66474
+
+Epoch 9 | Train: loss: 9943.60696 | quality: 0.70273
+        | Val:   loss: 10894.72588 | quality: 0.66346
+
+Epoch 10 | Train: loss: 9894.38284 | quality: 0.70420
+        | Val:   loss: 10901.71816 | quality: 0.66324
+
+Epoch 11 | Train: loss: 9863.31791 | quality: 0.70513
+        | Val:   loss: 10908.06763 | quality: 0.66304
+
+Epoch 12 | Train: loss: 9841.53977 | quality: 0.70578
+        | Val:   loss: 10913.84988 | quality: 0.66287
+
+Epoch 13 | Train: loss: 9825.19653 | quality: 0.70627
+        | Val:   loss: 10916.75217 | quality: 0.66278
+
+Epoch 14 | Train: loss: 9812.30542 | quality: 0.70666
+        | Val:   loss: 10916.20726 | quality: 0.66279
+
+Epoch 15 | Train: loss: 9801.69484 | quality: 0.70697
+        | Val:   loss: 10913.02918 | quality: 0.66289
+
+Epoch 16 | Train: loss: 9792.60854 | quality: 0.70725
+        | Val:   loss: 10908.69409 | quality: 0.66303
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.668232)
+[2026-04-28 20:06:32,938][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-28 20:06:32,939][__main__][INFO] - ✓ Train R²: 0.6882
+[2026-04-28 20:06:32,939][__main__][INFO] - ✓ Val R²: 0.6682
+[2026-04-28 20:06:32,941][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:06:33,126][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:06:33,130][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed47311
+[2026-04-28 20:06:33,131][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:06:35,688][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:06:35,689][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:06:35,689][__main__][INFO] -   Device: cpu
+[2026-04-28 20:06:35,689][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69888.80836 | quality: -1.08935
+        | Val:   loss: 66035.99991 | quality: -1.03988
+
+Epoch 1 | Train: loss: 31772.68983 | quality: 0.05014
+        | Val:   loss: 30351.06402 | quality: 0.06244
+ *
+Epoch 2 | Train: loss: 21958.63753 | quality: 0.34354
+        | Val:   loss: 21376.90837 | quality: 0.33966
+ *
+Epoch 3 | Train: loss: 14772.17933 | quality: 0.55838
+        | Val:   loss: 14379.31128 | quality: 0.55582
+ *
+Epoch 4 | Train: loss: 12145.60523 | quality: 0.63690
+        | Val:   loss: 12101.84254 | quality: 0.62617
+ *
+Epoch 5 | Train: loss: 10876.88892 | quality: 0.67483
+        | Val:   loss: 11049.42161 | quality: 0.65868
+ *
+Epoch 6 | Train: loss: 10427.88133 | quality: 0.68825
+        | Val:   loss: 10748.23470 | quality: 0.66798
+ *
+Epoch 7 | Train: loss: 10188.57837 | quality: 0.69541
+        | Val:   loss: 10686.13366 | quality: 0.66990
+ *
+Epoch 8 | Train: loss: 10027.64369 | quality: 0.70022
+        | Val:   loss: 10722.58981 | quality: 0.66877
+
+Epoch 9 | Train: loss: 9936.28447 | quality: 0.70295
+        | Val:   loss: 10778.74311 | quality: 0.66704
+
+Epoch 10 | Train: loss: 9888.94497 | quality: 0.70437
+        | Val:   loss: 10807.47432 | quality: 0.66615
+
+Epoch 11 | Train: loss: 9857.28596 | quality: 0.70531
+        | Val:   loss: 10833.33160 | quality: 0.66535
+
+Epoch 12 | Train: loss: 9834.17160 | quality: 0.70600
+        | Val:   loss: 10853.67511 | quality: 0.66473
+
+Epoch 13 | Train: loss: 9816.33080 | quality: 0.70654
+        | Val:   loss: 10867.71648 | quality: 0.66429
+
+Epoch 14 | Train: loss: 9801.98140 | quality: 0.70697
+        | Val:   loss: 10876.98556 | quality: 0.66401
+
+Epoch 15 | Train: loss: 9790.12472 | quality: 0.70732
+        | Val:   loss: 10883.27573 | quality: 0.66381
+
+Epoch 16 | Train: loss: 9780.10934 | quality: 0.70762
+        | Val:   loss: 10887.69813 | quality: 0.66367
+
+Epoch 17 | Train: loss: 9771.46468 | quality: 0.70788
+        | Val:   loss: 10890.86585 | quality: 0.66358
+
+
+Early stopping at epoch 17 (best was epoch 7)
+
+Best epoch: 7 (val_quality=0.669901)
+[2026-04-28 20:07:11,815][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-28 20:07:11,816][__main__][INFO] - ✓ Train R²: 0.6954
+[2026-04-28 20:07:11,816][__main__][INFO] - ✓ Val R²: 0.6699
+[2026-04-28 20:07:11,819][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:07:12,002][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:07:12,007][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed47303
+[2026-04-28 20:07:12,008][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:07:14,549][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:07:14,550][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:07:14,550][__main__][INFO] -   Device: cpu
+[2026-04-28 20:07:14,550][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70065.94502 | quality: -1.09465
+        | Val:   loss: 66186.42702 | quality: -1.04453
+
+Epoch 1 | Train: loss: 32343.72855 | quality: 0.03307
+        | Val:   loss: 31120.96360 | quality: 0.03866
+ *
+Epoch 2 | Train: loss: 22932.24030 | quality: 0.31443
+        | Val:   loss: 22555.65561 | quality: 0.30325
+ *
+Epoch 3 | Train: loss: 14912.04875 | quality: 0.55420
+        | Val:   loss: 14741.52868 | quality: 0.54463
+ *
+Epoch 4 | Train: loss: 12108.69486 | quality: 0.63801
+        | Val:   loss: 12100.84199 | quality: 0.62620
+ *
+Epoch 5 | Train: loss: 10906.63785 | quality: 0.67394
+        | Val:   loss: 11046.72426 | quality: 0.65876
+ *
+Epoch 6 | Train: loss: 10450.75960 | quality: 0.68757
+        | Val:   loss: 10801.28980 | quality: 0.66634
+ *
+Epoch 7 | Train: loss: 10213.35906 | quality: 0.69467
+        | Val:   loss: 10765.04633 | quality: 0.66746
+ *
+Epoch 8 | Train: loss: 10058.24640 | quality: 0.69931
+        | Val:   loss: 10808.73022 | quality: 0.66611
+
+Epoch 9 | Train: loss: 9966.74475 | quality: 0.70204
+        | Val:   loss: 10848.71597 | quality: 0.66488
+
+Epoch 10 | Train: loss: 9915.98708 | quality: 0.70356
+        | Val:   loss: 10852.47338 | quality: 0.66476
+
+Epoch 11 | Train: loss: 9881.96554 | quality: 0.70458
+        | Val:   loss: 10863.38339 | quality: 0.66443
+
+Epoch 12 | Train: loss: 9857.89839 | quality: 0.70529
+        | Val:   loss: 10871.97985 | quality: 0.66416
+
+Epoch 13 | Train: loss: 9840.21215 | quality: 0.70582
+        | Val:   loss: 10878.65149 | quality: 0.66395
+
+Epoch 14 | Train: loss: 9826.44464 | quality: 0.70623
+        | Val:   loss: 10884.01551 | quality: 0.66379
+
+Epoch 15 | Train: loss: 9815.16711 | quality: 0.70657
+        | Val:   loss: 10888.26568 | quality: 0.66366
+
+Epoch 16 | Train: loss: 9805.57658 | quality: 0.70686
+        | Val:   loss: 10892.07205 | quality: 0.66354
+
+Epoch 17 | Train: loss: 9797.19120 | quality: 0.70711
+        | Val:   loss: 10896.14475 | quality: 0.66341
+
+
+Early stopping at epoch 17 (best was epoch 7)
+
+Best epoch: 7 (val_quality=0.667463)
+[2026-04-28 20:07:50,744][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-28 20:07:50,745][__main__][INFO] - ✓ Train R²: 0.6947
+[2026-04-28 20:07:50,745][__main__][INFO] - ✓ Val R²: 0.6675
+[2026-04-28 20:07:50,748][HYDRA] 	#25 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:07:50,933][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:07:50,939][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed42
+[2026-04-28 20:07:50,939][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:07:53,432][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:07:53,432][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:07:53,433][__main__][INFO] -   Device: cpu
+[2026-04-28 20:07:53,433][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69954.44628 | quality: -1.09131
+        | Val:   loss: 66094.50641 | quality: -1.04169
+
+Epoch 1 | Train: loss: 28730.22574 | quality: 0.14110
+        | Val:   loss: 27825.04745 | quality: 0.14047
+ *
+Epoch 2 | Train: loss: 20008.19368 | quality: 0.40185
+        | Val:   loss: 19643.15043 | quality: 0.39321
+ *
+Epoch 3 | Train: loss: 13975.82752 | quality: 0.58219
+        | Val:   loss: 13898.76776 | quality: 0.57066
+ *
+Epoch 4 | Train: loss: 11292.46577 | quality: 0.66241
+        | Val:   loss: 11302.19541 | quality: 0.65087
+ *
+Epoch 5 | Train: loss: 10546.01933 | quality: 0.68472
+        | Val:   loss: 10810.64279 | quality: 0.66605
+ *
+Epoch 6 | Train: loss: 10204.79919 | quality: 0.69492
+        | Val:   loss: 10754.07571 | quality: 0.66780
+ *
+Epoch 7 | Train: loss: 9994.46300 | quality: 0.70121
+        | Val:   loss: 10816.90584 | quality: 0.66586
+
+Epoch 8 | Train: loss: 9843.47844 | quality: 0.70573
+        | Val:   loss: 10893.56612 | quality: 0.66349
+
+Epoch 9 | Train: loss: 9750.06643 | quality: 0.70852
+        | Val:   loss: 10969.86971 | quality: 0.66114
+
+Epoch 10 | Train: loss: 9708.07211 | quality: 0.70977
+        | Val:   loss: 10961.18162 | quality: 0.66140
+
+Epoch 11 | Train: loss: 9682.88190 | quality: 0.71053
+        | Val:   loss: 10960.85011 | quality: 0.66141
+
+Epoch 12 | Train: loss: 9664.47959 | quality: 0.71108
+        | Val:   loss: 10969.07028 | quality: 0.66116
+
+Epoch 13 | Train: loss: 9650.26092 | quality: 0.71150
+        | Val:   loss: 10977.40787 | quality: 0.66090
+
+Epoch 14 | Train: loss: 9638.97425 | quality: 0.71184
+        | Val:   loss: 10985.08771 | quality: 0.66067
+
+Epoch 15 | Train: loss: 9629.77948 | quality: 0.71211
+        | Val:   loss: 10992.69375 | quality: 0.66043
+
+Epoch 16 | Train: loss: 9622.08103 | quality: 0.71234
+        | Val:   loss: 11000.03732 | quality: 0.66020
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.667802)
+[2026-04-28 20:09:09,012][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed42/results.json
+[2026-04-28 20:09:09,013][__main__][INFO] - ✓ Train R²: 0.6949
+[2026-04-28 20:09:09,013][__main__][INFO] - ✓ Val R²: 0.6678
+[2026-04-28 20:09:09,048][HYDRA] 	#26 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:09:09,232][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:09:09,237][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed10090
+[2026-04-28 20:09:09,238][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:09:11,880][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:09:11,880][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:09:11,880][__main__][INFO] -   Device: cpu
+[2026-04-28 20:09:11,881][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70138.33475 | quality: -1.09681
+        | Val:   loss: 66356.78695 | quality: -1.04979
+
+Epoch 1 | Train: loss: 28411.75364 | quality: 0.15062
+        | Val:   loss: 27387.61151 | quality: 0.15398
+ *
+Epoch 2 | Train: loss: 20088.54830 | quality: 0.39945
+        | Val:   loss: 19789.98057 | quality: 0.38868
+ *
+Epoch 3 | Train: loss: 14202.09506 | quality: 0.57542
+        | Val:   loss: 14002.90327 | quality: 0.56744
+ *
+Epoch 4 | Train: loss: 11519.09258 | quality: 0.65563
+        | Val:   loss: 11501.48743 | quality: 0.64471
+ *
+Epoch 5 | Train: loss: 10660.20315 | quality: 0.68131
+        | Val:   loss: 10887.23529 | quality: 0.66369
+ *
+Epoch 6 | Train: loss: 10271.61949 | quality: 0.69293
+        | Val:   loss: 10810.85589 | quality: 0.66605
+ *
+Epoch 7 | Train: loss: 10027.30819 | quality: 0.70023
+        | Val:   loss: 10861.67939 | quality: 0.66448
+
+Epoch 8 | Train: loss: 9878.79550 | quality: 0.70467
+        | Val:   loss: 10967.94042 | quality: 0.66120
+
+Epoch 9 | Train: loss: 9784.22706 | quality: 0.70750
+        | Val:   loss: 11004.81243 | quality: 0.66006
+
+Epoch 10 | Train: loss: 9739.35783 | quality: 0.70884
+        | Val:   loss: 11018.03908 | quality: 0.65965
+
+Epoch 11 | Train: loss: 9712.35333 | quality: 0.70965
+        | Val:   loss: 11044.45893 | quality: 0.65883
+
+Epoch 12 | Train: loss: 9693.17053 | quality: 0.71022
+        | Val:   loss: 11065.64843 | quality: 0.65818
+
+Epoch 13 | Train: loss: 9677.84219 | quality: 0.71068
+        | Val:   loss: 11084.54205 | quality: 0.65759
+
+Epoch 14 | Train: loss: 9665.29323 | quality: 0.71105
+        | Val:   loss: 11101.42745 | quality: 0.65707
+
+Epoch 15 | Train: loss: 9654.84653 | quality: 0.71136
+        | Val:   loss: 11115.04109 | quality: 0.65665
+
+Epoch 16 | Train: loss: 9645.95473 | quality: 0.71163
+        | Val:   loss: 11125.75128 | quality: 0.65632
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.666048)
+[2026-04-28 20:10:26,855][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed10090/results.json
+[2026-04-28 20:10:26,856][__main__][INFO] - ✓ Train R²: 0.6929
+[2026-04-28 20:10:26,856][__main__][INFO] - ✓ Val R²: 0.6660
+[2026-04-28 20:10:26,858][HYDRA] 	#27 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:10:27,038][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:10:27,042][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed32874
+[2026-04-28 20:10:27,043][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:10:29,545][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:10:29,546][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:10:29,546][__main__][INFO] -   Device: cpu
+[2026-04-28 20:10:29,546][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70111.04610 | quality: -1.09600
+        | Val:   loss: 66232.17692 | quality: -1.04594
+
+Epoch 1 | Train: loss: 27933.63441 | quality: 0.16491
+        | Val:   loss: 27297.54340 | quality: 0.15677
+ *
+Epoch 2 | Train: loss: 20124.26168 | quality: 0.39838
+        | Val:   loss: 19688.61691 | quality: 0.39181
+ *
+Epoch 3 | Train: loss: 14382.19753 | quality: 0.57004
+        | Val:   loss: 14201.55642 | quality: 0.56131
+ *
+Epoch 4 | Train: loss: 11452.38925 | quality: 0.65763
+        | Val:   loss: 11478.36002 | quality: 0.64543
+ *
+Epoch 5 | Train: loss: 10650.79118 | quality: 0.68159
+        | Val:   loss: 10895.93461 | quality: 0.66342
+ *
+Epoch 6 | Train: loss: 10252.22628 | quality: 0.69351
+        | Val:   loss: 10801.26340 | quality: 0.66634
+ *
+Epoch 7 | Train: loss: 10031.22788 | quality: 0.70011
+        | Val:   loss: 10862.30642 | quality: 0.66446
+
+Epoch 8 | Train: loss: 9883.76038 | quality: 0.70452
+        | Val:   loss: 10885.36519 | quality: 0.66375
+
+Epoch 9 | Train: loss: 9788.25742 | quality: 0.70738
+        | Val:   loss: 10919.12352 | quality: 0.66270
+
+Epoch 10 | Train: loss: 9746.05081 | quality: 0.70864
+        | Val:   loss: 10920.03858 | quality: 0.66268
+
+Epoch 11 | Train: loss: 9718.24552 | quality: 0.70947
+        | Val:   loss: 10929.20057 | quality: 0.66239
+
+Epoch 12 | Train: loss: 9697.35077 | quality: 0.71009
+        | Val:   loss: 10950.75127 | quality: 0.66173
+
+Epoch 13 | Train: loss: 9680.81775 | quality: 0.71059
+        | Val:   loss: 10970.98821 | quality: 0.66110
+
+Epoch 14 | Train: loss: 9667.30102 | quality: 0.71099
+        | Val:   loss: 10985.28952 | quality: 0.66066
+
+Epoch 15 | Train: loss: 9655.94846 | quality: 0.71133
+        | Val:   loss: 10996.53014 | quality: 0.66031
+
+Epoch 16 | Train: loss: 9646.30370 | quality: 0.71162
+        | Val:   loss: 11007.36373 | quality: 0.65998
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.666344)
+[2026-04-28 20:11:44,916][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed32874/results.json
+[2026-04-28 20:11:44,917][__main__][INFO] - ✓ Train R²: 0.6935
+[2026-04-28 20:11:44,917][__main__][INFO] - ✓ Val R²: 0.6663
+[2026-04-28 20:11:44,919][HYDRA] 	#28 : model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:11:45,120][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:11:45,124][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed47311
+[2026-04-28 20:11:45,125][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:11:47,792][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:11:47,793][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:11:47,793][__main__][INFO] -   Device: cpu
+[2026-04-28 20:11:47,793][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69867.20458 | quality: -1.08871
+        | Val:   loss: 65983.34865 | quality: -1.03825
+
+Epoch 1 | Train: loss: 28389.77888 | quality: 0.15128
+        | Val:   loss: 27550.56005 | quality: 0.14895
+ *
+Epoch 2 | Train: loss: 19466.25478 | quality: 0.41805
+        | Val:   loss: 19193.64028 | quality: 0.40710
+ *
+Epoch 3 | Train: loss: 14125.18394 | quality: 0.57772
+        | Val:   loss: 14015.83710 | quality: 0.56704
+ *
+Epoch 4 | Train: loss: 11409.39242 | quality: 0.65891
+        | Val:   loss: 11404.81406 | quality: 0.64770
+ *
+Epoch 5 | Train: loss: 10621.65798 | quality: 0.68246
+        | Val:   loss: 10843.18452 | quality: 0.66505
+ *
+Epoch 6 | Train: loss: 10247.13086 | quality: 0.69366
+        | Val:   loss: 10737.80400 | quality: 0.66830
+ *
+Epoch 7 | Train: loss: 10015.78848 | quality: 0.70057
+        | Val:   loss: 10813.35797 | quality: 0.66597
+
+Epoch 8 | Train: loss: 9862.86198 | quality: 0.70515
+        | Val:   loss: 10931.77659 | quality: 0.66231
+
+Epoch 9 | Train: loss: 9773.02138 | quality: 0.70783
+        | Val:   loss: 11055.22591 | quality: 0.65850
+
+Epoch 10 | Train: loss: 9734.46813 | quality: 0.70898
+        | Val:   loss: 11056.39720 | quality: 0.65846
+
+Epoch 11 | Train: loss: 9708.10519 | quality: 0.70977
+        | Val:   loss: 11039.59745 | quality: 0.65898
+
+Epoch 12 | Train: loss: 9687.59701 | quality: 0.71039
+        | Val:   loss: 11023.75046 | quality: 0.65947
+
+Epoch 13 | Train: loss: 9671.31227 | quality: 0.71087
+        | Val:   loss: 11017.53000 | quality: 0.65966
+
+Epoch 14 | Train: loss: 9658.32426 | quality: 0.71126
+        | Val:   loss: 11017.57559 | quality: 0.65966
+
+Epoch 15 | Train: loss: 9647.74433 | quality: 0.71158
+        | Val:   loss: 11019.03976 | quality: 0.65962
+
+Epoch 16 | Train: loss: 9638.88381 | quality: 0.71184
+        | Val:   loss: 11020.78638 | quality: 0.65956
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.668305)
+[2026-04-28 20:13:02,750][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed47311/results.json
+[2026-04-28 20:13:02,751][__main__][INFO] - ✓ Train R²: 0.6937
+[2026-04-28 20:13:02,751][__main__][INFO] - ✓ Val R²: 0.6683
+[2026-04-28 20:13:02,753][HYDRA] 	#29 : model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2_typei dataset=bike
+[2026-04-28 20:13:02,945][__main__][INFO] - Configuration:
+model:
+  name: MPO2TypeI
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: bike
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:13:02,949][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed47303
+[2026-04-28 20:13:02,950][__main__][INFO] - Loading dataset: bike
+[2026-04-28 20:13:05,284][__main__][INFO] -   Samples: train=12165, val=2607, test=2607
+[2026-04-28 20:13:05,284][__main__][INFO] -   Features: 13 (including bias), Task: regression
+[2026-04-28 20:13:05,284][__main__][INFO] -   Device: cpu
+[2026-04-28 20:13:05,285][__main__][INFO] - Creating model: MPO2TypeI
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 70108.03959 | quality: -1.09591
+        | Val:   loss: 66201.05831 | quality: -1.04498
+
+Epoch 1 | Train: loss: 27989.56565 | quality: 0.16324
+        | Val:   loss: 27170.36821 | quality: 0.16070
+ *
+Epoch 2 | Train: loss: 19241.91133 | quality: 0.42476
+        | Val:   loss: 18789.91441 | quality: 0.41957
+ *
+Epoch 3 | Train: loss: 13409.59302 | quality: 0.59912
+        | Val:   loss: 13276.21472 | quality: 0.58989
+ *
+Epoch 4 | Train: loss: 11247.15229 | quality: 0.66376
+        | Val:   loss: 11231.17270 | quality: 0.65306
+ *
+Epoch 5 | Train: loss: 10530.28439 | quality: 0.68519
+        | Val:   loss: 10778.57908 | quality: 0.66704
+ *
+Epoch 6 | Train: loss: 10215.17172 | quality: 0.69461
+        | Val:   loss: 10713.91875 | quality: 0.66904
+ *
+Epoch 7 | Train: loss: 10025.11158 | quality: 0.70030
+        | Val:   loss: 10747.13829 | quality: 0.66802
+
+Epoch 8 | Train: loss: 9881.64704 | quality: 0.70458
+        | Val:   loss: 10811.18675 | quality: 0.66604
+
+Epoch 9 | Train: loss: 9783.65075 | quality: 0.70751
+        | Val:   loss: 10922.68562 | quality: 0.66259
+
+Epoch 10 | Train: loss: 9740.96581 | quality: 0.70879
+        | Val:   loss: 10980.86993 | quality: 0.66080
+
+Epoch 11 | Train: loss: 9713.69406 | quality: 0.70961
+        | Val:   loss: 11016.44615 | quality: 0.65970
+
+Epoch 12 | Train: loss: 9693.17931 | quality: 0.71022
+        | Val:   loss: 11035.60365 | quality: 0.65911
+
+Epoch 13 | Train: loss: 9677.86582 | quality: 0.71068
+        | Val:   loss: 11040.18715 | quality: 0.65896
+
+Epoch 14 | Train: loss: 9665.88918 | quality: 0.71103
+        | Val:   loss: 11040.78454 | quality: 0.65895
+
+Epoch 15 | Train: loss: 9656.05644 | quality: 0.71133
+        | Val:   loss: 11041.40820 | quality: 0.65893
+
+Epoch 16 | Train: loss: 9647.68927 | quality: 0.71158
+        | Val:   loss: 11042.83772 | quality: 0.65888
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.669042)
+[2026-04-28 20:14:18,189][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/bike/MPO2TypeI_rg5_init0.1/L4_bd12_seed47303/results.json
+[2026-04-28 20:14:18,190][__main__][INFO] - ✓ Train R²: 0.6946
+[2026-04-28 20:14:18,190][__main__][INFO] - ✓ Val R²: 0.6690
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28319216[46]: <ntn_grid_full[1-200]%20> in cluster <dcc> Done
+
+Job <ntn_grid_full[1-200]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Apr 28 19:35:42 2026
+Job was executed on host(s) <4*n-62-21-64>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue Apr 28 19:55:46 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Apr 28 19:55:46 2026
+Terminated at Tue Apr 28 20:14:20 2026
+Results reported at Tue Apr 28 20:14:20 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-200]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# --- DRY RUN / TEST LOGIC ---
+# Run locally with: bash your_script.sh test
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+NUM_MODELS=${#MODELS[@]}
+DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "concrete" "energy_efficiency" "hearth" "iris" "mushrooms" "obesity" "popularity" "realstate" "seoulBike" "student_dropout" "student_perf" "wine" "winequalityc"
+)
+
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
+if [ "$1" == "test" ]; then
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
+    echo "--------------------------------------"
+for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        M_IDX=$((IDV % NUM_MODELS))
+        D_IDX=$((IDV / NUM_MODELS))
+        echo "Index $i: Dataset=${DATASETS[$D_IDX]}, Model=${MODELS[$M_IDX]}"
+    done
+    exit 0
+fi
+# ----------------------------
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+DATASET_IDX=$((IDV / NUM_MODELS))
+
+CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
+CURRENT_MODEL=${MODELS[$MODEL_IDX]}
+echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL"
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python run.py --multirun +experiment=uci_ntn_sweep model=$CURRENT_MODEL dataset=$CURRENT_DATASET
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   3933.24 sec.
+    Max Memory :                                 721 MB
+    Average Memory :                             604.40 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               3375.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                8
+    Run time :                                   1114 sec.
+    Turnaround time :                            2318 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28319216_46.err> for stderr output of this job.
+

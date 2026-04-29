@@ -1,0 +1,3541 @@
+Task 121: Dataset=obesity, Model=cpda
+[2026-04-28 20:28:10,472][HYDRA] Launching 30 jobs locally
+[2026-04-28 20:28:10,473][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:10,650][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:10,658][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed42
+[2026-04-28 20:28:10,735][utils.tracking][INFO] - Loaded 15142 tracked runs from runs_tracking.csv
+[2026-04-28 20:28:10,737][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:12,603][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:12,604][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:12,604][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:12,604][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 11869.05485 | quality: -3113.40771
+        | Val:   loss: 10341.39608 | quality: -2872.12149
+Epoch 1 | Train: loss: 3.70608 | quality: 0.02753
+        | Val:   loss: 3.65946 | quality: -0.01670
+ *
+Epoch 2 | Train: loss: 2.96318 | quality: 0.22247
+        | Val:   loss: 2.89962 | quality: 0.19441
+ *
+Epoch 3 | Train: loss: 2.76724 | quality: 0.27388
+        | Val:   loss: 2.70439 | quality: 0.24865
+ *
+Epoch 4 | Train: loss: 2.63254 | quality: 0.30923
+        | Val:   loss: 2.62932 | quality: 0.26950
+ *
+Epoch 5 | Train: loss: 2.36538 | quality: 0.37933
+        | Val:   loss: 2.46465 | quality: 0.31525
+ *
+Epoch 6 | Train: loss: 2.08514 | quality: 0.45287
+        | Val:   loss: 2.26080 | quality: 0.37189
+ *
+Epoch 7 | Train: loss: 1.96449 | quality: 0.48452
+        | Val:   loss: 2.09269 | quality: 0.41859
+ *
+Epoch 8 | Train: loss: 1.90213 | quality: 0.50089
+        | Val:   loss: 1.97384 | quality: 0.45161
+ *
+Epoch 9 | Train: loss: 1.85856 | quality: 0.51232
+        | Val:   loss: 1.91056 | quality: 0.46919
+ *
+Epoch 10 | Train: loss: 1.82634 | quality: 0.52077
+        | Val:   loss: 1.88277 | quality: 0.47692
+ *
+Epoch 11 | Train: loss: 1.80117 | quality: 0.52738
+        | Val:   loss: 1.86862 | quality: 0.48085
+ *
+Epoch 12 | Train: loss: 1.78027 | quality: 0.53286
+        | Val:   loss: 1.85733 | quality: 0.48398
+ *
+Epoch 13 | Train: loss: 1.76244 | quality: 0.53754
+        | Val:   loss: 1.84640 | quality: 0.48702
+ *
+Epoch 14 | Train: loss: 1.74692 | quality: 0.54161
+        | Val:   loss: 1.83576 | quality: 0.48997
+ *
+Epoch 15 | Train: loss: 1.73316 | quality: 0.54522
+        | Val:   loss: 1.82592 | quality: 0.49271
+ *
+Epoch 16 | Train: loss: 1.72085 | quality: 0.54845
+        | Val:   loss: 1.81756 | quality: 0.49503
+ *
+Epoch 17 | Train: loss: 1.70986 | quality: 0.55134
+        | Val:   loss: 1.81106 | quality: 0.49684
+ *
+Epoch 18 | Train: loss: 1.70003 | quality: 0.55392
+        | Val:   loss: 1.80630 | quality: 0.49816
+ *
+Epoch 19 | Train: loss: 1.69114 | quality: 0.55625
+        | Val:   loss: 1.80277 | quality: 0.49914
+ *
+Epoch 20 | Train: loss: 1.68294 | quality: 0.55840
+        | Val:   loss: 1.79991 | quality: 0.49994
+ *
+
+Best epoch: 20 (val_quality=0.499936)
+[2026-04-28 20:28:14,037][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed42/results.json
+[2026-04-28 20:28:14,038][__main__][INFO] - ✓ Train R²: 0.5584
+[2026-04-28 20:28:14,038][__main__][INFO] - ✓ Val R²: 0.4999
+[2026-04-28 20:28:14,040][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:14,222][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:14,227][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed10090
+[2026-04-28 20:28:14,227][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:15,954][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:15,955][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:15,955][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:15,955][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 24074.37384 | quality: -6316.05021
+        | Val:   loss: 15303.35183 | quality: -4250.68794
+Epoch 1 | Train: loss: 3.40120 | quality: 0.10753
+        | Val:   loss: 3.27066 | quality: 0.09132
+ *
+Epoch 2 | Train: loss: 2.97487 | quality: 0.21940
+        | Val:   loss: 2.91334 | quality: 0.19060
+ *
+Epoch 3 | Train: loss: 2.79681 | quality: 0.26612
+        | Val:   loss: 2.73626 | quality: 0.23979
+ *
+Epoch 4 | Train: loss: 2.71831 | quality: 0.28672
+        | Val:   loss: 2.70590 | quality: 0.24823
+ *
+Epoch 5 | Train: loss: 2.56770 | quality: 0.32624
+        | Val:   loss: 2.63916 | quality: 0.26677
+ *
+Epoch 6 | Train: loss: 2.22043 | quality: 0.41737
+        | Val:   loss: 2.44418 | quality: 0.32094
+ *
+Epoch 7 | Train: loss: 2.00972 | quality: 0.47266
+        | Val:   loss: 2.25801 | quality: 0.37266
+ *
+Epoch 8 | Train: loss: 1.93007 | quality: 0.49356
+        | Val:   loss: 2.10833 | quality: 0.41425
+ *
+Epoch 9 | Train: loss: 1.88678 | quality: 0.50491
+        | Val:   loss: 2.01889 | quality: 0.43910
+ *
+Epoch 10 | Train: loss: 1.86081 | quality: 0.51173
+        | Val:   loss: 1.97362 | quality: 0.45167
+ *
+Epoch 11 | Train: loss: 1.84533 | quality: 0.51579
+        | Val:   loss: 1.95137 | quality: 0.45786
+ *
+Epoch 12 | Train: loss: 1.83511 | quality: 0.51847
+        | Val:   loss: 1.93717 | quality: 0.46180
+ *
+Epoch 13 | Train: loss: 1.82731 | quality: 0.52052
+        | Val:   loss: 1.92545 | quality: 0.46506
+ *
+Epoch 14 | Train: loss: 1.82065 | quality: 0.52227
+        | Val:   loss: 1.91531 | quality: 0.46788
+ *
+Epoch 15 | Train: loss: 1.81448 | quality: 0.52388
+        | Val:   loss: 1.90668 | quality: 0.47027
+ *
+Epoch 16 | Train: loss: 1.80845 | quality: 0.52547
+        | Val:   loss: 1.89938 | quality: 0.47230
+ *
+Epoch 17 | Train: loss: 1.80232 | quality: 0.52708
+        | Val:   loss: 1.89312 | quality: 0.47404
+ *
+Epoch 18 | Train: loss: 1.79592 | quality: 0.52875
+        | Val:   loss: 1.88753 | quality: 0.47559
+ *
+Epoch 19 | Train: loss: 1.78916 | quality: 0.53053
+        | Val:   loss: 1.88228 | quality: 0.47705
+ *
+Epoch 20 | Train: loss: 1.78194 | quality: 0.53242
+        | Val:   loss: 1.87701 | quality: 0.47852
+ *
+
+Best epoch: 20 (val_quality=0.478516)
+[2026-04-28 20:28:17,082][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed10090/results.json
+[2026-04-28 20:28:17,083][__main__][INFO] - ✓ Train R²: 0.5324
+[2026-04-28 20:28:17,083][__main__][INFO] - ✓ Val R²: 0.4785
+[2026-04-28 20:28:17,086][HYDRA] 	#2 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:17,270][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:17,274][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed32874
+[2026-04-28 20:28:17,275][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:19,025][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:19,026][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:19,026][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:19,026][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 27661.58123 | quality: -7257.32367
+        | Val:   loss: 24252.68768 | quality: -6737.05719
+Epoch 1 | Train: loss: 5.41039 | quality: -0.41967
+        | Val:   loss: 5.47909 | quality: -0.52224
+ *
+Epoch 2 | Train: loss: 2.93236 | quality: 0.23056
+        | Val:   loss: 2.88878 | quality: 0.19742
+ *
+Epoch 3 | Train: loss: 2.72956 | quality: 0.28377
+        | Val:   loss: 2.69956 | quality: 0.24999
+ *
+Epoch 4 | Train: loss: 2.54583 | quality: 0.33198
+        | Val:   loss: 2.61297 | quality: 0.27404
+ *
+Epoch 5 | Train: loss: 2.22681 | quality: 0.41569
+        | Val:   loss: 2.41797 | quality: 0.32822
+ *
+Epoch 6 | Train: loss: 1.99679 | quality: 0.47605
+        | Val:   loss: 2.22371 | quality: 0.38219
+ *
+Epoch 7 | Train: loss: 1.91276 | quality: 0.49810
+        | Val:   loss: 2.09495 | quality: 0.41797
+ *
+Epoch 8 | Train: loss: 1.87516 | quality: 0.50796
+        | Val:   loss: 2.02559 | quality: 0.43724
+ *
+Epoch 9 | Train: loss: 1.85511 | quality: 0.51322
+        | Val:   loss: 1.99348 | quality: 0.44616
+ *
+Epoch 10 | Train: loss: 1.84336 | quality: 0.51631
+        | Val:   loss: 1.97798 | quality: 0.45046
+ *
+Epoch 11 | Train: loss: 1.83553 | quality: 0.51836
+        | Val:   loss: 1.96812 | quality: 0.45320
+ *
+Epoch 12 | Train: loss: 1.82962 | quality: 0.51991
+        | Val:   loss: 1.95949 | quality: 0.45560
+ *
+Epoch 13 | Train: loss: 1.82468 | quality: 0.52121
+        | Val:   loss: 1.95120 | quality: 0.45790
+ *
+Epoch 14 | Train: loss: 1.82026 | quality: 0.52237
+        | Val:   loss: 1.94334 | quality: 0.46009
+ *
+Epoch 15 | Train: loss: 1.81607 | quality: 0.52347
+        | Val:   loss: 1.93604 | quality: 0.46212
+ *
+Epoch 16 | Train: loss: 1.81193 | quality: 0.52455
+        | Val:   loss: 1.92930 | quality: 0.46399
+ *
+Epoch 17 | Train: loss: 1.80770 | quality: 0.52566
+        | Val:   loss: 1.92304 | quality: 0.46573
+ *
+Epoch 18 | Train: loss: 1.80326 | quality: 0.52683
+        | Val:   loss: 1.91710 | quality: 0.46738
+ *
+Epoch 19 | Train: loss: 1.79851 | quality: 0.52808
+        | Val:   loss: 1.91132 | quality: 0.46898
+ *
+Epoch 20 | Train: loss: 1.79335 | quality: 0.52943
+        | Val:   loss: 1.90555 | quality: 0.47059
+ *
+
+Best epoch: 20 (val_quality=0.470587)
+[2026-04-28 20:28:20,154][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed32874/results.json
+[2026-04-28 20:28:20,154][__main__][INFO] - ✓ Train R²: 0.5294
+[2026-04-28 20:28:20,155][__main__][INFO] - ✓ Val R²: 0.4706
+[2026-04-28 20:28:20,157][HYDRA] 	#3 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:20,337][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:20,342][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed47311
+[2026-04-28 20:28:20,343][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:22,196][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:22,197][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:22,197][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:22,197][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 28208.86280 | quality: -7400.92886
+        | Val:   loss: 24879.62899 | quality: -6911.23856
+Epoch 1 | Train: loss: 3.43349 | quality: 0.09906
+        | Val:   loss: 3.33785 | quality: 0.07265
+ *
+Epoch 2 | Train: loss: 2.95257 | quality: 0.22525
+        | Val:   loss: 2.89645 | quality: 0.19529
+ *
+Epoch 3 | Train: loss: 2.76290 | quality: 0.27502
+        | Val:   loss: 2.71905 | quality: 0.24458
+ *
+Epoch 4 | Train: loss: 2.62979 | quality: 0.30995
+        | Val:   loss: 2.66530 | quality: 0.25951
+ *
+Epoch 5 | Train: loss: 2.34873 | quality: 0.38370
+        | Val:   loss: 2.51050 | quality: 0.30251
+ *
+Epoch 6 | Train: loss: 2.05375 | quality: 0.46110
+        | Val:   loss: 2.30744 | quality: 0.35893
+ *
+Epoch 7 | Train: loss: 1.94103 | quality: 0.49068
+        | Val:   loss: 2.16009 | quality: 0.39987
+ *
+Epoch 8 | Train: loss: 1.89601 | quality: 0.50249
+        | Val:   loss: 2.07022 | quality: 0.42484
+ *
+Epoch 9 | Train: loss: 1.87201 | quality: 0.50879
+        | Val:   loss: 2.02325 | quality: 0.43789
+ *
+Epoch 10 | Train: loss: 1.85765 | quality: 0.51256
+        | Val:   loss: 2.00008 | quality: 0.44432
+ *
+Epoch 11 | Train: loss: 1.84872 | quality: 0.51490
+        | Val:   loss: 1.98976 | quality: 0.44719
+ *
+Epoch 12 | Train: loss: 1.84298 | quality: 0.51641
+        | Val:   loss: 1.98607 | quality: 0.44822
+ *
+Epoch 13 | Train: loss: 1.83909 | quality: 0.51743
+        | Val:   loss: 1.98570 | quality: 0.44832
+ *
+Epoch 14 | Train: loss: 1.83628 | quality: 0.51817
+        | Val:   loss: 1.98696 | quality: 0.44797
+
+Epoch 15 | Train: loss: 1.83411 | quality: 0.51873
+        | Val:   loss: 1.98911 | quality: 0.44737
+ *
+Epoch 16 | Train: loss: 1.83234 | quality: 0.51920
+        | Val:   loss: 1.99183 | quality: 0.44662
+
+Epoch 17 | Train: loss: 1.83081 | quality: 0.51960
+        | Val:   loss: 1.99498 | quality: 0.44574
+
+Epoch 18 | Train: loss: 1.82943 | quality: 0.51996
+        | Val:   loss: 1.99851 | quality: 0.44476
+
+Epoch 19 | Train: loss: 1.82813 | quality: 0.52030
+        | Val:   loss: 2.00237 | quality: 0.44369
+
+Epoch 20 | Train: loss: 1.82688 | quality: 0.52063
+        | Val:   loss: 2.00655 | quality: 0.44253
+
+
+Best epoch: 15 (val_quality=0.447371)
+[2026-04-28 20:28:23,353][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed47311/results.json
+[2026-04-28 20:28:23,354][__main__][INFO] - ✓ Train R²: 0.5187
+[2026-04-28 20:28:23,354][__main__][INFO] - ✓ Val R²: 0.4474
+[2026-04-28 20:28:23,357][HYDRA] 	#4 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:23,558][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:23,563][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed47303
+[2026-04-28 20:28:23,563][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:25,253][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:25,254][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:25,254][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:25,254][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 36557.28540 | quality: -9591.53224
+        | Val:   loss: 33102.28312 | quality: -9195.71583
+Epoch 1 | Train: loss: 3.33796 | quality: 0.12413
+        | Val:   loss: 3.24574 | quality: 0.09825
+ *
+Epoch 2 | Train: loss: 2.84348 | quality: 0.25388
+        | Val:   loss: 2.79914 | quality: 0.22232
+ *
+Epoch 3 | Train: loss: 2.28460 | quality: 0.40053
+        | Val:   loss: 2.33727 | quality: 0.35064
+ *
+Epoch 4 | Train: loss: 1.52554 | quality: 0.59970
+        | Val:   loss: 1.64161 | quality: 0.54392
+ *
+Epoch 5 | Train: loss: 1.33178 | quality: 0.65054
+        | Val:   loss: 1.50339 | quality: 0.58232
+ *
+Epoch 6 | Train: loss: 1.24360 | quality: 0.67368
+        | Val:   loss: 1.49210 | quality: 0.58545
+ *
+Epoch 7 | Train: loss: 1.17644 | quality: 0.69130
+        | Val:   loss: 1.50808 | quality: 0.58101
+
+Epoch 8 | Train: loss: 1.13289 | quality: 0.70273
+        | Val:   loss: 1.52959 | quality: 0.57504
+
+Epoch 9 | Train: loss: 1.10565 | quality: 0.70988
+        | Val:   loss: 1.54537 | quality: 0.57066
+
+Epoch 10 | Train: loss: 1.08755 | quality: 0.71463
+        | Val:   loss: 1.56258 | quality: 0.56587
+
+Epoch 11 | Train: loss: 1.07463 | quality: 0.71802
+        | Val:   loss: 1.58518 | quality: 0.55959
+
+Epoch 12 | Train: loss: 1.06453 | quality: 0.72067
+        | Val:   loss: 1.60743 | quality: 0.55341
+
+Epoch 13 | Train: loss: 1.05613 | quality: 0.72287
+        | Val:   loss: 1.62660 | quality: 0.54809
+
+Epoch 14 | Train: loss: 1.04891 | quality: 0.72477
+        | Val:   loss: 1.64237 | quality: 0.54370
+
+Epoch 15 | Train: loss: 1.04260 | quality: 0.72643
+        | Val:   loss: 1.65495 | quality: 0.54021
+
+Epoch 16 | Train: loss: 1.03705 | quality: 0.72788
+        | Val:   loss: 1.66462 | quality: 0.53752
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 20:28:26,267][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd4_seed47303/results.json
+[2026-04-28 20:28:26,268][__main__][INFO] - ✓ Train R²: 0.6737
+[2026-04-28 20:28:26,268][__main__][INFO] - ✓ Val R²: 0.5855
+[2026-04-28 20:28:26,270][HYDRA] 	#5 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:26,452][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:26,457][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed42
+[2026-04-28 20:28:26,457][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:28,153][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:28,154][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:28,154][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:28,154][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 19211.56122 | quality: -5040.06140
+        | Val:   loss: 20509.35569 | quality: -5697.05761
+Epoch 1 | Train: loss: 3.10649 | quality: 0.18487
+        | Val:   loss: 3.06854 | quality: 0.14747
+ *
+Epoch 2 | Train: loss: 2.65478 | quality: 0.30339
+        | Val:   loss: 2.66878 | quality: 0.25854
+ *
+Epoch 3 | Train: loss: 2.01102 | quality: 0.47231
+        | Val:   loss: 2.13578 | quality: 0.40662
+ *
+Epoch 4 | Train: loss: 1.42686 | quality: 0.62560
+        | Val:   loss: 1.55862 | quality: 0.56697
+ *
+Epoch 5 | Train: loss: 1.28612 | quality: 0.66253
+        | Val:   loss: 1.50405 | quality: 0.58213
+ *
+Epoch 6 | Train: loss: 1.20932 | quality: 0.68268
+        | Val:   loss: 1.48818 | quality: 0.58654
+ *
+Epoch 7 | Train: loss: 1.15307 | quality: 0.69744
+        | Val:   loss: 1.49700 | quality: 0.58409
+
+Epoch 8 | Train: loss: 1.11947 | quality: 0.70625
+        | Val:   loss: 1.51787 | quality: 0.57829
+
+Epoch 9 | Train: loss: 1.09877 | quality: 0.71169
+        | Val:   loss: 1.52156 | quality: 0.57727
+
+Epoch 10 | Train: loss: 1.08444 | quality: 0.71545
+        | Val:   loss: 1.51970 | quality: 0.57779
+
+Epoch 11 | Train: loss: 1.07373 | quality: 0.71826
+        | Val:   loss: 1.51633 | quality: 0.57872
+
+Epoch 12 | Train: loss: 1.06436 | quality: 0.72071
+        | Val:   loss: 1.50971 | quality: 0.58056
+
+Epoch 13 | Train: loss: 1.05587 | quality: 0.72294
+        | Val:   loss: 1.50151 | quality: 0.58284
+
+Epoch 14 | Train: loss: 1.04816 | quality: 0.72497
+        | Val:   loss: 1.49291 | quality: 0.58523
+
+Epoch 15 | Train: loss: 1.04118 | quality: 0.72680
+        | Val:   loss: 1.48466 | quality: 0.58752
+ *
+Epoch 16 | Train: loss: 1.03488 | quality: 0.72845
+        | Val:   loss: 1.47742 | quality: 0.58953
+ *
+Epoch 17 | Train: loss: 1.02912 | quality: 0.72996
+        | Val:   loss: 1.47193 | quality: 0.59106
+ *
+Epoch 18 | Train: loss: 1.02377 | quality: 0.73137
+        | Val:   loss: 1.46910 | quality: 0.59184
+ *
+Epoch 19 | Train: loss: 1.01865 | quality: 0.73271
+        | Val:   loss: 1.47007 | quality: 0.59158
+ *
+Epoch 20 | Train: loss: 1.01364 | quality: 0.73402
+        | Val:   loss: 1.47620 | quality: 0.58987
+
+
+Best epoch: 19 (val_quality=0.591576)
+[2026-04-28 20:28:29,836][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed42/results.json
+[2026-04-28 20:28:29,836][__main__][INFO] - ✓ Train R²: 0.7327
+[2026-04-28 20:28:29,836][__main__][INFO] - ✓ Val R²: 0.5916
+[2026-04-28 20:28:29,840][HYDRA] 	#6 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:30,025][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:30,029][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed10090
+[2026-04-28 20:28:30,030][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:31,722][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:31,723][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:31,723][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:31,723][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 55261.18242 | quality: -14499.38394
+        | Val:   loss: 49085.62045 | quality: -13636.32226
+Epoch 1 | Train: loss: 3.09613 | quality: 0.18758
+        | Val:   loss: 3.05910 | quality: 0.15010
+ *
+Epoch 2 | Train: loss: 2.69468 | quality: 0.29292
+        | Val:   loss: 2.65316 | quality: 0.26288
+ *
+Epoch 3 | Train: loss: 2.19313 | quality: 0.42453
+        | Val:   loss: 2.27037 | quality: 0.36923
+ *
+Epoch 4 | Train: loss: 1.29550 | quality: 0.66006
+        | Val:   loss: 1.38209 | quality: 0.61602
+ *
+Epoch 5 | Train: loss: 1.03510 | quality: 0.72839
+        | Val:   loss: 1.21100 | quality: 0.66355
+ *
+Epoch 6 | Train: loss: 0.86593 | quality: 0.77278
+        | Val:   loss: 1.12318 | quality: 0.68795
+ *
+Epoch 7 | Train: loss: 0.79463 | quality: 0.79149
+        | Val:   loss: 1.17039 | quality: 0.67484
+
+Epoch 8 | Train: loss: 0.75831 | quality: 0.80102
+        | Val:   loss: 1.20827 | quality: 0.66431
+
+Epoch 9 | Train: loss: 0.73627 | quality: 0.80680
+        | Val:   loss: 1.22673 | quality: 0.65918
+
+Epoch 10 | Train: loss: 0.71785 | quality: 0.81164
+        | Val:   loss: 1.23807 | quality: 0.65603
+
+Epoch 11 | Train: loss: 0.70093 | quality: 0.81608
+        | Val:   loss: 1.24966 | quality: 0.65281
+
+Epoch 12 | Train: loss: 0.68617 | quality: 0.81995
+        | Val:   loss: 1.25853 | quality: 0.65035
+
+Epoch 13 | Train: loss: 0.67324 | quality: 0.82334
+        | Val:   loss: 1.26562 | quality: 0.64838
+
+Epoch 14 | Train: loss: 0.66192 | quality: 0.82631
+        | Val:   loss: 1.27183 | quality: 0.64665
+
+Epoch 15 | Train: loss: 0.65217 | quality: 0.82887
+        | Val:   loss: 1.27938 | quality: 0.64455
+
+Epoch 16 | Train: loss: 0.64394 | quality: 0.83103
+        | Val:   loss: 1.28391 | quality: 0.64329
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 20:28:33,166][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed10090/results.json
+[2026-04-28 20:28:33,167][__main__][INFO] - ✓ Train R²: 0.7728
+[2026-04-28 20:28:33,167][__main__][INFO] - ✓ Val R²: 0.6880
+[2026-04-28 20:28:33,170][HYDRA] 	#7 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:33,351][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:33,355][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed32874
+[2026-04-28 20:28:33,356][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:35,199][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:35,200][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:35,200][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:35,200][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 53836.01634 | quality: -14125.42424
+        | Val:   loss: 58550.48549 | quality: -16265.91956
+Epoch 1 | Train: loss: 3.11451 | quality: 0.18276
+        | Val:   loss: 3.06852 | quality: 0.14748
+ *
+Epoch 2 | Train: loss: 2.82041 | quality: 0.25993
+        | Val:   loss: 2.77775 | quality: 0.22827
+ *
+Epoch 3 | Train: loss: 2.60447 | quality: 0.31660
+        | Val:   loss: 2.61056 | quality: 0.27471
+ *
+Epoch 4 | Train: loss: 1.64472 | quality: 0.56843
+        | Val:   loss: 1.69917 | quality: 0.52792
+ *
+Epoch 5 | Train: loss: 1.35537 | quality: 0.64436
+        | Val:   loss: 1.50721 | quality: 0.58126
+ *
+Epoch 6 | Train: loss: 1.26072 | quality: 0.66919
+        | Val:   loss: 1.52189 | quality: 0.57718
+
+Epoch 7 | Train: loss: 1.20730 | quality: 0.68321
+        | Val:   loss: 1.52439 | quality: 0.57648
+
+Epoch 8 | Train: loss: 1.17332 | quality: 0.69212
+        | Val:   loss: 1.51649 | quality: 0.57868
+
+Epoch 9 | Train: loss: 1.14887 | quality: 0.69854
+        | Val:   loss: 1.50952 | quality: 0.58061
+ *
+Epoch 10 | Train: loss: 1.13017 | quality: 0.70345
+        | Val:   loss: 1.50741 | quality: 0.58120
+ *
+Epoch 11 | Train: loss: 1.11506 | quality: 0.70741
+        | Val:   loss: 1.51158 | quality: 0.58004
+
+Epoch 12 | Train: loss: 1.10247 | quality: 0.71071
+        | Val:   loss: 1.51858 | quality: 0.57810
+
+Epoch 13 | Train: loss: 1.09153 | quality: 0.71358
+        | Val:   loss: 1.52545 | quality: 0.57619
+
+Epoch 14 | Train: loss: 1.08153 | quality: 0.71621
+        | Val:   loss: 1.53049 | quality: 0.57479
+
+Epoch 15 | Train: loss: 1.07199 | quality: 0.71871
+        | Val:   loss: 1.53293 | quality: 0.57411
+
+Epoch 16 | Train: loss: 1.06261 | quality: 0.72117
+        | Val:   loss: 1.53246 | quality: 0.57424
+
+Epoch 17 | Train: loss: 1.05332 | quality: 0.72361
+        | Val:   loss: 1.52893 | quality: 0.57522
+
+Epoch 18 | Train: loss: 1.04422 | quality: 0.72600
+        | Val:   loss: 1.52231 | quality: 0.57706
+
+Epoch 19 | Train: loss: 1.03550 | quality: 0.72829
+        | Val:   loss: 1.51270 | quality: 0.57973
+
+Epoch 20 | Train: loss: 1.02736 | quality: 0.73042
+        | Val:   loss: 1.50048 | quality: 0.58313
+ *
+
+Best epoch: 20 (val_quality=0.583125)
+[2026-04-28 20:28:36,818][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed32874/results.json
+[2026-04-28 20:28:36,819][__main__][INFO] - ✓ Train R²: 0.7304
+[2026-04-28 20:28:36,819][__main__][INFO] - ✓ Val R²: 0.5831
+[2026-04-28 20:28:36,821][HYDRA] 	#8 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:36,998][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:37,002][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed47311
+[2026-04-28 20:28:37,003][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:38,694][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:38,694][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:38,695][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:38,695][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 30155.65966 | quality: -7911.76306
+        | Val:   loss: 21079.51027 | quality: -5855.46208
+Epoch 1 | Train: loss: 3.25862 | quality: 0.14495
+        | Val:   loss: 3.27316 | quality: 0.09063
+ *
+Epoch 2 | Train: loss: 2.75989 | quality: 0.27581
+        | Val:   loss: 2.70418 | quality: 0.24870
+ *
+Epoch 3 | Train: loss: 1.96569 | quality: 0.48421
+        | Val:   loss: 1.99813 | quality: 0.44487
+ *
+Epoch 4 | Train: loss: 1.48550 | quality: 0.61021
+        | Val:   loss: 1.58099 | quality: 0.56076
+ *
+Epoch 5 | Train: loss: 1.20700 | quality: 0.68329
+        | Val:   loss: 1.45980 | quality: 0.59443
+ *
+Epoch 6 | Train: loss: 1.07890 | quality: 0.71690
+        | Val:   loss: 1.45122 | quality: 0.59681
+ *
+Epoch 7 | Train: loss: 1.01098 | quality: 0.73472
+        | Val:   loss: 1.46303 | quality: 0.59353
+
+Epoch 8 | Train: loss: 0.97264 | quality: 0.74478
+        | Val:   loss: 1.44634 | quality: 0.59817
+ *
+Epoch 9 | Train: loss: 0.94585 | quality: 0.75181
+        | Val:   loss: 1.42543 | quality: 0.60398
+ *
+Epoch 10 | Train: loss: 0.92303 | quality: 0.75780
+        | Val:   loss: 1.41225 | quality: 0.60764
+ *
+Epoch 11 | Train: loss: 0.90064 | quality: 0.76367
+        | Val:   loss: 1.41303 | quality: 0.60742
+ *
+Epoch 12 | Train: loss: 0.87911 | quality: 0.76932
+        | Val:   loss: 1.42584 | quality: 0.60386
+
+Epoch 13 | Train: loss: 0.86124 | quality: 0.77401
+        | Val:   loss: 1.43905 | quality: 0.60019
+
+Epoch 14 | Train: loss: 0.84778 | quality: 0.77755
+        | Val:   loss: 1.44542 | quality: 0.59842
+
+Epoch 15 | Train: loss: 0.83768 | quality: 0.78020
+        | Val:   loss: 1.44579 | quality: 0.59832
+
+Epoch 16 | Train: loss: 0.82980 | quality: 0.78226
+        | Val:   loss: 1.44221 | quality: 0.59931
+
+Epoch 17 | Train: loss: 0.82333 | quality: 0.78396
+        | Val:   loss: 1.43661 | quality: 0.60087
+
+Epoch 18 | Train: loss: 0.81774 | quality: 0.78543
+        | Val:   loss: 1.43034 | quality: 0.60261
+
+Epoch 19 | Train: loss: 0.81269 | quality: 0.78675
+        | Val:   loss: 1.42420 | quality: 0.60432
+
+Epoch 20 | Train: loss: 0.80800 | quality: 0.78798
+        | Val:   loss: 1.41857 | quality: 0.60588
+
+
+Best epoch: 11 (val_quality=0.607422)
+[2026-04-28 20:28:40,332][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed47311/results.json
+[2026-04-28 20:28:40,332][__main__][INFO] - ✓ Train R²: 0.7637
+[2026-04-28 20:28:40,333][__main__][INFO] - ✓ Val R²: 0.6074
+[2026-04-28 20:28:40,336][HYDRA] 	#9 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:40,514][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:40,519][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed47303
+[2026-04-28 20:28:40,519][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:42,223][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:42,224][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:42,224][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:42,224][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 28267.35570 | quality: -7416.27724
+        | Val:   loss: 24061.01330 | quality: -6683.80482
+Epoch 1 | Train: loss: 3.13705 | quality: 0.17685
+        | Val:   loss: 3.07350 | quality: 0.14610
+ *
+Epoch 2 | Train: loss: 2.75909 | quality: 0.27602
+        | Val:   loss: 2.72906 | quality: 0.24179
+ *
+Epoch 3 | Train: loss: 1.95156 | quality: 0.48791
+        | Val:   loss: 2.17277 | quality: 0.39635
+ *
+Epoch 4 | Train: loss: 1.32999 | quality: 0.65101
+        | Val:   loss: 1.58067 | quality: 0.56085
+ *
+Epoch 5 | Train: loss: 1.12621 | quality: 0.70449
+        | Val:   loss: 1.47524 | quality: 0.59014
+ *
+Epoch 6 | Train: loss: 1.04197 | quality: 0.72659
+        | Val:   loss: 1.48772 | quality: 0.58667
+
+Epoch 7 | Train: loss: 0.97998 | quality: 0.74286
+        | Val:   loss: 1.51777 | quality: 0.57832
+
+Epoch 8 | Train: loss: 0.93249 | quality: 0.75532
+        | Val:   loss: 1.55532 | quality: 0.56789
+
+Epoch 9 | Train: loss: 0.90321 | quality: 0.76300
+        | Val:   loss: 1.58480 | quality: 0.55970
+
+Epoch 10 | Train: loss: 0.88366 | quality: 0.76813
+        | Val:   loss: 1.59325 | quality: 0.55735
+
+Epoch 11 | Train: loss: 0.86968 | quality: 0.77180
+        | Val:   loss: 1.59528 | quality: 0.55679
+
+Epoch 12 | Train: loss: 0.85932 | quality: 0.77452
+        | Val:   loss: 1.59587 | quality: 0.55662
+
+Epoch 13 | Train: loss: 0.85133 | quality: 0.77661
+        | Val:   loss: 1.59570 | quality: 0.55667
+
+Epoch 14 | Train: loss: 0.84476 | quality: 0.77834
+        | Val:   loss: 1.59501 | quality: 0.55686
+
+Epoch 15 | Train: loss: 0.83902 | quality: 0.77984
+        | Val:   loss: 1.59431 | quality: 0.55706
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 20:28:43,738][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd8_seed47303/results.json
+[2026-04-28 20:28:43,739][__main__][INFO] - ✓ Train R²: 0.7045
+[2026-04-28 20:28:43,739][__main__][INFO] - ✓ Val R²: 0.5901
+[2026-04-28 20:28:43,743][HYDRA] 	#10 : model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:44,126][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:44,130][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed42
+[2026-04-28 20:28:44,131][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:45,940][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:45,940][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:45,940][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:45,940][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 69035.19194 | quality: -18113.64657
+        | Val:   loss: 76635.34617 | quality: -21290.38642
+Epoch 1 | Train: loss: 3.05056 | quality: 0.19954
+        | Val:   loss: 3.00337 | quality: 0.16558
+ *
+Epoch 2 | Train: loss: 2.47746 | quality: 0.34992
+        | Val:   loss: 2.43999 | quality: 0.32211
+ *
+Epoch 3 | Train: loss: 1.58154 | quality: 0.58501
+        | Val:   loss: 1.64616 | quality: 0.54265
+ *
+Epoch 4 | Train: loss: 1.25446 | quality: 0.67083
+        | Val:   loss: 1.44258 | quality: 0.59921
+ *
+Epoch 5 | Train: loss: 1.09719 | quality: 0.71210
+        | Val:   loss: 1.34835 | quality: 0.62539
+ *
+Epoch 6 | Train: loss: 0.99750 | quality: 0.73826
+        | Val:   loss: 1.33662 | quality: 0.62865
+ *
+Epoch 7 | Train: loss: 0.92506 | quality: 0.75727
+        | Val:   loss: 1.34900 | quality: 0.62521
+
+Epoch 8 | Train: loss: 0.88655 | quality: 0.76737
+        | Val:   loss: 1.35744 | quality: 0.62287
+
+Epoch 9 | Train: loss: 0.86357 | quality: 0.77340
+        | Val:   loss: 1.38239 | quality: 0.61594
+
+Epoch 10 | Train: loss: 0.84646 | quality: 0.77789
+        | Val:   loss: 1.41674 | quality: 0.60639
+
+Epoch 11 | Train: loss: 0.83191 | quality: 0.78171
+        | Val:   loss: 1.45003 | quality: 0.59714
+
+Epoch 12 | Train: loss: 0.81884 | quality: 0.78514
+        | Val:   loss: 1.47631 | quality: 0.58984
+
+Epoch 13 | Train: loss: 0.80725 | quality: 0.78818
+        | Val:   loss: 1.49567 | quality: 0.58446
+
+Epoch 14 | Train: loss: 0.79737 | quality: 0.79077
+        | Val:   loss: 1.51072 | quality: 0.58028
+
+Epoch 15 | Train: loss: 0.78920 | quality: 0.79292
+        | Val:   loss: 1.52397 | quality: 0.57660
+
+Epoch 16 | Train: loss: 0.78253 | quality: 0.79467
+        | Val:   loss: 1.53654 | quality: 0.57311
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 20:28:48,133][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed42/results.json
+[2026-04-28 20:28:48,133][__main__][INFO] - ✓ Train R²: 0.7383
+[2026-04-28 20:28:48,133][__main__][INFO] - ✓ Val R²: 0.6287
+[2026-04-28 20:28:48,137][HYDRA] 	#11 : model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:48,331][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:48,336][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed10090
+[2026-04-28 20:28:48,337][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:50,058][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:50,059][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:50,059][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:50,059][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 40132.70127 | quality: -10529.71164
+        | Val:   loss: 31320.47031 | quality: -8700.67970
+Epoch 1 | Train: loss: 2.95144 | quality: 0.22555
+        | Val:   loss: 2.92365 | quality: 0.18773
+ *
+Epoch 2 | Train: loss: 2.46034 | quality: 0.35441
+        | Val:   loss: 2.51350 | quality: 0.30168
+ *
+Epoch 3 | Train: loss: 1.86132 | quality: 0.51159
+        | Val:   loss: 2.00215 | quality: 0.44375
+ *
+Epoch 4 | Train: loss: 1.32763 | quality: 0.65163
+        | Val:   loss: 1.49752 | quality: 0.58395
+ *
+Epoch 5 | Train: loss: 1.13036 | quality: 0.70340
+        | Val:   loss: 1.33314 | quality: 0.62962
+ *
+Epoch 6 | Train: loss: 1.02886 | quality: 0.73003
+        | Val:   loss: 1.31824 | quality: 0.63376
+ *
+Epoch 7 | Train: loss: 0.95583 | quality: 0.74919
+        | Val:   loss: 1.36102 | quality: 0.62187
+
+Epoch 8 | Train: loss: 0.90979 | quality: 0.76127
+        | Val:   loss: 1.39552 | quality: 0.61229
+
+Epoch 9 | Train: loss: 0.87678 | quality: 0.76994
+        | Val:   loss: 1.42665 | quality: 0.60364
+
+Epoch 10 | Train: loss: 0.85210 | quality: 0.77641
+        | Val:   loss: 1.48281 | quality: 0.58803
+
+Epoch 11 | Train: loss: 0.83351 | quality: 0.78129
+        | Val:   loss: 1.56463 | quality: 0.56530
+
+Epoch 12 | Train: loss: 0.82018 | quality: 0.78479
+        | Val:   loss: 1.64620 | quality: 0.54264
+
+Epoch 13 | Train: loss: 0.81137 | quality: 0.78710
+        | Val:   loss: 1.70768 | quality: 0.52556
+
+Epoch 14 | Train: loss: 0.80534 | quality: 0.78868
+        | Val:   loss: 1.74991 | quality: 0.51383
+
+Epoch 15 | Train: loss: 0.80078 | quality: 0.78988
+        | Val:   loss: 1.78120 | quality: 0.50513
+
+Epoch 16 | Train: loss: 0.79697 | quality: 0.79088
+        | Val:   loss: 1.80691 | quality: 0.49799
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 20:28:52,360][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed10090/results.json
+[2026-04-28 20:28:52,361][__main__][INFO] - ✓ Train R²: 0.7300
+[2026-04-28 20:28:52,361][__main__][INFO] - ✓ Val R²: 0.6338
+[2026-04-28 20:28:52,364][HYDRA] 	#12 : model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:52,554][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:52,558][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed32874
+[2026-04-28 20:28:52,559][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:54,337][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:54,350][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:54,350][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:54,350][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 40204.74817 | quality: -10548.61655
+        | Val:   loss: 38678.06509 | quality: -10744.81992
+Epoch 1 | Train: loss: 3.03055 | quality: 0.20479
+        | Val:   loss: 2.96806 | quality: 0.17539
+ *
+Epoch 2 | Train: loss: 2.65566 | quality: 0.30316
+        | Val:   loss: 2.60163 | quality: 0.27720
+ *
+Epoch 3 | Train: loss: 2.14971 | quality: 0.43592
+        | Val:   loss: 2.10114 | quality: 0.41625
+ *
+Epoch 4 | Train: loss: 1.61953 | quality: 0.57504
+        | Val:   loss: 1.74940 | quality: 0.51397
+ *
+Epoch 5 | Train: loss: 1.33496 | quality: 0.64971
+        | Val:   loss: 1.61346 | quality: 0.55174
+ *
+Epoch 6 | Train: loss: 1.18647 | quality: 0.68867
+        | Val:   loss: 1.55210 | quality: 0.56879
+ *
+Epoch 7 | Train: loss: 1.10013 | quality: 0.71133
+        | Val:   loss: 1.53009 | quality: 0.57490
+ *
+Epoch 8 | Train: loss: 1.04015 | quality: 0.72707
+        | Val:   loss: 1.56392 | quality: 0.56550
+
+Epoch 9 | Train: loss: 0.99711 | quality: 0.73836
+        | Val:   loss: 1.53973 | quality: 0.57222
+
+Epoch 10 | Train: loss: 0.96501 | quality: 0.74679
+        | Val:   loss: 1.48384 | quality: 0.58775
+ *
+Epoch 11 | Train: loss: 0.93669 | quality: 0.75422
+        | Val:   loss: 1.45182 | quality: 0.59664
+ *
+Epoch 12 | Train: loss: 0.91159 | quality: 0.76080
+        | Val:   loss: 1.44016 | quality: 0.59988
+ *
+Epoch 13 | Train: loss: 0.89037 | quality: 0.76637
+        | Val:   loss: 1.43801 | quality: 0.60048
+ *
+Epoch 14 | Train: loss: 0.87332 | quality: 0.77084
+        | Val:   loss: 1.43725 | quality: 0.60069
+ *
+Epoch 15 | Train: loss: 0.85970 | quality: 0.77442
+        | Val:   loss: 1.43444 | quality: 0.60147
+ *
+Epoch 16 | Train: loss: 0.84856 | quality: 0.77734
+        | Val:   loss: 1.43022 | quality: 0.60264
+ *
+Epoch 17 | Train: loss: 0.83935 | quality: 0.77976
+        | Val:   loss: 1.42618 | quality: 0.60377
+ *
+Epoch 18 | Train: loss: 0.83175 | quality: 0.78175
+        | Val:   loss: 1.42335 | quality: 0.60456
+ *
+Epoch 19 | Train: loss: 0.82550 | quality: 0.78339
+        | Val:   loss: 1.42221 | quality: 0.60487
+ *
+Epoch 20 | Train: loss: 0.82034 | quality: 0.78474
+        | Val:   loss: 1.42260 | quality: 0.60476
+ *
+
+Best epoch: 20 (val_quality=0.604762)
+[2026-04-28 20:28:57,055][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed32874/results.json
+[2026-04-28 20:28:57,056][__main__][INFO] - ✓ Train R²: 0.7847
+[2026-04-28 20:28:57,056][__main__][INFO] - ✓ Val R²: 0.6048
+[2026-04-28 20:28:57,059][HYDRA] 	#13 : model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:28:57,240][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:28:57,245][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed47311
+[2026-04-28 20:28:57,245][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:28:58,943][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:28:58,944][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:28:58,944][__main__][INFO] -   Device: cpu
+[2026-04-28 20:28:58,944][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 92985.89340 | quality: -24398.24548
+        | Val:   loss: 85355.36027 | quality: -23713.04383
+Epoch 1 | Train: loss: 3.07981 | quality: 0.19187
+        | Val:   loss: 3.02046 | quality: 0.16083
+ *
+Epoch 2 | Train: loss: 2.79297 | quality: 0.26713
+        | Val:   loss: 2.72949 | quality: 0.24167
+ *
+Epoch 3 | Train: loss: 2.60299 | quality: 0.31698
+        | Val:   loss: 2.59883 | quality: 0.27797
+ *
+Epoch 4 | Train: loss: 2.26848 | quality: 0.40476
+        | Val:   loss: 2.37316 | quality: 0.34067
+ *
+Epoch 5 | Train: loss: 2.01195 | quality: 0.47207
+        | Val:   loss: 2.15799 | quality: 0.40045
+ *
+Epoch 6 | Train: loss: 1.92668 | quality: 0.49445
+        | Val:   loss: 2.02594 | quality: 0.43714
+ *
+Epoch 7 | Train: loss: 1.89060 | quality: 0.50391
+        | Val:   loss: 1.96743 | quality: 0.45339
+ *
+Epoch 8 | Train: loss: 1.86798 | quality: 0.50985
+        | Val:   loss: 1.94766 | quality: 0.45889
+ *
+Epoch 9 | Train: loss: 1.84938 | quality: 0.51473
+        | Val:   loss: 1.93962 | quality: 0.46112
+ *
+Epoch 10 | Train: loss: 1.83118 | quality: 0.51950
+        | Val:   loss: 1.93204 | quality: 0.46323
+ *
+Epoch 11 | Train: loss: 1.81218 | quality: 0.52449
+        | Val:   loss: 1.92213 | quality: 0.46598
+ *
+Epoch 12 | Train: loss: 1.79255 | quality: 0.52964
+        | Val:   loss: 1.90978 | quality: 0.46941
+ *
+Epoch 13 | Train: loss: 1.77305 | quality: 0.53476
+        | Val:   loss: 1.89571 | quality: 0.47332
+ *
+Epoch 14 | Train: loss: 1.75435 | quality: 0.53966
+        | Val:   loss: 1.88068 | quality: 0.47750
+ *
+Epoch 15 | Train: loss: 1.73667 | quality: 0.54430
+        | Val:   loss: 1.86532 | quality: 0.48176
+ *
+Epoch 16 | Train: loss: 1.72003 | quality: 0.54867
+        | Val:   loss: 1.85053 | quality: 0.48587
+ *
+Epoch 17 | Train: loss: 1.70464 | quality: 0.55271
+        | Val:   loss: 1.83760 | quality: 0.48947
+ *
+Epoch 18 | Train: loss: 1.69097 | quality: 0.55629
+        | Val:   loss: 1.82759 | quality: 0.49224
+ *
+Epoch 19 | Train: loss: 1.67929 | quality: 0.55936
+        | Val:   loss: 1.82060 | quality: 0.49419
+ *
+Epoch 20 | Train: loss: 1.66953 | quality: 0.56192
+        | Val:   loss: 1.81579 | quality: 0.49552
+ *
+
+Best epoch: 20 (val_quality=0.495524)
+[2026-04-28 20:29:01,622][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed47311/results.json
+[2026-04-28 20:29:01,623][__main__][INFO] - ✓ Train R²: 0.5619
+[2026-04-28 20:29:01,623][__main__][INFO] - ✓ Val R²: 0.4955
+[2026-04-28 20:29:01,627][HYDRA] 	#14 : model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:01,811][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 3
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:01,816][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed47303
+[2026-04-28 20:29:01,817][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:03,525][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:03,526][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:03,526][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:03,526][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 90852.84053 | quality: -23838.53821
+        | Val:   loss: 74432.06593 | quality: -20678.25516
+Epoch 1 | Train: loss: 2.94593 | quality: 0.22700
+        | Val:   loss: 2.88852 | quality: 0.19749
+ *
+Epoch 2 | Train: loss: 2.36843 | quality: 0.37853
+        | Val:   loss: 2.32420 | quality: 0.35427
+ *
+Epoch 3 | Train: loss: 1.52963 | quality: 0.59863
+        | Val:   loss: 1.62907 | quality: 0.54740
+ *
+Epoch 4 | Train: loss: 1.11950 | quality: 0.70625
+        | Val:   loss: 1.36390 | quality: 0.62107
+ *
+Epoch 5 | Train: loss: 0.90647 | quality: 0.76214
+        | Val:   loss: 1.27500 | quality: 0.64577
+ *
+Epoch 6 | Train: loss: 0.77441 | quality: 0.79680
+        | Val:   loss: 1.29770 | quality: 0.63946
+
+Epoch 7 | Train: loss: 0.71092 | quality: 0.81346
+        | Val:   loss: 1.39472 | quality: 0.61251
+
+Epoch 8 | Train: loss: 0.68152 | quality: 0.82117
+        | Val:   loss: 1.50119 | quality: 0.58293
+
+Epoch 9 | Train: loss: 0.66269 | quality: 0.82611
+        | Val:   loss: 1.59984 | quality: 0.55552
+
+Epoch 10 | Train: loss: 0.64728 | quality: 0.83016
+        | Val:   loss: 1.70206 | quality: 0.52712
+
+Epoch 11 | Train: loss: 0.63458 | quality: 0.83349
+        | Val:   loss: 1.79183 | quality: 0.50218
+
+Epoch 12 | Train: loss: 0.62492 | quality: 0.83602
+        | Val:   loss: 1.85698 | quality: 0.48408
+
+Epoch 13 | Train: loss: 0.61788 | quality: 0.83787
+        | Val:   loss: 1.89977 | quality: 0.47219
+
+Epoch 14 | Train: loss: 0.61254 | quality: 0.83927
+        | Val:   loss: 1.92024 | quality: 0.46651
+
+Epoch 15 | Train: loss: 0.60820 | quality: 0.84041
+        | Val:   loss: 1.92251 | quality: 0.46587
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 20:29:05,776][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L3_bd12_seed47303/results.json
+[2026-04-28 20:29:05,777][__main__][INFO] - ✓ Train R²: 0.7621
+[2026-04-28 20:29:05,777][__main__][INFO] - ✓ Val R²: 0.6458
+[2026-04-28 20:29:05,779][HYDRA] 	#15 : model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:05,987][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:05,991][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed42
+[2026-04-28 20:29:05,992][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:07,681][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:07,682][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:07,682][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:07,682][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 253488.70608 | quality: -66513.74692
+        | Val:   loss: 233505.22727 | quality: -64873.11191
+Epoch 1 | Train: loss: 4.39067 | quality: -0.15210
+        | Val:   loss: 4.36539 | quality: -0.21282
+ *
+Epoch 2 | Train: loss: 2.99895 | quality: 0.21308
+        | Val:   loss: 2.97882 | quality: 0.17240
+ *
+Epoch 3 | Train: loss: 2.74736 | quality: 0.27910
+        | Val:   loss: 2.69175 | quality: 0.25216
+ *
+Epoch 4 | Train: loss: 2.55936 | quality: 0.32843
+        | Val:   loss: 2.56249 | quality: 0.28807
+ *
+Epoch 5 | Train: loss: 2.13584 | quality: 0.43956
+        | Val:   loss: 2.25328 | quality: 0.37398
+ *
+Epoch 6 | Train: loss: 1.88776 | quality: 0.50466
+        | Val:   loss: 1.99150 | quality: 0.44671
+ *
+Epoch 7 | Train: loss: 1.81323 | quality: 0.52421
+        | Val:   loss: 1.88340 | quality: 0.47674
+ *
+Epoch 8 | Train: loss: 1.77227 | quality: 0.53496
+        | Val:   loss: 1.85193 | quality: 0.48548
+ *
+Epoch 9 | Train: loss: 1.74095 | quality: 0.54318
+        | Val:   loss: 1.84527 | quality: 0.48733
+ *
+Epoch 10 | Train: loss: 1.71232 | quality: 0.55069
+        | Val:   loss: 1.84087 | quality: 0.48856
+ *
+Epoch 11 | Train: loss: 1.68482 | quality: 0.55791
+        | Val:   loss: 1.83345 | quality: 0.49062
+ *
+Epoch 12 | Train: loss: 1.65765 | quality: 0.56504
+        | Val:   loss: 1.82149 | quality: 0.49394
+ *
+Epoch 13 | Train: loss: 1.63013 | quality: 0.57226
+        | Val:   loss: 1.80490 | quality: 0.49855
+ *
+Epoch 14 | Train: loss: 1.60257 | quality: 0.57949
+        | Val:   loss: 1.78482 | quality: 0.50413
+ *
+Epoch 15 | Train: loss: 1.57604 | quality: 0.58645
+        | Val:   loss: 1.76261 | quality: 0.51030
+ *
+Epoch 16 | Train: loss: 1.55162 | quality: 0.59286
+        | Val:   loss: 1.73960 | quality: 0.51669
+ *
+Epoch 17 | Train: loss: 1.53005 | quality: 0.59852
+        | Val:   loss: 1.71749 | quality: 0.52284
+ *
+Epoch 18 | Train: loss: 1.51178 | quality: 0.60331
+        | Val:   loss: 1.69820 | quality: 0.52819
+ *
+Epoch 19 | Train: loss: 1.49683 | quality: 0.60723
+        | Val:   loss: 1.68293 | quality: 0.53244
+ *
+Epoch 20 | Train: loss: 1.48480 | quality: 0.61039
+        | Val:   loss: 1.67167 | quality: 0.53557
+ *
+
+Best epoch: 20 (val_quality=0.535566)
+[2026-04-28 20:29:09,341][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed42/results.json
+[2026-04-28 20:29:09,342][__main__][INFO] - ✓ Train R²: 0.6104
+[2026-04-28 20:29:09,342][__main__][INFO] - ✓ Val R²: 0.5356
+[2026-04-28 20:29:09,345][HYDRA] 	#16 : model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:09,527][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:09,532][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed10090
+[2026-04-28 20:29:09,533][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:11,225][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:11,225][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:11,225][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:11,225][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1519513.24102 | quality: -398715.14094
+        | Val:   loss: 1141375.09291 | quality: -317104.08745
+Epoch 1 | Train: loss: 3.49799 | quality: 0.08214
+        | Val:   loss: 3.38302 | quality: 0.06011
+ *
+Epoch 2 | Train: loss: 3.00691 | quality: 0.21099
+        | Val:   loss: 2.98275 | quality: 0.17131
+ *
+Epoch 3 | Train: loss: 2.78440 | quality: 0.26938
+        | Val:   loss: 2.73182 | quality: 0.24103
+ *
+Epoch 4 | Train: loss: 2.70433 | quality: 0.29039
+        | Val:   loss: 2.67615 | quality: 0.25649
+ *
+Epoch 5 | Train: loss: 2.57268 | quality: 0.32494
+        | Val:   loss: 2.59842 | quality: 0.27809
+ *
+Epoch 6 | Train: loss: 2.14649 | quality: 0.43677
+        | Val:   loss: 2.33110 | quality: 0.35236
+ *
+Epoch 7 | Train: loss: 1.89955 | quality: 0.50156
+        | Val:   loss: 2.09022 | quality: 0.41928
+ *
+Epoch 8 | Train: loss: 1.83368 | quality: 0.51885
+        | Val:   loss: 1.95824 | quality: 0.45595
+ *
+Epoch 9 | Train: loss: 1.79977 | quality: 0.52775
+        | Val:   loss: 1.90276 | quality: 0.47136
+ *
+Epoch 10 | Train: loss: 1.77319 | quality: 0.53472
+        | Val:   loss: 1.88035 | quality: 0.47759
+ *
+Epoch 11 | Train: loss: 1.74654 | quality: 0.54171
+        | Val:   loss: 1.87283 | quality: 0.47968
+ *
+Epoch 12 | Train: loss: 1.71610 | quality: 0.54970
+        | Val:   loss: 1.87178 | quality: 0.47997
+ *
+Epoch 13 | Train: loss: 1.68040 | quality: 0.55907
+        | Val:   loss: 1.87332 | quality: 0.47954
+ *
+Epoch 14 | Train: loss: 1.64082 | quality: 0.56945
+        | Val:   loss: 1.87716 | quality: 0.47847
+
+Epoch 15 | Train: loss: 1.60098 | quality: 0.57991
+        | Val:   loss: 1.88298 | quality: 0.47686
+
+Epoch 16 | Train: loss: 1.56463 | quality: 0.58944
+        | Val:   loss: 1.88795 | quality: 0.47548
+
+Epoch 17 | Train: loss: 1.53370 | quality: 0.59756
+        | Val:   loss: 1.88817 | quality: 0.47541
+
+Epoch 18 | Train: loss: 1.50812 | quality: 0.60427
+        | Val:   loss: 1.88189 | quality: 0.47716
+
+Epoch 19 | Train: loss: 1.48689 | quality: 0.60985
+        | Val:   loss: 1.87008 | quality: 0.48044
+ *
+Epoch 20 | Train: loss: 1.46887 | quality: 0.61457
+        | Val:   loss: 1.85506 | quality: 0.48461
+ *
+
+Best epoch: 20 (val_quality=0.484615)
+[2026-04-28 20:29:12,845][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed10090/results.json
+[2026-04-28 20:29:12,846][__main__][INFO] - ✓ Train R²: 0.6146
+[2026-04-28 20:29:12,846][__main__][INFO] - ✓ Val R²: 0.4846
+[2026-04-28 20:29:12,848][HYDRA] 	#17 : model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:13,025][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:13,029][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed32874
+[2026-04-28 20:29:13,030][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:14,742][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:14,743][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:14,743][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:14,743][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 295808.58493 | quality: -77618.36800
+        | Val:   loss: 270207.27317 | quality: -75069.93989
+Epoch 1 | Train: loss: 4.29614 | quality: -0.12730
+        | Val:   loss: 4.07776 | quality: -0.13291
+ *
+Epoch 2 | Train: loss: 2.97311 | quality: 0.21986
+        | Val:   loss: 2.96104 | quality: 0.17734
+ *
+Epoch 3 | Train: loss: 2.73496 | quality: 0.28235
+        | Val:   loss: 2.71292 | quality: 0.24628
+ *
+Epoch 4 | Train: loss: 2.58899 | quality: 0.32066
+        | Val:   loss: 2.64479 | quality: 0.26520
+ *
+Epoch 5 | Train: loss: 2.30180 | quality: 0.39601
+        | Val:   loss: 2.48577 | quality: 0.30939
+ *
+Epoch 6 | Train: loss: 1.98523 | quality: 0.47908
+        | Val:   loss: 2.22321 | quality: 0.38233
+ *
+Epoch 7 | Train: loss: 1.83229 | quality: 0.51921
+        | Val:   loss: 1.99218 | quality: 0.44652
+ *
+Epoch 8 | Train: loss: 1.75550 | quality: 0.53936
+        | Val:   loss: 1.89847 | quality: 0.47255
+ *
+Epoch 9 | Train: loss: 1.69555 | quality: 0.55509
+        | Val:   loss: 1.86244 | quality: 0.48256
+ *
+Epoch 10 | Train: loss: 1.64389 | quality: 0.56865
+        | Val:   loss: 1.84444 | quality: 0.48757
+ *
+Epoch 11 | Train: loss: 1.60292 | quality: 0.57940
+        | Val:   loss: 1.83692 | quality: 0.48965
+ *
+Epoch 12 | Train: loss: 1.57221 | quality: 0.58746
+        | Val:   loss: 1.83326 | quality: 0.49067
+ *
+Epoch 13 | Train: loss: 1.54884 | quality: 0.59359
+        | Val:   loss: 1.82900 | quality: 0.49185
+ *
+Epoch 14 | Train: loss: 1.53011 | quality: 0.59850
+        | Val:   loss: 1.82301 | quality: 0.49352
+ *
+Epoch 15 | Train: loss: 1.51436 | quality: 0.60264
+        | Val:   loss: 1.81605 | quality: 0.49545
+ *
+Epoch 16 | Train: loss: 1.50067 | quality: 0.60623
+        | Val:   loss: 1.80899 | quality: 0.49741
+ *
+Epoch 17 | Train: loss: 1.48850 | quality: 0.60942
+        | Val:   loss: 1.80224 | quality: 0.49929
+ *
+Epoch 18 | Train: loss: 1.47746 | quality: 0.61232
+        | Val:   loss: 1.79579 | quality: 0.50108
+ *
+Epoch 19 | Train: loss: 1.46726 | quality: 0.61500
+        | Val:   loss: 1.78942 | quality: 0.50285
+ *
+Epoch 20 | Train: loss: 1.45763 | quality: 0.61752
+        | Val:   loss: 1.78292 | quality: 0.50466
+ *
+
+Best epoch: 20 (val_quality=0.504656)
+[2026-04-28 20:29:16,462][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed32874/results.json
+[2026-04-28 20:29:16,463][__main__][INFO] - ✓ Train R²: 0.6175
+[2026-04-28 20:29:16,463][__main__][INFO] - ✓ Val R²: 0.5047
+[2026-04-28 20:29:16,465][HYDRA] 	#18 : model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:16,642][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:16,647][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed47311
+[2026-04-28 20:29:16,647][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:18,346][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:18,347][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:18,347][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:18,347][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 546769.34572 | quality: -143469.78895
+        | Val:   loss: 395424.15247 | quality: -109858.59938
+Epoch 1 | Train: loss: 4.90256 | quality: -0.28642
+        | Val:   loss: 4.11401 | quality: -0.14298
+ *
+Epoch 2 | Train: loss: 3.02194 | quality: 0.20705
+        | Val:   loss: 2.99288 | quality: 0.16850
+ *
+Epoch 3 | Train: loss: 2.80532 | quality: 0.26389
+        | Val:   loss: 2.74030 | quality: 0.23867
+ *
+Epoch 4 | Train: loss: 2.73944 | quality: 0.28118
+        | Val:   loss: 2.68767 | quality: 0.25329
+ *
+Epoch 5 | Train: loss: 2.69129 | quality: 0.29381
+        | Val:   loss: 2.64738 | quality: 0.26449
+ *
+Epoch 6 | Train: loss: 2.47523 | quality: 0.35051
+        | Val:   loss: 2.47130 | quality: 0.31341
+ *
+Epoch 7 | Train: loss: 2.10313 | quality: 0.44814
+        | Val:   loss: 2.22545 | quality: 0.38171
+ *
+Epoch 8 | Train: loss: 1.84002 | quality: 0.51718
+        | Val:   loss: 2.08311 | quality: 0.42125
+ *
+Epoch 9 | Train: loss: 1.71105 | quality: 0.55102
+        | Val:   loss: 2.02522 | quality: 0.43734
+ *
+Epoch 10 | Train: loss: 1.65157 | quality: 0.56663
+        | Val:   loss: 1.99437 | quality: 0.44591
+ *
+Epoch 11 | Train: loss: 1.61747 | quality: 0.57558
+        | Val:   loss: 1.96413 | quality: 0.45431
+ *
+Epoch 12 | Train: loss: 1.59376 | quality: 0.58180
+        | Val:   loss: 1.93311 | quality: 0.46293
+ *
+Epoch 13 | Train: loss: 1.57449 | quality: 0.58686
+        | Val:   loss: 1.90374 | quality: 0.47109
+ *
+Epoch 14 | Train: loss: 1.55754 | quality: 0.59131
+        | Val:   loss: 1.87764 | quality: 0.47834
+ *
+Epoch 15 | Train: loss: 1.54219 | quality: 0.59533
+        | Val:   loss: 1.85535 | quality: 0.48453
+ *
+Epoch 16 | Train: loss: 1.52825 | quality: 0.59899
+        | Val:   loss: 1.83683 | quality: 0.48968
+ *
+Epoch 17 | Train: loss: 1.51569 | quality: 0.60229
+        | Val:   loss: 1.82185 | quality: 0.49384
+ *
+Epoch 18 | Train: loss: 1.50451 | quality: 0.60522
+        | Val:   loss: 1.81001 | quality: 0.49713
+ *
+Epoch 19 | Train: loss: 1.49467 | quality: 0.60780
+        | Val:   loss: 1.80084 | quality: 0.49968
+ *
+Epoch 20 | Train: loss: 1.48607 | quality: 0.61006
+        | Val:   loss: 1.79391 | quality: 0.50160
+ *
+
+Best epoch: 20 (val_quality=0.501604)
+[2026-04-28 20:29:19,919][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed47311/results.json
+[2026-04-28 20:29:19,920][__main__][INFO] - ✓ Train R²: 0.6101
+[2026-04-28 20:29:19,920][__main__][INFO] - ✓ Val R²: 0.5016
+[2026-04-28 20:29:19,923][HYDRA] 	#19 : model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:20,104][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 4
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:20,109][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed47303
+[2026-04-28 20:29:20,109][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:22,191][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:22,191][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:22,191][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:22,191][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 390012.10664 | quality: -102337.11584
+        | Val:   loss: 206843.96515 | quality: -57465.88715
+Epoch 1 | Train: loss: 3.43841 | quality: 0.09777
+        | Val:   loss: 3.35311 | quality: 0.06841
+ *
+Epoch 2 | Train: loss: 3.01378 | quality: 0.20919
+        | Val:   loss: 2.98375 | quality: 0.17103
+ *
+Epoch 3 | Train: loss: 2.79817 | quality: 0.26577
+        | Val:   loss: 2.73227 | quality: 0.24090
+ *
+Epoch 4 | Train: loss: 2.72938 | quality: 0.28382
+        | Val:   loss: 2.67334 | quality: 0.25727
+ *
+Epoch 5 | Train: loss: 2.69308 | quality: 0.29334
+        | Val:   loss: 2.63383 | quality: 0.26825
+ *
+Epoch 6 | Train: loss: 2.54395 | quality: 0.33247
+        | Val:   loss: 2.44974 | quality: 0.31939
+ *
+Epoch 7 | Train: loss: 2.15316 | quality: 0.43502
+        | Val:   loss: 2.06920 | quality: 0.42512
+ *
+Epoch 8 | Train: loss: 1.91782 | quality: 0.49677
+        | Val:   loss: 1.88153 | quality: 0.47726
+ *
+Epoch 9 | Train: loss: 1.78117 | quality: 0.53262
+        | Val:   loss: 1.79919 | quality: 0.50014
+ *
+Epoch 10 | Train: loss: 1.68853 | quality: 0.55693
+        | Val:   loss: 1.75553 | quality: 0.51227
+ *
+Epoch 11 | Train: loss: 1.61212 | quality: 0.57699
+        | Val:   loss: 1.72956 | quality: 0.51948
+ *
+Epoch 12 | Train: loss: 1.54778 | quality: 0.59387
+        | Val:   loss: 1.71715 | quality: 0.52293
+ *
+Epoch 13 | Train: loss: 1.49409 | quality: 0.60796
+        | Val:   loss: 1.71015 | quality: 0.52487
+ *
+Epoch 14 | Train: loss: 1.44839 | quality: 0.61995
+        | Val:   loss: 1.70070 | quality: 0.52750
+ *
+Epoch 15 | Train: loss: 1.41006 | quality: 0.63000
+        | Val:   loss: 1.68649 | quality: 0.53145
+ *
+Epoch 16 | Train: loss: 1.37936 | quality: 0.63806
+        | Val:   loss: 1.66928 | quality: 0.53623
+ *
+Epoch 17 | Train: loss: 1.35547 | quality: 0.64433
+        | Val:   loss: 1.65171 | quality: 0.54111
+ *
+Epoch 18 | Train: loss: 1.33696 | quality: 0.64919
+        | Val:   loss: 1.63583 | quality: 0.54552
+ *
+Epoch 19 | Train: loss: 1.32240 | quality: 0.65300
+        | Val:   loss: 1.62272 | quality: 0.54916
+ *
+Epoch 20 | Train: loss: 1.31067 | quality: 0.65608
+        | Val:   loss: 1.61235 | quality: 0.55205
+ *
+
+Best epoch: 20 (val_quality=0.552045)
+[2026-04-28 20:29:23,933][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd4_seed47303/results.json
+[2026-04-28 20:29:23,933][__main__][INFO] - ✓ Train R²: 0.6561
+[2026-04-28 20:29:23,933][__main__][INFO] - ✓ Val R²: 0.5520
+[2026-04-28 20:29:23,935][HYDRA] 	#20 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:24,197][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:24,201][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed42
+[2026-04-28 20:29:24,202][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:25,893][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:25,894][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:25,894][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:25,894][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 515301.46042 | quality: -135212.70145
+        | Val:   loss: 519374.26782 | quality: -144295.31735
+Epoch 1 | Train: loss: 3.32662 | quality: 0.12711
+        | Val:   loss: 3.17934 | quality: 0.11669
+ *
+Epoch 2 | Train: loss: 2.90061 | quality: 0.23889
+        | Val:   loss: 2.84647 | quality: 0.20917
+ *
+Epoch 3 | Train: loss: 2.72195 | quality: 0.28577
+        | Val:   loss: 2.66415 | quality: 0.25983
+ *
+Epoch 4 | Train: loss: 2.60465 | quality: 0.31655
+        | Val:   loss: 2.57891 | quality: 0.28351
+ *
+Epoch 5 | Train: loss: 2.39553 | quality: 0.37142
+        | Val:   loss: 2.42763 | quality: 0.32554
+ *
+Epoch 6 | Train: loss: 2.10929 | quality: 0.44653
+        | Val:   loss: 2.26086 | quality: 0.37187
+ *
+Epoch 7 | Train: loss: 1.90718 | quality: 0.49956
+        | Val:   loss: 2.15715 | quality: 0.40068
+ *
+Epoch 8 | Train: loss: 1.78540 | quality: 0.53152
+        | Val:   loss: 2.07990 | quality: 0.42215
+ *
+Epoch 9 | Train: loss: 1.70494 | quality: 0.55263
+        | Val:   loss: 2.02251 | quality: 0.43809
+ *
+Epoch 10 | Train: loss: 1.65332 | quality: 0.56617
+        | Val:   loss: 1.98619 | quality: 0.44818
+ *
+Epoch 11 | Train: loss: 1.62078 | quality: 0.57471
+        | Val:   loss: 1.96212 | quality: 0.45487
+ *
+Epoch 12 | Train: loss: 1.59891 | quality: 0.58045
+        | Val:   loss: 1.94262 | quality: 0.46029
+ *
+Epoch 13 | Train: loss: 1.58248 | quality: 0.58476
+        | Val:   loss: 1.92515 | quality: 0.46514
+ *
+Epoch 14 | Train: loss: 1.56874 | quality: 0.58837
+        | Val:   loss: 1.90957 | quality: 0.46947
+ *
+Epoch 15 | Train: loss: 1.55633 | quality: 0.59162
+        | Val:   loss: 1.89598 | quality: 0.47324
+ *
+Epoch 16 | Train: loss: 1.54461 | quality: 0.59470
+        | Val:   loss: 1.88412 | quality: 0.47654
+ *
+Epoch 17 | Train: loss: 1.53325 | quality: 0.59768
+        | Val:   loss: 1.87341 | quality: 0.47951
+ *
+Epoch 18 | Train: loss: 1.52207 | quality: 0.60061
+        | Val:   loss: 1.86313 | quality: 0.48237
+ *
+Epoch 19 | Train: loss: 1.51097 | quality: 0.60352
+        | Val:   loss: 1.85243 | quality: 0.48535
+ *
+Epoch 20 | Train: loss: 1.49984 | quality: 0.60645
+        | Val:   loss: 1.84040 | quality: 0.48869
+ *
+
+Best epoch: 20 (val_quality=0.488686)
+[2026-04-28 20:29:28,115][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed42/results.json
+[2026-04-28 20:29:28,116][__main__][INFO] - ✓ Train R²: 0.6064
+[2026-04-28 20:29:28,116][__main__][INFO] - ✓ Val R²: 0.4887
+[2026-04-28 20:29:28,118][HYDRA] 	#21 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:28,316][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:28,320][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed10090
+[2026-04-28 20:29:28,321][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:30,008][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:30,009][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:30,009][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:30,009][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1297446.64375 | quality: -340445.46990
+        | Val:   loss: 1628096.32476 | quality: -452328.50206
+Epoch 1 | Train: loss: 3.24657 | quality: 0.14811
+        | Val:   loss: 3.25027 | quality: 0.09699
+ *
+Epoch 2 | Train: loss: 2.88420 | quality: 0.24319
+        | Val:   loss: 2.85656 | quality: 0.20637
+ *
+Epoch 3 | Train: loss: 2.73308 | quality: 0.28285
+        | Val:   loss: 2.71104 | quality: 0.24680
+ *
+Epoch 4 | Train: loss: 2.63315 | quality: 0.30907
+        | Val:   loss: 2.65566 | quality: 0.26218
+ *
+Epoch 5 | Train: loss: 2.42625 | quality: 0.36336
+        | Val:   loss: 2.51591 | quality: 0.30101
+ *
+Epoch 6 | Train: loss: 2.12932 | quality: 0.44127
+        | Val:   loss: 2.29552 | quality: 0.36224
+ *
+Epoch 7 | Train: loss: 1.93029 | quality: 0.49350
+        | Val:   loss: 2.15313 | quality: 0.40180
+ *
+Epoch 8 | Train: loss: 1.83872 | quality: 0.51752
+        | Val:   loss: 2.08559 | quality: 0.42057
+ *
+Epoch 9 | Train: loss: 1.78404 | quality: 0.53187
+        | Val:   loss: 2.05679 | quality: 0.42857
+ *
+Epoch 10 | Train: loss: 1.74467 | quality: 0.54220
+        | Val:   loss: 2.05203 | quality: 0.42989
+ *
+Epoch 11 | Train: loss: 1.71157 | quality: 0.55089
+        | Val:   loss: 2.05553 | quality: 0.42892
+ *
+Epoch 12 | Train: loss: 1.68126 | quality: 0.55884
+        | Val:   loss: 2.05438 | quality: 0.42924
+ *
+Epoch 13 | Train: loss: 1.65286 | quality: 0.56629
+        | Val:   loss: 2.03952 | quality: 0.43337
+ *
+Epoch 14 | Train: loss: 1.62624 | quality: 0.57328
+        | Val:   loss: 2.00950 | quality: 0.44171
+ *
+Epoch 15 | Train: loss: 1.60140 | quality: 0.57980
+        | Val:   loss: 1.97023 | quality: 0.45262
+ *
+Epoch 16 | Train: loss: 1.57837 | quality: 0.58584
+        | Val:   loss: 1.92958 | quality: 0.46391
+ *
+Epoch 17 | Train: loss: 1.55703 | quality: 0.59144
+        | Val:   loss: 1.89290 | quality: 0.47410
+ *
+Epoch 18 | Train: loss: 1.53701 | quality: 0.59669
+        | Val:   loss: 1.86208 | quality: 0.48266
+ *
+Epoch 19 | Train: loss: 1.51766 | quality: 0.60177
+        | Val:   loss: 1.83656 | quality: 0.48975
+ *
+Epoch 20 | Train: loss: 1.49815 | quality: 0.60689
+        | Val:   loss: 1.81470 | quality: 0.49583
+ *
+
+Best epoch: 20 (val_quality=0.495826)
+[2026-04-28 20:29:32,137][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed10090/results.json
+[2026-04-28 20:29:32,137][__main__][INFO] - ✓ Train R²: 0.6069
+[2026-04-28 20:29:32,137][__main__][INFO] - ✓ Val R²: 0.4958
+[2026-04-28 20:29:32,139][HYDRA] 	#22 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:32,314][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:32,318][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed32874
+[2026-04-28 20:29:32,319][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:34,096][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:34,096][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:34,096][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:34,097][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1310127.90504 | quality: -343772.99836
+        | Val:   loss: 1537966.52127 | quality: -427287.98787
+Epoch 1 | Train: loss: 3.28268 | quality: 0.13863
+        | Val:   loss: 3.33171 | quality: 0.07436
+ *
+Epoch 2 | Train: loss: 2.86751 | quality: 0.24757
+        | Val:   loss: 2.85763 | quality: 0.20607
+ *
+Epoch 3 | Train: loss: 2.69326 | quality: 0.29330
+        | Val:   loss: 2.68640 | quality: 0.25365
+ *
+Epoch 4 | Train: loss: 2.48184 | quality: 0.34877
+        | Val:   loss: 2.53289 | quality: 0.29629
+ *
+Epoch 5 | Train: loss: 2.13618 | quality: 0.43947
+        | Val:   loss: 2.28387 | quality: 0.36548
+ *
+Epoch 6 | Train: loss: 1.94811 | quality: 0.48882
+        | Val:   loss: 2.09048 | quality: 0.41921
+ *
+Epoch 7 | Train: loss: 1.85622 | quality: 0.51293
+        | Val:   loss: 1.99915 | quality: 0.44458
+ *
+Epoch 8 | Train: loss: 1.80469 | quality: 0.52645
+        | Val:   loss: 1.96297 | quality: 0.45463
+ *
+Epoch 9 | Train: loss: 1.76512 | quality: 0.53684
+        | Val:   loss: 1.93978 | quality: 0.46108
+ *
+Epoch 10 | Train: loss: 1.72754 | quality: 0.54670
+        | Val:   loss: 1.91802 | quality: 0.46712
+ *
+Epoch 11 | Train: loss: 1.69022 | quality: 0.55649
+        | Val:   loss: 1.89518 | quality: 0.47347
+ *
+Epoch 12 | Train: loss: 1.65423 | quality: 0.56594
+        | Val:   loss: 1.87368 | quality: 0.47944
+ *
+Epoch 13 | Train: loss: 1.62106 | quality: 0.57464
+        | Val:   loss: 1.85578 | quality: 0.48441
+ *
+Epoch 14 | Train: loss: 1.59168 | quality: 0.58235
+        | Val:   loss: 1.84149 | quality: 0.48838
+ *
+Epoch 15 | Train: loss: 1.56611 | quality: 0.58906
+        | Val:   loss: 1.82924 | quality: 0.49179
+ *
+Epoch 16 | Train: loss: 1.54375 | quality: 0.59492
+        | Val:   loss: 1.81753 | quality: 0.49504
+ *
+Epoch 17 | Train: loss: 1.52389 | quality: 0.60014
+        | Val:   loss: 1.80571 | quality: 0.49833
+ *
+Epoch 18 | Train: loss: 1.50592 | quality: 0.60485
+        | Val:   loss: 1.79376 | quality: 0.50164
+ *
+Epoch 19 | Train: loss: 1.48944 | quality: 0.60918
+        | Val:   loss: 1.78196 | quality: 0.50492
+ *
+Epoch 20 | Train: loss: 1.47422 | quality: 0.61317
+        | Val:   loss: 1.77067 | quality: 0.50806
+ *
+
+Best epoch: 20 (val_quality=0.508060)
+[2026-04-28 20:29:36,235][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed32874/results.json
+[2026-04-28 20:29:36,236][__main__][INFO] - ✓ Train R²: 0.6132
+[2026-04-28 20:29:36,236][__main__][INFO] - ✓ Val R²: 0.5081
+[2026-04-28 20:29:36,238][HYDRA] 	#23 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:36,417][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:36,422][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed47311
+[2026-04-28 20:29:36,422][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:38,289][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:38,289][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:38,289][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:38,289][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 400191.58435 | quality: -105008.18310
+        | Val:   loss: 262530.13541 | quality: -72937.02192
+Epoch 1 | Train: loss: 3.25722 | quality: 0.14531
+        | Val:   loss: 3.22949 | quality: 0.10276
+ *
+Epoch 2 | Train: loss: 2.72001 | quality: 0.28628
+        | Val:   loss: 2.65726 | quality: 0.26174
+ *
+Epoch 3 | Train: loss: 1.91005 | quality: 0.49881
+        | Val:   loss: 1.93963 | quality: 0.46112
+ *
+Epoch 4 | Train: loss: 1.58468 | quality: 0.58419
+        | Val:   loss: 1.65492 | quality: 0.54022
+ *
+Epoch 5 | Train: loss: 1.35895 | quality: 0.64341
+        | Val:   loss: 1.53266 | quality: 0.57419
+ *
+Epoch 6 | Train: loss: 1.22232 | quality: 0.67927
+        | Val:   loss: 1.46755 | quality: 0.59227
+ *
+Epoch 7 | Train: loss: 1.13094 | quality: 0.70325
+        | Val:   loss: 1.40257 | quality: 0.61033
+ *
+Epoch 8 | Train: loss: 1.07204 | quality: 0.71870
+        | Val:   loss: 1.39029 | quality: 0.61374
+ *
+Epoch 9 | Train: loss: 1.02677 | quality: 0.73058
+        | Val:   loss: 1.39017 | quality: 0.61377
+ *
+Epoch 10 | Train: loss: 0.98912 | quality: 0.74046
+        | Val:   loss: 1.38962 | quality: 0.61392
+ *
+Epoch 11 | Train: loss: 0.95719 | quality: 0.74884
+        | Val:   loss: 1.38499 | quality: 0.61521
+ *
+Epoch 12 | Train: loss: 0.93110 | quality: 0.75568
+        | Val:   loss: 1.37775 | quality: 0.61722
+ *
+Epoch 13 | Train: loss: 0.91056 | quality: 0.76107
+        | Val:   loss: 1.37128 | quality: 0.61902
+ *
+Epoch 14 | Train: loss: 0.89441 | quality: 0.76531
+        | Val:   loss: 1.36798 | quality: 0.61994
+ *
+Epoch 15 | Train: loss: 0.88134 | quality: 0.76874
+        | Val:   loss: 1.36840 | quality: 0.61982
+ *
+Epoch 16 | Train: loss: 0.87033 | quality: 0.77163
+        | Val:   loss: 1.37189 | quality: 0.61885
+ *
+Epoch 17 | Train: loss: 0.86075 | quality: 0.77414
+        | Val:   loss: 1.37748 | quality: 0.61730
+
+Epoch 18 | Train: loss: 0.85221 | quality: 0.77638
+        | Val:   loss: 1.38443 | quality: 0.61537
+
+Epoch 19 | Train: loss: 0.84450 | quality: 0.77841
+        | Val:   loss: 1.39229 | quality: 0.61318
+
+Epoch 20 | Train: loss: 0.83752 | quality: 0.78024
+        | Val:   loss: 1.40090 | quality: 0.61079
+
+
+Best epoch: 16 (val_quality=0.618852)
+[2026-04-28 20:29:40,557][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed47311/results.json
+[2026-04-28 20:29:40,558][__main__][INFO] - ✓ Train R²: 0.7716
+[2026-04-28 20:29:40,558][__main__][INFO] - ✓ Val R²: 0.6189
+[2026-04-28 20:29:40,560][HYDRA] 	#24 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:40,999][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 8
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:41,003][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed47303
+[2026-04-28 20:29:41,003][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:42,686][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:42,687][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:42,687][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:42,687][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 556259.28747 | quality: -145959.92385
+        | Val:   loss: 412316.80399 | quality: -114551.83806
+Epoch 1 | Train: loss: 3.05721 | quality: 0.19780
+        | Val:   loss: 3.01136 | quality: 0.16336
+ *
+Epoch 2 | Train: loss: 2.51298 | quality: 0.34060
+        | Val:   loss: 2.46089 | quality: 0.31630
+ *
+Epoch 3 | Train: loss: 1.83795 | quality: 0.51773
+        | Val:   loss: 1.93366 | quality: 0.46278
+ *
+Epoch 4 | Train: loss: 1.28805 | quality: 0.66202
+        | Val:   loss: 1.43392 | quality: 0.60162
+ *
+Epoch 5 | Train: loss: 1.05611 | quality: 0.72288
+        | Val:   loss: 1.31796 | quality: 0.63383
+ *
+Epoch 6 | Train: loss: 0.89306 | quality: 0.76566
+        | Val:   loss: 1.36244 | quality: 0.62148
+
+Epoch 7 | Train: loss: 0.81990 | quality: 0.78486
+        | Val:   loss: 1.46542 | quality: 0.59287
+
+Epoch 8 | Train: loss: 0.78050 | quality: 0.79520
+        | Val:   loss: 1.58019 | quality: 0.56098
+
+Epoch 9 | Train: loss: 0.75124 | quality: 0.80288
+        | Val:   loss: 1.65016 | quality: 0.54154
+
+Epoch 10 | Train: loss: 0.72652 | quality: 0.80936
+        | Val:   loss: 1.70765 | quality: 0.52557
+
+Epoch 11 | Train: loss: 0.70668 | quality: 0.81457
+        | Val:   loss: 1.76820 | quality: 0.50875
+
+Epoch 12 | Train: loss: 0.69050 | quality: 0.81882
+        | Val:   loss: 1.83326 | quality: 0.49067
+
+Epoch 13 | Train: loss: 0.67762 | quality: 0.82220
+        | Val:   loss: 1.89352 | quality: 0.47393
+
+Epoch 14 | Train: loss: 0.66730 | quality: 0.82490
+        | Val:   loss: 1.94777 | quality: 0.45886
+
+Epoch 15 | Train: loss: 0.65873 | quality: 0.82715
+        | Val:   loss: 1.99802 | quality: 0.44489
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 20:29:44,367][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd8_seed47303/results.json
+[2026-04-28 20:29:44,368][__main__][INFO] - ✓ Train R²: 0.7229
+[2026-04-28 20:29:44,368][__main__][INFO] - ✓ Val R²: 0.6338
+[2026-04-28 20:29:44,370][HYDRA] 	#25 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:44,543][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 42
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:44,546][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed42
+[2026-04-28 20:29:44,547][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:46,244][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:46,244][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:46,244][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:46,244][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 858511.98710 | quality: -225270.21002
+        | Val:   loss: 955613.59520 | quality: -265494.48396
+Epoch 1 | Train: loss: 3.04146 | quality: 0.20193
+        | Val:   loss: 3.08129 | quality: 0.14394
+ *
+Epoch 2 | Train: loss: 2.48909 | quality: 0.34687
+        | Val:   loss: 2.53760 | quality: 0.29498
+ *
+Epoch 3 | Train: loss: 1.81898 | quality: 0.52270
+        | Val:   loss: 2.02975 | quality: 0.43608
+ *
+Epoch 4 | Train: loss: 1.32997 | quality: 0.65102
+        | Val:   loss: 1.51486 | quality: 0.57913
+ *
+Epoch 5 | Train: loss: 1.13923 | quality: 0.70107
+        | Val:   loss: 1.47276 | quality: 0.59083
+ *
+Epoch 6 | Train: loss: 1.05899 | quality: 0.72212
+        | Val:   loss: 1.48565 | quality: 0.58725
+
+Epoch 7 | Train: loss: 1.01452 | quality: 0.73379
+        | Val:   loss: 1.52592 | quality: 0.57606
+
+Epoch 8 | Train: loss: 0.98270 | quality: 0.74214
+        | Val:   loss: 1.63861 | quality: 0.54475
+
+Epoch 9 | Train: loss: 0.95693 | quality: 0.74890
+        | Val:   loss: 1.70777 | quality: 0.52554
+
+Epoch 10 | Train: loss: 0.93531 | quality: 0.75458
+        | Val:   loss: 1.70828 | quality: 0.52539
+
+Epoch 11 | Train: loss: 0.91717 | quality: 0.75934
+        | Val:   loss: 1.66311 | quality: 0.53794
+
+Epoch 12 | Train: loss: 0.90095 | quality: 0.76359
+        | Val:   loss: 1.59924 | quality: 0.55569
+
+Epoch 13 | Train: loss: 0.88614 | quality: 0.76748
+        | Val:   loss: 1.54669 | quality: 0.57029
+
+Epoch 14 | Train: loss: 0.87387 | quality: 0.77070
+        | Val:   loss: 1.50948 | quality: 0.58063
+
+Epoch 15 | Train: loss: 0.86270 | quality: 0.77363
+        | Val:   loss: 1.48274 | quality: 0.58805
+
+
+⏸ Early stopping at epoch 15 (best was epoch 5)
+[2026-04-28 20:29:48,750][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed42/results.json
+[2026-04-28 20:29:48,751][__main__][INFO] - ✓ Train R²: 0.7011
+[2026-04-28 20:29:48,751][__main__][INFO] - ✓ Val R²: 0.5908
+[2026-04-28 20:29:48,753][HYDRA] 	#26 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:48,927][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 10090
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:48,931][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed10090
+[2026-04-28 20:29:48,932][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:50,736][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:50,737][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:50,737][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:50,737][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1111778.81518 | quality: -291726.73675
+        | Val:   loss: 849746.01582 | quality: -236081.58699
+Epoch 1 | Train: loss: 3.18143 | quality: 0.16520
+        | Val:   loss: 3.16996 | quality: 0.11930
+ *
+Epoch 2 | Train: loss: 2.73518 | quality: 0.28230
+        | Val:   loss: 2.68853 | quality: 0.25305
+ *
+Epoch 3 | Train: loss: 2.57893 | quality: 0.32330
+        | Val:   loss: 2.55181 | quality: 0.29104
+ *
+Epoch 4 | Train: loss: 2.34486 | quality: 0.38472
+        | Val:   loss: 2.40536 | quality: 0.33173
+ *
+Epoch 5 | Train: loss: 2.00770 | quality: 0.47318
+        | Val:   loss: 2.20409 | quality: 0.38764
+ *
+Epoch 6 | Train: loss: 1.85465 | quality: 0.51334
+        | Val:   loss: 2.04348 | quality: 0.43227
+ *
+Epoch 7 | Train: loss: 1.79907 | quality: 0.52793
+        | Val:   loss: 1.94567 | quality: 0.45944
+ *
+Epoch 8 | Train: loss: 1.76714 | quality: 0.53631
+        | Val:   loss: 1.89274 | quality: 0.47415
+ *
+Epoch 9 | Train: loss: 1.74201 | quality: 0.54290
+        | Val:   loss: 1.86851 | quality: 0.48088
+ *
+Epoch 10 | Train: loss: 1.71762 | quality: 0.54930
+        | Val:   loss: 1.86015 | quality: 0.48320
+ *
+Epoch 11 | Train: loss: 1.69138 | quality: 0.55619
+        | Val:   loss: 1.85830 | quality: 0.48371
+ *
+Epoch 12 | Train: loss: 1.66332 | quality: 0.56355
+        | Val:   loss: 1.85725 | quality: 0.48401
+ *
+Epoch 13 | Train: loss: 1.63516 | quality: 0.57094
+        | Val:   loss: 1.85229 | quality: 0.48538
+ *
+Epoch 14 | Train: loss: 1.60789 | quality: 0.57809
+        | Val:   loss: 1.84099 | quality: 0.48852
+ *
+Epoch 15 | Train: loss: 1.58122 | quality: 0.58509
+        | Val:   loss: 1.82490 | quality: 0.49299
+ *
+Epoch 16 | Train: loss: 1.55517 | quality: 0.59193
+        | Val:   loss: 1.80836 | quality: 0.49759
+ *
+Epoch 17 | Train: loss: 1.53059 | quality: 0.59838
+        | Val:   loss: 1.79571 | quality: 0.50110
+ *
+Epoch 18 | Train: loss: 1.50850 | quality: 0.60417
+        | Val:   loss: 1.78931 | quality: 0.50288
+ *
+Epoch 19 | Train: loss: 1.48946 | quality: 0.60917
+        | Val:   loss: 1.78952 | quality: 0.50282
+ *
+Epoch 20 | Train: loss: 1.47350 | quality: 0.61336
+        | Val:   loss: 1.79580 | quality: 0.50108
+
+
+Best epoch: 19 (val_quality=0.502822)
+[2026-04-28 20:29:53,922][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed10090/results.json
+[2026-04-28 20:29:53,923][__main__][INFO] - ✓ Train R²: 0.6092
+[2026-04-28 20:29:53,923][__main__][INFO] - ✓ Val R²: 0.5028
+[2026-04-28 20:29:53,925][HYDRA] 	#27 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:54,280][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 32874
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:54,285][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed32874
+[2026-04-28 20:29:54,286][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:29:56,056][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:29:56,067][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:29:56,067][__main__][INFO] -   Device: cpu
+[2026-04-28 20:29:56,068][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1137418.24910 | quality: -298454.45446
+        | Val:   loss: 992370.73936 | quality: -275706.61973
+Epoch 1 | Train: loss: 2.99547 | quality: 0.21400
+        | Val:   loss: 3.03308 | quality: 0.15733
+ *
+Epoch 2 | Train: loss: 2.42739 | quality: 0.36306
+        | Val:   loss: 2.48774 | quality: 0.30884
+ *
+Epoch 3 | Train: loss: 1.61127 | quality: 0.57721
+        | Val:   loss: 1.71987 | quality: 0.52217
+ *
+Epoch 4 | Train: loss: 1.32258 | quality: 0.65296
+        | Val:   loss: 1.50346 | quality: 0.58230
+ *
+Epoch 5 | Train: loss: 1.19236 | quality: 0.68713
+        | Val:   loss: 1.45978 | quality: 0.59443
+ *
+Epoch 6 | Train: loss: 1.10533 | quality: 0.70996
+        | Val:   loss: 1.42186 | quality: 0.60497
+ *
+Epoch 7 | Train: loss: 1.05009 | quality: 0.72446
+        | Val:   loss: 1.43047 | quality: 0.60258
+
+Epoch 8 | Train: loss: 1.01058 | quality: 0.73483
+        | Val:   loss: 1.46082 | quality: 0.59415
+
+Epoch 9 | Train: loss: 0.97652 | quality: 0.74376
+        | Val:   loss: 1.51214 | quality: 0.57989
+
+Epoch 10 | Train: loss: 0.94708 | quality: 0.75149
+        | Val:   loss: 1.59800 | quality: 0.55603
+
+Epoch 11 | Train: loss: 0.92581 | quality: 0.75707
+        | Val:   loss: 1.76978 | quality: 0.50831
+
+Epoch 12 | Train: loss: 0.91007 | quality: 0.76120
+        | Val:   loss: 1.94950 | quality: 0.45838
+
+Epoch 13 | Train: loss: 0.89760 | quality: 0.76447
+        | Val:   loss: 2.10001 | quality: 0.41656
+
+Epoch 14 | Train: loss: 0.88773 | quality: 0.76706
+        | Val:   loss: 2.21020 | quality: 0.38595
+
+Epoch 15 | Train: loss: 0.87991 | quality: 0.76911
+        | Val:   loss: 2.30259 | quality: 0.36028
+
+Epoch 16 | Train: loss: 0.87355 | quality: 0.77078
+        | Val:   loss: 2.38278 | quality: 0.33800
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-04-28 20:29:58,735][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed32874/results.json
+[2026-04-28 20:29:58,737][__main__][INFO] - ✓ Train R²: 0.7100
+[2026-04-28 20:29:58,737][__main__][INFO] - ✓ Val R²: 0.6050
+[2026-04-28 20:29:58,741][HYDRA] 	#28 : model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:29:58,916][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47311
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:29:58,921][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed47311
+[2026-04-28 20:29:58,922][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:30:00,776][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:30:00,776][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:30:00,776][__main__][INFO] -   Device: cpu
+[2026-04-28 20:30:00,776][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1299812.67207 | quality: -341066.30929
+        | Val:   loss: 1173854.35734 | quality: -326127.71172
+Epoch 1 | Train: loss: 3.19060 | quality: 0.16280
+        | Val:   loss: 3.18744 | quality: 0.11444
+ *
+Epoch 2 | Train: loss: 2.82164 | quality: 0.25961
+        | Val:   loss: 2.78445 | quality: 0.22640
+ *
+Epoch 3 | Train: loss: 2.71238 | quality: 0.28828
+        | Val:   loss: 2.70832 | quality: 0.24755
+ *
+Epoch 4 | Train: loss: 2.61072 | quality: 0.31495
+        | Val:   loss: 2.65546 | quality: 0.26224
+ *
+Epoch 5 | Train: loss: 2.39150 | quality: 0.37248
+        | Val:   loss: 2.50236 | quality: 0.30478
+ *
+Epoch 6 | Train: loss: 2.07532 | quality: 0.45544
+        | Val:   loss: 2.28669 | quality: 0.36470
+ *
+Epoch 7 | Train: loss: 1.83136 | quality: 0.51945
+        | Val:   loss: 2.11461 | quality: 0.41251
+ *
+Epoch 8 | Train: loss: 1.69120 | quality: 0.55623
+        | Val:   loss: 1.99538 | quality: 0.44563
+ *
+Epoch 9 | Train: loss: 1.61594 | quality: 0.57598
+        | Val:   loss: 1.92282 | quality: 0.46579
+ *
+Epoch 10 | Train: loss: 1.56780 | quality: 0.58861
+        | Val:   loss: 1.87255 | quality: 0.47975
+ *
+Epoch 11 | Train: loss: 1.53040 | quality: 0.59843
+        | Val:   loss: 1.83603 | quality: 0.48990
+ *
+Epoch 12 | Train: loss: 1.49972 | quality: 0.60648
+        | Val:   loss: 1.81216 | quality: 0.49653
+ *
+Epoch 13 | Train: loss: 1.47453 | quality: 0.61309
+        | Val:   loss: 1.79745 | quality: 0.50062
+ *
+Epoch 14 | Train: loss: 1.45358 | quality: 0.61858
+        | Val:   loss: 1.78705 | quality: 0.50351
+ *
+Epoch 15 | Train: loss: 1.43567 | quality: 0.62328
+        | Val:   loss: 1.77780 | quality: 0.50608
+ *
+Epoch 16 | Train: loss: 1.41982 | quality: 0.62744
+        | Val:   loss: 1.76863 | quality: 0.50863
+ *
+Epoch 17 | Train: loss: 1.40531 | quality: 0.63125
+        | Val:   loss: 1.75951 | quality: 0.51116
+ *
+Epoch 18 | Train: loss: 1.39157 | quality: 0.63486
+        | Val:   loss: 1.75061 | quality: 0.51363
+ *
+Epoch 19 | Train: loss: 1.37820 | quality: 0.63837
+        | Val:   loss: 1.74198 | quality: 0.51603
+ *
+Epoch 20 | Train: loss: 1.36494 | quality: 0.64184
+        | Val:   loss: 1.73343 | quality: 0.51841
+ *
+
+Best epoch: 20 (val_quality=0.518407)
+[2026-04-28 20:30:04,551][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed47311/results.json
+[2026-04-28 20:30:04,559][__main__][INFO] - ✓ Train R²: 0.6418
+[2026-04-28 20:30:04,559][__main__][INFO] - ✓ Val R²: 0.5184
+[2026-04-28 20:30:04,565][HYDRA] 	#29 : model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=cpda dataset=obesity
+[2026-04-28 20:30:05,460][__main__][INFO] - Configuration:
+model:
+  name: CPDA
+  L: 4
+  bond_dim: 12
+  output_site: null
+  init_strength: 0.1
+dataset:
+  name: obesity
+  task: regression
+  cap: 50
+  size: medium
+  batch_size: 256
+slurm:
+  partition: titans
+  time: '12:00:00'
+  mem: 2gb
+  gpu_arch: Ampere
+  cpus: 1
+  gpu: 1
+hpc:
+  queue: gpuv100
+  time: '12:00'
+  mem: 500MB
+  cpus: 4
+  gpu: 1
+trainer:
+  type: ntn
+  n_epochs: 20
+  ridge: 5
+  ridge_decay: 0.25
+  ridge_min: 0.0001
+  adaptive_ridge: false
+  patience: 10
+  min_delta: 0.001
+  train_selection: true
+seed: 47303
+experiment_name: ${model.name}_${dataset.name}_${trainer.type}_rg${trainer.ridge}_init${model.init_strength}
+skip_completed: true
+update_tracking: false
+
+[2026-04-28 20:30:05,620][__main__][INFO] - Output directory: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed47303
+[2026-04-28 20:30:05,652][__main__][INFO] - Loading dataset: obesity
+[2026-04-28 20:30:07,518][__main__][INFO] -   Samples: train=1477, val=317, test=317
+[2026-04-28 20:30:07,533][__main__][INFO] -   Features: 40 (including bias), Task: regression
+[2026-04-28 20:30:07,533][__main__][INFO] -   Device: cpu
+[2026-04-28 20:30:07,533][__main__][INFO] - Creating model: CPDA
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2146392.58347 | quality: -563206.57511
+        | Val:   loss: 1963932.22871 | quality: -545632.86305
+Epoch 1 | Train: loss: 3.19544 | quality: 0.16153
+        | Val:   loss: 3.22604 | quality: 0.10372
+ *
+Epoch 2 | Train: loss: 2.49039 | quality: 0.34653
+        | Val:   loss: 2.52575 | quality: 0.29828
+ *
+Epoch 3 | Train: loss: 1.63995 | quality: 0.56968
+        | Val:   loss: 1.75898 | quality: 0.51131
+ *
+Epoch 4 | Train: loss: 1.32343 | quality: 0.65274
+        | Val:   loss: 1.48432 | quality: 0.58762
+ *
+Epoch 5 | Train: loss: 1.13317 | quality: 0.70266
+        | Val:   loss: 1.43180 | quality: 0.60221
+ *
+Epoch 6 | Train: loss: 1.05929 | quality: 0.72205
+        | Val:   loss: 1.44406 | quality: 0.59880
+
+Epoch 7 | Train: loss: 1.01621 | quality: 0.73335
+        | Val:   loss: 1.42601 | quality: 0.60382
+ *
+Epoch 8 | Train: loss: 0.98927 | quality: 0.74042
+        | Val:   loss: 1.41238 | quality: 0.60760
+ *
+Epoch 9 | Train: loss: 0.96756 | quality: 0.74612
+        | Val:   loss: 1.41713 | quality: 0.60628
+
+Epoch 10 | Train: loss: 0.94926 | quality: 0.75092
+        | Val:   loss: 1.43920 | quality: 0.60015
+
+Epoch 11 | Train: loss: 0.93480 | quality: 0.75471
+        | Val:   loss: 1.47471 | quality: 0.59029
+
+Epoch 12 | Train: loss: 0.92391 | quality: 0.75757
+        | Val:   loss: 1.48058 | quality: 0.58866
+
+Epoch 13 | Train: loss: 0.91449 | quality: 0.76004
+        | Val:   loss: 1.47586 | quality: 0.58997
+
+Epoch 14 | Train: loss: 0.90546 | quality: 0.76241
+        | Val:   loss: 1.47228 | quality: 0.59096
+
+Epoch 15 | Train: loss: 0.89630 | quality: 0.76481
+        | Val:   loss: 1.47926 | quality: 0.58902
+
+Epoch 16 | Train: loss: 0.88704 | quality: 0.76724
+        | Val:   loss: 1.50767 | quality: 0.58113
+
+Epoch 17 | Train: loss: 0.87799 | quality: 0.76962
+        | Val:   loss: 1.56575 | quality: 0.56499
+
+Epoch 18 | Train: loss: 0.86923 | quality: 0.77192
+        | Val:   loss: 1.65918 | quality: 0.53903
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-04-28 20:30:10,460][__main__][INFO] - Results saved to: /zhome/6b/e/212868/GTN/outputs/ntn/obesity/CPDA_rg5_init0.1/L4_bd12_seed47303/results.json
+[2026-04-28 20:30:10,461][__main__][INFO] - ✓ Train R²: 0.7404
+[2026-04-28 20:30:10,461][__main__][INFO] - ✓ Val R²: 0.6076
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28319216[121]: <ntn_grid_full[1-200]%20> in cluster <dcc> Done
+
+Job <ntn_grid_full[1-200]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Apr 28 19:35:42 2026
+Job was executed on host(s) <4*n-62-21-64>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue Apr 28 20:27:59 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Apr 28 20:27:59 2026
+Terminated at Tue Apr 28 20:30:11 2026
+Results reported at Tue Apr 28 20:30:11 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-200]%20"
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# --- DRY RUN / TEST LOGIC ---
+# Run locally with: bash your_script.sh test
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+NUM_MODELS=${#MODELS[@]}
+DATASETS=("adult" "ai4i" "appliances" "bank" "bike" "breast" "car_evaluation" "concrete" "energy_efficiency" "hearth" "iris" "mushrooms" "obesity" "popularity" "realstate" "seoulBike" "student_dropout" "student_perf" "wine" "winequalityc"
+)
+
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS*NUM_MODELS))
+if [ "$1" == "test" ]; then
+    echo "SIMULATING FULL ARRAY MAPPING (1-200):"
+    echo "--------------------------------------"
+for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        M_IDX=$((IDV % NUM_MODELS))
+        D_IDX=$((IDV / NUM_MODELS))
+        echo "Index $i: Dataset=${DATASETS[$D_IDX]}, Model=${MODELS[$M_IDX]}"
+    done
+    exit 0
+fi
+# ----------------------------
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+DATASET_IDX=$((IDV / NUM_MODELS))
+
+CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
+CURRENT_MODEL=${MODELS[$MODEL_IDX]}
+echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL"
+
+export OMP_NUM_THREADS=4
+export MKL_NUM_THREADS=4
+
+python run.py --multirun +experiment=uci_ntn_sweep model=$CURRENT_MODEL dataset=$CURRENT_DATASET
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   243.27 sec.
+    Max Memory :                                 398 MB
+    Average Memory :                             398.00 MB
+    Total Requested Memory :                     4096.00 MB
+    Delta Memory :                               3698.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   132 sec.
+    Turnaround time :                            3269 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28319216_121.err> for stderr output of this job.
+
