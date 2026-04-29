@@ -256,36 +256,48 @@ def create_model(
 
 def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     """Run Newton-based training."""
+    import time
+    import sys
+    t_start = time.time()
+    def dbg(msg):
+        elapsed = time.time() - t_start
+        print(f"[DEBUG {elapsed:7.2f}s] {msg}", flush=True)
+        sys.stdout.flush()
+    
+    dbg("run_ntn started")
     is_typei = cfg.model.name.endswith("TypeI")
     task = cfg.dataset.task
 
-    # Setup loss and metrics
     if task == "regression":
         loss_fn = MSELoss()
         eval_metrics = REGRESSION_METRICS
     else:
         loss_fn = CrossEntropyLoss()
         eval_metrics = CLASSIFICATION_METRICS
+    dbg("loss/metrics setup done")
 
-    # Ridge schedule (jitter for NTN)
     n_epochs = cfg.trainer.n_epochs
     ridge_schedule = [
         max(cfg.trainer.ridge * (cfg.trainer.ridge_decay**epoch), cfg.trainer.ridge_min)
         for epoch in range(n_epochs)
     ]
+    dbg(f"ridge_schedule created, n_epochs={n_epochs}")
 
-    # Move model to device
     if is_typei:
-        for tn in model.tns:
+        dbg(f"moving {len(model.tns)} TNs to device")
+        for i, tn in enumerate(model.tns):
             move_tn_to_device(tn)
+            dbg(f"  TN {i} moved")
     else:
         move_tn_to_device(model.tn)
+    dbg("models on device")
 
-    # Reset GPU memory stats for accurate peak tracking
     reset_gpu_memory_stats()
     gpu_info_before = get_gpu_memory_info()
+    dbg(f"GPU info: {gpu_info_before}")
 
     if is_typei:
+        dbg("creating NTN_Ensemble...")
         ntn = NTN_Ensemble(
             tns=model.tns,
             input_dims_list=model.input_dims_list,
@@ -299,6 +311,7 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             batch_size=cfg.dataset.batch_size,
             not_trainable_tags=getattr(model, "not_trainable_tags", None),
         )
+        dbg("NTN_Ensemble created")
         loader_val = ntn.val_data
     else:
         encoding = getattr(model, "encoding", None)
@@ -337,6 +350,7 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     metrics_log = []
 
     def callback_epoch(epoch, scores_train, scores_val, info):
+        dbg(f"callback_epoch {epoch}: train_q={compute_quality(scores_train):.4f} val_q={compute_quality(scores_val):.4f}")
         metrics = {
             "epoch": epoch,
             "train_loss": float(scores_train["loss"]),
@@ -347,9 +361,9 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         }
         metrics_log.append(metrics)
 
-    # Train
     oom_error = False
     try:
+        dbg("calling ntn.fit()...")
         scores_train, scores_val = ntn.fit(
             n_epochs=n_epochs,
             regularize=True,
@@ -363,6 +377,7 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             min_delta=cfg.trainer.min_delta,
             train_selection=cfg.trainer.train_selection,
         )
+        dbg("ntn.fit() returned")
         success = True
         singular = ntn.singular_encountered
 
