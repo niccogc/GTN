@@ -4,33 +4,33 @@
 
 ## Overall Progress
 
-**Total:** 16,186 / 18,480 (87.6%)
+**Total:** 16,206 / 18,480 (87.7%)
 
 | Status | Count |
 |--------|------:|
-| Success | 14,794 |
+| Success | 14,814 |
 | Singular | 563 |
 | OOM | 829 |
 | Failed | 0 |
-| Missing | 2,294 |
+| Missing | 2,274 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 6,946 | 9,240 | 75.2% | 5,554 | 563 | 829 | 0 |
+| NTN | 6,966 | 9,240 | 75.4% | 5,574 | 563 | 829 | 0 |
 | GTN | 9,240 | 9,240 | 100.0% | 9,240 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
 
 | Model | NTN | GTN |
 |-------|-----|-----|
-| MPO2 | 438/630 (69.5%) | 630/630 (100.0%) |
-| LMPO2 | 1467/1890 (77.6%) | 1890/1890 (100.0%) |
-| MMPO2 | 432/630 (68.6%) | 630/630 (100.0%) |
+| MPO2 | 439/630 (69.7%) | 630/630 (100.0%) |
+| LMPO2 | 1469/1890 (77.7%) | 1890/1890 (100.0%) |
+| MMPO2 | 433/630 (68.7%) | 630/630 (100.0%) |
 | MPO2TypeI | 459/630 (72.9%) | 630/630 (100.0%) |
-| LMPO2TypeI | 1027/1890 (54.3%) | 1890/1890 (100.0%) |
-| MMPO2TypeI | 432/630 (68.6%) | 630/630 (100.0%) |
+| LMPO2TypeI | 1042/1890 (55.1%) | 1890/1890 (100.0%) |
+| MMPO2TypeI | 433/630 (68.7%) | 630/630 (100.0%) |
 | CPDA | 708/840 (84.3%) | 840/840 (100.0%) |
 | CPDATypeI | 784/840 (93.3%) | 840/840 (100.0%) |
 | TNML_P | 602/630 (95.6%) | 630/630 (100.0%) |
@@ -42,7 +42,7 @@
 |------|-----|-----|--------:|
 | Small | 1268/1760 (72.0%) | 1760/1760 (100.0%) | 492 |
 | Medium | 3749/3960 (94.7%) | 3960/3960 (100.0%) | 211 |
-| Large | 1929/3520 (54.8%) | 3520/3520 (100.0%) | 1,591 |
+| Large | 1949/3520 (55.4%) | 3520/3520 (100.0%) | 1,571 |
 
 ## By Dataset
 
@@ -50,16 +50,16 @@
 
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
-| abalone | 839 | 880 | 95.3% |
+| abalone | 847 | 880 | 96.2% |
 | adult | 580 | 880 | 65.9% |
-| ai4i | 870 | 880 | 98.9% |
-| appliances | 790 | 880 | 89.8% |
+| ai4i | 875 | 880 | 99.4% |
+| appliances | 792 | 880 | 90.0% |
 | bank | 580 | 880 | 65.9% |
 | breast | 639 | 880 | 72.6% |
 | car_evaluation | 719 | 880 | 81.7% |
 | hearth | 735 | 880 | 83.5% |
 | mushrooms | 519 | 880 | 59.0% |
-| popularity | 749 | 880 | 85.1% |
+| popularity | 754 | 880 | 85.7% |
 | student_dropout | 522 | 880 | 59.3% |
 | wine | 774 | 880 | 88.0% |
 | winequalityc | 830 | 880 | 94.3% |
@@ -69,13 +69,13 @@
 | Model | Dataset | Trainer | Progress |
 |-------|---------|---------|----------|
 | LMPO2 | abalone | NTN | 88/90 (97.8%) |
+| MPO2 | popularity | NTN | 29/30 (96.7%) |
 | TNML_P | popularity | NTN | 29/30 (96.7%) |
-| MPO2 | popularity | NTN | 28/30 (93.3%) |
+| LMPO2 | popularity | NTN | 85/90 (94.4%) |
+| LMPO2TypeI | ai4i | NTN | 85/90 (94.4%) |
 | MPO2 | wine | NTN | 28/30 (93.3%) |
-| LMPO2 | popularity | NTN | 83/90 (92.2%) |
 | MMPO2 | appliances | NTN | 27/30 (90.0%) |
 | TNML_F | breast | NTN | 27/30 (90.0%) |
-| LMPO2TypeI | ai4i | NTN | 80/90 (88.9%) |
 | MMPO2 | wine | NTN | 26/30 (86.7%) |
 | MPO2TypeI | hearth | NTN | 26/30 (86.7%) |
 | MMPO2TypeI | appliances | NTN | 26/30 (86.7%) |
@@ -84,13 +84,13 @@
 | LMPO2 | breast | NTN | 70/90 (77.8%) |
 | MMPO2 | hearth | NTN | 20/30 (66.7%) |
 | LMPO2TypeI | winequalityc | NTN | 60/90 (66.7%) |
+| LMPO2TypeI | abalone | NTN | 59/90 (65.6%) |
 | LMPO2 | car_evaluation | NTN | 56/90 (62.2%) |
 | MMPO2TypeI | wine | NTN | 18/30 (60.0%) |
 | CPDA | hearth | NTN | 23/40 (57.5%) |
-| LMPO2TypeI | abalone | NTN | 51/90 (56.7%) |
-| MMPO2TypeI | popularity | NTN | 15/30 (50.0%) |
+| MMPO2TypeI | popularity | NTN | 16/30 (53.3%) |
+| MMPO2 | popularity | NTN | 15/30 (50.0%) |
 | CPDA | breast | NTN | 20/40 (50.0%) |
-| MMPO2 | popularity | NTN | 14/30 (46.7%) |
 | MPO2 | breast | NTN | 10/30 (33.3%) |
 | MPO2 | winequalityc | NTN | 10/30 (33.3%) |
 | MMPO2 | breast | NTN | 10/30 (33.3%) |
@@ -105,10 +105,10 @@
 | MMPO2 | car_evaluation | NTN | 5/30 (16.7%) |
 | MMPO2TypeI | car_evaluation | NTN | 5/30 (16.7%) |
 | CPDA | mushrooms | NTN | 6/40 (15.0%) |
+| LMPO2TypeI | appliances | NTN | 9/90 (10.0%) |
 | TNML_P | mushrooms | NTN | 3/30 (10.0%) |
 | LMPO2TypeI | hearth | NTN | 8/90 (8.9%) |
 | LMPO2TypeI | wine | NTN | 8/90 (8.9%) |
-| LMPO2TypeI | appliances | NTN | 7/90 (7.8%) |
 | MPO2 | student_dropout | NTN | 1/30 (3.3%) |
 | MPO2TypeI | student_dropout | NTN | 1/30 (3.3%) |
 | LMPO2TypeI | breast | NTN | 3/90 (3.3%) |
@@ -145,7 +145,7 @@
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 2,294
+- **Runs remaining:** 2,274
 - **Experiments with missing runs:** 68
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
@@ -180,7 +180,7 @@
 
 ### Large
 
-**NTN** (40 experiments, 1,591 runs missing):
+**NTN** (40 experiments, 1,571 runs missing):
 
 - CPDA: mushrooms, student_dropout
 - LMPO2: abalone, adult, bank, mushrooms, popularity, student_dropout
