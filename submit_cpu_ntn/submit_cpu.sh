@@ -1,9 +1,9 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-100]%10"
+#BSUB -J "ntn_grid_full[1-110]%10"
 #BSUB -W 8:00
 #BSUB -n 6
-#BSUB -R "rusage[mem=3GB]"
+#BSUB -R "rusage[mem=4GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I.out
 #BSUB -e logs/%J_%I.err
@@ -19,7 +19,6 @@ DATASETS=(
 )
 
 COMPLETED_DATASETS=(
-    "popularity" #NOT DONE JUST REMOVED A SEC...
     "abalone" "ai4i"  "bike" "concrete" "energy_efficiency"
     "iris" "obesity" "realstate" "seoulBike" "student_perf"
 )
