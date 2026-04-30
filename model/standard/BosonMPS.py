@@ -46,8 +46,7 @@ class BosonMPS(nn.Module):
         2. Chain M L times: M^L with trace
         3. Output site uses block_out for output dimension
         """
-        batch_size = x.shape[0]
-        
+     
         M = torch.einsum('bp,lpr->blr', x, self.block)
         M_out = torch.einsum('bp,lpro->blro', x, self.block_out)
         
