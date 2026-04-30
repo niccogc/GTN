@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-130]%15"
+#BSUB -J "ntn_grid_full[1-110]%10"
 #BSUB -W 8:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=2GB]"
@@ -19,7 +19,7 @@ DATASETS=(
 )
 
 COMPLETED_DATASETS=(
-    "bike" "concrete" "energy_efficiency"
+    "abalone" "ai4i"  "bike" "concrete" "energy_efficiency"
     "iris" "obesity" "realstate" "seoulBike" "student_perf"
 )
 
