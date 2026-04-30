@@ -1,9 +1,9 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-110]%10"
+#BSUB -J "ntn_grid_full[1-110]%5"
 #BSUB -W 8:00
 #BSUB -n 6
-#BSUB -R "rusage[mem=4GB]"
+#BSUB -R "rusage[mem=6GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I.out
 #BSUB -e logs/%J_%I.err
