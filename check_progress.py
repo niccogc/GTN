@@ -33,6 +33,7 @@ MODELS = [
     "CPDATypeI",
     "TNML_P",
     "TNML_F",
+    "BosonMPS",
 ]
 TRAINERS = ["ntn", "gtn"]
 SIZES = ["small", "medium", "large"]
@@ -465,6 +466,8 @@ def collect_stats():
 
         for dataset in DATASETS:
             for trainer in TRAINERS:
+                if model == "BosonMPS" and trainer == "ntn":
+                    continue
                 exp_dir = get_experiment_path(model, dataset, trainer)
                 ridge = RIDGE_VALUES[trainer]
                 exp_path_str = (
@@ -580,6 +583,8 @@ def collect_oom_details() -> list[dict]:
 
         for dataset in DATASETS:
             for trainer in TRAINERS:
+                if model == "BosonMPS" and trainer == "ntn":
+                    continue
                 exp_dir = get_experiment_path(model, dataset, trainer)
 
                 for subdir in expected_subdirs:
@@ -1138,19 +1143,19 @@ def generate_report(data: dict, verbose: bool = False) -> str:
                 out(f"    {model}: {', '.join(sorted(datasets))}")
 
     out()
-    out("Suggested commands:")
-    for size in SIZES:
-        ntn_jobs = jobs_by_size_trainer[size]["ntn"]
-        gtn_jobs = jobs_by_size_trainer[size]["gtn"]
-        if ntn_jobs:
-            out(
-                f"  cd submit_ntn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
-            )
-        if gtn_jobs:
-            out(
-                f"  cd submit_gtn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
-            )
-    out()
+    # out("Suggested commands:")
+    # for size in SIZES:
+    #     ntn_jobs = jobs_by_size_trainer[size]["ntn"]
+    #     gtn_jobs = jobs_by_size_trainer[size]["gtn"]
+    #     if ntn_jobs:
+    #         out(
+    #             f"  cd submit_ntn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
+    #         )
+    #     if gtn_jobs:
+    #         out(
+    #             f"  cd submit_gtn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
+    #         )
+    # out()
 
     return "\n".join(lines)
 
@@ -1381,22 +1386,22 @@ def generate_markdown_report(data: dict, verbose: bool = False) -> str:
             out()
 
     # Suggested commands
-    out("## Suggested Commands")
-    out()
-    out("```bash")
-    for size in SIZES:
-        ntn_jobs = jobs_by_size_trainer[size]["ntn"]
-        gtn_jobs = jobs_by_size_trainer[size]["gtn"]
-        if ntn_jobs:
-            out(
-                f"cd submit_ntn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
-            )
-        if gtn_jobs:
-            out(
-                f"cd submit_gtn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
-            )
-    out("```")
-    out()
+    # out("## Suggested Commands")
+    # out()
+    # out("```bash")
+    # for size in SIZES:
+    #     ntn_jobs = jobs_by_size_trainer[size]["ntn"]
+    #     gtn_jobs = jobs_by_size_trainer[size]["gtn"]
+    #     if ntn_jobs:
+    #         out(
+    #             f"cd submit_ntn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
+    #         )
+    #     if gtn_jobs:
+    #         out(
+    #             f"cd submit_gtn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
+    #         )
+    # out("```")
+    # out()
 
     return "\n".join(lines)
 

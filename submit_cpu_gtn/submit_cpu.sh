@@ -2,7 +2,7 @@
 #BSUB -q hpc
 #BSUB -J "gtn_boson[1-21]%20"
 #BSUB -W 1:00
-#BSUB -n 4
+#BSUB -n 2
 #BSUB -R "rusage[mem=500MB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I.out
