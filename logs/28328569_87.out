@@ -1,0 +1,141 @@
+Task 87: Dataset=student_dropout, Model=mmpo2, Experiment=uci_ntn_sweep
+[2026-04-30 10:30:31,995][HYDRA] Launching 30 jobs locally
+[2026-04-30 10:30:31,996][HYDRA] 	#0 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2 dataset=student_dropout
+[2026-04-30 10:30:32,233][utils.tracking][INFO] - Loaded 17061 tracked runs from runs_tracking.csv
+[2026-04-30 10:30:32,235][__main__][INFO] - ▶ RUN MMPO2/student_dropout/NTN L=3 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/student_dropout/MMPO2_rg5_init0.1/L3_bd4_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['0_MPS', '1_MPS', '2_MPS', '1_MPS']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 119.53143 | quality: 0.32623
+        | Val:   loss: 105.58204 | quality: 0.37500
+Epoch 1 | Train: loss: 5651369.77055 | quality: 0.31880
+        | Val:   loss: 3411048.58316 | quality: 0.32982
+
+Epoch 2 | Train: loss: 204057576626579340218274500548254236672.00000 | quality: 0.32171
+        | Val:   loss: 186030348455500807468316766239375491072.00000 | quality: 0.31024
+
+Epoch 3 | Train: loss: 27362885422221721870399739115440150578132036464862475270976026094293155255533177682206233211783504383361722230758004468081714340653876466729916286592043091538092358515274483032312783582868949305803000347598165443145053387091884459950080.00000 | quality: 0.26744
+        | Val:   loss: 31492334546311619226040248840000328037684013331921449806252790779692599502990788651342740662445709307749746782036464929360539087262285948900059789535110356980009486658198143108072559786039929904178273419500212034635635304319109197463552.00000 | quality: 0.29518
+
+Epoch 4 | Train: loss: nan | quality: 0.31654
+        | Val:   loss: nan | quality: 0.34789
+
+Epoch 5 | Train: loss: nan | quality: 0.31654
+        | Val:   loss: nan | quality: 0.34789
+
+Epoch 6 | Train: loss: nan | quality: 0.31654
+        | Val:   loss: nan | quality: 0.34789
+
+Epoch 7 | Train: loss: nan | quality: 0.31654
+        | Val:   loss: nan | quality: 0.34789
+
+Epoch 8 | Train: loss: nan | quality: 0.31654
+        | Val:   loss: nan | quality: 0.34789
+
+Epoch 9 | Train: loss: nan | quality: 0.31654
+        | Val:   loss: nan | quality: 0.34789
+
+Epoch 10 | Train: loss: nan | quality: 0.31654
+        | Val:   loss: nan | quality: 0.34789
+
+
+⏸ Early stopping at epoch 10 (best was epoch 0)
+[2026-04-30 10:30:54,115][__main__][INFO] - ✓ DONE MMPO2/student_dropout/NTN L=3 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/student_dropout/MMPO2_rg5_init0.1/L3_bd4_seed42 | val=0.3750
+[2026-04-30 10:30:54,235][HYDRA] 	#1 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2 dataset=student_dropout
+[2026-04-30 10:30:54,387][__main__][INFO] - ▶ RUN MMPO2/student_dropout/NTN L=3 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/student_dropout/MMPO2_rg5_init0.1/L3_bd4_seed10090
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28328569[87]: <ntn_grid_full[1-110]%10> in cluster <dcc> Exited
+
+Job <ntn_grid_full[1-110]%10> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu Apr 30 10:21:07 2026
+Job was executed on host(s) <6*n-62-30-23>, in queue <hpc>, as user <nicci> in cluster <dcc> at Thu Apr 30 10:30:21 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Apr 30 10:30:21 2026
+Terminated at Thu Apr 30 10:31:17 2026
+Results reported at Thu Apr 30 10:31:17 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-110]%10"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=4GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+DATASETS=(
+    "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+    "car_evaluation" "concrete" "energy_efficiency" "hearth"
+    "iris" "mushrooms" "obesity" "popularity" "realstate"
+    "seoulBike" "student_dropout" "student_perf" "wine"
+    "winequalityc"
+)
+
+COMPLETED_DATASETS=(
+    "abalone" "ai4i"  "bike" "concrete" "energy_efficiency"
+    "iris" "obesity" "realstate" "seoulBike" "student_perf"
+)
+
+# Filter datasets
+FILTERED_DATASETS=()
+for ds in "${DATASETS[@]}"; do
+    skip=false
+    for completed in "${COMPLETED_DATASETS[@]}"; do
+        if [[ "$ds" == "$completed" ]]; then
+            skip=true
+            break
+        fi
+    done
+
+    if ! $skip; then
+        FILTERED_DATASETS+=("$ds")
+    fi
+done
+
+DATASETS=("${FILTERED_DATASETS[@]}")
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   240.74 sec.
+    Max Memory :                                 24576 MB
+    Average Memory :                             16524.67 MB
+    Total Requested Memory :                     24576.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                20
+    Run time :                                   56 sec.
+    Turnaround time :                            610 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28328569_87.err> for stderr output of this job.
+
