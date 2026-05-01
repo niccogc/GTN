@@ -32,12 +32,9 @@ import fcntl
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import TYPE_CHECKING
 
+from omegaconf import DictConfig
 import pandas as pd
-
-if TYPE_CHECKING:
-    from omegaconf import DictConfig
 
 log = logging.getLogger(__name__)
 

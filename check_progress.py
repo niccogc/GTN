@@ -43,8 +43,6 @@ CONF_DIR = Path("conf")
 
 def load_datasets_from_conf() -> tuple[list[str], dict[str, str]]:
     """Load dataset names and their sizes from conf/dataset/*.yaml files."""
-    import re
-
     datasets = []
     dataset_sizes = {}
     dataset_dir = CONF_DIR / "dataset"
@@ -115,8 +113,6 @@ DATASETS, DATASET_SIZES = load_datasets_from_conf()
 
 def load_trainer_config(trainer: str) -> dict[str, float | None]:
     """Load trainer configuration from conf/trainer/{trainer}.yaml."""
-    import re
-
     trainer_file = CONF_DIR / "trainer" / f"{trainer}.yaml"
     config: dict[str, float | None] = {"ridge": None}
 
@@ -137,8 +133,6 @@ def load_trainer_config(trainer: str) -> dict[str, float | None]:
 
 def load_model_base_config() -> dict[str, float | None]:
     """Load base model configuration from conf/model/_base.yaml."""
-    import re
-
     base_file = CONF_DIR / "model" / "_base.yaml"
     config: dict[str, float | None] = {"init_strength": None}
 
@@ -159,8 +153,6 @@ def load_model_base_config() -> dict[str, float | None]:
 
 def load_sweep_params_from_conf() -> dict:
     """Load sweep parameters from conf/experiment/_base.yaml."""
-    import re
-
     base_file = CONF_DIR / "experiment" / "_base.yaml"
     params = {
         "L_values": [3, 4],
@@ -195,8 +187,6 @@ def load_sweep_params_from_conf() -> dict:
 
 def load_lmpo2_config() -> dict:
     """Load LMPO2 model configuration from conf/model/lmpo2.yaml."""
-    import re
-
     filepath = CONF_DIR / "model" / "lmpo2.yaml"
     config = {
         "reduction_factors": [0.3, 0.5, 0.9],
@@ -226,8 +216,6 @@ def load_lmpo2_config() -> dict:
 
 def load_cpda_config() -> dict:
     """Load CPDA experiment configuration from conf/experiment/cpda_gtn_sweep.yaml."""
-    import re
-
     filepath = CONF_DIR / "experiment" / "cpda_gtn_sweep.yaml"
     config = {
         "bond_dim_values": [8, 16, 32],  # Default CPDA bond dimensions

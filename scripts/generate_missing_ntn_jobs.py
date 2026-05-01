@@ -16,6 +16,8 @@ Scans outputs/ directly - no tracking CSV needed.
 from __future__ import annotations
 
 import argparse
+import json
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -107,11 +109,6 @@ def count_completed_runs() -> dict[tuple[str, str], int]:
     Returns:
         Dict mapping (model_name, dataset) -> count of valid completed runs
     """
-    import json
-    import re
-
-    from pathlib import Path
-
     OUTPUTS_DIR = Path("outputs")
     counts: dict[tuple[str, str], int] = defaultdict(int)
 

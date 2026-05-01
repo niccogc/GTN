@@ -125,7 +125,6 @@ def reset_gpu_memory_stats():
     """Reset peak memory stats for accurate per-run tracking."""
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
-        torch.cuda.empty_cache()
 
 
 # =============================================================================
@@ -377,9 +376,6 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         singular = False
         oom_error = True
         log.error(f"CUDA out of memory: {e}")
-        # Clear CUDA cache to allow graceful exit
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
         scores_train = None
         scores_val = None
 
@@ -667,8 +663,7 @@ def _format_run_summary(cfg: DictConfig, output_dir: Path) -> str:
     return f"{model}/{dataset}/{trainer} L={L} bd={bd}{rf_str} seed={seed} -> {output_dir}"
 
 
-@hydra.main(version_base=None, config_path="conf", config_name="config")
-def main(cfg: DictConfig):
+def _main_impl(cfg: DictConfig):
     """Main entry point."""
     # Set seeds
     torch.manual_seed(cfg.seed)
@@ -782,11 +777,15 @@ def main(cfg: DictConfig):
     else:
         log.warning(f"✗ SINGULAR {run_summary} | {val_str}")
 
-    import gc
-    from model.base.NTN import _MEMORY_OPTIMIZER
-    _MEMORY_OPTIMIZER._cache._mem_cache.clear()
-    del model, data
-    gc.collect()
+    model = None
+    data = None
+    result = None
+    dataset_info = None
+
+
+@hydra.main(version_base=None, config_path="conf", config_name="config")
+def main(cfg: DictConfig):
+    return _main_impl(cfg)
 
 
 if __name__ == "__main__":

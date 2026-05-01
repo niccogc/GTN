@@ -76,6 +76,11 @@ class TNLoss:
             data.requires_grad_(True)
         return data
 
+    def _to_autograd_input(self, tensor):
+        """Create a local leaf tensor for loss derivatives w.r.t. predictions."""
+        data = self._to_torch(tensor, requires_grad=False)
+        return data.detach().requires_grad_(True)
+
 
 class MSELoss(nn.MSELoss, TNLoss):
     """
@@ -131,8 +136,8 @@ class MSELoss(nn.MSELoss, TNLoss):
         
         
         # 1. Prepare Data
-        y_pred_th = self._to_torch(y_pred, requires_grad=False)
-        y_true_th = self._to_torch(y_true, requires_grad=False)
+        y_pred_th = self._to_torch(y_pred)
+        y_true_th = self._to_torch(y_true)
         # if y_pred_th.device != y_true_th.device:
         #     y_true_th = y_true_th.to(y_pred_th.device)
 
@@ -171,8 +176,8 @@ class MSELoss(nn.MSELoss, TNLoss):
             grad_data = grad_th.detach().cpu().numpy()
             hess_data = hess_th.detach().cpu().numpy()
         else:  # torch
-            grad_data = grad_th
-            hess_data = hess_th
+            grad_data = grad_th.detach()
+            hess_data = hess_th.detach()
         
         # 6. Wrap in quimb tensors with proper indices
         grad_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
@@ -227,52 +232,56 @@ class MAELoss(nn.L1Loss, TNLoss):
         if return_hessian_diagonal is None:
             return_hessian_diagonal = self.use_diagonal_hessian
         
-        # 1. Prepare Data
-        y_pred_th = self._to_torch(y_pred, requires_grad=True)
-        y_true_th = self._to_torch(y_true, requires_grad=False)
-        if y_pred_th.device != y_true_th.device:
-            y_true_th = y_true_th.to(y_pred_th.device)
+        with torch.enable_grad():
+            # 1. Prepare Data
+            y_pred_th = self._to_autograd_input(y_pred)
+            y_true_th = self._to_torch(y_true, requires_grad=False)
+            if y_pred_th.device != y_true_th.device:
+                y_true_th = y_true_th.to(y_pred_th.device)
 
-        batch_sz = y_pred_th.shape[0]
+            # 2. Compute Loss
+            loss_val = nn.L1Loss.__call__(self, y_pred_th, y_true_th)
 
-        # 2. Compute Loss
-        loss_val = nn.L1Loss.__call__(self, y_pred_th, y_true_th)
-        
-        # 3. First Derivative (Gradient)
-        grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=False)[0]
-        
-        # 4. Second Derivative (Hessian)
-        # L1 has zero second derivative, use small constant for stability
-        hess_th = torch.full_like(y_pred_th, self.hessian_eps)
-        
-        if not return_hessian_diagonal:
-            # Full Hessian is diagonal with small constants
-            # Create (Batch, Out, Out) with diagonal elements
-            if isinstance(y_pred, qt.Tensor):
-                out_inds = [i for i in y_pred.inds if i != batch_dim]
-                out_inds_prime = [i + "_prime" for i in out_inds]
-                
-                # Create diagonal matrix
-                batch_size = y_pred_th.shape[0]
-                out_size = y_pred_th.shape[1] if y_pred_th.ndim > 1 else 1
-                hess_full = torch.zeros(batch_size, out_size, out_size, 
-                                       dtype=y_pred_th.dtype, device=y_pred_th.device)
-                for i in range(out_size):
-                    hess_full[:, i, i] = self.hessian_eps
-                hess_th = hess_full
-                hess_inds = [batch_dim] + out_inds + out_inds_prime
+            # 3. First Derivative (Gradient)
+            grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=False)[0]
+
+            # 4. Second Derivative (Hessian)
+            # L1 has zero second derivative, use small constant for stability
+            hess_th = torch.full_like(y_pred_th, self.hessian_eps)
+
+            if not return_hessian_diagonal:
+                # Full Hessian is diagonal with small constants
+                # Create (Batch, Out, Out) with diagonal elements
+                if isinstance(y_pred, qt.Tensor):
+                    out_inds = [i for i in y_pred.inds if i != batch_dim]
+                    out_inds_prime = [i + "_prime" for i in out_inds]
+
+                    # Create diagonal matrix
+                    batch_size = y_pred_th.shape[0]
+                    out_size = y_pred_th.shape[1] if y_pred_th.ndim > 1 else 1
+                    hess_full = torch.zeros(
+                        batch_size,
+                        out_size,
+                        out_size,
+                        dtype=y_pred_th.dtype,
+                        device=y_pred_th.device,
+                    )
+                    for i in range(out_size):
+                        hess_full[:, i, i] = self.hessian_eps
+                    hess_th = hess_full
+                    hess_inds = [batch_dim] + out_inds + out_inds_prime
+                else:
+                    hess_inds = None
             else:
-                hess_inds = None
-        else:
-            hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
+                hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
 
         # 5. Convert to target backend
         if backend == 'numpy':
-            grad_data = grad_th.detach().numpy()
-            hess_data = hess_th.detach().numpy() if torch.is_tensor(hess_th) else hess_th
+            grad_data = grad_th.detach().cpu().numpy()
+            hess_data = hess_th.detach().cpu().numpy() if torch.is_tensor(hess_th) else hess_th
         else:  # torch
-            grad_data = grad_th
-            hess_data = hess_th
+            grad_data = grad_th.detach()
+            hess_data = hess_th.detach()
         
         # 6. Wrap in quimb tensors
         grad_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
@@ -325,59 +334,60 @@ class HuberLoss(nn.HuberLoss, TNLoss):
         if return_hessian_diagonal is None:
             return_hessian_diagonal = self.use_diagonal_hessian
         
-        # 1. Prepare Data
-        y_pred_th = self._to_torch(y_pred, requires_grad=True)
-        y_true_th = self._to_torch(y_true, requires_grad=False)
-        if y_pred_th.device != y_true_th.device:
-            y_true_th = y_true_th.to(y_pred_th.device)
+        with torch.enable_grad():
+            # 1. Prepare Data
+            y_pred_th = self._to_autograd_input(y_pred)
+            y_true_th = self._to_torch(y_true, requires_grad=False)
+            if y_pred_th.device != y_true_th.device:
+                y_true_th = y_true_th.to(y_pred_th.device)
 
-        batch_sz = y_pred_th.shape[0]
-        y_flat = y_pred_th.view(batch_sz, -1)
-        num_outputs = y_flat.shape[1]
+            batch_sz = y_pred_th.shape[0]
+            y_flat = y_pred_th.view(batch_sz, -1)
+            num_outputs = y_flat.shape[1]
 
-        # 2. Compute Loss
-        loss_val = nn.HuberLoss.__call__(self, y_pred_th, y_true_th)
-        
-        # 3. First Derivative (Gradient)
-        grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=True)[0]
-        grad_flat = grad_th.view(batch_sz, -1)
-        
-        # 4. Second Derivative (Hessian)
-        if return_hessian_diagonal:
-            hess_cols = []
-            for i in range(num_outputs):
-                grad_sum = grad_flat[:, i].sum()
-                h_i = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
-                h_i_flat = h_i.view(batch_sz, -1)
-                hess_cols.append(h_i_flat[:, i])
-            
-            hess_th = torch.stack(hess_cols, dim=1).view(y_pred_th.shape)
-            hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
+            # 2. Compute Loss
+            loss_val = nn.HuberLoss.__call__(self, y_pred_th, y_true_th)
 
-        else:
-            # Full Per-Sample Hessian
-            hess_rows = []
-            for i in range(num_outputs):
-                grad_sum = grad_flat[:, i].sum()
-                h_row = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
-                hess_rows.append(h_row.view(batch_sz, -1))
-            
-            hess_th = torch.stack(hess_rows, dim=0).permute(1, 0, 2)
-            
-            if isinstance(y_pred, qt.Tensor):
-                out_inds = [i for i in y_pred.inds if i != batch_dim]
-                out_inds_prime = [i + "_prime" for i in out_inds]
-                hess_inds = [batch_dim] + out_inds + out_inds_prime
+            # 3. First Derivative (Gradient)
+            grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=True)[0]
+            grad_flat = grad_th.view(batch_sz, -1)
+
+            # 4. Second Derivative (Hessian)
+            if return_hessian_diagonal:
+                hess_cols = []
+                for i in range(num_outputs):
+                    grad_sum = grad_flat[:, i].sum()
+                    h_i = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
+                    h_i_flat = h_i.view(batch_sz, -1)
+                    hess_cols.append(h_i_flat[:, i])
+
+                hess_th = torch.stack(hess_cols, dim=1).view(y_pred_th.shape)
+                hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
+
             else:
-                hess_inds = None
+                # Full Per-Sample Hessian
+                hess_rows = []
+                for i in range(num_outputs):
+                    grad_sum = grad_flat[:, i].sum()
+                    h_row = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
+                    hess_rows.append(h_row.view(batch_sz, -1))
+
+                hess_th = torch.stack(hess_rows, dim=0).permute(1, 0, 2)
+
+                if isinstance(y_pred, qt.Tensor):
+                    out_inds = [i for i in y_pred.inds if i != batch_dim]
+                    out_inds_prime = [i + "_prime" for i in out_inds]
+                    hess_inds = [batch_dim] + out_inds + out_inds_prime
+                else:
+                    hess_inds = None
 
         # 5. Convert to target backend
         if backend == 'numpy':
-            grad_data = grad_th.detach().numpy()
-            hess_data = hess_th.detach().numpy()
+            grad_data = grad_th.detach().cpu().numpy()
+            hess_data = hess_th.detach().cpu().numpy()
         else:
-            grad_data = grad_th
-            hess_data = hess_th
+            grad_data = grad_th.detach()
+            hess_data = hess_th.detach()
         
         # 6. Wrap in quimb tensors
         grad_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
@@ -448,69 +458,70 @@ class CrossEntropyLoss(nn.CrossEntropyLoss, TNLoss):
         if return_hessian_diagonal is None:
             return_hessian_diagonal = self.use_diagonal_hessian
         
-        y_pred_th = self._to_torch(y_pred, requires_grad=True)
-        y_true_th = self._to_torch(y_true, requires_grad=False)
-        if y_pred_th.device != y_true_th.device:
-            y_true_th = y_true_th.to(y_pred_th.device)
+        with torch.enable_grad():
+            y_pred_th = self._to_autograd_input(y_pred)
+            y_true_th = self._to_torch(y_true, requires_grad=False)
+            if y_pred_th.device != y_true_th.device:
+                y_true_th = y_true_th.to(y_pred_th.device)
 
-        batch_sz = y_pred_th.shape[0]
-        num_classes = y_pred_th.shape[1]
-        
-        # Scale factor: batch_size / total_samples for proper normalization
-        scale = batch_sz / total_samples if total_samples is not None else 1.0
-        
-        # Determine if y_true is class indices or one-hot
-        is_class_indices = (y_true_th.ndim == 1) or (y_true_th.shape[1] == 1)
-        
-        if is_class_indices:
-            if y_true_th.ndim == 2 and y_true_th.shape[1] == 1:
-                y_true_indices = y_true_th.squeeze(1).long()
+            batch_sz = y_pred_th.shape[0]
+            num_classes = y_pred_th.shape[1]
+
+            # Scale factor: batch_size / total_samples for proper normalization
+            scale = batch_sz / total_samples if total_samples is not None else 1.0
+
+            # Determine if y_true is class indices or one-hot
+            is_class_indices = (y_true_th.ndim == 1) or (y_true_th.shape[1] == 1)
+
+            if is_class_indices:
+                if y_true_th.ndim == 2 and y_true_th.shape[1] == 1:
+                    y_true_indices = y_true_th.squeeze(1).long()
+                else:
+                    y_true_indices = y_true_th.long()
             else:
-                y_true_indices = y_true_th.long()
-        else:
-            y_true_indices = y_true_th.argmax(dim=1)
+                y_true_indices = y_true_th.argmax(dim=1)
 
-        # Compute loss (uses mean reduction by default)
-        loss_val = nn.CrossEntropyLoss.__call__(self, y_pred_th, y_true_indices)
-        
-        # Gradient via autograd
-        grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=True)[0]
-        
-        # Hessian via autograd
-        if return_hessian_diagonal:
-            hess_cols = []
-            for i in range(num_classes):
-                grad_sum = grad_th[:, i].sum()
-                h_i = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
-                hess_cols.append(h_i[:, i])
-            
-            hess_th = torch.stack(hess_cols, dim=1)
-            hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
-        else:
-            hess_rows = []
-            for i in range(num_classes):
-                grad_sum = grad_th[:, i].sum()
-                h_row = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
-                hess_rows.append(h_row)
-            
-            hess_th = torch.stack(hess_rows, dim=1)
-            
-            if isinstance(y_pred, qt.Tensor):
-                class_dim = [i for i in y_pred.inds if i != batch_dim][0]
-                hess_inds = [batch_dim, class_dim, class_dim + "_prime"]
+            # Compute loss (uses mean reduction by default)
+            loss_val = nn.CrossEntropyLoss.__call__(self, y_pred_th, y_true_indices)
+
+            # Gradient via autograd
+            grad_th = torch.autograd.grad(loss_val, y_pred_th, create_graph=True)[0]
+
+            # Hessian via autograd
+            if return_hessian_diagonal:
+                hess_cols = []
+                for i in range(num_classes):
+                    grad_sum = grad_th[:, i].sum()
+                    h_i = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
+                    hess_cols.append(h_i[:, i])
+
+                hess_th = torch.stack(hess_cols, dim=1)
+                hess_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
             else:
-                hess_inds = None
+                hess_rows = []
+                for i in range(num_classes):
+                    grad_sum = grad_th[:, i].sum()
+                    h_row = torch.autograd.grad(grad_sum, y_pred_th, retain_graph=True)[0]
+                    hess_rows.append(h_row)
 
-        # Apply scale for proper normalization
-        grad_th = grad_th * scale
-        hess_th = hess_th * scale
+                hess_th = torch.stack(hess_rows, dim=1)
+
+                if isinstance(y_pred, qt.Tensor):
+                    class_dim = [i for i in y_pred.inds if i != batch_dim][0]
+                    hess_inds = [batch_dim, class_dim, class_dim + "_prime"]
+                else:
+                    hess_inds = None
+
+            # Apply scale for proper normalization
+            grad_th = grad_th * scale
+            hess_th = hess_th * scale
 
         if backend == 'numpy':
-            grad_data = grad_th.detach().numpy()
-            hess_data = hess_th.detach().numpy()
+            grad_data = grad_th.detach().cpu().numpy()
+            hess_data = hess_th.detach().cpu().numpy()
         else:
-            grad_data = grad_th
-            hess_data = hess_th
+            grad_data = grad_th.detach()
+            hess_data = hess_th.detach()
         
         grad_inds = y_pred.inds if isinstance(y_pred, qt.Tensor) else None
         return qt.Tensor(grad_data, inds=grad_inds), qt.Tensor(hess_data, inds=hess_inds)  # type: ignore

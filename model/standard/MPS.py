@@ -1,7 +1,8 @@
 # type: ignore
 import quimb.tensor as qt
-from model.base.NTN import NTN
+from model.base.NTN import NOT_TRAINABLE_TAG, NTN
 from model.batch_moving_environment import BatchMovingEnvironment
+from model.utils import REGRESSION_METRICS, print_metrics
 
 class CMPO2_NTN(NTN):
     def __init__(self, *args, cache_environments=False, **kwargs):
@@ -122,8 +123,6 @@ class CMPO2_NTN(NTN):
         return final_env.contract(all, output_inds=inds_to_keep)    
     
     def _get_trainable_nodes(self):
-        from model.base.NTN import NOT_TRAINABLE_TAG
-        
         trainable_tags = []
         for tensor in self.tn:
             if NOT_TRAINABLE_TAG in tensor.tags:
@@ -155,8 +154,6 @@ class CMPO2_NTN(NTN):
         if not self.cache_environments:
             return super().fit(n_epochs=n_epochs, regularize=regularize, 
                              jitter=jitter, verbose=verbose, eval_metrics=eval_metrics)
-        
-        from model.base.NTN import REGRESSION_METRICS, print_metrics
         
         if eval_metrics is None:
             eval_metrics = REGRESSION_METRICS

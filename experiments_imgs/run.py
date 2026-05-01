@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 import hydra
@@ -11,12 +12,15 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from omegaconf import DictConfig, OmegaConf
-from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from experiments_imgs.image_dataset_loader import load_image_dataset
 from experiments_imgs.models import CMPO2, CMPO3, CMPO2_GTN, CMPO3_GTN
+from model.base.NTN import NTN
+from model.builder import Inputs
+from model.losses import CrossEntropyLoss
+from model.utils import CLASSIFICATION_METRICS, compute_quality
 from utils.device_utils import DEVICE, move_data_to_device, move_tn_to_device
 
 
@@ -184,8 +188,6 @@ def run_gtn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> 
 
 
 def create_inputs_cmpo(X, y, input_labels, output_labels, batch_size, n_patches):
-    from model.builder import Inputs
-
     return Inputs(
         inputs=[X],
         outputs=[y],
@@ -197,10 +199,6 @@ def create_inputs_cmpo(X, y, input_labels, output_labels, batch_size, n_patches)
 
 
 def run_ntn(cfg: DictConfig, cmpo_model, data: dict, output_dir: Path) -> dict:
-    from model.base.NTN import NTN
-    from model.losses import CrossEntropyLoss
-    from model.utils import CLASSIFICATION_METRICS, compute_quality
-
     move_tn_to_device(cmpo_model.tn)
 
     n_epochs = cfg.trainer.n_epochs

@@ -8,10 +8,16 @@ All normalization functions:
 - Return the scale factor(s) applied
 """
 
-import torch
+from importlib import import_module
+from typing import Union, List
+
 import numpy as np
 import quimb.tensor as qt
-from typing import Union, List
+import torch
+
+
+def _get_mpo2_class():
+    return import_module("model.standard.MPO2_models").MPO2
 
 
 def normalize_tn_output(
@@ -249,7 +255,7 @@ def init_mps_normalized(
     Returns:
         Initialized and normalized tensor network
     """
-    from model.MPO2_models import MPO2
+    MPO2 = _get_mpo2_class()
 
     model = MPO2(
         L=L,
@@ -296,7 +302,7 @@ def init_mps_orthogonal(
     Returns:
         Initialized MPO2 model with orthogonal structure
     """
-    from model.MPO2_models import MPO2
+    MPO2 = _get_mpo2_class()
 
     if output_site is None:
         output_site = L // 2

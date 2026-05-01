@@ -1,17 +1,20 @@
 # type: ignore
+import csv
+import importlib
+import math
+import os
+from contextlib import contextmanager
+from datetime import datetime
 from typing import List, Dict, Optional, Tuple
-from model.builder import Inputs
-from model.utils import print_metrics, REGRESSION_METRICS
-from model.exceptions import SingularMatrixError
+
+import numpy as np
+import quimb.tensor as qt
 import torch
 import torch.nn as nn
-import quimb.tensor as qt
-import importlib
-import numpy as np
-from contextlib import contextmanager
-import csv
-import os
-from datetime import datetime
+
+from model.builder import Inputs
+from model.exceptions import SingularMatrixError
+from model.utils import REGRESSION_METRICS, compute_quality, print_metrics
 
 NOT_TRAINABLE_TAG = "NT"
 PROFILE = True
@@ -258,8 +261,6 @@ class NTN:
             node_hess = hess_tn.contract(output_inds=hess_out_inds)
 
         del env, env_right, d2L_tensor, hess_tn, grad_tn, y_pred, dL_dy, d2L_dy2
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
 
         return node_grad, node_hess
 
@@ -495,30 +496,17 @@ class NTN:
 
         first_data = first_result.data
 
-        is_torch = False
-        try:
-            import torch
-
-            if torch.is_tensor(first_data):
-                is_torch = True
-        except ImportError:
-            pass
+        is_torch = torch.is_tensor(first_data)
 
         if is_torch:
-            import torch
-
             concat_data = torch.cat([t.data for t in batch_results], dim=0)
 
         elif hasattr(first_data, "__array__"):
-            import numpy as np
-
             concat_data = np.concatenate([t.data for t in batch_results], axis=0)
         else:
             try:
-                import numpy as np
-
                 concat_data = np.concatenate([t.data for t in batch_results], axis=0)
-            except:
+            except Exception:
                 raise NotImplementedError(
                     f"Concatenation not implemented for backend: {type(first_data)}"
                 )
@@ -526,8 +514,6 @@ class NTN:
         return qt.Tensor(concat_data, inds=first_result.inds)
 
     def _to_torch(self, tensor, requires_grad=False):
-        import torch
-
         data = tensor.data if isinstance(tensor, qt.Tensor) else tensor
         if not torch.is_tensor(data):
             data = torch.from_numpy(data)
@@ -737,8 +723,6 @@ class NTN:
         update_node.modify(tags=[node_tag])
 
         del H, b, matrix_data, gradient_vector
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
 
         return update_node
 
@@ -774,8 +758,6 @@ class NTN:
         Runs forward pass once and applies user metric functions.
         DEBUG version enabled.
         """
-        import torch
-
         with torch.no_grad():
             output_inds = [self.batch_dim] + self.output_dimensions
             y_pred = self._batch_forward(inputs, tn, output_inds)
@@ -915,8 +897,6 @@ class NTN:
         self.test_data = test_data
 
         if eval_metrics is None:
-            from model.utils import REGRESSION_METRICS
-
             eval_metrics = REGRESSION_METRICS
 
         if not isinstance(jitter, list):
@@ -942,8 +922,6 @@ class NTN:
             scores_val = scores_train
 
         if verbose:
-            from model.utils import print_metrics, compute_quality
-
             print(f"Init    | Train: ", end="")
             print_metrics(scores_train)
             if self.val_data is not None:
@@ -957,8 +935,6 @@ class NTN:
                 "regularize": regularize,
             }
             callback_init(scores_train, scores_val, info)
-
-        from model.utils import compute_quality
 
         best_val_quality = compute_quality(scores_val)
         best_train_quality = compute_quality(scores_train)
@@ -982,7 +958,6 @@ class NTN:
                 else:
                     scores_val = scores_train
 
-                import math
                 if not math.isfinite(scores_train.get("loss", float("inf"))) or not math.isfinite(scores_val.get("loss", float("inf"))):
                     if verbose:
                         print(f"\n✗ NaN loss at epoch {epoch + 1} - stopping training")
@@ -1049,7 +1024,6 @@ class NTN:
                 if verbose:
                     marker = " *" if is_best else ""
                     print(f"Epoch {epoch + 1} | Train: ", end="")
-                    from model.utils import print_metrics
 
                     print_metrics(scores_train)
                     if self.val_data is not None:

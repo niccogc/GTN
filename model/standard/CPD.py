@@ -9,9 +9,12 @@ CPDA Structure:
 - Contraction produces output via elementwise multiplication over the bond_dim dimension
 """
 
+import numpy as np
 import torch
 import quimb.tensor as qt
 from typing import Optional
+
+from model.initialization import normalize_tn_frobenius, normalize_tn_output
 
 
 class CPDA:
@@ -99,8 +102,6 @@ class CPDA:
         self.tn = qt.TensorNetwork(tensors)
 
         if use_tn_normalization:
-            from model.initialization import normalize_tn_output, normalize_tn_frobenius
-
             if sample_inputs is not None:
                 normalize_tn_output(
                     self.tn,
@@ -110,8 +111,6 @@ class CPDA:
                     target_std=tn_target_std,
                 )
             else:
-                import numpy as np
-
                 target_norm = np.sqrt(L * bond_dim * phys_dim)
                 normalize_tn_frobenius(self.tn, target_norm=target_norm)
 

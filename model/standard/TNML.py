@@ -6,6 +6,8 @@ import quimb.tensor as qt
 import numpy as np
 from typing import Optional
 
+from model.initialization import normalize_tn_frobenius, normalize_tn_output
+
 
 class TNML_P:
     """MPS with one node per feature, polynomial basis: [1, x_i, x_i^2, ..., x_i^L]."""
@@ -63,8 +65,6 @@ class TNML_P:
         self.tn = qt.TensorNetwork(tensors)
 
         if use_tn_normalization:
-            from model.initialization import normalize_tn_output, normalize_tn_frobenius
-
             if sample_inputs is not None:
                 normalize_tn_output(
                     self.tn,
@@ -138,8 +138,6 @@ class TNML_F:
         self.tn = qt.TensorNetwork(tensors)
 
         if use_tn_normalization:
-            from model.initialization import normalize_tn_output, normalize_tn_frobenius
-
             if sample_inputs is not None:
                 normalize_tn_output(
                     self.tn,
