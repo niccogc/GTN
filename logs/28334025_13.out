@@ -1,0 +1,109 @@
+Running: model=cpda, dataset=winequalityc, L=4, bd=32, seed=32874
+[2026-05-01 12:07:46,265][utils.tracking][INFO] - Loaded 17965 tracked runs from runs_tracking.csv
+[2026-05-01 12:07:46,267][__main__][INFO] - ▶ RUN CPDA/winequalityc/NTN L=4 bd=32 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/winequalityc/CPDA_rg5_init0.1/L4_bd32_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 235.56774 | quality: 0.12426
+        | Val:   loss: 501.83990 | quality: 0.14051
+Epoch 1 | Train: loss: 80891375679160106690696741650432.00000 | quality: 0.29756
+        | Val:   loss: 2165134968419476367833505808252928.00000 | quality: 0.27692
+ *
+
+✗ NaN loss at epoch 2 - stopping training
+[2026-05-01 12:07:59,766][__main__][WARNING] - ✗ SINGULAR CPDA/winequalityc/NTN L=4 bd=32 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/winequalityc/CPDA_rg5_init0.1/L4_bd32_seed32874 | val=0.2769
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28334025[13]: <ntn_cpda_winequalityc[1-15]%10> in cluster <dcc> Done
+
+Job <ntn_cpda_winequalityc[1-15]%10> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri May  1 12:06:18 2026
+Job was executed on host(s) <6*n-62-21-66>, in queue <hpc>, as user <nicci> in cluster <dcc> at Fri May  1 12:07:39 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri May  1 12:07:39 2026
+Terminated at Fri May  1 12:08:12 2026
+Results reported at Fri May  1 12:08:12 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_cpda_winequalityc[1-15]%10"
+#BSUB -W 3:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=6GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+mkdir -p logs
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+
+# List of missing configs: "L bond_dim seed"
+CONFIGS=(
+    "4 8 42"
+    "4 8 10090"
+    "4 8 32874"
+    "4 8 47311"
+    "4 8 47303"
+    "4 16 42"
+    "4 16 10090"
+    "4 16 32874"
+    "4 16 47311"
+    "4 16 47303"
+    "4 32 42"
+    "4 32 10090"
+    "4 32 32874"
+    "4 32 47311"
+    "4 32 47303"
+)
+
+IDV=$((LSB_JOBINDEX - 1))
+CONF=(${CONFIGS[$IDV]})
+
+L=${CONF[0]}
+BD=${CONF[1]}
+SEED=${CONF[2]}
+
+echo "Running: model=cpda, dataset=winequalityc, L=$L, bd=$BD, seed=$SEED"
+
+python run.py \
+    model=cpda \
+    dataset=winequalityc \
+    model.L=$L \
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   47.00 sec.
+    Max Memory :                                 1703 MB
+    Average Memory :                             583.67 MB
+    Total Requested Memory :                     36864.00 MB
+    Delta Memory :                               35161.00 MB
+    Max Swap :                                   -
+    Max Processes :                              12
+    Max Threads :                                20
+    Run time :                                   33 sec.
+    Turnaround time :                            114 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28334025_13.err> for stderr output of this job.
+
