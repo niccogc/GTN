@@ -22,7 +22,7 @@ MODEL_NAME_MAP = {
 ARRAY_SCRIPT_TEMPLATE = '''#!/bin/bash
 #BSUB -q hpc
 #BSUB -J "ntn_{model}_{dataset}[1-{num_jobs}]%10"
-#BSUB -W 3:00
+#BSUB -W 1:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=6GB]"
 #BSUB -R "span[hosts=1]"
