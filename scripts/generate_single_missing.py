@@ -21,10 +21,10 @@ MODEL_NAME_MAP = {
 # Template for the Job Array script (submit_all.sh)
 ARRAY_SCRIPT_TEMPLATE = '''#!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_{model}_{dataset}[1-{num_jobs}]%10"
+#BSUB -J "ntn_{model}_{dataset}[1-{num_jobs}]%20"
 #BSUB -W 1:00
 #BSUB -n 6
-#BSUB -R "rusage[mem=6GB]"
+#BSUB -R "rusage[mem=1GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I.out
 #BSUB -e logs/%J_%I.err
