@@ -1,0 +1,82 @@
+Running: model=cpda, dataset=mushrooms, experiment=cpda_ntn_sweep
+[2026-05-01 09:24:45,206][HYDRA] Launching 40 jobs locally
+[2026-05-01 09:24:45,206][HYDRA] 	#0 : model.L=4 model.bond_dim=64 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda dataset=mushrooms
+[2026-05-01 09:24:45,464][utils.tracking][INFO] - Loaded 17924 tracked runs from runs_tracking.csv
+[2026-05-01 09:24:45,466][__main__][INFO] - ▶ RUN CPDA/mushrooms/NTN L=4 bd=64 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/mushrooms/CPDA_rg5_init0.1/L4_bd64_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 586.39561 | quality: 0.33873
+        | Val:   loss: 585.64964 | quality: 0.33962
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28332378: <ntn_cpda_mushrooms> in cluster <dcc> Exited
+
+Job <ntn_cpda_mushrooms> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri May  1 09:24:32 2026
+Job was executed on host(s) <6*n-62-21-71>, in queue <hpc>, as user <nicci> in cluster <dcc> at Fri May  1 09:24:33 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri May  1 09:24:33 2026
+Terminated at Fri May  1 09:26:10 2026
+Results reported at Fri May  1 09:26:10 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_cpda_mushrooms"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=6GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_cpda_mushrooms.out
+#BSUB -e logs/%J_cpda_mushrooms.err
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+echo "Running: model=cpda, dataset=mushrooms, experiment=cpda_ntn_sweep"
+
+python run.py --multirun \
+    +experiment=cpda_ntn_sweep \
+    model=cpda \
+    dataset=mushrooms
+
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   386.00 sec.
+    Max Memory :                                 36864 MB
+    Average Memory :                             147.67 MB
+    Total Requested Memory :                     36864.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                15
+    Run time :                                   97 sec.
+    Turnaround time :                            98 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28332378_cpda_mushrooms.err> for stderr output of this job.
+

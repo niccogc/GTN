@@ -3,7 +3,7 @@
 #BSUB -J "ntn_cpda_car_evaluation"
 #BSUB -W 8:00
 #BSUB -n 6
-#BSUB -R "rusage[mem=4GB]"
+#BSUB -R "rusage[mem=10GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_cpda_car_evaluation.out
 #BSUB -e logs/%J_cpda_car_evaluation.err
