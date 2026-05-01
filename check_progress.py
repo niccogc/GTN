@@ -501,37 +501,8 @@ def collect_stats():
                     stats["by_size_trainer"][size_trainer_key]["total"] += 1
 
                     if result["status"] == "completed":
-                        total_completed += 1
-                        combo_stats["done"] += 1
-                        stats["by_model"][model]["done"] += 1
-                        stats["by_dataset"][dataset]["done"] += 1
-                        stats["by_trainer"][trainer]["done"] += 1
-                        stats["by_model_trainer"][model_trainer_key]["done"] += 1
-                        stats["by_size"][size]["done"] += 1
-                        stats["by_size_trainer"][size_trainer_key]["done"] += 1
-
-                        if result["success"]:
-                            total_success += 1
-                            combo_stats["success"] += 1
-                            stats["by_model"][model]["success"] += 1
-                            stats["by_dataset"][dataset]["success"] += 1
-                            stats["by_trainer"][trainer]["success"] += 1
-                            stats["by_model_trainer"][model_trainer_key]["success"] += 1
-                            stats["by_size"][size]["success"] += 1
-                            stats["by_size_trainer"][size_trainer_key]["success"] += 1
-                        elif result["singular"]:
-                            total_singular += 1
-                            combo_stats["singular"] += 1
-                            stats["by_model"][model]["singular"] += 1
-                            stats["by_dataset"][dataset]["singular"] += 1
-                            stats["by_trainer"][trainer]["singular"] += 1
-                            stats["by_model_trainer"][model_trainer_key][
-                                "singular"
-                            ] += 1
-                            stats["by_size"][size]["singular"] += 1
-                            stats["by_size_trainer"][size_trainer_key]["singular"] += 1
-                            singular_runs.append(f"{exp_path_str}/{subdir}")
-                        elif result.get("oom_error"):
+                        if result.get("oom_error"):
+                            # OOM - not actually done, treat as needing re-run
                             total_oom += 1
                             combo_stats["oom"] += 1
                             stats["by_model"][model]["oom"] += 1
@@ -542,15 +513,47 @@ def collect_stats():
                             stats["by_size_trainer"][size_trainer_key]["oom"] += 1
                             oom_runs.append(f"{exp_path_str}/{subdir}")
                         else:
-                            total_failed += 1
-                            combo_stats["failed"] += 1
-                            stats["by_model"][model]["failed"] += 1
-                            stats["by_dataset"][dataset]["failed"] += 1
-                            stats["by_trainer"][trainer]["failed"] += 1
-                            stats["by_model_trainer"][model_trainer_key]["failed"] += 1
-                            stats["by_size"][size]["failed"] += 1
-                            stats["by_size_trainer"][size_trainer_key]["failed"] += 1
-                            failed_runs.append(f"{exp_path_str}/{subdir}")
+                            # Actually completed (success, singular, or non-OOM failure)
+                            total_completed += 1
+                            combo_stats["done"] += 1
+                            stats["by_model"][model]["done"] += 1
+                            stats["by_dataset"][dataset]["done"] += 1
+                            stats["by_trainer"][trainer]["done"] += 1
+                            stats["by_model_trainer"][model_trainer_key]["done"] += 1
+                            stats["by_size"][size]["done"] += 1
+                            stats["by_size_trainer"][size_trainer_key]["done"] += 1
+
+                            if result["success"]:
+                                total_success += 1
+                                combo_stats["success"] += 1
+                                stats["by_model"][model]["success"] += 1
+                                stats["by_dataset"][dataset]["success"] += 1
+                                stats["by_trainer"][trainer]["success"] += 1
+                                stats["by_model_trainer"][model_trainer_key]["success"] += 1
+                                stats["by_size"][size]["success"] += 1
+                                stats["by_size_trainer"][size_trainer_key]["success"] += 1
+                            elif result["singular"]:
+                                total_singular += 1
+                                combo_stats["singular"] += 1
+                                stats["by_model"][model]["singular"] += 1
+                                stats["by_dataset"][dataset]["singular"] += 1
+                                stats["by_trainer"][trainer]["singular"] += 1
+                                stats["by_model_trainer"][model_trainer_key][
+                                    "singular"
+                                ] += 1
+                                stats["by_size"][size]["singular"] += 1
+                                stats["by_size_trainer"][size_trainer_key]["singular"] += 1
+                                singular_runs.append(f"{exp_path_str}/{subdir}")
+                            else:
+                                total_failed += 1
+                                combo_stats["failed"] += 1
+                                stats["by_model"][model]["failed"] += 1
+                                stats["by_dataset"][dataset]["failed"] += 1
+                                stats["by_trainer"][trainer]["failed"] += 1
+                                stats["by_model_trainer"][model_trainer_key]["failed"] += 1
+                                stats["by_size"][size]["failed"] += 1
+                                stats["by_size_trainer"][size_trainer_key]["failed"] += 1
+                                failed_runs.append(f"{exp_path_str}/{subdir}")
                     else:
                         combo_stats["missing"].append(subdir)
                         missing_runs.append(f"{exp_path_str}/{subdir}")

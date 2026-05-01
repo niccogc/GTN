@@ -3,21 +3,33 @@
 
 cd "$(dirname "$0")"
 
-bsub < cpda/mushrooms.sh
-bsub < cpda/student_dropout.sh
+bsub < cpda/adult.sh
+bsub < cpda/bank.sh
+bsub < cpda/winequalityc.sh
+bsub < cpda_typei/adult.sh
+bsub < cpda_typei/bank.sh
+bsub < cpda_typei/car_evaluation.sh
+bsub < cpda_typei/mushrooms.sh
+bsub < cpda_typei/student_dropout.sh
+bsub < cpda_typei/winequalityc.sh
 bsub < lmpo2/adult.sh
 bsub < lmpo2/bank.sh
 bsub < lmpo2/car_evaluation.sh
 bsub < lmpo2/mushrooms.sh
 bsub < lmpo2/student_dropout.sh
+bsub < lmpo2/winequalityc.sh
 bsub < lmpo2_typei/adult.sh
 bsub < lmpo2_typei/appliances.sh
 bsub < lmpo2_typei/bank.sh
 bsub < lmpo2_typei/breast.sh
+bsub < lmpo2_typei/car_evaluation.sh
 bsub < lmpo2_typei/hearth.sh
 bsub < lmpo2_typei/mushrooms.sh
+bsub < lmpo2_typei/obesity.sh
 bsub < lmpo2_typei/popularity.sh
+bsub < lmpo2_typei/seoulBike.sh
 bsub < lmpo2_typei/student_dropout.sh
+bsub < lmpo2_typei/student_perf.sh
 bsub < lmpo2_typei/wine.sh
 bsub < lmpo2_typei/winequalityc.sh
 bsub < mmpo2/adult.sh
@@ -27,6 +39,7 @@ bsub < mmpo2/car_evaluation.sh
 bsub < mmpo2/mushrooms.sh
 bsub < mmpo2/popularity.sh
 bsub < mmpo2/student_dropout.sh
+bsub < mmpo2/winequalityc.sh
 bsub < mmpo2_typei/adult.sh
 bsub < mmpo2_typei/bank.sh
 bsub < mmpo2_typei/breast.sh
@@ -34,6 +47,7 @@ bsub < mmpo2_typei/car_evaluation.sh
 bsub < mmpo2_typei/mushrooms.sh
 bsub < mmpo2_typei/popularity.sh
 bsub < mmpo2_typei/student_dropout.sh
+bsub < mmpo2_typei/winequalityc.sh
 bsub < mpo2/adult.sh
 bsub < mpo2/bank.sh
 bsub < mpo2/car_evaluation.sh
@@ -45,5 +59,13 @@ bsub < mpo2_typei/bank.sh
 bsub < mpo2_typei/car_evaluation.sh
 bsub < mpo2_typei/mushrooms.sh
 bsub < mpo2_typei/student_dropout.sh
+bsub < mpo2_typei/winequalityc.sh
+bsub < tnml_f/adult.sh
+bsub < tnml_f/bank.sh
+bsub < tnml_f/car_evaluation.sh
+bsub < tnml_f/mushrooms.sh
 bsub < tnml_f/student_dropout.sh
+bsub < tnml_f/winequalityc.sh
+bsub < tnml_p/adult.sh
+bsub < tnml_p/car_evaluation.sh
 bsub < tnml_p/mushrooms.sh

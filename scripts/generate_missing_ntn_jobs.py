@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """Generate individual submit scripts for missing NTN model x dataset combinations.
 
-Reads the tracking CSV to determine which combinations are complete,
-and generates individual .sh files only for missing ones.
+Scans outputs/ directory to determine which (model, dataset) combos are
+missing or incomplete (OOM runs are treated as missing), and generates
+individual .sh files for those that need to be re-run.
 
 Usage:
     python scripts/generate_missing_ntn_jobs.py
     python scripts/generate_missing_ntn_jobs.py --dry-run
     python scripts/generate_missing_ntn_jobs.py --output-dir submit_cpu_ntn_missing
+
+Scans outputs/ directly - no tracking CSV needed.
 """
 
 from __future__ import annotations
 
 import argparse
-import csv
 from collections import defaultdict
 from pathlib import Path
 
@@ -96,23 +98,51 @@ python run.py --multirun \\
 '''
 
 
-def load_tracking_data(tracking_file: Path) -> dict[tuple[str, str], int]:
-    """Load tracking CSV and count runs per (model, dataset) for NTN trainer.
-    
+def count_completed_runs() -> dict[tuple[str, str], int]:
+    """Count non-OOM completed runs per (model, dataset) by scanning outputs/.
+
+    OOM runs have results.json with oom_error=True - treated as missing
+    since they need to be re-run.
+
     Returns:
-        Dict mapping (model_name, dataset) -> count of completed runs
+        Dict mapping (model_name, dataset) -> count of valid completed runs
     """
+    import json
+    import re
+
+    from pathlib import Path
+
+    OUTPUTS_DIR = Path("outputs")
     counts: dict[tuple[str, str], int] = defaultdict(int)
-    
-    with open(tracking_file, newline="") as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            if row["trainer_type"] != "ntn":
+
+    for dataset in DATASETS:
+        dataset_dir = OUTPUTS_DIR / "ntn" / dataset
+        if not dataset_dir.exists():
+            continue
+        for exp_dir in dataset_dir.iterdir():
+            if not exp_dir.is_dir():
                 continue
-            model = row["model"]
-            dataset = row["dataset"]
-            counts[(model, dataset)] += 1
-    
+            dirname = exp_dir.name
+            match = re.match(r"^(.+?)_rg\d", dirname)
+            if not match:
+                continue
+            model_name = match.group(1)
+            if model_name not in MODEL_CONFIG_TO_NAME.values():
+                continue
+            for subdir in exp_dir.iterdir():
+                if not subdir.is_dir():
+                    continue
+                result_path = subdir / "results.json"
+                if not result_path.exists():
+                    continue
+                try:
+                    with open(result_path) as f:
+                        data = json.load(f)
+                    if not data.get("oom_error", False):
+                        counts[(model_name, dataset)] += 1
+                except (json.JSONDecodeError, KeyError):
+                    continue
+
     return counts
 
 
@@ -139,12 +169,6 @@ def main():
         description="Generate submit scripts for missing NTN model x dataset combinations"
     )
     parser.add_argument(
-        "--tracking-file",
-        type=Path,
-        default=Path("runs_tracking.csv"),
-        help="Path to tracking CSV (default: runs_tracking.csv)",
-    )
-    parser.add_argument(
         "--output-dir",
         type=Path,
         default=Path("submit_cpu_ntn_missing"),
@@ -162,13 +186,9 @@ def main():
     )
     args = parser.parse_args()
 
-    if not args.tracking_file.exists():
-        print(f"Error: Tracking file not found: {args.tracking_file}")
-        return 1
-
-    # Load completed runs from tracking
-    print(f"Loading tracking data from {args.tracking_file}...")
-    completed = load_tracking_data(args.tracking_file)
+    # Count non-OOM completed runs by scanning outputs/
+    print("Scanning outputs/ for completed (non-OOM) NTN runs...")
+    completed = count_completed_runs()
     
     # Find missing combinations
     missing = []

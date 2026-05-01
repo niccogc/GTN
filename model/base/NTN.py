@@ -674,8 +674,8 @@ class NTN:
                 scale = 1.0
         else:
             scale = 1.0
-
         effective_jitter = jitter * scale
+        # effective_jitter = jitter
 
         if regularize:
             backend, lib = self.get_backend(matrix_data)
@@ -687,6 +687,8 @@ class NTN:
             scaled_jitter = 2 * effective_jitter
 
             if backend == "torch":
+                # matrix_data = matrix_data /scale
+                # gradient_vector = gradient_vector/scale
                 matrix_data.diagonal().add_(scaled_jitter)
                 gradient_vector = gradient_vector + scaled_jitter * old_weight
             elif backend == "numpy":
