@@ -478,11 +478,18 @@ class NTN_Ensemble:
             else:
                 scores_val = scores_train
 
+            import math
+            if not math.isfinite(scores_train.get("loss", float("inf"))) or not math.isfinite(scores_val.get("loss", float("inf"))):
+                if verbose:
+                    print(f"\n✗ NaN loss at epoch {epoch + 1} - stopping training")
+                raise SingularMatrixError(
+                    message="NaN loss encountered during NTN_Ensemble optimization",
+                    epoch=epoch + 1,
+                )
+
             current_val_quality = compute_quality(scores_val)
             current_train_quality = compute_quality(scores_train)
-
-            import math
-
+            
             if train_selection:
                 val_improved = (
                     current_val_quality is not None
