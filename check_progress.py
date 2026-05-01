@@ -230,7 +230,7 @@ def load_cpda_config() -> dict:
 
     filepath = CONF_DIR / "experiment" / "cpda_gtn_sweep.yaml"
     config = {
-        "bond_dim_values": [8, 16, 32, 64],  # Default CPDA bond dimensions
+        "bond_dim_values": [8, 16, 32],  # Default CPDA bond dimensions
     }
 
     if not filepath.exists():

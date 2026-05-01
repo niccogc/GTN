@@ -3,7 +3,7 @@
 #BSUB -J "ntn_cpda_mushrooms"
 #BSUB -W 8:00
 #BSUB -n 6
-#BSUB -R "rusage[mem=12GB]"
+#BSUB -R "rusage[mem=8GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_cpda_mushrooms.out
 #BSUB -e logs/%J_cpda_mushrooms.err

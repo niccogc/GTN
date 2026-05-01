@@ -3,7 +3,6 @@
 
 cd "$(dirname "$0")"
 
-bsub < cpda/car_evaluation.sh
 bsub < cpda/mushrooms.sh
 bsub < cpda/student_dropout.sh
 bsub < lmpo2/adult.sh
@@ -43,7 +42,6 @@ bsub < mpo2/student_dropout.sh
 bsub < mpo2/winequalityc.sh
 bsub < mpo2_typei/adult.sh
 bsub < mpo2_typei/bank.sh
-bsub < mpo2_typei/breast.sh
 bsub < mpo2_typei/car_evaluation.sh
 bsub < mpo2_typei/mushrooms.sh
 bsub < mpo2_typei/student_dropout.sh

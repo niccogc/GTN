@@ -52,10 +52,10 @@ DATASETS = [
 # Expected runs per model
 # Regular models: 2 L values * 3 bond_dims * 5 seeds = 30
 # LMPO2 variants: 2 L * 3 bond_dims * 5 seeds * 3 reduction_factors = 90
-# CPDA variants: 2 L * 4 bond_dims * 5 seeds = 40
+# CPDA variants: 2 L * 3 bond_dims * 5 seeds = 30
 EXPECTED_RUNS = {
-    "CPDA": 40,
-    "CPDATypeI": 40,
+    "CPDA": 30,
+    "CPDATypeI": 30,
     "LMPO2": 90,
     "LMPO2TypeI": 90,
     "MPO2": 30,
