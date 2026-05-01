@@ -11,11 +11,25 @@ Supported backends:
 import os
 import json
 import time
+from importlib import import_module
 from typing import Dict, Any, Optional, List
 from pathlib import Path
 
 MAX_RETRIES = 3
 RETRY_DELAY = 10
+
+
+def _load_aim_run():
+    try:
+        return import_module("aim_auth").Run
+    except ImportError:
+        try:
+            return import_module("aim").Run
+        except ImportError as exc:
+            raise ImportError(
+                "aim is not installed. Install it with: uv add aim\n"
+                "Or use a different tracker backend: 'file' or 'none'"
+            ) from exc
 
 
 def _with_retry(operation, error_msg: str):
@@ -140,16 +154,7 @@ class AIMTracker(BaseTracker):
     ):
         super().__init__(experiment_name, config)
 
-        try:
-            from aim_auth import Run
-        except ImportError:
-            try:
-                from aim import Run
-            except ImportError:
-                raise ImportError(
-                    "aim is not installed. Install it with: uv add aim\n"
-                    "Or use a different tracker backend: 'file' or 'none'"
-                )
+        Run = _load_aim_run()
 
         if repo is None:
             repo = os.getenv("AIM_REPO", ".aim")

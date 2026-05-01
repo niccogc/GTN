@@ -14,8 +14,15 @@ Only runs with 'error' field that is NOT a singular matrix error are deleted.
 import argparse
 import json
 import os
+from importlib import import_module
 from pathlib import Path
+
 from tqdm import tqdm
+
+try:
+    Repo = import_module("aim").Repo
+except ImportError:
+    Repo = None
 
 SINGULAR_KEYWORDS = ["singular", "linalg", "cholesky", "positive definite", "not invertible"]
 
@@ -77,9 +84,7 @@ def delete_aim_runs(aim_repo: str, dry_run: bool = True) -> list[str]:
 
     Returns list of deleted run hashes (or would-be-deleted if dry_run).
     """
-    try:
-        from aim import Repo
-    except ImportError:
+    if Repo is None:
         print("AIM not installed. Skipping AIM cleanup.")
         return []
 

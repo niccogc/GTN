@@ -22,13 +22,17 @@ Usage:
 
 import argparse
 import sys
+from importlib import import_module
+
+try:
+    Repo = import_module("aim").Repo
+except ImportError:
+    Repo = None
 
 
 def get_repo(aim_repo: str):
     """Get AIM Repo object for the given repository path/URL."""
-    try:
-        from aim import Repo
-    except ImportError:
+    if Repo is None:
         print("ERROR: AIM not installed. Install with: pip install aim")
         sys.exit(1)
 

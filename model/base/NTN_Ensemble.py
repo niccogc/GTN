@@ -7,12 +7,16 @@ Handles coordination of multiple NTN instances with proper ensemble derivatives:
 - Each model's derivatives are computed w.r.t. ensemble loss
 """
 
-import torch
-import quimb.tensor as qt
+import math
 from typing import List, Optional, Callable
+
+import quimb.tensor as qt
+import torch
+
 from model.base.NTN import NTN
 from model.builder import Inputs
 from model.exceptions import SingularMatrixError
+from model.utils import REGRESSION_METRICS, compute_quality, print_metrics
 
 
 class NTN_TypeI(NTN):
@@ -218,11 +222,6 @@ class NTN_Ensemble:
         self.train_data = self.ntns[0].train_data
         self.val_data = self.ntns[0].val_data if X_val is not None else None
 
-    def _clear_cuda_cache(self):
-        """Clear CUDA cache to free unused memory."""
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
-
     def _compute_others_outputs_for_model(self, exclude_idx: int) -> List:
         """Compute sum of other models' outputs for each batch (not concatenated)."""
         ntn = self.ntns[exclude_idx]
@@ -387,8 +386,6 @@ class NTN_Ensemble:
 
         Same API as NTN.fit() for drop-in compatibility.
         """
-        from model.utils import REGRESSION_METRICS, compute_quality, print_metrics
-
         if eval_metrics is None:
             eval_metrics = REGRESSION_METRICS
 
@@ -449,7 +446,6 @@ class NTN_Ensemble:
                     if current_ntn_idx != ntn_idx:
                         if current_ntn_idx is not None:
                             self.ntns[current_ntn_idx].clear_others_outputs()
-                            self._clear_cuda_cache()  # Free memory after clearing outputs
                         ntn.precompute_others_outputs()
                         current_ntn_idx = ntn_idx
 
@@ -457,11 +453,9 @@ class NTN_Ensemble:
                     ntn.update_tn_node(
                         node_tag, regularize, jitter_schedule[epoch], adaptive_jitter
                     )
-                    self._clear_cuda_cache()  # Free memory after each node update
 
                 if current_ntn_idx is not None:
                     self.ntns[current_ntn_idx].clear_others_outputs()
-                    self._clear_cuda_cache()  # Free memory at end of epoch
             except torch.linalg.LinAlgError as e:
                 self.singular_encountered = True
                 if verbose:
@@ -478,7 +472,6 @@ class NTN_Ensemble:
             else:
                 scores_val = scores_train
 
-            import math
             if not math.isfinite(scores_train.get("loss", float("inf"))) or not math.isfinite(scores_val.get("loss", float("inf"))):
                 if verbose:
                     print(f"\n✗ NaN loss at epoch {epoch + 1} - stopping training")

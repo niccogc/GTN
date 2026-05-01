@@ -12,6 +12,8 @@ Usage:
 
 import json
 import logging
+import sys
+import time
 from pathlib import Path
 
 import hydra
@@ -125,7 +127,6 @@ def reset_gpu_memory_stats():
     """Reset peak memory stats for accurate per-run tracking."""
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
-        torch.cuda.empty_cache()
 
 
 # =============================================================================
@@ -256,8 +257,6 @@ def create_model(
 
 def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     """Run Newton-based training."""
-    import time
-    import sys
     t_start = time.time()
     def dbg(msg):
         elapsed = time.time() - t_start
@@ -392,9 +391,6 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         singular = False
         oom_error = True
         log.error(f"CUDA out of memory: {e}")
-        # Clear CUDA cache to allow graceful exit
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
         scores_train = None
         scores_val = None
 

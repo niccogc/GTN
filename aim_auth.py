@@ -19,11 +19,13 @@ Cloudflare Access tokens:
     CF_ACCESS_CLIENT_SECRET: Cloudflare Access Client Secret
 """
 
-import os
 import json
+import os
+
 import requests
 from aim import Run as OriginalRun
 from aim.ext.transport.client import Client
+from websockets.sync.client import connect as ws_connect
 
 DEBUG = os.getenv("AIM_AUTH_DEBUG", "").lower() in ("1", "true", "yes")
 
@@ -166,8 +168,6 @@ def _patched_connect(self):
 
 def _patched_refresh_ws(self):
     """Patched refresh_ws that includes authentication headers for WebSocket reconnection"""
-    from websockets.sync.client import connect as ws_connect
-
     if not hasattr(self, "request_headers") or not self.request_headers:
         self.request_headers = {}
 

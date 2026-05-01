@@ -6,9 +6,12 @@ These classes construct tensor networks with proper node labeling to avoid
 tag conflicts with input tensors created by the builder.
 """
 
+import numpy as np
 import torch
 import quimb.tensor as qt
 from typing import Optional
+
+from model.initialization import normalize_tn_frobenius, normalize_tn_output
 
 
 class MPO2:
@@ -88,8 +91,6 @@ class MPO2:
         self.tn = qt.TensorNetwork(tensors)
 
         if use_tn_normalization:
-            from model.initialization import normalize_tn_output, normalize_tn_frobenius
-
             if sample_inputs is not None:
                 normalize_tn_output(
                     self.tn,
@@ -99,8 +100,6 @@ class MPO2:
                     target_std=tn_target_std,
                 )
             else:
-                import numpy as np
-
                 target_norm = np.sqrt(L * bond_dim * phys_dim)
                 normalize_tn_frobenius(self.tn, target_norm=target_norm)
 
@@ -283,8 +282,6 @@ class LMPO2:
         self.tn = qt.TensorNetwork(tensors)
 
         if use_tn_normalization:
-            from model.initialization import normalize_tn_output, normalize_tn_frobenius
-
             if sample_inputs is not None:
                 normalize_tn_output(
                     self.tn,
@@ -294,8 +291,6 @@ class LMPO2:
                     target_std=tn_target_std,
                 )
             else:
-                import numpy as np
-
                 target_norm = np.sqrt(L * bond_dim * phys_dim)
                 normalize_tn_frobenius(self.tn, target_norm=target_norm)
 
@@ -420,8 +415,6 @@ class MMPO2:
         self.tn = qt.TensorNetwork(tensors)
 
         if use_tn_normalization:
-            from model.initialization import normalize_tn_output, normalize_tn_frobenius
-
             if sample_inputs is not None:
                 normalize_tn_output(
                     self.tn,
@@ -431,8 +424,6 @@ class MMPO2:
                     target_std=tn_target_std,
                 )
             else:
-                import numpy as np
-
                 target_norm = np.sqrt(L * bond_dim * phys_dim)
                 normalize_tn_frobenius(self.tn, target_norm=target_norm)
 
