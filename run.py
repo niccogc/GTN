@@ -782,8 +782,11 @@ def main(cfg: DictConfig):
     else:
         log.warning(f"✗ SINGULAR {run_summary} | {val_str}")
 
-    # Return val_quality for Hydra optimization
-    return result.get("val_quality", float("-inf"))
+    import gc
+    from model.base.NTN import _MEMORY_OPTIMIZER
+    _MEMORY_OPTIMIZER._cache._mem_cache.clear()
+    del model, data
+    gc.collect()
 
 
 if __name__ == "__main__":
