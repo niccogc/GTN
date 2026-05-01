@@ -6,10 +6,19 @@ from model.exceptions import SingularMatrixError
 import torch
 import torch.nn as nn
 import quimb.tensor as qt
+import cotengra as ctg
 import importlib
 import numpy as np
 
 NOT_TRAINABLE_TAG = "NT"
+
+# Memory-optimized contraction optimizer (reusable across contractions)
+_MEMORY_OPTIMIZER = ctg.ReusableHyperOptimizer(
+    minimize="combo",
+    reconf_opts={},
+    max_time=1,
+    progbar=False,
+)
 
 
 class NTN:
@@ -163,6 +172,7 @@ class NTN:
         grad_tn = env & dL_dy
         node_inds = target_tensor.inds
         node_grad = grad_tn.contract(output_inds=node_inds)
+        
         out_inds = self.output_dimensions
 
         out_row_inds = out_inds
@@ -173,14 +183,12 @@ class NTN:
         )
         env_right = self._prime_indices_tensor(env, exclude_indices=[self.batch_dim])
 
-        hess_tn = env & d2L_tensor & env_right
-
         node_inds = target_tensor.inds
         hess_out_inds = list(node_inds) + [f"{x}_prime" for x in node_inds]
 
-        node_hess = hess_tn.contract(output_inds=hess_out_inds)
+        hess_tn = env & d2L_tensor & env_right
+        node_hess = hess_tn.contract(output_inds=hess_out_inds, optimize=_MEMORY_OPTIMIZER)
 
-        # Clean up intermediate tensors to free memory
         del env, env_right, d2L_tensor, hess_tn, grad_tn, y_pred, dL_dy, d2L_dy2
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
