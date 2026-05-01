@@ -982,6 +982,15 @@ class NTN:
                 else:
                     scores_val = scores_train
 
+                import math
+                if not math.isfinite(scores_train.get("loss", float("inf"))) or not math.isfinite(scores_val.get("loss", float("inf"))):
+                    if verbose:
+                        print(f"\n✗ NaN loss at epoch {epoch + 1} - stopping training")
+                    raise SingularMatrixError(
+                        message="NaN loss encountered during NTN optimization",
+                        epoch=epoch + 1,
+                    )
+
                 current_val_quality = compute_quality(scores_val)
                 current_train_quality = compute_quality(scores_train)
 
@@ -990,10 +999,8 @@ class NTN:
                 weight_norm_sq = None
                 if regularize and jitter[epoch] > 0:
                     weight_norm_sq = self._compute_weight_norm_squared()
-                    current_reg_loss += jitter[epoch] * weight_norm_sq
-
-                import math
-
+                current_reg_loss += jitter[epoch] * weight_norm_sq
+                
                 if train_selection:
                     val_improved = (
                         current_val_quality is not None
