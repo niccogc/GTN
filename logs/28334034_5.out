@@ -1,0 +1,112 @@
+Running: model=cpda, dataset=bank, L=3, bd=16, seed=47303
+[2026-05-01 12:11:32,241][utils.tracking][INFO] - Loaded 17965 tracked runs from runs_tracking.csv
+[2026-05-01 12:11:32,244][__main__][INFO] - ▶ RUN CPDA/bank/NTN L=3 bd=16 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/bank/CPDA_rg5_init0.1/L3_bd16_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 111.67630 | quality: 0.45445
+        | Val:   loss: 65.00045 | quality: 0.45945
+Epoch 1 | Train: loss: 68406999684.85638 | quality: 0.78902
+        | Val:   loss: 5143180773.68374 | quality: 0.78325
+ *
+Epoch 2 | Train: loss: 139257822913083080438958669230778834287899582944113070927720913786189303281744552642448354013344812891478470908308701411639701564994307998101975379437848564465130420615476577130807510257315784988048587901814809421845372505413289339972106620758175051480630820864.00000 | quality: 0.16697
+        | Val:   loss: 12444500439884533507238718817851631352697730328423937632392952354787939093273841958752977218052402937885426709391162496719101781318150386808480296525663616700747535459330462366883046133211119203600783205406613049534098162359183331226737595654292920677464801280.00000 | quality: 0.16735
+
+
+✗ NaN loss at epoch 3 - stopping training
+[2026-05-01 12:11:52,824][__main__][WARNING] - ✗ SINGULAR CPDA/bank/NTN L=3 bd=16 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/bank/CPDA_rg5_init0.1/L3_bd16_seed47303 | val=0.7832
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28334034[5]: <ntn_cpda_bank[1-25]%10> in cluster <dcc> Done
+
+Job <ntn_cpda_bank[1-25]%10> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri May  1 12:11:05 2026
+Job was executed on host(s) <6*n-62-12-3>, in queue <hpc>, as user <nicci> in cluster <dcc> at Fri May  1 12:11:18 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri May  1 12:11:18 2026
+Terminated at Fri May  1 12:12:07 2026
+Results reported at Fri May  1 12:12:07 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_cpda_bank[1-25]%10"
+#BSUB -W 1:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=6GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+mkdir -p logs
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+
+# List of missing configs: "L bond_dim seed"
+CONFIGS=(
+    "3 16 42"
+    "3 16 10090"
+    "3 16 32874"
+    "3 16 47311"
+    "3 16 47303"
+    "3 32 42"
+    "3 32 10090"
+    "3 32 32874"
+    "3 32 47311"
+    "3 32 47303"
+    "4 8 42"
+    "4 8 10090"
+    "4 8 32874"
+    "4 8 47311"
+    "4 8 47303"
+    "4 16 42"
+    "4 16 10090"
+    "4 16 32874"
+    "4 16 47311"
+    "4 16 47303"
+    "4 32 42"
+    "4 32 10090"
+    "4 32 32874"
+    "4 32 47311"
+    "4 32 47303"
+)
+
+IDV=$((LSB_JOBINDEX - 1))
+CONF=(${CONFIGS[$IDV]})
+
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   94.19 sec.
+    Max Memory :                                 372 MB
+    Average Memory :                             146.67 MB
+    Total Requested Memory :                     36864.00 MB
+    Delta Memory :                               36492.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   49 sec.
+    Turnaround time :                            62 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28334034_5.err> for stderr output of this job.
+

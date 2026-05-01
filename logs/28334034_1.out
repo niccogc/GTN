@@ -1,0 +1,113 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28334034[1]: <ntn_cpda_bank[1-25]%10> in cluster <dcc> Done
+
+Job <ntn_cpda_bank[1-25]%10> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri May  1 12:11:05 2026
+Job was executed on host(s) <6*n-62-21-82>, in queue <hpc>, as user <nicci> in cluster <dcc> at Fri May  1 12:11:06 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri May  1 12:11:06 2026
+Terminated at Fri May  1 12:12:10 2026
+Results reported at Fri May  1 12:12:10 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_cpda_bank[1-25]%10"
+#BSUB -W 1:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=6GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+mkdir -p logs
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+
+# List of missing configs: "L bond_dim seed"
+CONFIGS=(
+    "3 16 42"
+    "3 16 10090"
+    "3 16 32874"
+    "3 16 47311"
+    "3 16 47303"
+    "3 32 42"
+    "3 32 10090"
+    "3 32 32874"
+    "3 32 47311"
+    "3 32 47303"
+    "4 8 42"
+    "4 8 10090"
+    "4 8 32874"
+    "4 8 47311"
+    "4 8 47303"
+    "4 16 42"
+    "4 16 10090"
+    "4 16 32874"
+    "4 16 47311"
+    "4 16 47303"
+    "4 32 42"
+    "4 32 10090"
+    "4 32 32874"
+    "4 32 47311"
+    "4 32 47303"
+)
+
+IDV=$((LSB_JOBINDEX - 1))
+CONF=(${CONFIGS[$IDV]})
+
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   215.00 sec.
+    Max Memory :                                 501 MB
+    Average Memory :                             183.00 MB
+    Total Requested Memory :                     36864.00 MB
+    Delta Memory :                               36363.00 MB
+    Max Swap :                                   -
+    Max Processes :                              12
+    Max Threads :                                20
+    Run time :                                   64 sec.
+    Turnaround time :                            65 sec.
+
+The output (if any) follows:
+
+Running: model=cpda, dataset=bank, L=3, bd=16, seed=42
+[2026-05-01 12:11:14,424][utils.tracking][INFO] - Loaded 17965 tracked runs from runs_tracking.csv
+[2026-05-01 12:11:14,427][__main__][INFO] - ▶ RUN CPDA/bank/NTN L=3 bd=16 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/bank/CPDA_rg5_init0.1/L3_bd16_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 49.84517 | quality: 0.62957
+        | Val:   loss: 57.72678 | quality: 0.62489
+Epoch 1 | Train: loss: 4785823.70279 | quality: 0.49654
+        | Val:   loss: 8101159.58862 | quality: 0.50044
+
+Epoch 2 | Train: loss: 43051469889454040383652468390625280.00000 | quality: 0.25620
+        | Val:   loss: 91201515134192057322452905426419712.00000 | quality: 0.25715
+
+Epoch 3 | Train: loss: 584278287535981275277971129668732202286331456170795375740820006168763356122760618118933442271720236804569693209462536961555956487641325313345317888151237828954816716771227135289962858169192262760587067160340201472.00000 | quality: 0.21740
+        | Val:   loss: 1190928288113089184278490346749557824634666563173255962581377146667364699942516166339371174056890944947991403957126616996944767552383012011922460684366208784721748591654797706497027792303446007533586443915505958912.00000 | quality: 0.22044
+
+
+✗ NaN loss at epoch 4 - stopping training
+[2026-05-01 12:11:56,901][__main__][WARNING] - ✗ SINGULAR CPDA/bank/NTN L=3 bd=16 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/bank/CPDA_rg5_init0.1/L3_bd16_seed42 | val=0.5004
+
+
+PS:
+
+Read file <logs/28334034_1.err> for stderr output of this job.
+
