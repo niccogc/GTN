@@ -1,7 +1,7 @@
 #!/bin/bash
 #BSUB -q hpc
 #BSUB -J "ntn_lmpo2typei_seoulBike[1-30]%10"
-#BSUB -W 3:00
+#BSUB -W 1:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=6GB]"
 #BSUB -R "span[hosts=1]"
