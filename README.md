@@ -90,8 +90,59 @@
 | BosonMPS | bank | GTN | 17/30 (56.7%) |
 | MPO2 | winequalityc | NTN | 15/30 (50.0%) |
 | MMPO2 | car_evaluation | NTN | 15/30 (50.0%) |
-
-*... and 53 more*
+| MPO2TypeI | car_evaluation | NTN | 14/30 (46.7%) |
+| BosonMPS | adult | GTN | 12/30 (40.0%) |
+| MMPO2 | winequalityc | NTN | 11/30 (36.7%) |
+| MPO2TypeI | winequalityc | NTN | 11/30 (36.7%) |
+| MMPO2TypeI | car_evaluation | NTN | 11/30 (36.7%) |
+| CPDATypeI | car_evaluation | NTN | 14/40 (35.0%) |
+| MPO2 | student_dropout | NTN | 10/30 (33.3%) |
+| MPO2TypeI | student_dropout | NTN | 10/30 (33.3%) |
+| LMPO2TypeI | student_perf | NTN | 30/90 (33.3%) |
+| TNML_F | winequalityc | NTN | 10/30 (33.3%) |
+| LMPO2TypeI | appliances | NTN | 27/90 (30.0%) |
+| LMPO2TypeI | hearth | NTN | 26/90 (28.9%) |
+| LMPO2TypeI | wine | NTN | 26/90 (28.9%) |
+| LMPO2 | student_dropout | NTN | 25/90 (27.8%) |
+| MMPO2TypeI | winequalityc | NTN | 8/30 (26.7%) |
+| CPDA | bank | NTN | 10/40 (25.0%) |
+| MPO2TypeI | mushrooms | NTN | 7/30 (23.3%) |
+| CPDATypeI | winequalityc | NTN | 9/40 (22.5%) |
+| LMPO2TypeI | obesity | NTN | 20/90 (22.2%) |
+| MPO2 | mushrooms | NTN | 5/30 (16.7%) |
+| MMPO2 | student_dropout | NTN | 5/30 (16.7%) |
+| CPDATypeI | student_dropout | NTN | 6/40 (15.0%) |
+| MMPO2TypeI | student_dropout | NTN | 4/30 (13.3%) |
+| CPDATypeI | mushrooms | NTN | 5/40 (12.5%) |
+| TNML_P | mushrooms | NTN | 3/30 (10.0%) |
+| CPDATypeI | bank | NTN | 3/40 (7.5%) |
+| MPO2TypeI | bank | NTN | 2/30 (6.7%) |
+| LMPO2 | mushrooms | NTN | 5/90 (5.6%) |
+| LMPO2TypeI | breast | NTN | 5/90 (5.6%) |
+| LMPO2TypeI | popularity | NTN | 5/90 (5.6%) |
+| LMPO2TypeI | car_evaluation | NTN | 4/90 (4.4%) |
+| LMPO2TypeI | winequalityc | NTN | 4/90 (4.4%) |
+| MPO2 | bank | NTN | 1/30 (3.3%) |
+| TNML_F | student_dropout | NTN | 1/30 (3.3%) |
+| CPDA | adult | NTN | 1/40 (2.5%) |
+| LMPO2 | bank | NTN | 1/90 (1.1%) |
+| MPO2 | adult | NTN | 0/30 (0.0%) |
+| LMPO2 | adult | NTN | 0/90 (0.0%) |
+| MMPO2 | adult | NTN | 0/30 (0.0%) |
+| MMPO2 | bank | NTN | 0/30 (0.0%) |
+| MMPO2 | mushrooms | NTN | 0/30 (0.0%) |
+| MPO2TypeI | adult | NTN | 0/30 (0.0%) |
+| LMPO2TypeI | adult | NTN | 0/90 (0.0%) |
+| LMPO2TypeI | bank | NTN | 0/90 (0.0%) |
+| LMPO2TypeI | mushrooms | NTN | 0/90 (0.0%) |
+| LMPO2TypeI | student_dropout | NTN | 0/90 (0.0%) |
+| MMPO2TypeI | adult | NTN | 0/30 (0.0%) |
+| MMPO2TypeI | bank | NTN | 0/30 (0.0%) |
+| MMPO2TypeI | mushrooms | NTN | 0/30 (0.0%) |
+| CPDATypeI | adult | NTN | 0/40 (0.0%) |
+| TNML_F | adult | NTN | 0/30 (0.0%) |
+| TNML_F | bank | NTN | 0/30 (0.0%) |
+| TNML_F | mushrooms | NTN | 0/30 (0.0%) |
 
 ## Singular Matrix Failures (350)
 
