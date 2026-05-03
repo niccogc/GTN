@@ -4,37 +4,37 @@
 
 ## Overall Progress
 
-**Total:** 17,720 / 19,110 (92.7%)
+**Total:** 17,742 / 19,110 (92.8%)
 
 | Status | Count |
 |--------|------:|
-| Success | 16,326 |
-| Singular | 1,394 |
-| OOM | 376 |
+| Success | 16,331 |
+| Singular | 1,411 |
+| OOM | 373 |
 | Failed | 0 |
-| Missing | 1,390 |
+| Missing | 1,368 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 7,896 | 9,240 | 85.5% | 6,502 | 1,394 | 376 | 0 |
+| NTN | 7,918 | 9,240 | 85.7% | 6,507 | 1,411 | 373 | 0 |
 | GTN | 9,824 | 9,870 | 99.5% | 9,824 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
 
 | Model | NTN | GTN |
 |-------|-----|-----|
-| MPO2 | 621/630 (98.6%) | 630/630 (100.0%) |
+| MPO2 | 630/630 (100.0%) | 630/630 (100.0%) |
 | LMPO2 | 1890/1890 (100.0%) | 1890/1890 (100.0%) |
 | MMPO2 | 505/630 (80.2%) | 630/630 (100.0%) |
-| MPO2TypeI | 620/630 (98.4%) | 630/630 (100.0%) |
+| MPO2TypeI | 630/630 (100.0%) | 630/630 (100.0%) |
 | LMPO2TypeI | 951/1890 (50.3%) | 1890/1890 (100.0%) |
 | MMPO2TypeI | 504/630 (80.0%) | 630/630 (100.0%) |
 | CPDA | 801/840 (95.4%) | 840/840 (100.0%) |
 | CPDATypeI | 800/840 (95.2%) | 840/840 (100.0%) |
 | TNML_P | 630/630 (100.0%) | 630/630 (100.0%) |
-| TNML_F | 574/630 (91.1%) | 630/630 (100.0%) |
+| TNML_F | 577/630 (91.6%) | 630/630 (100.0%) |
 | BosonMPS | 0/0 (0.0%) | 584/630 (92.7%) |
 
 ## By Dataset Size
@@ -43,7 +43,7 @@
 |------|-----|-----|--------:|
 | Small | 1585/1760 (90.1%) | 1880/1880 (100.0%) | 175 |
 | Medium | 3704/3960 (93.5%) | 4230/4230 (100.0%) | 256 |
-| Large | 2607/3520 (74.1%) | 3714/3760 (98.8%) | 959 |
+| Large | 2629/3520 (74.7%) | 3714/3760 (98.8%) | 937 |
 
 ## By Dataset
 
@@ -51,9 +51,9 @@
 
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
-| adult | 615 | 910 | 67.6% |
+| adult | 635 | 910 | 69.8% |
 | appliances | 843 | 910 | 92.6% |
-| bank | 720 | 910 | 79.1% |
+| bank | 722 | 910 | 79.3% |
 | breast | 825 | 910 | 90.7% |
 | car_evaluation | 824 | 910 | 90.5% |
 | hearth | 880 | 910 | 96.7% |
@@ -72,9 +72,7 @@
 |-------|---------|---------|----------|
 | LMPO2TypeI | seoulBike | NTN | 80/90 (88.9%) |
 | BosonMPS | appliances | GTN | 26/30 (86.7%) |
-| MPO2 | adult | NTN | 21/30 (70.0%) |
 | MMPO2 | popularity | NTN | 20/30 (66.7%) |
-| MPO2TypeI | adult | NTN | 20/30 (66.7%) |
 | LMPO2TypeI | hearth | NTN | 60/90 (66.7%) |
 | LMPO2TypeI | winequalityc | NTN | 60/90 (66.7%) |
 | MMPO2TypeI | popularity | NTN | 20/30 (66.7%) |
@@ -86,12 +84,12 @@
 | LMPO2TypeI | appliances | NTN | 27/90 (30.0%) |
 | LMPO2TypeI | obesity | NTN | 20/90 (22.2%) |
 | MMPO2 | student_dropout | NTN | 5/30 (16.7%) |
+| TNML_F | bank | NTN | 5/30 (16.7%) |
 | MMPO2TypeI | student_dropout | NTN | 4/30 (13.3%) |
-| TNML_F | bank | NTN | 3/30 (10.0%) |
+| TNML_F | adult | NTN | 2/30 (6.7%) |
 | LMPO2TypeI | breast | NTN | 5/90 (5.6%) |
 | LMPO2TypeI | popularity | NTN | 5/90 (5.6%) |
 | LMPO2TypeI | car_evaluation | NTN | 4/90 (4.4%) |
-| TNML_F | adult | NTN | 1/30 (3.3%) |
 | CPDA | adult | NTN | 1/40 (2.5%) |
 | MMPO2 | adult | NTN | 0/30 (0.0%) |
 | MMPO2 | bank | NTN | 0/30 (0.0%) |
@@ -105,16 +103,16 @@
 | MMPO2TypeI | mushrooms | NTN | 0/30 (0.0%) |
 | CPDATypeI | adult | NTN | 0/40 (0.0%) |
 
-## Singular Matrix Failures (1394)
+## Singular Matrix Failures (1411)
 
 | Experiment | Count |
 |------------|------:|
-| ntn | 1394 |
+| ntn | 1411 |
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 1,390
-- **Experiments with missing runs:** 34
+- **Runs remaining:** 1,368
+- **Experiments with missing runs:** 32
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
 
@@ -134,15 +132,13 @@
 
 ### Large
 
-**NTN** (22 experiments, 913 runs missing):
+**NTN** (20 experiments, 891 runs missing):
 
 - CPDA: adult
 - CPDATypeI: adult
 - LMPO2TypeI: adult, appliances, bank, mushrooms, popularity, student_dropout
 - MMPO2: adult, bank, mushrooms, popularity, student_dropout
 - MMPO2TypeI: adult, bank, mushrooms, popularity, student_dropout
-- MPO2: adult
-- MPO2TypeI: adult
 - TNML_F: adult, bank
 
 **GTN** (4 experiments, 46 runs missing):
