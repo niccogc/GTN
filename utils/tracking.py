@@ -65,7 +65,8 @@ DEFAULT_TRACKING_FILE = "runs_tracking.csv"
 def generate_run_id(cfg: DictConfig) -> str:
     """Generate a deterministic run ID from config parameters.
 
-    Format: {trainer}_{dataset}_{model}_L{L}_bd{bond_dim}_rg{ridge}_init{init}_s{seed}
+    Format: {trainer}_{dataset}_{model}_L{L}_bd{bond_dim}_rg{ridge}_init{init}_s{seed}[_rf{reduction_factor}]
+    The _rf suffix is only included for LMPO2 models which have reduction_factor in config.
 
     Args:
         cfg: Hydra configuration object
@@ -73,12 +74,19 @@ def generate_run_id(cfg: DictConfig) -> str:
     Returns:
         Unique run identifier string
     """
-    return (
+    base = (
         f"{cfg.trainer.type}_{cfg.dataset.name}_{cfg.model.name}"
         f"_L{cfg.model.L}_bd{cfg.model.bond_dim}"
         f"_rg{cfg.trainer.ridge}_init{cfg.model.init_strength}"
         f"_s{cfg.seed}"
     )
+    
+    if "LMPO" in cfg.model.name:
+        reduction_factor = cfg.model.get("reduction_factor")
+        if reduction_factor is not None:
+            base += f"_rf{reduction_factor}"
+    
+    return base
 
 
 def load_tracking_file(path: str | Path = DEFAULT_TRACKING_FILE) -> pd.DataFrame:

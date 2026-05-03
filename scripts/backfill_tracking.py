@@ -79,7 +79,7 @@ def extract_run_info(results_path: Path) -> dict | None:
     ridge = trainer_cfg.get("ridge")
     init_strength = model_cfg.get("init_strength")
     seed = config.get("seed")
-    reduction_factor = model_cfg.get("reduction_factor") if "LMPO" in model else 1 
+    reduction_factor = model_cfg.get("reduction_factor") if "LMPO" in model else None
     
     # Validate required fields
     if not all([trainer_type, dataset, model, L is not None, bond_dim is not None, 
@@ -89,14 +89,15 @@ def extract_run_info(results_path: Path) -> dict | None:
         log.warning(f"    L={L}, bond_dim={bond_dim}, ridge={ridge}, init_strength={init_strength}, seed={seed}")
         return None
     
-    # Generate run_id
+    # Generate run_id - only include _rf suffix for LMPO2 models
     run_id = (
         f"{trainer_type}_{dataset}_{model}"
         f"_L{L}_bd{bond_dim}"
         f"_rg{ridge}_init{init_strength}"
         f"_s{seed}"
-        f"_rf{reduction_factor}"
     )
+    if reduction_factor is not None:
+        run_id += f"_rf{reduction_factor}"
     
     # Get output path relative to cwd
     output_path = results_path.parent
