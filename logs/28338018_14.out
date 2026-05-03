@@ -1,0 +1,3468 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28338018[14]: <ntn_grid_full[1-150]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_full[1-150]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sat May  2 18:52:02 2026
+Job was executed on host(s) <6*n-62-21-16>, in queue <hpc>, as user <nicci> in cluster <dcc> at Sat May  2 18:52:04 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sat May  2 18:52:04 2026
+Terminated at Sat May  2 20:33:04 2026
+Results reported at Sat May  2 20:33:04 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-150]%20"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+DATASETS=(
+    "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+    "car_evaluation" "concrete" "energy_efficiency" "hearth"
+    "iris" "mushrooms" "obesity" "popularity" "realstate"
+    "seoulBike" "student_dropout" "student_perf" "wine"
+    "winequalityc"
+)
+
+COMPLETED_DATASETS=(
+    "abalone" "bike" "concrete" "energy_efficiency"
+    "iris" "realstate" )
+
+# Filter datasets
+FILTERED_DATASETS=()
+for ds in "${DATASETS[@]}"; do
+    skip=false
+    for completed in "${COMPLETED_DATASETS[@]}"; do
+        if [[ "$ds" == "$completed" ]]; then
+            skip=true
+            break
+        fi
+    done
+
+    if ! $skip; then
+        FILTERED_DATASETS+=("$ds")
+    fi
+done
+
+DATASETS=("${FILTERED_DATASETS[@]}")
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   32900.00 sec.
+    Max Memory :                                 4500 MB
+    Average Memory :                             996.85 MB
+    Total Requested Memory :                     4500.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              12
+    Max Threads :                                65
+    Run time :                                   6060 sec.
+    Turnaround time :                            6062 sec.
+
+The output (if any) follows:
+
+Task 14: Dataset=ai4i, Model=lmpo2_typei, Experiment=uci_ntn_sweep
+[2026-05-02 18:52:27,210][HYDRA] Launching 90 jobs locally
+[2026-05-02 18:52:27,210][HYDRA] 	#0 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 18:52:27,684][utils.tracking][INFO] - Loaded 17971 tracked runs from runs_tracking.csv
+[2026-05-02 18:52:27,686][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03661 | quality: -0.07960
+        | Val:   loss: 0.03466 | quality: -0.07572
+
+Epoch 1 | Train: loss: 0.02375 | quality: 0.29969
+        | Val:   loss: 0.02260 | quality: 0.29853
+ *
+Epoch 2 | Train: loss: 0.02115 | quality: 0.37623
+        | Val:   loss: 0.02150 | quality: 0.33285
+ *
+Epoch 3 | Train: loss: 0.01882 | quality: 0.44484
+        | Val:   loss: 0.02172 | quality: 0.32605
+
+Epoch 4 | Train: loss: 0.01735 | quality: 0.48833
+        | Val:   loss: 0.02296 | quality: 0.28754
+
+Epoch 5 | Train: loss: 0.01647 | quality: 0.51419
+        | Val:   loss: 0.02391 | quality: 0.25803
+
+Epoch 6 | Train: loss: 0.01582 | quality: 0.53338
+        | Val:   loss: 0.02385 | quality: 0.25991
+
+Epoch 7 | Train: loss: 0.01552 | quality: 0.54222
+        | Val:   loss: 0.02398 | quality: 0.25567
+
+Epoch 8 | Train: loss: 0.01540 | quality: 0.54588
+        | Val:   loss: 0.02391 | quality: 0.25785
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54663
+        | Val:   loss: 0.02381 | quality: 0.26106
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54668
+        | Val:   loss: 0.02384 | quality: 0.26028
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02385 | quality: 0.25985
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02386 | quality: 0.25942
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.332855)
+[2026-05-02 18:55:36,563][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.3_bondmpo1 | val=0.3329
+[2026-05-02 18:55:36,567][HYDRA] 	#1 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 18:55:36,745][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed10090_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04244 | quality: -0.25167
+        | Val:   loss: 0.04010 | quality: -0.24454
+
+Epoch 1 | Train: loss: 0.02407 | quality: 0.29002
+        | Val:   loss: 0.02265 | quality: 0.29718
+ *
+Epoch 2 | Train: loss: 0.02070 | quality: 0.38946
+        | Val:   loss: 0.02155 | quality: 0.33120
+ *
+Epoch 3 | Train: loss: 0.01861 | quality: 0.45118
+        | Val:   loss: 0.02237 | quality: 0.30586
+
+Epoch 4 | Train: loss: 0.01707 | quality: 0.49668
+        | Val:   loss: 0.02445 | quality: 0.24125
+
+Epoch 5 | Train: loss: 0.01612 | quality: 0.52465
+        | Val:   loss: 0.02495 | quality: 0.22583
+
+Epoch 6 | Train: loss: 0.01567 | quality: 0.53793
+        | Val:   loss: 0.02399 | quality: 0.25549
+
+Epoch 7 | Train: loss: 0.01547 | quality: 0.54385
+        | Val:   loss: 0.02387 | quality: 0.25920
+
+Epoch 8 | Train: loss: 0.01539 | quality: 0.54615
+        | Val:   loss: 0.02381 | quality: 0.26121
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54663
+        | Val:   loss: 0.02384 | quality: 0.26027
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54668
+        | Val:   loss: 0.02387 | quality: 0.25918
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02389 | quality: 0.25868
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02389 | quality: 0.25867
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.331203)
+[2026-05-02 18:58:19,479][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed10090_rf0.3_bondmpo1 | val=0.3312
+[2026-05-02 18:58:19,484][HYDRA] 	#2 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 18:58:19,708][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed32874_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03786 | quality: -0.11661
+        | Val:   loss: 0.03628 | quality: -0.12597
+
+Epoch 1 | Train: loss: 0.02403 | quality: 0.29135
+        | Val:   loss: 0.02245 | quality: 0.30328
+ *
+Epoch 2 | Train: loss: 0.02075 | quality: 0.38797
+        | Val:   loss: 0.02135 | quality: 0.33752
+ *
+Epoch 3 | Train: loss: 0.01866 | quality: 0.44966
+        | Val:   loss: 0.02182 | quality: 0.32281
+
+Epoch 4 | Train: loss: 0.01715 | quality: 0.49412
+        | Val:   loss: 0.02326 | quality: 0.27806
+
+Epoch 5 | Train: loss: 0.01617 | quality: 0.52326
+        | Val:   loss: 0.02460 | quality: 0.23669
+
+Epoch 6 | Train: loss: 0.01567 | quality: 0.53776
+        | Val:   loss: 0.02359 | quality: 0.26793
+
+Epoch 7 | Train: loss: 0.01547 | quality: 0.54381
+        | Val:   loss: 0.02368 | quality: 0.26519
+
+Epoch 8 | Train: loss: 0.01539 | quality: 0.54607
+        | Val:   loss: 0.02361 | quality: 0.26737
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54663
+        | Val:   loss: 0.02375 | quality: 0.26297
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54667
+        | Val:   loss: 0.02381 | quality: 0.26119
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02383 | quality: 0.26045
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02385 | quality: 0.25987
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.337523)
+[2026-05-02 19:01:02,201][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed32874_rf0.3_bondmpo1 | val=0.3375
+[2026-05-02 19:01:02,205][HYDRA] 	#3 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:01:02,401][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47311_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03420 | quality: -0.00860
+        | Val:   loss: 0.03206 | quality: 0.00502
+
+Epoch 1 | Train: loss: 0.02379 | quality: 0.29834
+        | Val:   loss: 0.02250 | quality: 0.30166
+ *
+Epoch 2 | Train: loss: 0.02099 | quality: 0.38105
+        | Val:   loss: 0.02141 | quality: 0.33558
+ *
+Epoch 3 | Train: loss: 0.01881 | quality: 0.44537
+        | Val:   loss: 0.02233 | quality: 0.30704
+
+Epoch 4 | Train: loss: 0.01727 | quality: 0.49062
+        | Val:   loss: 0.02325 | quality: 0.27835
+
+Epoch 5 | Train: loss: 0.01624 | quality: 0.52110
+        | Val:   loss: 0.02416 | quality: 0.25013
+
+Epoch 6 | Train: loss: 0.01573 | quality: 0.53598
+        | Val:   loss: 0.02346 | quality: 0.27206
+
+Epoch 7 | Train: loss: 0.01550 | quality: 0.54283
+        | Val:   loss: 0.02381 | quality: 0.26097
+
+Epoch 8 | Train: loss: 0.01539 | quality: 0.54602
+        | Val:   loss: 0.02354 | quality: 0.26932
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54662
+        | Val:   loss: 0.02377 | quality: 0.26224
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54667
+        | Val:   loss: 0.02380 | quality: 0.26140
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02383 | quality: 0.26046
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02385 | quality: 0.25993
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.335582)
+[2026-05-02 19:03:51,860][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47311_rf0.3_bondmpo1 | val=0.3356
+[2026-05-02 19:03:51,864][HYDRA] 	#4 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:03:52,043][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47303_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03336 | quality: 0.01613
+        | Val:   loss: 0.03094 | quality: 0.03965
+
+Epoch 1 | Train: loss: 0.02361 | quality: 0.30384
+        | Val:   loss: 0.02218 | quality: 0.31158
+ *
+Epoch 2 | Train: loss: 0.02062 | quality: 0.39188
+        | Val:   loss: 0.02147 | quality: 0.33362
+ *
+Epoch 3 | Train: loss: 0.01854 | quality: 0.45311
+        | Val:   loss: 0.02246 | quality: 0.30291
+
+Epoch 4 | Train: loss: 0.01692 | quality: 0.50093
+        | Val:   loss: 0.02414 | quality: 0.25083
+
+Epoch 5 | Train: loss: 0.01606 | quality: 0.52650
+        | Val:   loss: 0.02439 | quality: 0.24305
+
+Epoch 6 | Train: loss: 0.01568 | quality: 0.53747
+        | Val:   loss: 0.02359 | quality: 0.26776
+
+Epoch 7 | Train: loss: 0.01549 | quality: 0.54313
+        | Val:   loss: 0.02379 | quality: 0.26173
+
+Epoch 8 | Train: loss: 0.01540 | quality: 0.54591
+        | Val:   loss: 0.02382 | quality: 0.26079
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54665
+        | Val:   loss: 0.02378 | quality: 0.26191
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02387 | quality: 0.25934
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02388 | quality: 0.25890
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02389 | quality: 0.25874
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.333616)
+[2026-05-02 19:06:44,653][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47303_rf0.3_bondmpo1 | val=0.3336
+[2026-05-02 19:06:44,659][HYDRA] 	#5 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:06:44,844][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03342 | quality: 0.01440
+        | Val:   loss: 0.03165 | quality: 0.01768
+
+Epoch 1 | Train: loss: 0.02422 | quality: 0.28586
+        | Val:   loss: 0.02282 | quality: 0.29179
+ *
+Epoch 2 | Train: loss: 0.02195 | quality: 0.35260
+        | Val:   loss: 0.02149 | quality: 0.33292
+ *
+Epoch 3 | Train: loss: 0.01953 | quality: 0.42411
+        | Val:   loss: 0.02165 | quality: 0.32815
+
+Epoch 4 | Train: loss: 0.01792 | quality: 0.47157
+        | Val:   loss: 0.02227 | quality: 0.30897
+
+Epoch 5 | Train: loss: 0.01645 | quality: 0.51484
+        | Val:   loss: 0.02369 | quality: 0.26468
+
+Epoch 6 | Train: loss: 0.01579 | quality: 0.53443
+        | Val:   loss: 0.02377 | quality: 0.26246
+
+Epoch 7 | Train: loss: 0.01552 | quality: 0.54242
+        | Val:   loss: 0.02401 | quality: 0.25496
+
+Epoch 8 | Train: loss: 0.01541 | quality: 0.54556
+        | Val:   loss: 0.02388 | quality: 0.25885
+
+Epoch 9 | Train: loss: 0.01538 | quality: 0.54653
+        | Val:   loss: 0.02387 | quality: 0.25927
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54663
+        | Val:   loss: 0.02386 | quality: 0.25951
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54666
+        | Val:   loss: 0.02388 | quality: 0.25879
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54667
+        | Val:   loss: 0.02390 | quality: 0.25830
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.332918)
+[2026-05-02 19:08:23,860][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed42_rf0.3_bondmpo1 | val=0.3329
+[2026-05-02 19:08:23,864][HYDRA] 	#6 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:08:24,068][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed10090_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03988 | quality: -0.17611
+        | Val:   loss: 0.03812 | quality: -0.18318
+
+Epoch 1 | Train: loss: 0.02469 | quality: 0.27193
+        | Val:   loss: 0.02289 | quality: 0.28948
+ *
+Epoch 2 | Train: loss: 0.02203 | quality: 0.35029
+        | Val:   loss: 0.02147 | quality: 0.33365
+ *
+Epoch 3 | Train: loss: 0.01991 | quality: 0.41281
+        | Val:   loss: 0.02233 | quality: 0.30697
+
+Epoch 4 | Train: loss: 0.01782 | quality: 0.47437
+        | Val:   loss: 0.02355 | quality: 0.26914
+
+Epoch 5 | Train: loss: 0.01653 | quality: 0.51240
+        | Val:   loss: 0.02572 | quality: 0.20175
+
+Epoch 6 | Train: loss: 0.01587 | quality: 0.53207
+        | Val:   loss: 0.02485 | quality: 0.22866
+
+Epoch 7 | Train: loss: 0.01557 | quality: 0.54081
+        | Val:   loss: 0.02421 | quality: 0.24853
+
+Epoch 8 | Train: loss: 0.01545 | quality: 0.54449
+        | Val:   loss: 0.02395 | quality: 0.25669
+
+Epoch 9 | Train: loss: 0.01539 | quality: 0.54615
+        | Val:   loss: 0.02388 | quality: 0.25904
+
+Epoch 10 | Train: loss: 0.01538 | quality: 0.54641
+        | Val:   loss: 0.02390 | quality: 0.25836
+
+Epoch 11 | Train: loss: 0.01538 | quality: 0.54650
+        | Val:   loss: 0.02391 | quality: 0.25801
+
+Epoch 12 | Train: loss: 0.01538 | quality: 0.54655
+        | Val:   loss: 0.02392 | quality: 0.25758
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.333653)
+[2026-05-02 19:09:37,763][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed10090_rf0.3_bondmpo1 | val=0.3337
+[2026-05-02 19:09:37,768][HYDRA] 	#7 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:09:37,948][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed32874_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03667 | quality: -0.08135
+        | Val:   loss: 0.03417 | quality: -0.06057
+
+Epoch 1 | Train: loss: 0.02479 | quality: 0.26887
+        | Val:   loss: 0.02262 | quality: 0.29785
+ *
+Epoch 2 | Train: loss: 0.02174 | quality: 0.35887
+        | Val:   loss: 0.02126 | quality: 0.34008
+ *
+Epoch 3 | Train: loss: 0.01936 | quality: 0.42917
+        | Val:   loss: 0.02170 | quality: 0.32670
+
+Epoch 4 | Train: loss: 0.01778 | quality: 0.47559
+        | Val:   loss: 0.02254 | quality: 0.30057
+
+Epoch 5 | Train: loss: 0.01669 | quality: 0.50764
+        | Val:   loss: 0.02441 | quality: 0.24230
+
+Epoch 6 | Train: loss: 0.01602 | quality: 0.52757
+        | Val:   loss: 0.02358 | quality: 0.26825
+
+Epoch 7 | Train: loss: 0.01572 | quality: 0.53653
+        | Val:   loss: 0.02367 | quality: 0.26544
+
+Epoch 8 | Train: loss: 0.01553 | quality: 0.54187
+        | Val:   loss: 0.02414 | quality: 0.25074
+
+Epoch 9 | Train: loss: 0.01545 | quality: 0.54442
+        | Val:   loss: 0.02436 | quality: 0.24390
+
+Epoch 10 | Train: loss: 0.01543 | quality: 0.54495
+        | Val:   loss: 0.02423 | quality: 0.24798
+
+Epoch 11 | Train: loss: 0.01542 | quality: 0.54525
+        | Val:   loss: 0.02421 | quality: 0.24871
+
+Epoch 12 | Train: loss: 0.01541 | quality: 0.54547
+        | Val:   loss: 0.02414 | quality: 0.25087
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.340079)
+[2026-05-02 19:10:50,038][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed32874_rf0.3_bondmpo1 | val=0.3401
+[2026-05-02 19:10:50,041][HYDRA] 	#8 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:10:50,251][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47311_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03435 | quality: -0.01318
+        | Val:   loss: 0.03203 | quality: 0.00612
+
+Epoch 1 | Train: loss: 0.02473 | quality: 0.27062
+        | Val:   loss: 0.02273 | quality: 0.29464
+ *
+Epoch 2 | Train: loss: 0.02207 | quality: 0.34916
+        | Val:   loss: 0.02134 | quality: 0.33778
+ *
+Epoch 3 | Train: loss: 0.01962 | quality: 0.42138
+        | Val:   loss: 0.02192 | quality: 0.31961
+
+Epoch 4 | Train: loss: 0.01802 | quality: 0.46850
+        | Val:   loss: 0.02257 | quality: 0.29945
+
+Epoch 5 | Train: loss: 0.01672 | quality: 0.50683
+        | Val:   loss: 0.02425 | quality: 0.24732
+
+Epoch 6 | Train: loss: 0.01605 | quality: 0.52675
+        | Val:   loss: 0.02394 | quality: 0.25695
+
+Epoch 7 | Train: loss: 0.01568 | quality: 0.53750
+        | Val:   loss: 0.02417 | quality: 0.24981
+
+Epoch 8 | Train: loss: 0.01549 | quality: 0.54318
+        | Val:   loss: 0.02442 | quality: 0.24205
+
+Epoch 9 | Train: loss: 0.01541 | quality: 0.54557
+        | Val:   loss: 0.02411 | quality: 0.25175
+
+Epoch 10 | Train: loss: 0.01539 | quality: 0.54610
+        | Val:   loss: 0.02408 | quality: 0.25271
+
+Epoch 11 | Train: loss: 0.01538 | quality: 0.54632
+        | Val:   loss: 0.02407 | quality: 0.25304
+
+Epoch 12 | Train: loss: 0.01538 | quality: 0.54643
+        | Val:   loss: 0.02407 | quality: 0.25310
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.337777)
+[2026-05-02 19:11:59,939][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47311_rf0.3_bondmpo1 | val=0.3378
+[2026-05-02 19:11:59,942][HYDRA] 	#9 : model.reduction_factor=0.3 model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:12:00,118][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47303_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03528 | quality: -0.04037
+        | Val:   loss: 0.03331 | quality: -0.03366
+
+Epoch 1 | Train: loss: 0.02497 | quality: 0.26371
+        | Val:   loss: 0.02286 | quality: 0.29047
+ *
+Epoch 2 | Train: loss: 0.02269 | quality: 0.33092
+        | Val:   loss: 0.02162 | quality: 0.32906
+ *
+Epoch 3 | Train: loss: 0.01987 | quality: 0.41399
+        | Val:   loss: 0.02092 | quality: 0.35078
+ *
+Epoch 4 | Train: loss: 0.01783 | quality: 0.47430
+        | Val:   loss: 0.02191 | quality: 0.31992
+
+Epoch 5 | Train: loss: 0.01672 | quality: 0.50677
+        | Val:   loss: 0.02428 | quality: 0.24645
+
+Epoch 6 | Train: loss: 0.01594 | quality: 0.52986
+        | Val:   loss: 0.02507 | quality: 0.22201
+
+Epoch 7 | Train: loss: 0.01556 | quality: 0.54118
+        | Val:   loss: 0.02464 | quality: 0.23541
+
+Epoch 8 | Train: loss: 0.01540 | quality: 0.54568
+        | Val:   loss: 0.02401 | quality: 0.25488
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54661
+        | Val:   loss: 0.02393 | quality: 0.25733
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54665
+        | Val:   loss: 0.02392 | quality: 0.25761
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54667
+        | Val:   loss: 0.02393 | quality: 0.25723
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54668
+        | Val:   loss: 0.02394 | quality: 0.25704
+
+Epoch 13 | Train: loss: 0.01537 | quality: 0.54668
+        | Val:   loss: 0.02394 | quality: 0.25699
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.350779)
+[2026-05-02 19:13:14,227][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47303_rf0.3_bondmpo1 | val=0.3508
+[2026-05-02 19:13:14,230][HYDRA] 	#10 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:13:14,407][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03577 | quality: -0.05479
+        | Val:   loss: 0.03392 | quality: -0.05262
+
+Epoch 1 | Train: loss: 0.02527 | quality: 0.25462
+        | Val:   loss: 0.02304 | quality: 0.28502
+ *
+Epoch 2 | Train: loss: 0.02249 | quality: 0.33686
+        | Val:   loss: 0.02136 | quality: 0.33713
+ *
+Epoch 3 | Train: loss: 0.02007 | quality: 0.40823
+        | Val:   loss: 0.02120 | quality: 0.34207
+ *
+Epoch 4 | Train: loss: 0.01837 | quality: 0.45828
+        | Val:   loss: 0.02191 | quality: 0.32001
+
+Epoch 5 | Train: loss: 0.01737 | quality: 0.48782
+        | Val:   loss: 0.02406 | quality: 0.25333
+
+Epoch 6 | Train: loss: 0.01652 | quality: 0.51292
+        | Val:   loss: 0.02492 | quality: 0.22672
+
+Epoch 7 | Train: loss: 0.01605 | quality: 0.52659
+        | Val:   loss: 0.02554 | quality: 0.20747
+
+Epoch 8 | Train: loss: 0.01580 | quality: 0.53396
+        | Val:   loss: 0.02578 | quality: 0.20004
+
+Epoch 9 | Train: loss: 0.01568 | quality: 0.53749
+        | Val:   loss: 0.02572 | quality: 0.20180
+
+Epoch 10 | Train: loss: 0.01562 | quality: 0.53944
+        | Val:   loss: 0.02553 | quality: 0.20768
+
+Epoch 11 | Train: loss: 0.01558 | quality: 0.54067
+        | Val:   loss: 0.02541 | quality: 0.21137
+
+Epoch 12 | Train: loss: 0.01555 | quality: 0.54151
+        | Val:   loss: 0.02535 | quality: 0.21314
+
+Epoch 13 | Train: loss: 0.01553 | quality: 0.54213
+        | Val:   loss: 0.02532 | quality: 0.21406
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.342070)
+[2026-05-02 19:14:24,912][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed42_rf0.3_bondmpo1 | val=0.3421
+[2026-05-02 19:14:24,916][HYDRA] 	#11 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:14:25,137][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed10090_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04081 | quality: -0.20363
+        | Val:   loss: 0.03927 | quality: -0.21861
+
+Epoch 1 | Train: loss: 0.02506 | quality: 0.26096
+        | Val:   loss: 0.02248 | quality: 0.30246
+ *
+Epoch 2 | Train: loss: 0.02226 | quality: 0.34361
+        | Val:   loss: 0.02133 | quality: 0.33805
+ *
+Epoch 3 | Train: loss: 0.02017 | quality: 0.40526
+        | Val:   loss: 0.02178 | quality: 0.32392
+
+Epoch 4 | Train: loss: 0.01857 | quality: 0.45221
+        | Val:   loss: 0.02227 | quality: 0.30890
+
+Epoch 5 | Train: loss: 0.01728 | quality: 0.49029
+        | Val:   loss: 0.02265 | quality: 0.29707
+
+Epoch 6 | Train: loss: 0.01640 | quality: 0.51619
+        | Val:   loss: 0.02407 | quality: 0.25293
+
+Epoch 7 | Train: loss: 0.01594 | quality: 0.52990
+        | Val:   loss: 0.02585 | quality: 0.19789
+
+Epoch 8 | Train: loss: 0.01576 | quality: 0.53507
+        | Val:   loss: 0.02520 | quality: 0.21793
+
+Epoch 9 | Train: loss: 0.01568 | quality: 0.53768
+        | Val:   loss: 0.02488 | quality: 0.22791
+
+Epoch 10 | Train: loss: 0.01562 | quality: 0.53925
+        | Val:   loss: 0.02476 | quality: 0.23160
+
+Epoch 11 | Train: loss: 0.01559 | quality: 0.54034
+        | Val:   loss: 0.02471 | quality: 0.23320
+
+Epoch 12 | Train: loss: 0.01556 | quality: 0.54115
+        | Val:   loss: 0.02469 | quality: 0.23374
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.338052)
+[2026-05-02 19:15:10,531][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed10090_rf0.3_bondmpo1 | val=0.3381
+[2026-05-02 19:15:10,536][HYDRA] 	#12 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:15:10,720][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed32874_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03807 | quality: -0.12271
+        | Val:   loss: 0.03581 | quality: -0.11145
+
+Epoch 1 | Train: loss: 0.02521 | quality: 0.25651
+        | Val:   loss: 0.02293 | quality: 0.28853
+ *
+Epoch 2 | Train: loss: 0.02309 | quality: 0.31899
+        | Val:   loss: 0.02190 | quality: 0.32045
+ *
+Epoch 3 | Train: loss: 0.02136 | quality: 0.37000
+        | Val:   loss: 0.02158 | quality: 0.33014
+ *
+Epoch 4 | Train: loss: 0.01937 | quality: 0.42881
+        | Val:   loss: 0.02149 | quality: 0.33301
+ *
+Epoch 5 | Train: loss: 0.01771 | quality: 0.47763
+        | Val:   loss: 0.02376 | quality: 0.26272
+
+Epoch 6 | Train: loss: 0.01665 | quality: 0.50903
+        | Val:   loss: 0.02395 | quality: 0.25672
+
+Epoch 7 | Train: loss: 0.01614 | quality: 0.52404
+        | Val:   loss: 0.02395 | quality: 0.25670
+
+Epoch 8 | Train: loss: 0.01588 | quality: 0.53160
+        | Val:   loss: 0.02410 | quality: 0.25200
+
+Epoch 9 | Train: loss: 0.01574 | quality: 0.53578
+        | Val:   loss: 0.02417 | quality: 0.25002
+
+Epoch 10 | Train: loss: 0.01567 | quality: 0.53792
+        | Val:   loss: 0.02416 | quality: 0.25035
+
+Epoch 11 | Train: loss: 0.01562 | quality: 0.53921
+        | Val:   loss: 0.02416 | quality: 0.25012
+
+Epoch 12 | Train: loss: 0.01559 | quality: 0.54009
+        | Val:   loss: 0.02415 | quality: 0.25050
+
+Epoch 13 | Train: loss: 0.01557 | quality: 0.54073
+        | Val:   loss: 0.02411 | quality: 0.25176
+
+Epoch 14 | Train: loss: 0.01556 | quality: 0.54123
+        | Val:   loss: 0.02407 | quality: 0.25314
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.333014)
+[2026-05-02 19:16:03,301][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed32874_rf0.3_bondmpo1 | val=0.3330
+[2026-05-02 19:16:03,304][HYDRA] 	#13 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:16:03,487][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47311_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03558 | quality: -0.04923
+        | Val:   loss: 0.03375 | quality: -0.04755
+
+Epoch 1 | Train: loss: 0.02561 | quality: 0.24469
+        | Val:   loss: 0.02341 | quality: 0.27353
+ *
+Epoch 2 | Train: loss: 0.02361 | quality: 0.30368
+        | Val:   loss: 0.02200 | quality: 0.31719
+ *
+Epoch 3 | Train: loss: 0.02104 | quality: 0.37959
+        | Val:   loss: 0.02213 | quality: 0.31333
+
+Epoch 4 | Train: loss: 0.01918 | quality: 0.43424
+        | Val:   loss: 0.02264 | quality: 0.29733
+
+Epoch 5 | Train: loss: 0.01775 | quality: 0.47665
+        | Val:   loss: 0.02263 | quality: 0.29768
+
+Epoch 6 | Train: loss: 0.01678 | quality: 0.50504
+        | Val:   loss: 0.02340 | quality: 0.27374
+
+Epoch 7 | Train: loss: 0.01621 | quality: 0.52196
+        | Val:   loss: 0.02463 | quality: 0.23567
+
+Epoch 8 | Train: loss: 0.01589 | quality: 0.53138
+        | Val:   loss: 0.02467 | quality: 0.23447
+
+Epoch 9 | Train: loss: 0.01574 | quality: 0.53574
+        | Val:   loss: 0.02422 | quality: 0.24823
+
+Epoch 10 | Train: loss: 0.01567 | quality: 0.53782
+        | Val:   loss: 0.02413 | quality: 0.25123
+
+Epoch 11 | Train: loss: 0.01563 | quality: 0.53910
+        | Val:   loss: 0.02414 | quality: 0.25073
+
+Epoch 12 | Train: loss: 0.01560 | quality: 0.53998
+        | Val:   loss: 0.02419 | quality: 0.24932
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.317187)
+[2026-05-02 19:16:49,370][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47311_rf0.3_bondmpo1 | val=0.3172
+[2026-05-02 19:16:49,374][HYDRA] 	#14 : model.reduction_factor=0.3 model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:16:49,556][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47303_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03440 | quality: -0.01448
+        | Val:   loss: 0.03288 | quality: -0.02044
+
+Epoch 1 | Train: loss: 0.02506 | quality: 0.26089
+        | Val:   loss: 0.02279 | quality: 0.29283
+ *
+Epoch 2 | Train: loss: 0.02309 | quality: 0.31891
+        | Val:   loss: 0.02177 | quality: 0.32426
+ *
+Epoch 3 | Train: loss: 0.02107 | quality: 0.37858
+        | Val:   loss: 0.02131 | quality: 0.33879
+ *
+Epoch 4 | Train: loss: 0.01909 | quality: 0.43702
+        | Val:   loss: 0.02267 | quality: 0.29650
+
+Epoch 5 | Train: loss: 0.01751 | quality: 0.48372
+        | Val:   loss: 0.02288 | quality: 0.28997
+
+Epoch 6 | Train: loss: 0.01658 | quality: 0.51103
+        | Val:   loss: 0.02335 | quality: 0.27528
+
+Epoch 7 | Train: loss: 0.01611 | quality: 0.52488
+        | Val:   loss: 0.02380 | quality: 0.26152
+
+Epoch 8 | Train: loss: 0.01586 | quality: 0.53213
+        | Val:   loss: 0.02314 | quality: 0.28197
+
+Epoch 9 | Train: loss: 0.01574 | quality: 0.53588
+        | Val:   loss: 0.02281 | quality: 0.29220
+
+Epoch 10 | Train: loss: 0.01567 | quality: 0.53784
+        | Val:   loss: 0.02265 | quality: 0.29697
+
+Epoch 11 | Train: loss: 0.01563 | quality: 0.53901
+        | Val:   loss: 0.02256 | quality: 0.29997
+
+Epoch 12 | Train: loss: 0.01560 | quality: 0.53983
+        | Val:   loss: 0.02253 | quality: 0.30078
+
+Epoch 13 | Train: loss: 0.01558 | quality: 0.54046
+        | Val:   loss: 0.02255 | quality: 0.30021
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.338787)
+[2026-05-02 19:17:35,519][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47303_rf0.3_bondmpo1 | val=0.3388
+[2026-05-02 19:17:35,525][HYDRA] 	#15 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:17:35,708][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03698 | quality: -0.09052
+        | Val:   loss: 0.03546 | quality: -0.10043
+
+Epoch 1 | Train: loss: 0.02492 | quality: 0.26506
+        | Val:   loss: 0.02308 | quality: 0.28374
+ *
+Epoch 2 | Train: loss: 0.02278 | quality: 0.32825
+        | Val:   loss: 0.02170 | quality: 0.32656
+ *
+Epoch 3 | Train: loss: 0.02095 | quality: 0.38201
+        | Val:   loss: 0.02132 | quality: 0.33829
+ *
+Epoch 4 | Train: loss: 0.01946 | quality: 0.42618
+        | Val:   loss: 0.02122 | quality: 0.34139
+ *
+Epoch 5 | Train: loss: 0.01902 | quality: 0.43896
+        | Val:   loss: 0.02132 | quality: 0.33822
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44020
+        | Val:   loss: 0.02130 | quality: 0.33883
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33862
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33849
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.341390)
+[2026-05-02 19:18:48,367][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed42_rf0.3_bondmpo1 | val=0.3414
+[2026-05-02 19:18:48,370][HYDRA] 	#16 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:18:48,598][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed10090_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04173 | quality: -0.23057
+        | Val:   loss: 0.03956 | quality: -0.22761
+
+Epoch 1 | Train: loss: 0.02482 | quality: 0.26810
+        | Val:   loss: 0.02294 | quality: 0.28816
+ *
+Epoch 2 | Train: loss: 0.02252 | quality: 0.33588
+        | Val:   loss: 0.02155 | quality: 0.33116
+ *
+Epoch 3 | Train: loss: 0.02068 | quality: 0.39002
+        | Val:   loss: 0.02132 | quality: 0.33845
+ *
+Epoch 4 | Train: loss: 0.01943 | quality: 0.42700
+        | Val:   loss: 0.02120 | quality: 0.34210
+ *
+Epoch 5 | Train: loss: 0.01901 | quality: 0.43938
+        | Val:   loss: 0.02130 | quality: 0.33906
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44027
+        | Val:   loss: 0.02130 | quality: 0.33897
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33862
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33849
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.342101)
+[2026-05-02 19:19:56,736][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed10090_rf0.3_bondmpo1 | val=0.3421
+[2026-05-02 19:19:56,739][HYDRA] 	#17 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:19:56,916][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed32874_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04145 | quality: -0.22248
+        | Val:   loss: 0.03910 | quality: -0.21333
+
+Epoch 1 | Train: loss: 0.02511 | quality: 0.25942
+        | Val:   loss: 0.02309 | quality: 0.28342
+ *
+Epoch 2 | Train: loss: 0.02221 | quality: 0.34508
+        | Val:   loss: 0.02171 | quality: 0.32614
+ *
+Epoch 3 | Train: loss: 0.02082 | quality: 0.38588
+        | Val:   loss: 0.02135 | quality: 0.33750
+ *
+Epoch 4 | Train: loss: 0.01959 | quality: 0.42219
+        | Val:   loss: 0.02099 | quality: 0.34847
+ *
+Epoch 5 | Train: loss: 0.01904 | quality: 0.43841
+        | Val:   loss: 0.02116 | quality: 0.34341
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44016
+        | Val:   loss: 0.02124 | quality: 0.34084
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44032
+        | Val:   loss: 0.02129 | quality: 0.33914
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33861
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.348472)
+[2026-05-02 19:21:17,378][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed32874_rf0.3_bondmpo1 | val=0.3485
+[2026-05-02 19:21:17,381][HYDRA] 	#18 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:21:17,557][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47311_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03449 | quality: -0.01729
+        | Val:   loss: 0.03274 | quality: -0.01621
+
+Epoch 1 | Train: loss: 0.02503 | quality: 0.26175
+        | Val:   loss: 0.02309 | quality: 0.28336
+ *
+Epoch 2 | Train: loss: 0.02254 | quality: 0.33531
+        | Val:   loss: 0.02176 | quality: 0.32474
+ *
+Epoch 3 | Train: loss: 0.02090 | quality: 0.38363
+        | Val:   loss: 0.02138 | quality: 0.33655
+ *
+Epoch 4 | Train: loss: 0.01943 | quality: 0.42710
+        | Val:   loss: 0.02096 | quality: 0.34956
+ *
+Epoch 5 | Train: loss: 0.01903 | quality: 0.43871
+        | Val:   loss: 0.02123 | quality: 0.34114
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44016
+        | Val:   loss: 0.02127 | quality: 0.34005
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02130 | quality: 0.33904
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33860
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33849
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.349564)
+[2026-05-02 19:22:25,484][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47311_rf0.3_bondmpo1 | val=0.3496
+[2026-05-02 19:22:25,487][HYDRA] 	#19 : model.reduction_factor=0.3 model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:22:25,666][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47303_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03383 | quality: 0.00229
+        | Val:   loss: 0.03115 | quality: 0.03314
+
+Epoch 1 | Train: loss: 0.02426 | quality: 0.28456
+        | Val:   loss: 0.02239 | quality: 0.30504
+ *
+Epoch 2 | Train: loss: 0.02249 | quality: 0.33675
+        | Val:   loss: 0.02157 | quality: 0.33049
+ *
+Epoch 3 | Train: loss: 0.02076 | quality: 0.38765
+        | Val:   loss: 0.02125 | quality: 0.34038
+ *
+Epoch 4 | Train: loss: 0.01966 | quality: 0.42011
+        | Val:   loss: 0.02095 | quality: 0.34985
+ *
+Epoch 5 | Train: loss: 0.01911 | quality: 0.43650
+        | Val:   loss: 0.02092 | quality: 0.35072
+ *
+Epoch 6 | Train: loss: 0.01900 | quality: 0.43968
+        | Val:   loss: 0.02116 | quality: 0.34327
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44029
+        | Val:   loss: 0.02127 | quality: 0.33997
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33879
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33855
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33854
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33854
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33854
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33854
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33854
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33854
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.350719)
+[2026-05-02 19:23:38,971][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47303_rf0.3_bondmpo1 | val=0.3507
+[2026-05-02 19:23:38,975][HYDRA] 	#20 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:23:39,151][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03298 | quality: 0.02737
+        | Val:   loss: 0.03116 | quality: 0.03310
+
+Epoch 1 | Train: loss: 0.02515 | quality: 0.25821
+        | Val:   loss: 0.02319 | quality: 0.28043
+ *
+Epoch 2 | Train: loss: 0.02316 | quality: 0.31687
+        | Val:   loss: 0.02161 | quality: 0.32920
+ *
+Epoch 3 | Train: loss: 0.02178 | quality: 0.35777
+        | Val:   loss: 0.02131 | quality: 0.33866
+ *
+Epoch 4 | Train: loss: 0.02014 | quality: 0.40598
+        | Val:   loss: 0.02126 | quality: 0.34021
+ *
+Epoch 5 | Train: loss: 0.01927 | quality: 0.43155
+        | Val:   loss: 0.02100 | quality: 0.34823
+ *
+Epoch 6 | Train: loss: 0.01902 | quality: 0.43897
+        | Val:   loss: 0.02114 | quality: 0.34387
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44020
+        | Val:   loss: 0.02123 | quality: 0.34101
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44032
+        | Val:   loss: 0.02129 | quality: 0.33924
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33872
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33871
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33870
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33869
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33868
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33868
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33867
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.348226)
+[2026-05-02 19:24:21,662][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed42_rf0.3_bondmpo1 | val=0.3482
+[2026-05-02 19:24:21,665][HYDRA] 	#21 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:24:21,841][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed10090_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04067 | quality: -0.19956
+        | Val:   loss: 0.03894 | quality: -0.20849
+
+Epoch 1 | Train: loss: 0.02538 | quality: 0.25143
+        | Val:   loss: 0.02325 | quality: 0.27852
+ *
+Epoch 2 | Train: loss: 0.02306 | quality: 0.31979
+        | Val:   loss: 0.02175 | quality: 0.32510
+ *
+Epoch 3 | Train: loss: 0.02172 | quality: 0.35930
+        | Val:   loss: 0.02145 | quality: 0.33444
+ *
+Epoch 4 | Train: loss: 0.02004 | quality: 0.40890
+        | Val:   loss: 0.02109 | quality: 0.34534
+ *
+Epoch 5 | Train: loss: 0.01916 | quality: 0.43487
+        | Val:   loss: 0.02099 | quality: 0.34844
+ *
+Epoch 6 | Train: loss: 0.01901 | quality: 0.43945
+        | Val:   loss: 0.02121 | quality: 0.34187
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44022
+        | Val:   loss: 0.02128 | quality: 0.33966
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02130 | quality: 0.33881
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33859
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33859
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33858
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33858
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33858
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33858
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33858
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.348436)
+[2026-05-02 19:25:00,320][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed10090_rf0.3_bondmpo1 | val=0.3484
+[2026-05-02 19:25:00,323][HYDRA] 	#22 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:25:00,499][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed32874_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03701 | quality: -0.09136
+        | Val:   loss: 0.03456 | quality: -0.07254
+
+Epoch 1 | Train: loss: 0.02549 | quality: 0.24817
+        | Val:   loss: 0.02350 | quality: 0.27081
+ *
+Epoch 2 | Train: loss: 0.02321 | quality: 0.31543
+        | Val:   loss: 0.02184 | quality: 0.32229
+ *
+Epoch 3 | Train: loss: 0.02160 | quality: 0.36298
+        | Val:   loss: 0.02154 | quality: 0.33155
+ *
+Epoch 4 | Train: loss: 0.02009 | quality: 0.40747
+        | Val:   loss: 0.02118 | quality: 0.34268
+ *
+Epoch 5 | Train: loss: 0.01924 | quality: 0.43265
+        | Val:   loss: 0.02109 | quality: 0.34558
+ *
+Epoch 6 | Train: loss: 0.01900 | quality: 0.43953
+        | Val:   loss: 0.02118 | quality: 0.34278
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44027
+        | Val:   loss: 0.02128 | quality: 0.33974
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02130 | quality: 0.33889
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33858
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33858
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33857
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33857
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33857
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33857
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33857
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.345583)
+[2026-05-02 19:25:35,871][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed32874_rf0.3_bondmpo1 | val=0.3456
+[2026-05-02 19:25:35,875][HYDRA] 	#23 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:25:36,061][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47311_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03646 | quality: -0.07525
+        | Val:   loss: 0.03438 | quality: -0.06702
+
+Epoch 1 | Train: loss: 0.02535 | quality: 0.25231
+        | Val:   loss: 0.02313 | quality: 0.28227
+ *
+Epoch 2 | Train: loss: 0.02331 | quality: 0.31264
+        | Val:   loss: 0.02175 | quality: 0.32485
+ *
+Epoch 3 | Train: loss: 0.02168 | quality: 0.36073
+        | Val:   loss: 0.02120 | quality: 0.34214
+ *
+Epoch 4 | Train: loss: 0.02020 | quality: 0.40418
+        | Val:   loss: 0.02121 | quality: 0.34187
+ *
+Epoch 5 | Train: loss: 0.01910 | quality: 0.43672
+        | Val:   loss: 0.02107 | quality: 0.34601
+ *
+Epoch 6 | Train: loss: 0.01899 | quality: 0.43983
+        | Val:   loss: 0.02124 | quality: 0.34093
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44029
+        | Val:   loss: 0.02129 | quality: 0.33918
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33865
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33852
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33852
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33852
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33852
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33852
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33852
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33852
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.346011)
+[2026-05-02 19:26:11,834][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47311_rf0.3_bondmpo1 | val=0.3460
+[2026-05-02 19:26:11,837][HYDRA] 	#24 : model.reduction_factor=0.3 model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:26:12,023][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47303_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03604 | quality: -0.06300
+        | Val:   loss: 0.03403 | quality: -0.05606
+
+Epoch 1 | Train: loss: 0.02516 | quality: 0.25810
+        | Val:   loss: 0.02298 | quality: 0.28679
+ *
+Epoch 2 | Train: loss: 0.02336 | quality: 0.31101
+        | Val:   loss: 0.02171 | quality: 0.32618
+ *
+Epoch 3 | Train: loss: 0.02177 | quality: 0.35803
+        | Val:   loss: 0.02131 | quality: 0.33871
+ *
+Epoch 4 | Train: loss: 0.02022 | quality: 0.40359
+        | Val:   loss: 0.02126 | quality: 0.34034
+ *
+Epoch 5 | Train: loss: 0.01920 | quality: 0.43376
+        | Val:   loss: 0.02113 | quality: 0.34425
+ *
+Epoch 6 | Train: loss: 0.01900 | quality: 0.43954
+        | Val:   loss: 0.02118 | quality: 0.34279
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44026
+        | Val:   loss: 0.02127 | quality: 0.34004
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02130 | quality: 0.33888
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33859
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33859
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33858
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33857
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33857
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33856
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33856
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.344255)
+[2026-05-02 19:26:47,688][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47303_rf0.3_bondmpo1 | val=0.3443
+[2026-05-02 19:26:47,691][HYDRA] 	#25 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:26:47,865][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03584 | quality: -0.05691
+        | Val:   loss: 0.03400 | quality: -0.05514
+
+Epoch 1 | Train: loss: 0.02647 | quality: 0.21949
+        | Val:   loss: 0.02451 | quality: 0.23934
+ *
+Epoch 2 | Train: loss: 0.02420 | quality: 0.28626
+        | Val:   loss: 0.02227 | quality: 0.30885
+ *
+Epoch 3 | Train: loss: 0.02281 | quality: 0.32727
+        | Val:   loss: 0.02153 | quality: 0.33175
+ *
+Epoch 4 | Train: loss: 0.02134 | quality: 0.37073
+        | Val:   loss: 0.02147 | quality: 0.33372
+ *
+Epoch 5 | Train: loss: 0.02008 | quality: 0.40784
+        | Val:   loss: 0.02132 | quality: 0.33823
+ *
+Epoch 6 | Train: loss: 0.01941 | quality: 0.42763
+        | Val:   loss: 0.02113 | quality: 0.34421
+ *
+Epoch 7 | Train: loss: 0.01913 | quality: 0.43597
+        | Val:   loss: 0.02129 | quality: 0.33919
+
+Epoch 8 | Train: loss: 0.01904 | quality: 0.43833
+        | Val:   loss: 0.02135 | quality: 0.33748
+
+Epoch 9 | Train: loss: 0.01901 | quality: 0.43931
+        | Val:   loss: 0.02132 | quality: 0.33826
+
+Epoch 10 | Train: loss: 0.01900 | quality: 0.43971
+        | Val:   loss: 0.02130 | quality: 0.33889
+
+Epoch 11 | Train: loss: 0.01899 | quality: 0.43993
+        | Val:   loss: 0.02130 | quality: 0.33906
+
+Epoch 12 | Train: loss: 0.01899 | quality: 0.44005
+        | Val:   loss: 0.02130 | quality: 0.33910
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44013
+        | Val:   loss: 0.02130 | quality: 0.33911
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44019
+        | Val:   loss: 0.02130 | quality: 0.33908
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44022
+        | Val:   loss: 0.02130 | quality: 0.33905
+
+Epoch 16 | Train: loss: 0.01898 | quality: 0.44024
+        | Val:   loss: 0.02130 | quality: 0.33901
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.344212)
+[2026-05-02 19:27:13,894][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed42_rf0.3_bondmpo1 | val=0.3442
+[2026-05-02 19:27:13,897][HYDRA] 	#26 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:27:14,070][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed10090_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04081 | quality: -0.20356
+        | Val:   loss: 0.03924 | quality: -0.21764
+
+Epoch 1 | Train: loss: 0.02641 | quality: 0.22125
+        | Val:   loss: 0.02378 | quality: 0.26186
+ *
+Epoch 2 | Train: loss: 0.02411 | quality: 0.28901
+        | Val:   loss: 0.02218 | quality: 0.31151
+ *
+Epoch 3 | Train: loss: 0.02252 | quality: 0.33572
+        | Val:   loss: 0.02161 | quality: 0.32929
+ *
+Epoch 4 | Train: loss: 0.02108 | quality: 0.37830
+        | Val:   loss: 0.02138 | quality: 0.33648
+ *
+Epoch 5 | Train: loss: 0.01980 | quality: 0.41601
+        | Val:   loss: 0.02120 | quality: 0.34201
+ *
+Epoch 6 | Train: loss: 0.01909 | quality: 0.43701
+        | Val:   loss: 0.02135 | quality: 0.33729
+
+Epoch 7 | Train: loss: 0.01903 | quality: 0.43884
+        | Val:   loss: 0.02140 | quality: 0.33594
+
+Epoch 8 | Train: loss: 0.01901 | quality: 0.43933
+        | Val:   loss: 0.02137 | quality: 0.33670
+
+Epoch 9 | Train: loss: 0.01900 | quality: 0.43959
+        | Val:   loss: 0.02134 | quality: 0.33764
+
+Epoch 10 | Train: loss: 0.01900 | quality: 0.43975
+        | Val:   loss: 0.02132 | quality: 0.33845
+
+Epoch 11 | Train: loss: 0.01899 | quality: 0.43987
+        | Val:   loss: 0.02130 | quality: 0.33896
+
+Epoch 12 | Train: loss: 0.01899 | quality: 0.43997
+        | Val:   loss: 0.02129 | quality: 0.33927
+
+Epoch 13 | Train: loss: 0.01899 | quality: 0.44004
+        | Val:   loss: 0.02128 | quality: 0.33945
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44011
+        | Val:   loss: 0.02128 | quality: 0.33951
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44016
+        | Val:   loss: 0.02128 | quality: 0.33950
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.342009)
+[2026-05-02 19:27:39,360][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed10090_rf0.3_bondmpo1 | val=0.3420
+[2026-05-02 19:27:39,363][HYDRA] 	#27 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:27:39,758][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed32874_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03807 | quality: -0.12272
+        | Val:   loss: 0.03580 | quality: -0.11113
+
+Epoch 1 | Train: loss: 0.02589 | quality: 0.23653
+        | Val:   loss: 0.02362 | quality: 0.26697
+ *
+Epoch 2 | Train: loss: 0.02425 | quality: 0.28490
+        | Val:   loss: 0.02219 | quality: 0.31147
+ *
+Epoch 3 | Train: loss: 0.02280 | quality: 0.32767
+        | Val:   loss: 0.02156 | quality: 0.33095
+ *
+Epoch 4 | Train: loss: 0.02133 | quality: 0.37093
+        | Val:   loss: 0.02138 | quality: 0.33642
+ *
+Epoch 5 | Train: loss: 0.01986 | quality: 0.41428
+        | Val:   loss: 0.02134 | quality: 0.33786
+ *
+Epoch 6 | Train: loss: 0.01928 | quality: 0.43147
+        | Val:   loss: 0.02145 | quality: 0.33433
+
+Epoch 7 | Train: loss: 0.01912 | quality: 0.43599
+        | Val:   loss: 0.02158 | quality: 0.33029
+
+Epoch 8 | Train: loss: 0.01907 | quality: 0.43762
+        | Val:   loss: 0.02161 | quality: 0.32932
+
+Epoch 9 | Train: loss: 0.01904 | quality: 0.43853
+        | Val:   loss: 0.02156 | quality: 0.33077
+
+Epoch 10 | Train: loss: 0.01902 | quality: 0.43909
+        | Val:   loss: 0.02148 | quality: 0.33353
+
+Epoch 11 | Train: loss: 0.01901 | quality: 0.43940
+        | Val:   loss: 0.02143 | quality: 0.33507
+
+Epoch 12 | Train: loss: 0.01900 | quality: 0.43958
+        | Val:   loss: 0.02140 | quality: 0.33580
+
+Epoch 13 | Train: loss: 0.01900 | quality: 0.43971
+        | Val:   loss: 0.02138 | quality: 0.33637
+
+Epoch 14 | Train: loss: 0.01900 | quality: 0.43980
+        | Val:   loss: 0.02137 | quality: 0.33683
+
+Epoch 15 | Train: loss: 0.01899 | quality: 0.43987
+        | Val:   loss: 0.02136 | quality: 0.33719
+ *
+Epoch 16 | Train: loss: 0.01899 | quality: 0.43992
+        | Val:   loss: 0.02135 | quality: 0.33745
+
+Epoch 17 | Train: loss: 0.01899 | quality: 0.43996
+        | Val:   loss: 0.02134 | quality: 0.33766
+
+Epoch 18 | Train: loss: 0.01899 | quality: 0.43999
+        | Val:   loss: 0.02134 | quality: 0.33782
+
+Epoch 19 | Train: loss: 0.01899 | quality: 0.44002
+        | Val:   loss: 0.02133 | quality: 0.33793
+
+Epoch 20 | Train: loss: 0.01899 | quality: 0.44004
+        | Val:   loss: 0.02133 | quality: 0.33801
+
+
+Best epoch: 15 (val_quality=0.337185)
+[2026-05-02 19:28:11,731][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed32874_rf0.3_bondmpo1 | val=0.3372
+[2026-05-02 19:28:11,734][HYDRA] 	#28 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:28:11,922][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47311_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03567 | quality: -0.05196
+        | Val:   loss: 0.03383 | quality: -0.04999
+
+Epoch 1 | Train: loss: 0.02585 | quality: 0.23776
+        | Val:   loss: 0.02368 | quality: 0.26501
+ *
+Epoch 2 | Train: loss: 0.02411 | quality: 0.28897
+        | Val:   loss: 0.02215 | quality: 0.31245
+ *
+Epoch 3 | Train: loss: 0.02266 | quality: 0.33168
+        | Val:   loss: 0.02151 | quality: 0.33238
+ *
+Epoch 4 | Train: loss: 0.02139 | quality: 0.36904
+        | Val:   loss: 0.02136 | quality: 0.33702
+ *
+Epoch 5 | Train: loss: 0.02012 | quality: 0.40677
+        | Val:   loss: 0.02151 | quality: 0.33259
+
+Epoch 6 | Train: loss: 0.01926 | quality: 0.43190
+        | Val:   loss: 0.02128 | quality: 0.33964
+ *
+Epoch 7 | Train: loss: 0.01910 | quality: 0.43685
+        | Val:   loss: 0.02142 | quality: 0.33513
+
+Epoch 8 | Train: loss: 0.01904 | quality: 0.43856
+        | Val:   loss: 0.02143 | quality: 0.33502
+
+Epoch 9 | Train: loss: 0.01901 | quality: 0.43931
+        | Val:   loss: 0.02140 | quality: 0.33573
+
+Epoch 10 | Train: loss: 0.01900 | quality: 0.43967
+        | Val:   loss: 0.02138 | quality: 0.33649
+
+Epoch 11 | Train: loss: 0.01899 | quality: 0.43987
+        | Val:   loss: 0.02136 | quality: 0.33707
+
+Epoch 12 | Train: loss: 0.01899 | quality: 0.43999
+        | Val:   loss: 0.02135 | quality: 0.33751
+
+Epoch 13 | Train: loss: 0.01899 | quality: 0.44007
+        | Val:   loss: 0.02134 | quality: 0.33783
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44012
+        | Val:   loss: 0.02133 | quality: 0.33806
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44016
+        | Val:   loss: 0.02132 | quality: 0.33823
+
+Epoch 16 | Train: loss: 0.01898 | quality: 0.44019
+        | Val:   loss: 0.02132 | quality: 0.33835
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.339641)
+[2026-05-02 19:28:38,094][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47311_rf0.3_bondmpo1 | val=0.3396
+[2026-05-02 19:28:38,097][HYDRA] 	#29 : model.reduction_factor=0.3 model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:28:38,270][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47303_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03450 | quality: -0.01743
+        | Val:   loss: 0.03302 | quality: -0.02478
+
+Epoch 1 | Train: loss: 0.02598 | quality: 0.23379
+        | Val:   loss: 0.02384 | quality: 0.26022
+ *
+Epoch 2 | Train: loss: 0.02427 | quality: 0.28411
+        | Val:   loss: 0.02225 | quality: 0.30957
+ *
+Epoch 3 | Train: loss: 0.02293 | quality: 0.32375
+        | Val:   loss: 0.02147 | quality: 0.33363
+ *
+Epoch 4 | Train: loss: 0.02167 | quality: 0.36094
+        | Val:   loss: 0.02101 | quality: 0.34784
+ *
+Epoch 5 | Train: loss: 0.01993 | quality: 0.41225
+        | Val:   loss: 0.02110 | quality: 0.34524
+
+Epoch 6 | Train: loss: 0.01915 | quality: 0.43517
+        | Val:   loss: 0.02146 | quality: 0.33401
+
+Epoch 7 | Train: loss: 0.01903 | quality: 0.43890
+        | Val:   loss: 0.02148 | quality: 0.33332
+
+Epoch 8 | Train: loss: 0.01900 | quality: 0.43969
+        | Val:   loss: 0.02144 | quality: 0.33470
+
+Epoch 9 | Train: loss: 0.01899 | quality: 0.43997
+        | Val:   loss: 0.02140 | quality: 0.33596
+
+Epoch 10 | Train: loss: 0.01899 | quality: 0.44010
+        | Val:   loss: 0.02137 | quality: 0.33680
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44016
+        | Val:   loss: 0.02135 | quality: 0.33736
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44020
+        | Val:   loss: 0.02134 | quality: 0.33773
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44023
+        | Val:   loss: 0.02133 | quality: 0.33797
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44024
+        | Val:   loss: 0.02133 | quality: 0.33812
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.347841)
+[2026-05-02 19:29:01,864][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.3 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47303_rf0.3_bondmpo1 | val=0.3478
+[2026-05-02 19:29:01,867][HYDRA] 	#30 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:29:02,044][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04193 | quality: -0.23666
+        | Val:   loss: 0.04174 | quality: -0.29535
+
+Epoch 1 | Train: loss: 0.02414 | quality: 0.28816
+        | Val:   loss: 0.02271 | quality: 0.29532
+ *
+Epoch 2 | Train: loss: 0.02086 | quality: 0.38490
+        | Val:   loss: 0.02133 | quality: 0.33798
+ *
+Epoch 3 | Train: loss: 0.01835 | quality: 0.45894
+        | Val:   loss: 0.02155 | quality: 0.33108
+
+Epoch 4 | Train: loss: 0.01672 | quality: 0.50679
+        | Val:   loss: 0.02396 | quality: 0.25635
+
+Epoch 5 | Train: loss: 0.01598 | quality: 0.52874
+        | Val:   loss: 0.02440 | quality: 0.24268
+
+Epoch 6 | Train: loss: 0.01562 | quality: 0.53920
+        | Val:   loss: 0.02378 | quality: 0.26214
+
+Epoch 7 | Train: loss: 0.01544 | quality: 0.54460
+        | Val:   loss: 0.02376 | quality: 0.26251
+
+Epoch 8 | Train: loss: 0.01539 | quality: 0.54626
+        | Val:   loss: 0.02381 | quality: 0.26106
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54666
+        | Val:   loss: 0.02383 | quality: 0.26048
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02385 | quality: 0.25980
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02386 | quality: 0.25937
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02387 | quality: 0.25913
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.337977)
+[2026-05-02 19:35:11,265][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.5_bondmpo1 | val=0.3380
+[2026-05-02 19:35:11,268][HYDRA] 	#31 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:35:11,438][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed10090_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.05423 | quality: -0.59946
+        | Val:   loss: 0.04858 | quality: -0.50770
+
+Epoch 1 | Train: loss: 0.02474 | quality: 0.27024
+        | Val:   loss: 0.02287 | quality: 0.29026
+ *
+Epoch 2 | Train: loss: 0.02129 | quality: 0.37199
+        | Val:   loss: 0.02109 | quality: 0.34554
+ *
+Epoch 3 | Train: loss: 0.01880 | quality: 0.44556
+        | Val:   loss: 0.02133 | quality: 0.33805
+
+Epoch 4 | Train: loss: 0.01716 | quality: 0.49393
+        | Val:   loss: 0.02286 | quality: 0.29070
+
+Epoch 5 | Train: loss: 0.01626 | quality: 0.52056
+        | Val:   loss: 0.02359 | quality: 0.26779
+
+Epoch 6 | Train: loss: 0.01571 | quality: 0.53676
+        | Val:   loss: 0.02326 | quality: 0.27825
+
+Epoch 7 | Train: loss: 0.01547 | quality: 0.54388
+        | Val:   loss: 0.02397 | quality: 0.25598
+
+Epoch 8 | Train: loss: 0.01539 | quality: 0.54612
+        | Val:   loss: 0.02368 | quality: 0.26511
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02380 | quality: 0.26141
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02382 | quality: 0.26090
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02382 | quality: 0.26071
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02383 | quality: 0.26060
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.345538)
+[2026-05-02 19:40:53,610][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed10090_rf0.5_bondmpo1 | val=0.3455
+[2026-05-02 19:40:53,613][HYDRA] 	#32 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:40:53,811][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed32874_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.05145 | quality: -0.51743
+        | Val:   loss: 0.05782 | quality: -0.79454
+
+Epoch 1 | Train: loss: 0.02611 | quality: 0.22985
+        | Val:   loss: 0.02432 | quality: 0.24517
+ *
+Epoch 2 | Train: loss: 0.02246 | quality: 0.33775
+        | Val:   loss: 0.02219 | quality: 0.31136
+ *
+Epoch 3 | Train: loss: 0.01933 | quality: 0.42992
+        | Val:   loss: 0.02180 | quality: 0.32354
+ *
+Epoch 4 | Train: loss: 0.01774 | quality: 0.47687
+        | Val:   loss: 0.02232 | quality: 0.30730
+
+Epoch 5 | Train: loss: 0.01651 | quality: 0.51297
+        | Val:   loss: 0.02380 | quality: 0.26130
+
+Epoch 6 | Train: loss: 0.01595 | quality: 0.52975
+        | Val:   loss: 0.02376 | quality: 0.26268
+
+Epoch 7 | Train: loss: 0.01562 | quality: 0.53920
+        | Val:   loss: 0.02357 | quality: 0.26837
+
+Epoch 8 | Train: loss: 0.01542 | quality: 0.54512
+        | Val:   loss: 0.02374 | quality: 0.26321
+
+Epoch 9 | Train: loss: 0.01538 | quality: 0.54651
+        | Val:   loss: 0.02378 | quality: 0.26203
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54664
+        | Val:   loss: 0.02380 | quality: 0.26141
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54667
+        | Val:   loss: 0.02382 | quality: 0.26065
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02383 | quality: 0.26058
+
+Epoch 13 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02383 | quality: 0.26050
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.323541)
+[2026-05-02 19:47:05,888][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed32874_rf0.5_bondmpo1 | val=0.3235
+[2026-05-02 19:47:05,890][HYDRA] 	#33 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:47:06,061][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47311_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.05229 | quality: -0.54220
+        | Val:   loss: 0.04662 | quality: -0.44686
+
+Epoch 1 | Train: loss: 0.02523 | quality: 0.25596
+        | Val:   loss: 0.02325 | quality: 0.27836
+ *
+Epoch 2 | Train: loss: 0.02079 | quality: 0.38675
+        | Val:   loss: 0.02265 | quality: 0.29703
+ *
+Epoch 3 | Train: loss: 0.01836 | quality: 0.45839
+        | Val:   loss: 0.02266 | quality: 0.29667
+ *
+Epoch 4 | Train: loss: 0.01713 | quality: 0.49478
+        | Val:   loss: 0.02335 | quality: 0.27541
+
+Epoch 5 | Train: loss: 0.01625 | quality: 0.52065
+        | Val:   loss: 0.02304 | quality: 0.28493
+
+Epoch 6 | Train: loss: 0.01566 | quality: 0.53816
+        | Val:   loss: 0.02374 | quality: 0.26328
+
+Epoch 7 | Train: loss: 0.01545 | quality: 0.54446
+        | Val:   loss: 0.02393 | quality: 0.25734
+
+Epoch 8 | Train: loss: 0.01538 | quality: 0.54641
+        | Val:   loss: 0.02376 | quality: 0.26251
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54667
+        | Val:   loss: 0.02379 | quality: 0.26166
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02383 | quality: 0.26045
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02384 | quality: 0.26005
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02385 | quality: 0.25991
+
+Epoch 13 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02385 | quality: 0.25981
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.296670)
+[2026-05-02 19:53:13,060][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47311_rf0.5_bondmpo1 | val=0.2967
+[2026-05-02 19:53:13,063][HYDRA] 	#34 : model.reduction_factor=0.5 model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:53:13,277][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47303_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04681 | quality: -0.38053
+        | Val:   loss: 0.04658 | quality: -0.44551
+
+Epoch 1 | Train: loss: 0.02357 | quality: 0.30493
+        | Val:   loss: 0.02263 | quality: 0.29778
+ *
+Epoch 2 | Train: loss: 0.02043 | quality: 0.39755
+        | Val:   loss: 0.02170 | quality: 0.32658
+ *
+Epoch 3 | Train: loss: 0.01817 | quality: 0.46414
+        | Val:   loss: 0.02226 | quality: 0.30905
+
+Epoch 4 | Train: loss: 0.01678 | quality: 0.50522
+        | Val:   loss: 0.02339 | quality: 0.27409
+
+Epoch 5 | Train: loss: 0.01604 | quality: 0.52702
+        | Val:   loss: 0.02414 | quality: 0.25073
+
+Epoch 6 | Train: loss: 0.01563 | quality: 0.53904
+        | Val:   loss: 0.02354 | quality: 0.26957
+
+Epoch 7 | Train: loss: 0.01545 | quality: 0.54445
+        | Val:   loss: 0.02379 | quality: 0.26159
+
+Epoch 8 | Train: loss: 0.01538 | quality: 0.54635
+        | Val:   loss: 0.02365 | quality: 0.26595
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54667
+        | Val:   loss: 0.02378 | quality: 0.26187
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02384 | quality: 0.26015
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02387 | quality: 0.25936
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02388 | quality: 0.25898
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.326579)
+[2026-05-02 19:58:54,017][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed47303_rf0.5_bondmpo1 | val=0.3266
+[2026-05-02 19:58:54,021][HYDRA] 	#35 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 19:58:54,213][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed42_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04501 | quality: -0.32731
+        | Val:   loss: 0.04240 | quality: -0.31589
+
+Epoch 1 | Train: loss: 0.02509 | quality: 0.26016
+        | Val:   loss: 0.02287 | quality: 0.29016
+ *
+Epoch 2 | Train: loss: 0.02196 | quality: 0.35222
+        | Val:   loss: 0.02155 | quality: 0.33106
+ *
+Epoch 3 | Train: loss: 0.01975 | quality: 0.41767
+        | Val:   loss: 0.02098 | quality: 0.34903
+ *
+Epoch 4 | Train: loss: 0.01742 | quality: 0.48635
+        | Val:   loss: 0.02226 | quality: 0.30931
+
+Epoch 5 | Train: loss: 0.01626 | quality: 0.52054
+        | Val:   loss: 0.02364 | quality: 0.26644
+
+Epoch 6 | Train: loss: 0.01570 | quality: 0.53705
+        | Val:   loss: 0.02342 | quality: 0.27317
+
+Epoch 7 | Train: loss: 0.01546 | quality: 0.54398
+        | Val:   loss: 0.02348 | quality: 0.27123
+
+Epoch 8 | Train: loss: 0.01539 | quality: 0.54623
+        | Val:   loss: 0.02356 | quality: 0.26872
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54666
+        | Val:   loss: 0.02376 | quality: 0.26261
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02381 | quality: 0.26098
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02383 | quality: 0.26043
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02384 | quality: 0.26019
+
+Epoch 13 | Train: loss: 0.01537 | quality: 0.54671
+        | Val:   loss: 0.02385 | quality: 0.25998
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.349033)
+[2026-05-02 20:01:26,500][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed42_rf0.5_bondmpo1 | val=0.3490
+[2026-05-02 20:01:26,542][HYDRA] 	#36 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:01:26,725][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed10090_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.05347 | quality: -0.57684
+        | Val:   loss: 0.05126 | quality: -0.59095
+
+Epoch 1 | Train: loss: 0.02522 | quality: 0.25623
+        | Val:   loss: 0.02304 | quality: 0.28499
+ *
+Epoch 2 | Train: loss: 0.02206 | quality: 0.34935
+        | Val:   loss: 0.02198 | quality: 0.31798
+ *
+Epoch 3 | Train: loss: 0.01936 | quality: 0.42900
+        | Val:   loss: 0.02085 | quality: 0.35298
+ *
+Epoch 4 | Train: loss: 0.01760 | quality: 0.48088
+        | Val:   loss: 0.02201 | quality: 0.31688
+
+Epoch 5 | Train: loss: 0.01631 | quality: 0.51889
+        | Val:   loss: 0.02427 | quality: 0.24672
+
+Epoch 6 | Train: loss: 0.01573 | quality: 0.53596
+        | Val:   loss: 0.02403 | quality: 0.25421
+
+Epoch 7 | Train: loss: 0.01550 | quality: 0.54277
+        | Val:   loss: 0.02342 | quality: 0.27325
+
+Epoch 8 | Train: loss: 0.01539 | quality: 0.54602
+        | Val:   loss: 0.02357 | quality: 0.26839
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54663
+        | Val:   loss: 0.02377 | quality: 0.26233
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54668
+        | Val:   loss: 0.02382 | quality: 0.26090
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02382 | quality: 0.26067
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02383 | quality: 0.26052
+
+Epoch 13 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02383 | quality: 0.26031
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.352979)
+[2026-05-02 20:03:29,864][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed10090_rf0.5_bondmpo1 | val=0.3530
+[2026-05-02 20:03:29,867][HYDRA] 	#37 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:03:30,081][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed32874_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03905 | quality: -0.15174
+        | Val:   loss: 0.03600 | quality: -0.11722
+
+Epoch 1 | Train: loss: 0.02520 | quality: 0.25690
+        | Val:   loss: 0.02336 | quality: 0.27504
+ *
+Epoch 2 | Train: loss: 0.02154 | quality: 0.36477
+        | Val:   loss: 0.02194 | quality: 0.31909
+ *
+Epoch 3 | Train: loss: 0.01948 | quality: 0.42540
+        | Val:   loss: 0.02218 | quality: 0.31163
+
+Epoch 4 | Train: loss: 0.01729 | quality: 0.49016
+        | Val:   loss: 0.02360 | quality: 0.26754
+
+Epoch 5 | Train: loss: 0.01614 | quality: 0.52394
+        | Val:   loss: 0.02488 | quality: 0.22795
+
+Epoch 6 | Train: loss: 0.01569 | quality: 0.53742
+        | Val:   loss: 0.02412 | quality: 0.25131
+
+Epoch 7 | Train: loss: 0.01550 | quality: 0.54290
+        | Val:   loss: 0.02370 | quality: 0.26444
+
+Epoch 8 | Train: loss: 0.01540 | quality: 0.54575
+        | Val:   loss: 0.02375 | quality: 0.26296
+
+Epoch 9 | Train: loss: 0.01538 | quality: 0.54655
+        | Val:   loss: 0.02391 | quality: 0.25796
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54662
+        | Val:   loss: 0.02391 | quality: 0.25786
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54665
+        | Val:   loss: 0.02393 | quality: 0.25741
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54666
+        | Val:   loss: 0.02393 | quality: 0.25737
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.319092)
+[2026-05-02 20:05:30,093][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed32874_rf0.5_bondmpo1 | val=0.3191
+[2026-05-02 20:05:30,096][HYDRA] 	#38 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:05:30,266][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47311_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03564 | quality: -0.05103
+        | Val:   loss: 0.03470 | quality: -0.07688
+
+Epoch 1 | Train: loss: 0.02440 | quality: 0.28037
+        | Val:   loss: 0.02278 | quality: 0.29288
+ *
+Epoch 2 | Train: loss: 0.02166 | quality: 0.36115
+        | Val:   loss: 0.02174 | quality: 0.32520
+ *
+Epoch 3 | Train: loss: 0.01864 | quality: 0.45032
+        | Val:   loss: 0.02194 | quality: 0.31907
+
+Epoch 4 | Train: loss: 0.01718 | quality: 0.49326
+        | Val:   loss: 0.02343 | quality: 0.27284
+
+Epoch 5 | Train: loss: 0.01618 | quality: 0.52282
+        | Val:   loss: 0.02400 | quality: 0.25512
+
+Epoch 6 | Train: loss: 0.01565 | quality: 0.53843
+        | Val:   loss: 0.02316 | quality: 0.28115
+
+Epoch 7 | Train: loss: 0.01546 | quality: 0.54399
+        | Val:   loss: 0.02388 | quality: 0.25902
+
+Epoch 8 | Train: loss: 0.01539 | quality: 0.54623
+        | Val:   loss: 0.02375 | quality: 0.26301
+
+Epoch 9 | Train: loss: 0.01537 | quality: 0.54665
+        | Val:   loss: 0.02383 | quality: 0.26056
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54668
+        | Val:   loss: 0.02385 | quality: 0.25989
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54669
+        | Val:   loss: 0.02387 | quality: 0.25924
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54670
+        | Val:   loss: 0.02388 | quality: 0.25894
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.325195)
+[2026-05-02 20:07:24,806][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47311_rf0.5_bondmpo1 | val=0.3252
+[2026-05-02 20:07:24,808][HYDRA] 	#39 : model.reduction_factor=0.5 model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:07:24,998][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47303_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03996 | quality: -0.17855
+        | Val:   loss: 0.03797 | quality: -0.17849
+
+Epoch 1 | Train: loss: 0.02396 | quality: 0.29349
+        | Val:   loss: 0.02220 | quality: 0.31096
+ *
+Epoch 2 | Train: loss: 0.02120 | quality: 0.37475
+        | Val:   loss: 0.02182 | quality: 0.32297
+ *
+Epoch 3 | Train: loss: 0.01871 | quality: 0.44824
+        | Val:   loss: 0.02180 | quality: 0.32343
+ *
+Epoch 4 | Train: loss: 0.01751 | quality: 0.48369
+        | Val:   loss: 0.02333 | quality: 0.27584
+
+Epoch 5 | Train: loss: 0.01645 | quality: 0.51497
+        | Val:   loss: 0.02456 | quality: 0.23772
+
+Epoch 6 | Train: loss: 0.01580 | quality: 0.53417
+        | Val:   loss: 0.02336 | quality: 0.27508
+
+Epoch 7 | Train: loss: 0.01551 | quality: 0.54257
+        | Val:   loss: 0.02358 | quality: 0.26807
+
+Epoch 8 | Train: loss: 0.01540 | quality: 0.54572
+        | Val:   loss: 0.02369 | quality: 0.26482
+
+Epoch 9 | Train: loss: 0.01538 | quality: 0.54651
+        | Val:   loss: 0.02381 | quality: 0.26099
+
+Epoch 10 | Train: loss: 0.01537 | quality: 0.54662
+        | Val:   loss: 0.02381 | quality: 0.26104
+
+Epoch 11 | Train: loss: 0.01537 | quality: 0.54666
+        | Val:   loss: 0.02382 | quality: 0.26082
+
+Epoch 12 | Train: loss: 0.01537 | quality: 0.54667
+        | Val:   loss: 0.02382 | quality: 0.26061
+
+Epoch 13 | Train: loss: 0.01537 | quality: 0.54668
+        | Val:   loss: 0.02383 | quality: 0.26038
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.323425)
+[2026-05-02 20:09:28,328][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=8_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd8_seed47303_rf0.5_bondmpo1 | val=0.3234
+[2026-05-02 20:09:28,330][HYDRA] 	#40 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:09:28,502][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed42_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03792 | quality: -0.11826
+        | Val:   loss: 0.03644 | quality: -0.13101
+
+Epoch 1 | Train: loss: 0.02493 | quality: 0.26470
+        | Val:   loss: 0.02296 | quality: 0.28737
+ *
+Epoch 2 | Train: loss: 0.02235 | quality: 0.34086
+        | Val:   loss: 0.02179 | quality: 0.32367
+ *
+Epoch 3 | Train: loss: 0.02051 | quality: 0.39517
+        | Val:   loss: 0.02097 | quality: 0.34908
+ *
+Epoch 4 | Train: loss: 0.01849 | quality: 0.45463
+        | Val:   loss: 0.02159 | quality: 0.32990
+
+Epoch 5 | Train: loss: 0.01717 | quality: 0.49351
+        | Val:   loss: 0.02291 | quality: 0.28915
+
+Epoch 6 | Train: loss: 0.01631 | quality: 0.51909
+        | Val:   loss: 0.02383 | quality: 0.26053
+
+Epoch 7 | Train: loss: 0.01593 | quality: 0.53031
+        | Val:   loss: 0.02332 | quality: 0.27630
+
+Epoch 8 | Train: loss: 0.01572 | quality: 0.53645
+        | Val:   loss: 0.02324 | quality: 0.27867
+
+Epoch 9 | Train: loss: 0.01561 | quality: 0.53957
+        | Val:   loss: 0.02331 | quality: 0.27644
+
+Epoch 10 | Train: loss: 0.01555 | quality: 0.54126
+        | Val:   loss: 0.02343 | quality: 0.27288
+
+Epoch 11 | Train: loss: 0.01552 | quality: 0.54234
+        | Val:   loss: 0.02365 | quality: 0.26603
+
+Epoch 12 | Train: loss: 0.01549 | quality: 0.54307
+        | Val:   loss: 0.02384 | quality: 0.25999
+
+Epoch 13 | Train: loss: 0.01548 | quality: 0.54361
+        | Val:   loss: 0.02397 | quality: 0.25603
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.349084)
+[2026-05-02 20:10:38,933][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed42_rf0.5_bondmpo1 | val=0.3491
+[2026-05-02 20:10:38,936][HYDRA] 	#41 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:10:39,134][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed10090_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04724 | quality: -0.39308
+        | Val:   loss: 0.04496 | quality: -0.39518
+
+Epoch 1 | Train: loss: 0.02607 | quality: 0.23106
+        | Val:   loss: 0.02396 | quality: 0.25654
+ *
+Epoch 2 | Train: loss: 0.02334 | quality: 0.31169
+        | Val:   loss: 0.02202 | quality: 0.31661
+ *
+Epoch 3 | Train: loss: 0.02128 | quality: 0.37245
+        | Val:   loss: 0.02177 | quality: 0.32423
+ *
+Epoch 4 | Train: loss: 0.01904 | quality: 0.43858
+        | Val:   loss: 0.02246 | quality: 0.30305
+
+Epoch 5 | Train: loss: 0.01717 | quality: 0.49350
+        | Val:   loss: 0.02487 | quality: 0.22825
+
+Epoch 6 | Train: loss: 0.01631 | quality: 0.51887
+        | Val:   loss: 0.02714 | quality: 0.15779
+
+Epoch 7 | Train: loss: 0.01595 | quality: 0.52960
+        | Val:   loss: 0.02628 | quality: 0.18428
+
+Epoch 8 | Train: loss: 0.01577 | quality: 0.53478
+        | Val:   loss: 0.02485 | quality: 0.22892
+
+Epoch 9 | Train: loss: 0.01569 | quality: 0.53722
+        | Val:   loss: 0.02449 | quality: 0.23992
+
+Epoch 10 | Train: loss: 0.01565 | quality: 0.53858
+        | Val:   loss: 0.02442 | quality: 0.24202
+
+Epoch 11 | Train: loss: 0.01561 | quality: 0.53949
+        | Val:   loss: 0.02438 | quality: 0.24336
+
+Epoch 12 | Train: loss: 0.01559 | quality: 0.54019
+        | Val:   loss: 0.02434 | quality: 0.24452
+
+Epoch 13 | Train: loss: 0.01557 | quality: 0.54076
+        | Val:   loss: 0.02431 | quality: 0.24561
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.324229)
+[2026-05-02 20:11:26,715][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed10090_rf0.5_bondmpo1 | val=0.3242
+[2026-05-02 20:11:26,717][HYDRA] 	#42 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:11:26,890][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed32874_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03851 | quality: -0.13574
+        | Val:   loss: 0.03634 | quality: -0.12794
+
+Epoch 1 | Train: loss: 0.02539 | quality: 0.25133
+        | Val:   loss: 0.02335 | quality: 0.27534
+ *
+Epoch 2 | Train: loss: 0.02293 | quality: 0.32368
+        | Val:   loss: 0.02182 | quality: 0.32271
+ *
+Epoch 3 | Train: loss: 0.02051 | quality: 0.39498
+        | Val:   loss: 0.02157 | quality: 0.33054
+ *
+Epoch 4 | Train: loss: 0.01870 | quality: 0.44842
+        | Val:   loss: 0.02297 | quality: 0.28713
+
+Epoch 5 | Train: loss: 0.01735 | quality: 0.48826
+        | Val:   loss: 0.02301 | quality: 0.28598
+
+Epoch 6 | Train: loss: 0.01638 | quality: 0.51698
+        | Val:   loss: 0.02355 | quality: 0.26904
+
+Epoch 7 | Train: loss: 0.01590 | quality: 0.53118
+        | Val:   loss: 0.02347 | quality: 0.27149
+
+Epoch 8 | Train: loss: 0.01570 | quality: 0.53698
+        | Val:   loss: 0.02394 | quality: 0.25713
+
+Epoch 9 | Train: loss: 0.01559 | quality: 0.54009
+        | Val:   loss: 0.02412 | quality: 0.25144
+
+Epoch 10 | Train: loss: 0.01554 | quality: 0.54183
+        | Val:   loss: 0.02418 | quality: 0.24943
+
+Epoch 11 | Train: loss: 0.01550 | quality: 0.54288
+        | Val:   loss: 0.02420 | quality: 0.24881
+
+Epoch 12 | Train: loss: 0.01548 | quality: 0.54358
+        | Val:   loss: 0.02421 | quality: 0.24876
+
+Epoch 13 | Train: loss: 0.01546 | quality: 0.54409
+        | Val:   loss: 0.02420 | quality: 0.24885
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.330542)
+[2026-05-02 20:12:14,059][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed32874_rf0.5_bondmpo1 | val=0.3305
+[2026-05-02 20:12:14,061][HYDRA] 	#43 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:12:14,235][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47311_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03480 | quality: -0.02643
+        | Val:   loss: 0.03371 | quality: -0.04620
+
+Epoch 1 | Train: loss: 0.02501 | quality: 0.26241
+        | Val:   loss: 0.02293 | quality: 0.28830
+ *
+Epoch 2 | Train: loss: 0.02245 | quality: 0.33795
+        | Val:   loss: 0.02180 | quality: 0.32337
+ *
+Epoch 3 | Train: loss: 0.02011 | quality: 0.40680
+        | Val:   loss: 0.02101 | quality: 0.34792
+ *
+Epoch 4 | Train: loss: 0.01845 | quality: 0.45579
+        | Val:   loss: 0.02229 | quality: 0.30824
+
+Epoch 5 | Train: loss: 0.01727 | quality: 0.49065
+        | Val:   loss: 0.02353 | quality: 0.26981
+
+Epoch 6 | Train: loss: 0.01658 | quality: 0.51102
+        | Val:   loss: 0.02513 | quality: 0.22008
+
+Epoch 7 | Train: loss: 0.01606 | quality: 0.52628
+        | Val:   loss: 0.02551 | quality: 0.20840
+
+Epoch 8 | Train: loss: 0.01574 | quality: 0.53568
+        | Val:   loss: 0.02456 | quality: 0.23765
+
+Epoch 9 | Train: loss: 0.01564 | quality: 0.53889
+        | Val:   loss: 0.02424 | quality: 0.24771
+
+Epoch 10 | Train: loss: 0.01558 | quality: 0.54046
+        | Val:   loss: 0.02404 | quality: 0.25397
+
+Epoch 11 | Train: loss: 0.01555 | quality: 0.54143
+        | Val:   loss: 0.02392 | quality: 0.25757
+
+Epoch 12 | Train: loss: 0.01553 | quality: 0.54212
+        | Val:   loss: 0.02389 | quality: 0.25872
+
+Epoch 13 | Train: loss: 0.01551 | quality: 0.54263
+        | Val:   loss: 0.02389 | quality: 0.25873
+
+
+Early stopping at epoch 13 (best was epoch 3)
+
+Best epoch: 3 (val_quality=0.347918)
+[2026-05-02 20:13:01,544][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47311_rf0.5_bondmpo1 | val=0.3479
+[2026-05-02 20:13:01,547][HYDRA] 	#44 : model.reduction_factor=0.5 model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:13:01,748][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47303_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03991 | quality: -0.17701
+        | Val:   loss: 0.03805 | quality: -0.18078
+
+Epoch 1 | Train: loss: 0.02514 | quality: 0.25865
+        | Val:   loss: 0.02289 | quality: 0.28951
+ *
+Epoch 2 | Train: loss: 0.02233 | quality: 0.34158
+        | Val:   loss: 0.02180 | quality: 0.32351
+ *
+Epoch 3 | Train: loss: 0.01980 | quality: 0.41599
+        | Val:   loss: 0.02230 | quality: 0.30795
+
+Epoch 4 | Train: loss: 0.01799 | quality: 0.46949
+        | Val:   loss: 0.02320 | quality: 0.28014
+
+Epoch 5 | Train: loss: 0.01699 | quality: 0.49886
+        | Val:   loss: 0.02408 | quality: 0.25275
+
+Epoch 6 | Train: loss: 0.01622 | quality: 0.52174
+        | Val:   loss: 0.02438 | quality: 0.24352
+
+Epoch 7 | Train: loss: 0.01588 | quality: 0.53174
+        | Val:   loss: 0.02385 | quality: 0.25996
+
+Epoch 8 | Train: loss: 0.01571 | quality: 0.53666
+        | Val:   loss: 0.02369 | quality: 0.26480
+
+Epoch 9 | Train: loss: 0.01561 | quality: 0.53949
+        | Val:   loss: 0.02373 | quality: 0.26357
+
+Epoch 10 | Train: loss: 0.01556 | quality: 0.54111
+        | Val:   loss: 0.02375 | quality: 0.26297
+
+Epoch 11 | Train: loss: 0.01553 | quality: 0.54210
+        | Val:   loss: 0.02373 | quality: 0.26366
+
+Epoch 12 | Train: loss: 0.01550 | quality: 0.54278
+        | Val:   loss: 0.02371 | quality: 0.26424
+
+
+Early stopping at epoch 12 (best was epoch 2)
+
+Best epoch: 2 (val_quality=0.323506)
+[2026-05-02 20:13:46,480][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=4 bd=4_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd4_seed47303_rf0.5_bondmpo1 | val=0.3235
+[2026-05-02 20:13:46,483][HYDRA] 	#45 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:13:46,666][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed42_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04012 | quality: -0.18312
+        | Val:   loss: 0.03793 | quality: -0.17717
+
+Epoch 1 | Train: loss: 0.02465 | quality: 0.27311
+        | Val:   loss: 0.02283 | quality: 0.29133
+ *
+Epoch 2 | Train: loss: 0.02190 | quality: 0.35412
+        | Val:   loss: 0.02135 | quality: 0.33747
+ *
+Epoch 3 | Train: loss: 0.02031 | quality: 0.40116
+        | Val:   loss: 0.02127 | quality: 0.33989
+ *
+Epoch 4 | Train: loss: 0.01929 | quality: 0.43122
+        | Val:   loss: 0.02111 | quality: 0.34496
+ *
+Epoch 5 | Train: loss: 0.01900 | quality: 0.43963
+        | Val:   loss: 0.02126 | quality: 0.34005
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44030
+        | Val:   loss: 0.02129 | quality: 0.33922
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33865
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33849
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.344956)
+[2026-05-02 20:16:03,527][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed42_rf0.5_bondmpo1 | val=0.3450
+[2026-05-02 20:16:03,530][HYDRA] 	#46 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:16:03,703][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed10090_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.05071 | quality: -0.49544
+        | Val:   loss: 0.04777 | quality: -0.48249
+
+Epoch 1 | Train: loss: 0.02512 | quality: 0.25920
+        | Val:   loss: 0.02350 | quality: 0.27076
+ *
+Epoch 2 | Train: loss: 0.02281 | quality: 0.32728
+        | Val:   loss: 0.02221 | quality: 0.31071
+ *
+Epoch 3 | Train: loss: 0.02072 | quality: 0.38905
+        | Val:   loss: 0.02116 | quality: 0.34316
+ *
+Epoch 4 | Train: loss: 0.01947 | quality: 0.42579
+        | Val:   loss: 0.02094 | quality: 0.35010
+ *
+Epoch 5 | Train: loss: 0.01909 | quality: 0.43713
+        | Val:   loss: 0.02079 | quality: 0.35477
+ *
+Epoch 6 | Train: loss: 0.01899 | quality: 0.43999
+        | Val:   loss: 0.02114 | quality: 0.34378
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44031
+        | Val:   loss: 0.02127 | quality: 0.33981
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33876
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33855
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33855
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33855
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33855
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33855
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33855
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33854
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.354771)
+[2026-05-02 20:18:30,137][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed10090_rf0.5_bondmpo1 | val=0.3548
+[2026-05-02 20:18:30,139][HYDRA] 	#47 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:18:30,312][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed32874_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03983 | quality: -0.17462
+        | Val:   loss: 0.03620 | quality: -0.12355
+
+Epoch 1 | Train: loss: 0.02472 | quality: 0.27109
+        | Val:   loss: 0.02282 | quality: 0.29185
+ *
+Epoch 2 | Train: loss: 0.02182 | quality: 0.35642
+        | Val:   loss: 0.02146 | quality: 0.33403
+ *
+Epoch 3 | Train: loss: 0.02021 | quality: 0.40402
+        | Val:   loss: 0.02108 | quality: 0.34588
+ *
+Epoch 4 | Train: loss: 0.01924 | quality: 0.43248
+        | Val:   loss: 0.02110 | quality: 0.34516
+ *
+Epoch 5 | Train: loss: 0.01900 | quality: 0.43959
+        | Val:   loss: 0.02122 | quality: 0.34159
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44029
+        | Val:   loss: 0.02128 | quality: 0.33947
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33872
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33852
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.345162)
+[2026-05-02 20:20:46,510][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed32874_rf0.5_bondmpo1 | val=0.3452
+[2026-05-02 20:20:46,513][HYDRA] 	#48 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:20:46,711][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47311_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03989 | quality: -0.17651
+        | Val:   loss: 0.03840 | quality: -0.19165
+
+Epoch 1 | Train: loss: 0.02463 | quality: 0.27362
+        | Val:   loss: 0.02276 | quality: 0.29359
+ *
+Epoch 2 | Train: loss: 0.02241 | quality: 0.33912
+        | Val:   loss: 0.02150 | quality: 0.33287
+ *
+Epoch 3 | Train: loss: 0.02037 | quality: 0.39914
+        | Val:   loss: 0.02104 | quality: 0.34713
+ *
+Epoch 4 | Train: loss: 0.01944 | quality: 0.42679
+        | Val:   loss: 0.02093 | quality: 0.35038
+ *
+Epoch 5 | Train: loss: 0.01903 | quality: 0.43882
+        | Val:   loss: 0.02105 | quality: 0.34669
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44020
+        | Val:   loss: 0.02123 | quality: 0.34111
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02129 | quality: 0.33915
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33863
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33851
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33851
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33851
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33851
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33851
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33851
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.350378)
+[2026-05-02 20:23:04,784][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47311_rf0.5_bondmpo1 | val=0.3504
+[2026-05-02 20:23:04,787][HYDRA] 	#49 : model.reduction_factor=0.5 model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:23:04,960][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47303_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04579 | quality: -0.35039
+        | Val:   loss: 0.04505 | quality: -0.39816
+
+Epoch 1 | Train: loss: 0.02470 | quality: 0.27157
+        | Val:   loss: 0.02272 | quality: 0.29487
+ *
+Epoch 2 | Train: loss: 0.02220 | quality: 0.34530
+        | Val:   loss: 0.02131 | quality: 0.33853
+ *
+Epoch 3 | Train: loss: 0.02020 | quality: 0.40419
+        | Val:   loss: 0.02115 | quality: 0.34367
+ *
+Epoch 4 | Train: loss: 0.01930 | quality: 0.43080
+        | Val:   loss: 0.02106 | quality: 0.34646
+ *
+Epoch 5 | Train: loss: 0.01903 | quality: 0.43884
+        | Val:   loss: 0.02121 | quality: 0.34163
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44014
+        | Val:   loss: 0.02127 | quality: 0.33977
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44031
+        | Val:   loss: 0.02130 | quality: 0.33883
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33853
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.346462)
+[2026-05-02 20:25:32,675][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=12_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd12_seed47303_rf0.5_bondmpo1 | val=0.3465
+[2026-05-02 20:25:32,679][HYDRA] 	#50 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:25:32,886][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed42_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03871 | quality: -0.14177
+        | Val:   loss: 0.03647 | quality: -0.13194
+
+Epoch 1 | Train: loss: 0.02507 | quality: 0.26061
+        | Val:   loss: 0.02294 | quality: 0.28807
+ *
+Epoch 2 | Train: loss: 0.02231 | quality: 0.34211
+        | Val:   loss: 0.02157 | quality: 0.33056
+ *
+Epoch 3 | Train: loss: 0.02083 | quality: 0.38557
+        | Val:   loss: 0.02120 | quality: 0.34211
+ *
+Epoch 4 | Train: loss: 0.01950 | quality: 0.42488
+        | Val:   loss: 0.02110 | quality: 0.34524
+ *
+Epoch 5 | Train: loss: 0.01905 | quality: 0.43824
+        | Val:   loss: 0.02113 | quality: 0.34410
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44012
+        | Val:   loss: 0.02126 | quality: 0.34006
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44032
+        | Val:   loss: 0.02130 | quality: 0.33886
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33855
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.345235)
+[2026-05-02 20:26:34,920][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed42_rf0.5_bondmpo1 | val=0.3452
+[2026-05-02 20:26:34,925][HYDRA] 	#51 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:26:35,100][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed10090_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04983 | quality: -0.46966
+        | Val:   loss: 0.04776 | quality: -0.48217
+
+Epoch 1 | Train: loss: 0.02521 | quality: 0.25663
+        | Val:   loss: 0.02302 | quality: 0.28562
+ *
+Epoch 2 | Train: loss: 0.02271 | quality: 0.33025
+        | Val:   loss: 0.02160 | quality: 0.32950
+ *
+Epoch 3 | Train: loss: 0.02096 | quality: 0.38176
+        | Val:   loss: 0.02117 | quality: 0.34304
+ *
+Epoch 4 | Train: loss: 0.01977 | quality: 0.41705
+        | Val:   loss: 0.02115 | quality: 0.34349
+ *
+Epoch 5 | Train: loss: 0.01905 | quality: 0.43831
+        | Val:   loss: 0.02124 | quality: 0.34098
+
+Epoch 6 | Train: loss: 0.01899 | quality: 0.44009
+        | Val:   loss: 0.02129 | quality: 0.33924
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44032
+        | Val:   loss: 0.02130 | quality: 0.33889
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33862
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33850
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33850
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33850
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33850
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33850
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33850
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.343491)
+[2026-05-02 20:27:35,948][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed10090_rf0.5_bondmpo1 | val=0.3435
+[2026-05-02 20:27:35,952][HYDRA] 	#52 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:27:36,144][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed32874_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03790 | quality: -0.11780
+        | Val:   loss: 0.03518 | quality: -0.09187
+
+Epoch 1 | Train: loss: 0.02525 | quality: 0.25543
+        | Val:   loss: 0.02347 | quality: 0.27155
+ *
+Epoch 2 | Train: loss: 0.02246 | quality: 0.33754
+        | Val:   loss: 0.02175 | quality: 0.32499
+ *
+Epoch 3 | Train: loss: 0.02086 | quality: 0.38473
+        | Val:   loss: 0.02137 | quality: 0.33676
+ *
+Epoch 4 | Train: loss: 0.01957 | quality: 0.42295
+        | Val:   loss: 0.02123 | quality: 0.34108
+ *
+Epoch 5 | Train: loss: 0.01905 | quality: 0.43809
+        | Val:   loss: 0.02126 | quality: 0.34008
+
+Epoch 6 | Train: loss: 0.01899 | quality: 0.43995
+        | Val:   loss: 0.02128 | quality: 0.33951
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44030
+        | Val:   loss: 0.02130 | quality: 0.33900
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33861
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33850
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33849
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33849
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33849
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33849
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.341085)
+[2026-05-02 20:28:29,758][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed32874_rf0.5_bondmpo1 | val=0.3411
+[2026-05-02 20:28:29,763][HYDRA] 	#53 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:28:29,946][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47311_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03708 | quality: -0.09360
+        | Val:   loss: 0.03604 | quality: -0.11845
+
+Epoch 1 | Train: loss: 0.02536 | quality: 0.25216
+        | Val:   loss: 0.02336 | quality: 0.27491
+ *
+Epoch 2 | Train: loss: 0.02251 | quality: 0.33604
+        | Val:   loss: 0.02196 | quality: 0.31842
+ *
+Epoch 3 | Train: loss: 0.02093 | quality: 0.38278
+        | Val:   loss: 0.02152 | quality: 0.33207
+ *
+Epoch 4 | Train: loss: 0.01961 | quality: 0.42165
+        | Val:   loss: 0.02110 | quality: 0.34502
+ *
+Epoch 5 | Train: loss: 0.01905 | quality: 0.43822
+        | Val:   loss: 0.02122 | quality: 0.34156
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44014
+        | Val:   loss: 0.02127 | quality: 0.33996
+
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44032
+        | Val:   loss: 0.02130 | quality: 0.33888
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33856
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33848
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.345017)
+[2026-05-02 20:29:20,841][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47311_rf0.5_bondmpo1 | val=0.3450
+[2026-05-02 20:29:20,843][HYDRA] 	#54 : model.reduction_factor=0.5 model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:29:21,015][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47303_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04089 | quality: -0.20585
+        | Val:   loss: 0.03934 | quality: -0.22089
+
+Epoch 1 | Train: loss: 0.02488 | quality: 0.26626
+        | Val:   loss: 0.02301 | quality: 0.28576
+ *
+Epoch 2 | Train: loss: 0.02275 | quality: 0.32905
+        | Val:   loss: 0.02161 | quality: 0.32927
+ *
+Epoch 3 | Train: loss: 0.02082 | quality: 0.38595
+        | Val:   loss: 0.02136 | quality: 0.33723
+ *
+Epoch 4 | Train: loss: 0.01955 | quality: 0.42339
+        | Val:   loss: 0.02129 | quality: 0.33932
+ *
+Epoch 5 | Train: loss: 0.01903 | quality: 0.43868
+        | Val:   loss: 0.02133 | quality: 0.33814
+
+Epoch 6 | Train: loss: 0.01898 | quality: 0.44018
+        | Val:   loss: 0.02130 | quality: 0.33887
+ *
+Epoch 7 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33865
+
+Epoch 8 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02131 | quality: 0.33850
+
+Epoch 9 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 11 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33846
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+Epoch 16 | Train: loss: 0.01898 | quality: 0.44033
+        | Val:   loss: 0.02132 | quality: 0.33847
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.338870)
+[2026-05-02 20:30:18,686][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=8_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd8_seed47303_rf0.5_bondmpo1 | val=0.3389
+[2026-05-02 20:30:18,688][HYDRA] 	#55 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:30:18,860][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed42_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03834 | quality: -0.13081
+        | Val:   loss: 0.03685 | quality: -0.14373
+
+Epoch 1 | Train: loss: 0.02571 | quality: 0.24170
+        | Val:   loss: 0.02374 | quality: 0.26320
+ *
+Epoch 2 | Train: loss: 0.02384 | quality: 0.29702
+        | Val:   loss: 0.02209 | quality: 0.31437
+ *
+Epoch 3 | Train: loss: 0.02238 | quality: 0.33988
+        | Val:   loss: 0.02156 | quality: 0.33091
+ *
+Epoch 4 | Train: loss: 0.02066 | quality: 0.39078
+        | Val:   loss: 0.02121 | quality: 0.34177
+ *
+Epoch 5 | Train: loss: 0.01968 | quality: 0.41948
+        | Val:   loss: 0.02109 | quality: 0.34556
+ *
+Epoch 6 | Train: loss: 0.01917 | quality: 0.43455
+        | Val:   loss: 0.02141 | quality: 0.33560
+
+Epoch 7 | Train: loss: 0.01907 | quality: 0.43771
+        | Val:   loss: 0.02144 | quality: 0.33478
+
+Epoch 8 | Train: loss: 0.01902 | quality: 0.43893
+        | Val:   loss: 0.02138 | quality: 0.33635
+
+Epoch 9 | Train: loss: 0.01901 | quality: 0.43931
+        | Val:   loss: 0.02136 | quality: 0.33718
+
+Epoch 10 | Train: loss: 0.01901 | quality: 0.43951
+        | Val:   loss: 0.02134 | quality: 0.33766
+
+Epoch 11 | Train: loss: 0.01900 | quality: 0.43965
+        | Val:   loss: 0.02133 | quality: 0.33797
+
+Epoch 12 | Train: loss: 0.01900 | quality: 0.43977
+        | Val:   loss: 0.02132 | quality: 0.33822
+
+Epoch 13 | Train: loss: 0.01899 | quality: 0.43989
+        | Val:   loss: 0.02132 | quality: 0.33844
+
+Epoch 14 | Train: loss: 0.01899 | quality: 0.44000
+        | Val:   loss: 0.02131 | quality: 0.33861
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44011
+        | Val:   loss: 0.02131 | quality: 0.33872
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.345559)
+[2026-05-02 20:30:45,362][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed42_rf0.5_bondmpo1 | val=0.3456
+[2026-05-02 20:30:45,364][HYDRA] 	#56 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:30:45,535][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed10090_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.04725 | quality: -0.39343
+        | Val:   loss: 0.04501 | quality: -0.39686
+
+Epoch 1 | Train: loss: 0.02694 | quality: 0.20557
+        | Val:   loss: 0.02493 | quality: 0.22620
+ *
+Epoch 2 | Train: loss: 0.02396 | quality: 0.29327
+        | Val:   loss: 0.02219 | quality: 0.31140
+ *
+Epoch 3 | Train: loss: 0.02223 | quality: 0.34440
+        | Val:   loss: 0.02158 | quality: 0.33022
+ *
+Epoch 4 | Train: loss: 0.02059 | quality: 0.39278
+        | Val:   loss: 0.02147 | quality: 0.33380
+ *
+Epoch 5 | Train: loss: 0.01962 | quality: 0.42140
+        | Val:   loss: 0.02162 | quality: 0.32897
+
+Epoch 6 | Train: loss: 0.01924 | quality: 0.43253
+        | Val:   loss: 0.02158 | quality: 0.33029
+
+Epoch 7 | Train: loss: 0.01912 | quality: 0.43614
+        | Val:   loss: 0.02166 | quality: 0.32778
+
+Epoch 8 | Train: loss: 0.01905 | quality: 0.43823
+        | Val:   loss: 0.02159 | quality: 0.32986
+
+Epoch 9 | Train: loss: 0.01902 | quality: 0.43921
+        | Val:   loss: 0.02151 | quality: 0.33241
+
+Epoch 10 | Train: loss: 0.01900 | quality: 0.43962
+        | Val:   loss: 0.02145 | quality: 0.33420
+ *
+Epoch 11 | Train: loss: 0.01899 | quality: 0.43982
+        | Val:   loss: 0.02141 | quality: 0.33540
+ *
+Epoch 12 | Train: loss: 0.01899 | quality: 0.43994
+        | Val:   loss: 0.02139 | quality: 0.33618
+
+Epoch 13 | Train: loss: 0.01899 | quality: 0.44002
+        | Val:   loss: 0.02137 | quality: 0.33669
+ *
+Epoch 14 | Train: loss: 0.01899 | quality: 0.44007
+        | Val:   loss: 0.02136 | quality: 0.33702
+
+Epoch 15 | Train: loss: 0.01898 | quality: 0.44010
+        | Val:   loss: 0.02136 | quality: 0.33723
+
+Epoch 16 | Train: loss: 0.01898 | quality: 0.44013
+        | Val:   loss: 0.02135 | quality: 0.33738
+
+Epoch 17 | Train: loss: 0.01898 | quality: 0.44016
+        | Val:   loss: 0.02135 | quality: 0.33749
+
+Epoch 18 | Train: loss: 0.01898 | quality: 0.44018
+        | Val:   loss: 0.02134 | quality: 0.33757
+
+Epoch 19 | Train: loss: 0.01898 | quality: 0.44020
+        | Val:   loss: 0.02134 | quality: 0.33765
+
+Epoch 20 | Train: loss: 0.01898 | quality: 0.44021
+        | Val:   loss: 0.02134 | quality: 0.33771
+ *
+
+Best epoch: 20 (val_quality=0.337712)
+[2026-05-02 20:31:20,190][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed10090_rf0.5_bondmpo1 | val=0.3377
+[2026-05-02 20:31:20,193][HYDRA] 	#57 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:31:20,601][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed32874_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03867 | quality: -0.14048
+        | Val:   loss: 0.03650 | quality: -0.13266
+
+Epoch 1 | Train: loss: 0.02586 | quality: 0.23732
+        | Val:   loss: 0.02396 | quality: 0.25649
+ *
+Epoch 2 | Train: loss: 0.02381 | quality: 0.29774
+        | Val:   loss: 0.02210 | quality: 0.31422
+ *
+Epoch 3 | Train: loss: 0.02235 | quality: 0.34097
+        | Val:   loss: 0.02164 | quality: 0.32832
+ *
+Epoch 4 | Train: loss: 0.02053 | quality: 0.39467
+        | Val:   loss: 0.02121 | quality: 0.34165
+ *
+Epoch 5 | Train: loss: 0.01954 | quality: 0.42375
+        | Val:   loss: 0.02153 | quality: 0.33183
+
+Epoch 6 | Train: loss: 0.01919 | quality: 0.43415
+        | Val:   loss: 0.02154 | quality: 0.33146
+
+Epoch 7 | Train: loss: 0.01905 | quality: 0.43814
+        | Val:   loss: 0.02149 | quality: 0.33316
+
+Epoch 8 | Train: loss: 0.01902 | quality: 0.43907
+        | Val:   loss: 0.02141 | quality: 0.33541
+
+Epoch 9 | Train: loss: 0.01900 | quality: 0.43952
+        | Val:   loss: 0.02136 | quality: 0.33704
+
+Epoch 10 | Train: loss: 0.01900 | quality: 0.43980
+        | Val:   loss: 0.02133 | quality: 0.33792
+
+Epoch 11 | Train: loss: 0.01899 | quality: 0.43999
+        | Val:   loss: 0.02132 | quality: 0.33828
+
+Epoch 12 | Train: loss: 0.01898 | quality: 0.44010
+        | Val:   loss: 0.02132 | quality: 0.33837
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44017
+        | Val:   loss: 0.02132 | quality: 0.33835
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44022
+        | Val:   loss: 0.02132 | quality: 0.33831
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.341647)
+[2026-05-02 20:31:45,344][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed32874_rf0.5_bondmpo1 | val=0.3416
+[2026-05-02 20:31:45,347][HYDRA] 	#58 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:31:45,517][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47311_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03540 | quality: -0.04398
+        | Val:   loss: 0.03419 | quality: -0.06119
+
+Epoch 1 | Train: loss: 0.02539 | quality: 0.25109
+        | Val:   loss: 0.02325 | quality: 0.27852
+ *
+Epoch 2 | Train: loss: 0.02365 | quality: 0.30258
+        | Val:   loss: 0.02189 | quality: 0.32069
+ *
+Epoch 3 | Train: loss: 0.02232 | quality: 0.34182
+        | Val:   loss: 0.02137 | quality: 0.33690
+ *
+Epoch 4 | Train: loss: 0.02047 | quality: 0.39621
+        | Val:   loss: 0.02113 | quality: 0.34416
+ *
+Epoch 5 | Train: loss: 0.01970 | quality: 0.41888
+        | Val:   loss: 0.02139 | quality: 0.33621
+
+Epoch 6 | Train: loss: 0.01926 | quality: 0.43203
+        | Val:   loss: 0.02156 | quality: 0.33088
+
+Epoch 7 | Train: loss: 0.01911 | quality: 0.43645
+        | Val:   loss: 0.02160 | quality: 0.32966
+
+Epoch 8 | Train: loss: 0.01905 | quality: 0.43810
+        | Val:   loss: 0.02152 | quality: 0.33200
+
+Epoch 9 | Train: loss: 0.01902 | quality: 0.43911
+        | Val:   loss: 0.02145 | quality: 0.33432
+
+Epoch 10 | Train: loss: 0.01900 | quality: 0.43963
+        | Val:   loss: 0.02140 | quality: 0.33600
+
+Epoch 11 | Train: loss: 0.01899 | quality: 0.43990
+        | Val:   loss: 0.02136 | quality: 0.33706
+
+Epoch 12 | Train: loss: 0.01899 | quality: 0.44005
+        | Val:   loss: 0.02134 | quality: 0.33770
+
+Epoch 13 | Train: loss: 0.01898 | quality: 0.44013
+        | Val:   loss: 0.02133 | quality: 0.33811
+
+Epoch 14 | Train: loss: 0.01898 | quality: 0.44019
+        | Val:   loss: 0.02132 | quality: 0.33837
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.344160)
+[2026-05-02 20:32:10,163][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47311_rf0.5_bondmpo1 | val=0.3442
+[2026-05-02 20:32:10,165][HYDRA] 	#59 : model.reduction_factor=0.5 model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:32:10,336][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47303_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.03962 | quality: -0.16844
+        | Val:   loss: 0.03774 | quality: -0.17125
+
+Epoch 1 | Train: loss: 0.02569 | quality: 0.24237
+        | Val:   loss: 0.02361 | quality: 0.26719
+ *
+Epoch 2 | Train: loss: 0.02387 | quality: 0.29611
+        | Val:   loss: 0.02214 | quality: 0.31297
+ *
+Epoch 3 | Train: loss: 0.02230 | quality: 0.34233
+        | Val:   loss: 0.02162 | quality: 0.32892
+ *
+Epoch 4 | Train: loss: 0.02065 | quality: 0.39092
+        | Val:   loss: 0.02130 | quality: 0.33905
+ *
+Epoch 5 | Train: loss: 0.01974 | quality: 0.41789
+        | Val:   loss: 0.02102 | quality: 0.34754
+ *
+Epoch 6 | Train: loss: 0.01918 | quality: 0.43447
+        | Val:   loss: 0.02136 | quality: 0.33719
+
+Epoch 7 | Train: loss: 0.01909 | quality: 0.43715
+        | Val:   loss: 0.02144 | quality: 0.33466
+
+Epoch 8 | Train: loss: 0.01905 | quality: 0.43833
+        | Val:   loss: 0.02146 | quality: 0.33395
+
+Epoch 9 | Train: loss: 0.01903 | quality: 0.43890
+        | Val:   loss: 0.02144 | quality: 0.33462
+
+Epoch 10 | Train: loss: 0.01902 | quality: 0.43921
+        | Val:   loss: 0.02141 | quality: 0.33570
+
+Epoch 11 | Train: loss: 0.01901 | quality: 0.43938
+        | Val:   loss: 0.02138 | quality: 0.33644
+
+Epoch 12 | Train: loss: 0.01901 | quality: 0.43951
+        | Val:   loss: 0.02136 | quality: 0.33697
+
+Epoch 13 | Train: loss: 0.01900 | quality: 0.43960
+        | Val:   loss: 0.02135 | quality: 0.33737
+
+Epoch 14 | Train: loss: 0.01900 | quality: 0.43967
+        | Val:   loss: 0.02134 | quality: 0.33770
+
+Epoch 15 | Train: loss: 0.01900 | quality: 0.43974
+        | Val:   loss: 0.02133 | quality: 0.33798
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.347536)
+[2026-05-02 20:32:36,861][__main__][INFO] - ✓ DONE LMPO2TypeI/ai4i/NTN L=3 bd=4_rf0.5 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L3_bd4_seed47303_rf0.5_bondmpo1 | val=0.3475
+[2026-05-02 20:32:36,864][HYDRA] 	#60 : model.reduction_factor=0.9 model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=ai4i
+[2026-05-02 20:32:37,035][__main__][INFO] - ▶ RUN LMPO2TypeI/ai4i/NTN L=4 bd=12_rf0.9 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/ai4i/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.9_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.26735 | quality: -6.88458
+        | Val:   loss: 0.26978 | quality: -7.37246
+
+
+
+PS:
+
+Read file <logs/28338018_14.err> for stderr output of this job.
+

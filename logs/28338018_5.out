@@ -1,0 +1,626 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28338018[5]: <ntn_grid_full[1-150]%20> in cluster <dcc> Done
+
+Job <ntn_grid_full[1-150]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sat May  2 18:52:02 2026
+Job was executed on host(s) <6*n-62-11-57>, in queue <hpc>, as user <nicci> in cluster <dcc> at Sat May  2 18:52:04 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sat May  2 18:52:04 2026
+Terminated at Sat May  2 20:33:07 2026
+Results reported at Sat May  2 20:33:07 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-150]%20"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+DATASETS=(
+    "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+    "car_evaluation" "concrete" "energy_efficiency" "hearth"
+    "iris" "mushrooms" "obesity" "popularity" "realstate"
+    "seoulBike" "student_dropout" "student_perf" "wine"
+    "winequalityc"
+)
+
+COMPLETED_DATASETS=(
+    "abalone" "bike" "concrete" "energy_efficiency"
+    "iris" "realstate" )
+
+# Filter datasets
+FILTERED_DATASETS=()
+for ds in "${DATASETS[@]}"; do
+    skip=false
+    for completed in "${COMPLETED_DATASETS[@]}"; do
+        if [[ "$ds" == "$completed" ]]; then
+            skip=true
+            break
+        fi
+    done
+
+    if ! $skip; then
+        FILTERED_DATASETS+=("$ds")
+    fi
+done
+
+DATASETS=("${FILTERED_DATASETS[@]}")
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   35046.00 sec.
+    Max Memory :                                 2360 MB
+    Average Memory :                             1467.20 MB
+    Total Requested Memory :                     4500.00 MB
+    Delta Memory :                               2140.00 MB
+    Max Swap :                                   -
+    Max Processes :                              12
+    Max Threads :                                65
+    Run time :                                   6063 sec.
+    Turnaround time :                            6065 sec.
+
+The output (if any) follows:
+
+Task 5: Dataset=adult, Model=mpo2, Experiment=uci_ntn_sweep
+[2026-05-02 18:52:18,962][HYDRA] Launching 30 jobs locally
+[2026-05-02 18:52:18,963][HYDRA] 	#0 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 18:52:19,382][utils.tracking][INFO] - Loaded 17971 tracked runs from runs_tracking.csv
+[2026-05-02 18:52:19,385][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 440.76747 | quality: 0.25418
+        | Val:   loss: 554.55085 | quality: 0.25744
+Epoch 1 | Train: loss: 16332501663483145385809655641622004770310938776595470736684663754084614593767805111770058776535981122945035031145920073939973195706662912.00000 | quality: 0.09012
+        | Val:   loss: 22017845962384930780510270185531951730683561816460623619906249740407257579610211081038090832049806056511035487610115952434099778259779584.00000 | quality: 0.09446
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:00:07,107][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed42 | val=0.0945
+[2026-05-02 19:00:07,111][HYDRA] 	#1 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:00:07,266][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 170.56884 | quality: 0.29887
+        | Val:   loss: 175.39204 | quality: 0.29348
+Epoch 1 | Train: loss: 185765566674412007463907916100438660797882710903484803165817143296.00000 | quality: 0.08547
+        | Val:   loss: 250151440467104613302511521386741758723717015258222042656419086336.00000 | quality: 0.08681
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:08:25,626][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed10090 | val=0.0868
+[2026-05-02 19:08:25,630][HYDRA] 	#2 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:08:25,789][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 194.52483 | quality: 0.22414
+        | Val:   loss: 203.32335 | quality: 0.21212
+Epoch 1 | Train: loss: 26170095072964077093068298173296102382574499790848.00000 | quality: 0.15490
+        | Val:   loss: 27059816652161034583904919345615485130660254842880.00000 | quality: 0.16011
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:16:53,817][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed32874 | val=0.1601
+[2026-05-02 19:16:53,820][HYDRA] 	#3 : model.L=4 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:16:53,979][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=12 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 245.70409 | quality: 0.20454
+        | Val:   loss: 266.38962 | quality: 0.20612
+Epoch 1 | Train: loss: 110587841175341079058605393777220225657435467663019620511454841576238540955006797813894424397584299528132299185225624166652005050126522324150099862524934116080802514708791619266288225688351859077992346132903280184549470462908860323125384996087706029863037522422175537912774528476381184.00000 | quality: 0.08567
+        | Val:   loss: 148892498700272806742653032691718414234772117395556192123179589081989339699511679302687413528533448293485994980564023027121373314411761544292730136886329583331429360243027553761189379895008420540697578865333600179073691287145798173956424068896059990515436300176822650960692025229312000.00000 | quality: 0.08654
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:25:24,610][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=12 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed47311 | val=0.0865
+[2026-05-02 19:25:24,613][HYDRA] 	#4 : model.L=4 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:25:24,776][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=12 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 218.33997 | quality: 0.23098
+        | Val:   loss: 238.13519 | quality: 0.22113
+Epoch 1 | Train: loss: 1012263290951908496266454736990953516465366426404933174478033891851014213334488503174746341376.00000 | quality: 0.08532
+        | Val:   loss: 1364648387726784739003632701354017727417431746032769312660422919398133872316359494612329431040.00000 | quality: 0.08750
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:33:45,887][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=12 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd12_seed47303 | val=0.0875
+[2026-05-02 19:33:45,903][HYDRA] 	#5 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:33:46,064][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 242.93415 | quality: 0.22738
+        | Val:   loss: 269.12841 | quality: 0.22250
+Epoch 1 | Train: loss: 2911847332029094821660828427807230647074816.00000 | quality: 0.16581
+        | Val:   loss: 3005852634067798197832260473657427132153856.00000 | quality: 0.17226
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:36:05,456][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed42 | val=0.1723
+[2026-05-02 19:36:05,459][HYDRA] 	#6 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:36:05,610][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 200.11418 | quality: 0.26509
+        | Val:   loss: 208.98413 | quality: 0.26850
+Epoch 1 | Train: loss: 61204545925168639180659389176770857130953514418176.00000 | quality: 0.15894
+        | Val:   loss: 82488805142696019670484840078387570318810407763968.00000 | quality: 0.16257
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:38:13,833][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed10090 | val=0.1626
+[2026-05-02 19:38:13,836][HYDRA] 	#7 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:38:14,173][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 193.73412 | quality: 0.25921
+        | Val:   loss: 202.74914 | quality: 0.26072
+Epoch 1 | Train: loss: 726880045806852570859111576310206431232.00000 | quality: 0.17979
+        | Val:   loss: 749548621049368229024687616374528278528.00000 | quality: 0.18195
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:40:18,614][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed32874 | val=0.1820
+[2026-05-02 19:40:18,617][HYDRA] 	#8 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:40:18,770][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 260.98134 | quality: 0.25461
+        | Val:   loss: 305.71936 | quality: 0.25526
+Epoch 1 | Train: loss: 19205266722748858032942427804582379995292712820539392.00000 | quality: 0.10989
+        | Val:   loss: 25881912926444851749606311401479533507956283348615168.00000 | quality: 0.11466
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:42:25,724][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed47311 | val=0.1147
+[2026-05-02 19:42:25,727][HYDRA] 	#9 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:42:25,885][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 175.13483 | quality: 0.26798
+        | Val:   loss: 204.20449 | quality: 0.27819
+Epoch 1 | Train: loss: 195831030633705999761718257826746335232.00000 | quality: 0.17705
+        | Val:   loss: 201580363282955827298685591374660632576.00000 | quality: 0.18032
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:44:38,838][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd8_seed47303 | val=0.1803
+[2026-05-02 19:44:38,841][HYDRA] 	#10 : model.L=4 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:44:39,003][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 159.15641 | quality: 0.29395
+        | Val:   loss: 152.93954 | quality: 0.28078
+Epoch 1 | Train: loss: 1874980621554127104.00000 | quality: 0.28623
+        | Val:   loss: 1936108575210339840.00000 | quality: 0.28938
+ *
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:45:14,929][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed42 | val=0.2894
+[2026-05-02 19:45:14,932][HYDRA] 	#11 : model.L=4 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:45:15,094][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 273.87951 | quality: 0.24985
+        | Val:   loss: 317.59163 | quality: 0.25566
+Epoch 1 | Train: loss: 664554834243755685600645322246597482905600.00000 | quality: 0.09208
+        | Val:   loss: 894401239138762795756851266529912474828800.00000 | quality: 0.09118
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:45:42,039][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed10090 | val=0.0912
+[2026-05-02 19:45:42,042][HYDRA] 	#12 : model.L=4 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:45:42,203][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=4 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 202.13167 | quality: 0.25964
+        | Val:   loss: 236.78754 | quality: 0.25007
+Epoch 1 | Train: loss: 4800823307525697307773211883965381875859456.00000 | quality: 0.10044
+        | Val:   loss: 6455691464036848126653748957962576555147264.00000 | quality: 0.10156
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:46:08,904][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=4 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed32874 | val=0.1016
+[2026-05-02 19:46:08,907][HYDRA] 	#13 : model.L=4 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:46:09,069][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=4 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 194.08322 | quality: 0.23420
+        | Val:   loss: 212.04047 | quality: 0.23765
+Epoch 1 | Train: loss: 70587388554961914671094196862331192901701886735221000365969894090334197880029217374789510263840374909618140904838801181156878046403269493857442145113360251657715531846520879972352.00000 | quality: 0.21524
+        | Val:   loss: 72650380026869440739926832935169591170328671408001969346068240465713799509473256443648936088663362507874763219175232883173564220067377579815523259004856058001647036841030525648896.00000 | quality: 0.22577
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:46:39,611][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=4 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed47311 | val=0.2258
+[2026-05-02 19:46:39,613][HYDRA] 	#14 : model.L=4 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:46:39,787][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=4 bd=4 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 190.87676 | quality: 0.26827
+        | Val:   loss: 213.87160 | quality: 0.26508
+Epoch 1 | Train: loss: 134667590510442094641072522234167296.00000 | quality: 0.14952
+        | Val:   loss: 139131308339123151002226194194104320.00000 | quality: 0.15329
+
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 19:47:06,064][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=4 bd=4 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L4_bd4_seed47303 | val=0.1533
+[2026-05-02 19:47:06,067][HYDRA] 	#15 : model.L=3 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:47:06,226][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 47.33957 | quality: 0.22042
+        | Val:   loss: 47.55309 | quality: 0.21977
+Epoch 1 | Train: loss: 783512670.01596 | quality: 0.18287
+        | Val:   loss: 802424286.05928 | quality: 0.18428
+
+Epoch 2 | Train: loss: 230212928051183019795017365679321634993022997365297549794082816.00000 | quality: 0.17965
+        | Val:   loss: 235625209219930498479010117258704690533028660808313337211256832.00000 | quality: 0.18578
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 19:54:30,071][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed42 | val=0.1858
+[2026-05-02 19:54:30,073][HYDRA] 	#16 : model.L=3 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 19:54:30,264][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 49.90930 | quality: 0.24841
+        | Val:   loss: 51.90503 | quality: 0.24857
+Epoch 1 | Train: loss: 31991205546.73061 | quality: 0.20439
+        | Val:   loss: 42671432835.09592 | quality: 0.20571
+
+Epoch 2 | Train: loss: 36810848054839114076399032700115066551266977002239416115647022426684501372853713580782999653765585480996437250832997469730949696537522258403570618982337587932636412729299818135770531627008.00000 | quality: 0.09532
+        | Val:   loss: 49008273282834051536174163173473676768431614891385265554242153027351357724487969653309353879434024525151714475924604992692716937416421545822915917974358256013912379581795344176791148298240.00000 | quality: 0.09828
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 20:01:27,413][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed10090 | val=0.2057
+[2026-05-02 20:01:27,416][HYDRA] 	#17 : model.L=3 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:01:27,798][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 39.31826 | quality: 0.21056
+        | Val:   loss: 41.74492 | quality: 0.20707
+Epoch 1 | Train: loss: 2213178841.64308 | quality: 0.11758
+        | Val:   loss: 2955692739.74632 | quality: 0.11343
+
+Epoch 2 | Train: loss: 2482751529327027487783348361688559518848317427603983554339875586048.00000 | quality: 0.09436
+        | Val:   loss: 3305807921954922811974295239043681751832609742835966598573402882048.00000 | quality: 0.09705
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 20:07:59,000][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed32874 | val=0.1134
+[2026-05-02 20:07:59,003][HYDRA] 	#18 : model.L=3 model.bond_dim=12 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:07:59,154][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=12 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 35.66113 | quality: 0.26511
+        | Val:   loss: 36.28169 | quality: 0.25812
+Epoch 1 | Train: loss: 15435367.29984 | quality: 0.29147
+        | Val:   loss: 15586414.82571 | quality: 0.28897
+ *
+Epoch 2 | Train: loss: 386833640610337567199077379080192.00000 | quality: 0.18892
+        | Val:   loss: 395903279934193109630530632024064.00000 | quality: 0.19219
+
+Epoch 3 | Train: loss: 4150032452781701747622248733354643689075426483866714096594918972519696760115731381429434385549930174455764515238819665835996198959147432444991762884126412619139878458295658045595854308109582300096757760.00000 | quality: 0.17488
+        | Val:   loss: 4248217650742693549137019212770171615000641969959385183954370317878207412518956354760691704067438018874008242956003448263019930924744988393350286157864931931401758400652803633478645048269478461664395264.00000 | quality: 0.17677
+
+
+✗ NaN loss at epoch 4 - stopping training
+
+✗ Exception at epoch 4: NaN loss encountered during NTN optimization at epoch 4
+[2026-05-02 20:16:27,189][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=12 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed47311 | val=0.2890
+[2026-05-02 20:16:27,192][HYDRA] 	#19 : model.L=3 model.bond_dim=12 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:16:27,378][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=12 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 43.82382 | quality: 0.28813
+        | Val:   loss: 46.14733 | quality: 0.27887
+Epoch 1 | Train: loss: 20411966566.76635 | quality: 0.24066
+        | Val:   loss: 20875089916.18944 | quality: 0.24065
+
+Epoch 2 | Train: loss: 396131514893848493436022793877246388858190668234752.00000 | quality: 0.16625
+        | Val:   loss: 405770002440814569400715916333438729409137502846976.00000 | quality: 0.16981
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 20:22:46,692][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=12 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd12_seed47303 | val=0.2406
+[2026-05-02 20:22:46,695][HYDRA] 	#20 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:22:46,855][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 56.01756 | quality: 0.23335
+        | Val:   loss: 58.93552 | quality: 0.23028
+Epoch 1 | Train: loss: 260209448.22195 | quality: 0.23443
+        | Val:   loss: 322509871.71807 | quality: 0.22959
+ *
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 20:23:55,319][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed42 | val=0.2296
+[2026-05-02 20:23:55,322][HYDRA] 	#21 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:23:55,478][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 42.98528 | quality: 0.23443
+        | Val:   loss: 43.59038 | quality: 0.23082
+Epoch 1 | Train: loss: 77585398.77694 | quality: 0.18649
+        | Val:   loss: 103735904.24510 | quality: 0.18919
+
+Epoch 2 | Train: loss: 4904902104613070891208163867513323520.00000 | quality: 0.08766
+        | Val:   loss: 6530808863106909454989012534084763648.00000 | quality: 0.09091
+
+Epoch 3 | Train: loss: 12298509451648637275976920678204214200080744412074934816389704330056591314477502726740438666246482401931673550602856643529961070120714782873021364781088731870328508510344064532783833800141334667969695947768589975328993486831616.00000 | quality: 0.09120
+        | Val:   loss: 16372585883795110392938153430978252400374401859856272534356153293608985315270117391019477546652212928750244349216027267544399630959324057883900583816274602009165054493580555607049449123557700886106781938871019125595117015007232.00000 | quality: 0.09186
+
+
+✗ NaN loss at epoch 4 - stopping training
+
+✗ Exception at epoch 4: NaN loss encountered during NTN optimization at epoch 4
+[2026-05-02 20:26:02,201][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed10090 | val=0.1892
+[2026-05-02 20:26:02,204][HYDRA] 	#22 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:26:02,354][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 59.72657 | quality: 0.20612
+        | Val:   loss: 67.33476 | quality: 0.20106
+Epoch 1 | Train: loss: 10971844244.64080 | quality: 0.15192
+        | Val:   loss: 14697650689.03174 | quality: 0.15152
+
+Epoch 2 | Train: loss: 84161626409891362511682990749255033387059722929022787800594874809236459689029438421714629183898357071872.00000 | quality: 0.09155
+        | Val:   loss: 112076074350779142875626033365731416389087054030896277094554106041964711310356643259079619056526824570880.00000 | quality: 0.09514
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 20:27:36,890][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed32874 | val=0.1515
+[2026-05-02 20:27:36,893][HYDRA] 	#23 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:27:37,042][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 47.64683 | quality: 0.22753
+        | Val:   loss: 49.92286 | quality: 0.22714
+Epoch 1 | Train: loss: 7298070396.46683 | quality: 0.18918
+        | Val:   loss: 9743313220.23496 | quality: 0.20093
+
+Epoch 2 | Train: loss: 7809643652013565242451162814713503416320.00000 | quality: 0.09740
+        | Val:   loss: 10395142322393173561821257648855463231488.00000 | quality: 0.09992
+
+Epoch 3 | Train: loss: 1020054049338595046964992716646924719551343658364908294698570996144480558358867353650199459862480272953895534914227409536877213121372302464794395246245271994451244044502639381193176407547419900914325284809861553132621226708944525009557511097810944.00000 | quality: 0.09126
+        | Val:   loss: 1357948721394369929913212594782036991291343578557846197119927427992914424772989127716318473577199254076738560122010335093977485685756918434098287292028598379380811110341563795976254229252469109060405566861734953823128933527894563858994461895819264.00000 | quality: 0.09282
+
+
+✗ NaN loss at epoch 4 - stopping training
+
+✗ Exception at epoch 4: NaN loss encountered during NTN optimization at epoch 4
+[2026-05-02 20:29:45,132][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed47311 | val=0.2009
+[2026-05-02 20:29:45,135][HYDRA] 	#24 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:29:45,293][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 45.10711 | quality: 0.18652
+        | Val:   loss: 45.72345 | quality: 0.18851
+Epoch 1 | Train: loss: 67067569.25922 | quality: 0.28942
+        | Val:   loss: 68454813.81082 | quality: 0.29293
+ *
+
+✗ NaN loss at epoch 2 - stopping training
+
+✗ Exception at epoch 2: NaN loss encountered during NTN optimization at epoch 2
+[2026-05-02 20:30:52,964][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd8_seed47303 | val=0.2929
+[2026-05-02 20:30:52,967][HYDRA] 	#25 : model.L=3 model.bond_dim=4 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:30:53,121][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 36.10751 | quality: 0.32911
+        | Val:   loss: 39.73033 | quality: 0.32883
+Epoch 1 | Train: loss: 522756.66762 | quality: 0.11717
+        | Val:   loss: 535341.28277 | quality: 0.12299
+
+Epoch 2 | Train: loss: 839354100793176122178396834794714804469860665326122995489272279752031406591405514525100407148258643103919743945383166490021004014778663700303979490712137158290524520625935461908480.00000 | quality: 0.15169
+        | Val:   loss: 859434963879889276521058924970949452109174023291441270381561269910609031136304569935935403730516763048328879435246283707783094532533012425361135734074291709397608829957328892592128.00000 | quality: 0.15848
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 20:31:18,041][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=4 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed42 | val=0.1585
+[2026-05-02 20:31:18,043][HYDRA] 	#26 : model.L=3 model.bond_dim=4 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:31:18,193][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed10090
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 50.62030 | quality: 0.25122
+        | Val:   loss: 55.29649 | quality: 0.24133
+Epoch 1 | Train: loss: 61294747.21493 | quality: 0.26751
+        | Val:   loss: 62667910.57855 | quality: 0.27259
+ *
+Epoch 2 | Train: loss: 1550291407760959137142811377986763854692714181122753349166237927721664512.00000 | quality: 0.16622
+        | Val:   loss: 1587104285208237656441076047991798467845187387677305570434680320558104576.00000 | quality: 0.17158
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 20:31:41,079][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=4 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed10090 | val=0.2726
+[2026-05-02 20:31:41,085][HYDRA] 	#27 : model.L=3 model.bond_dim=4 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:31:41,232][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=4 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed32874
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 29.56598 | quality: 0.24008
+        | Val:   loss: 31.34282 | quality: 0.24147
+Epoch 1 | Train: loss: 6367747.78173 | quality: 0.23183
+        | Val:   loss: 8459519.05076 | quality: 0.23219
+
+Epoch 2 | Train: loss: 24094648173859223005848141824.00000 | quality: 0.19381
+        | Val:   loss: 29822860127371083245227606016.00000 | quality: 0.19110
+
+Epoch 3 | Train: loss: 8286034684327866815026627126210260875868167023493209429334439952868359515552252919939317966100139337673818279420459549652307149175000745163740639886181266504045173144994275393536.00000 | quality: 0.20466
+        | Val:   loss: 10249542263164138751319163566415249210898990806592093800160856743547047646513191424309270011907962912176950416719209090728271306561181587651954136930196595846782085806942463197184.00000 | quality: 0.20448
+
+
+✗ NaN loss at epoch 4 - stopping training
+
+✗ Exception at epoch 4: NaN loss encountered during NTN optimization at epoch 4
+[2026-05-02 20:32:09,307][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=4 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed32874 | val=0.2322
+[2026-05-02 20:32:09,310][HYDRA] 	#28 : model.L=3 model.bond_dim=4 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:32:09,459][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=4 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed47311
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 33.68481 | quality: 0.30498
+        | Val:   loss: 34.39014 | quality: 0.30685
+Epoch 1 | Train: loss: 162594.29516 | quality: 0.35781
+        | Val:   loss: 205237.10031 | quality: 0.35326
+ *
+Epoch 2 | Train: loss: 8869264985746009661174927919063544849265262638536239087616.00000 | quality: 0.35681
+        | Val:   loss: 10981735928981829635324740969056227867980282678690592063488.00000 | quality: 0.34494
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 20:32:31,846][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=4 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed47311 | val=0.3533
+[2026-05-02 20:32:31,849][HYDRA] 	#29 : model.L=3 model.bond_dim=4 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mpo2 dataset=adult
+[2026-05-02 20:32:32,011][__main__][INFO] - ▶ RUN MPO2/adult/NTN L=3 bd=4 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed47303
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 42.33275 | quality: 0.22905
+        | Val:   loss: 45.85878 | quality: 0.22536
+Epoch 1 | Train: loss: 103827301.48056 | quality: 0.14250
+        | Val:   loss: 139148136.43034 | quality: 0.14223
+
+Epoch 2 | Train: loss: 142705327496913437417086049391487658058644097421742441815153188171552033292941226604153451540470902882309198864945228897478736484551010836537563457484611657169096409088.00000 | quality: 0.09725
+        | Val:   loss: 190082039737717090695759982483997285649061634126515603178992234914931826550017080222697510993037097117097926836871693186992555517853328624202060303155526621721400442880.00000 | quality: 0.10238
+
+
+✗ NaN loss at epoch 3 - stopping training
+
+✗ Exception at epoch 3: NaN loss encountered during NTN optimization at epoch 3
+[2026-05-02 20:32:54,377][__main__][WARNING] - ✗ SINGULAR MPO2/adult/NTN L=3 bd=4 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MPO2_rg5_init0.1/L3_bd4_seed47303 | val=0.1422
+
+
+PS:
+
+Read file <logs/28338018_5.err> for stderr output of this job.
+
