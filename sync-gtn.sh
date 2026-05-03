@@ -2,8 +2,9 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REL_TARGET="outputs"
-TARGET="$HOME/Desktop/remote/GTN/$REL_TARGET"
+TARGET="$SCRIPT_DIR/$REL_TARGET"
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
@@ -19,11 +20,11 @@ sync_host () {
 
   echo "Merging from $HOST..."
 
-  rsync -a --update "$TMPDIR/outputs/" "$TARGET/"
+  rsync -a "$TMPDIR/outputs/" "$TARGET/"
 }
 
-sync_host titans &
-sync_host hpc &
+# sync_host titans &
+sync_host hpc2 &
 
 wait
 echo "Done."
