@@ -1,0 +1,128 @@
+Task 20: Dataset=ai4i, Model=tnml_p, Experiment=test_ntn
+[2026-05-04 20:57:54,518][HYDRA] Launching 10 jobs locally
+[2026-05-04 20:57:54,518][HYDRA] 	#0 : seed=836578142 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_p dataset=ai4i
+[2026-05-04 20:57:54,673][__main__][INFO] - Using best config for TNML_P/ai4i: L=3, bond_dim=4
+[2026-05-04 20:57:54,749][utils.tracking][INFO] - Loaded 19006 tracked runs from runs_tracking.csv
+[2026-05-04 20:57:54,751][__main__][INFO] - ▶ RUN TNML_P/ai4i/NTN L=3 bd=4 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_P/ai4i/seed_836578142
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 140237993.10761 | quality: -4135857859.96814
+        | Val:   loss: 17779865.76510 | quality: -551788936.53773
+Epoch 1 | Train: loss: 0.03468 | quality: -0.02288
+        | Val:   loss: 0.03346 | quality: -0.03848
+ *
+Epoch 2 | Train: loss: 0.03455 | quality: -0.01896
+        | Val:   loss: 0.03355 | quality: -0.04125
+
+Epoch 3 | Train: loss: 0.03443 | quality: -0.01537
+        | Val:   loss: 0.03355 | quality: -0.04115
+
+Epoch 4 | Train: loss: 0.03367 | quality: 0.00700
+        | Val:   loss: 0.03227 | quality: -0.00158
+ *
+Epoch 5 | Train: loss: 0.02764 | quality: 0.18481
+        | Val:   loss: 0.02668 | quality: 0.17202
+ *
+Epoch 6 | Train: loss: 0.02319 | quality: 0.31615
+        | Val:   loss: 0.02202 | quality: 0.31674
+ *
+Epoch 7 | Train: loss: 0.02335 | quality: 0.31123
+        | Val:   loss: 0.02225 | quality: 0.30946
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28348669[20]: <ntn_test[1-100]%20> in cluster <dcc> Exited
+
+Job <ntn_test[1-100]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 20:55:04 2026
+Job was executed on host(s) <10*n-62-28-28>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 20:57:47 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 20:57:47 2026
+Terminated at Mon May  4 20:58:43 2026
+Results reported at Mon May  4 20:58:43 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_test[1-100]%20"
+#BSUB -W 8:00
+#BSUB -n 10
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_TEST.out
+#BSUB -e logs/%J_%I_TEST.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+# DATASETS=(
+#     "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+#     "car_evaluation" "concrete" "energy_efficiency" "hearth"
+#     "iris" "mushrooms" "obesity" "popularity" "realstate"
+#     "seoulBike" "student_dropout" "student_perf" "wine"
+#     "winequalityc"
+# )
+
+DATASETS=(
+    "abalone" "ai4i" "hearth" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
+    "iris" "realstate" )
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+    for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        MODEL_IDX=$((IDV % NUM_MODELS))
+        DATASET_IDX=$((IDV / NUM_MODELS))
+
+        echo "Index $i: Dataset=${DATASETS[$DATASET_IDX]}, Model=${MODELS[$MODEL_IDX]}"
+    done
+    exit 0
+fi
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   220.00 sec.
+    Max Memory :                                 723 MB
+    Average Memory :                             257.67 MB
+    Total Requested Memory :                     7500.00 MB
+    Delta Memory :                               6777.00 MB
+    Max Swap :                                   -
+    Max Processes :                              16
+    Max Threads :                                145
+    Run time :                                   56 sec.
+    Turnaround time :                            219 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28348669_20_TEST.err> for stderr output of this job.
+
