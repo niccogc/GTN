@@ -1,9 +1,9 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "gtn_boson[1-21]%20"
-#BSUB -W 1:00
-#BSUB -n 2
-#BSUB -R "rusage[mem=500MB]"
+#BSUB -J "gtn_boson[1-4]%4"
+#BSUB -W 2:00
+#BSUB -n 4
+#BSUB -R "rusage[mem=1GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I.out
 #BSUB -e logs/%J_%I.err
@@ -11,12 +11,7 @@
 MODELS=("bosonmps")
 
 DATASETS=(
-    "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
-    "car_evaluation" "concrete" "energy_efficiency" "hearth"
-    "iris" "mushrooms" "obesity" "popularity" "realstate"
-    "seoulBike" "student_dropout" "student_perf" "wine"
-    "winequalityc"
-)
+    "adult" "appliances" "bank" "popularity" )
 
 NUM_MODELS=${#MODELS[@]}
 NUM_DATASETS=${#DATASETS[@]}
