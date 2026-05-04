@@ -19,6 +19,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import yaml
 from omegaconf import DictConfig, OmegaConf
 
 from utils.dataset_loader import load_dataset
@@ -75,6 +76,32 @@ def get_tracking_df():
     if _tracking_df is None:
         _tracking_df = load_tracking_file(DEFAULT_TRACKING_FILE)
     return _tracking_df
+
+
+# =============================================================================
+# Best Config Lookup
+# =============================================================================
+
+_best_configs_cache = {}
+
+
+def load_best_config(trainer: str, model: str, dataset: str) -> dict | None:
+    """Load best L/bond_dim for a model×dataset from conf/best_conf/{trainer}/{model}.yaml"""
+    cache_key = (trainer, model)
+    
+    if cache_key not in _best_configs_cache:
+        config_path = Path(__file__).parent / "conf" / "best_conf" / trainer / f"{model.lower()}.yaml"
+        if not config_path.exists():
+            _best_configs_cache[cache_key] = None
+        else:
+            with open(config_path) as f:
+                data = yaml.safe_load(f)
+            _best_configs_cache[cache_key] = data.get("_best_configs", {})
+    
+    configs = _best_configs_cache[cache_key]
+    if configs is None:
+        return None
+    return configs.get(dataset)
 
 
 # =============================================================================
@@ -332,7 +359,21 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             data_stream=loader_train,
         )
 
-    # Metrics log
+    evaluate_test = cfg.trainer.get("evaluate_test", False)
+    loader_test = None
+
+    if evaluate_test and not is_typei:
+        loader_test = create_inputs(
+            X=data["X_test"],
+            y=data["y_test"],
+            input_labels=model.input_labels,
+            output_labels=model.output_dims,
+            batch_size=cfg.dataset.batch_size,
+            append_bias=(encoding is None),
+            encoding=encoding,
+            poly_degree=poly_degree,
+        )
+
     metrics_log = []
 
     def callback_epoch(epoch, scores_train, scores_val, info):
@@ -344,6 +385,10 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             "val_quality": float(compute_quality(scores_val)),
             "ridge": float(info["jitter"]),
         }
+        if evaluate_test and loader_test is not None:
+            scores_test = ntn.evaluate(eval_metrics, data_stream=loader_test)
+            metrics["test_loss"] = float(scores_test["loss"])
+            metrics["test_quality"] = float(compute_quality(scores_test))
         metrics_log.append(metrics)
 
     # Train
@@ -379,14 +424,13 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         scores_train = None
         scores_val = None
 
-    # Extract best metrics from metrics_log
-    # For successful runs: NTN.fit returns best scores, but we also track best_epoch
-    # For singular runs: extract best values achieved before failure
     best_epoch = -1
     best_train_loss = float("inf")
     best_train_quality = None
     best_val_loss = float("inf")
     best_val_quality = None
+    best_test_loss = None
+    best_test_quality = None
 
     if metrics_log:
         best_val_q = float("-inf")
@@ -398,15 +442,15 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
                 best_train_quality = m["train_quality"]
                 best_val_loss = m["val_loss"]
                 best_val_quality = m["val_quality"]
+                best_test_loss = m.get("test_loss")
+                best_test_quality = m.get("test_quality")
 
-    # For successful runs, use scores from ntn.fit (which are the best)
     if success and scores_train is not None:
         best_train_loss = float(scores_train["loss"])
         best_train_quality = float(compute_quality(scores_train))
         best_val_loss = float(scores_val["loss"])
         best_val_quality = float(compute_quality(scores_val))
 
-    # Capture GPU memory info after training
     gpu_info_after = get_gpu_memory_info()
 
     result = {
@@ -424,6 +468,10 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             "after": gpu_info_after,
         },
     }
+
+    if evaluate_test:
+        result["test_loss"] = best_test_loss
+        result["test_quality"] = best_test_quality
 
     return result
 
@@ -510,6 +558,8 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             dim=1,
         )
 
+    evaluate_test = cfg.trainer.get("evaluate_test", False)
+
     train_loader = torch.utils.data.DataLoader(
         torch.utils.data.TensorDataset(X_train_enc, data["y_train"]),
         batch_size=batch_size,
@@ -520,6 +570,32 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         batch_size=batch_size,
         shuffle=False,
     )
+
+    test_loader = None
+    if evaluate_test:
+        if is_tnml:
+            if encoding == "polynomial":
+                X_test_enc = encode_polynomial(data["X_test"], poly_degree)
+            else:
+                X_test_enc = encode_fourier(data["X_test"])
+        else:
+            X_test_enc = torch.cat(
+                [
+                    data["X_test"],
+                    torch.ones(
+                        data["X_test"].shape[0],
+                        1,
+                        dtype=data["X_test"].dtype,
+                        device=data["X_test"].device,
+                    ),
+                ],
+                dim=1,
+            )
+        test_loader = torch.utils.data.DataLoader(
+            torch.utils.data.TensorDataset(X_test_enc, data["y_test"]),
+            batch_size=batch_size,
+            shuffle=False,
+        )
 
     def prepare_input(batch_data):
         if is_tnml:
@@ -583,15 +659,20 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         _, train_quality = evaluate(train_loader)
         val_loss, val_quality = evaluate(val_loader)
 
-        metrics_log.append(
-            {
-                "epoch": epoch,
-                "train_loss": float(train_loss),
-                "train_quality": float(train_quality),
-                "val_loss": float(val_loss),
-                "val_quality": float(val_quality),
-            }
-        )
+        epoch_metrics = {
+            "epoch": epoch,
+            "train_loss": float(train_loss),
+            "train_quality": float(train_quality),
+            "val_loss": float(val_loss),
+            "val_quality": float(val_quality),
+        }
+
+        if evaluate_test:
+            test_loss, test_quality = evaluate(test_loader)
+            epoch_metrics["test_loss"] = float(test_loss)
+            epoch_metrics["test_quality"] = float(test_quality)
+
+        metrics_log.append(epoch_metrics)
 
         # Model selection (same logic as NTN)
         is_best = False
@@ -633,12 +714,17 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         best_train_quality = best_metrics["train_quality"]
         best_val_loss = best_metrics["val_loss"]
         best_val_quality = best_metrics["val_quality"]
+        best_test_loss = best_metrics.get("test_loss")
+        best_test_quality = best_metrics.get("test_quality")
     else:
-        # Fallback to final evaluation if no best epoch found
         best_train_loss, best_train_quality = evaluate(train_loader)
         best_val_loss, best_val_quality = evaluate(val_loader)
+        if evaluate_test:
+            best_test_loss, best_test_quality = evaluate(test_loader)
+        else:
+            best_test_loss, best_test_quality = None, None
 
-    return {
+    result = {
         "success": True,
         "singular": False,
         "train_loss": float(best_train_loss),
@@ -648,6 +734,12 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         "best_epoch": best_epoch,
         "metrics_log": metrics_log,
     }
+
+    if evaluate_test:
+        result["test_loss"] = float(best_test_loss) if best_test_loss is not None else None
+        result["test_quality"] = float(best_test_quality) if best_test_quality is not None else None
+
+    return result
 
 
 def _format_run_summary(cfg: DictConfig, output_dir: Path) -> str:
@@ -664,12 +756,18 @@ def _format_run_summary(cfg: DictConfig, output_dir: Path) -> str:
 
 
 def _main_impl(cfg: DictConfig):
-    """Main entry point."""
-    # Set seeds
     torch.manual_seed(cfg.seed)
     np.random.seed(cfg.seed)
 
-    # Output directory (managed by Hydra)
+    if cfg.trainer.get("evaluate_test", False):
+        best = load_best_config(cfg.trainer.type, cfg.model.name, cfg.dataset.name)
+        if best:
+            cfg.model.L = best["L"]
+            cfg.model.bond_dim = best["bond_dim"]
+            log.info(f"Using best config for {cfg.model.name}/{cfg.dataset.name}: L={best['L']}, bond_dim={best['bond_dim']}")
+        else:
+            log.warning(f"No best config found for {cfg.trainer.type}/{cfg.model.name}/{cfg.dataset.name}, using provided config")
+
     output_dir = Path(hydra.core.hydra_config.HydraConfig.get().runtime.output_dir)
     run_summary = _format_run_summary(cfg, output_dir)
 
