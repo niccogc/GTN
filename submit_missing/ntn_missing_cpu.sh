@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_missing[1-20]%10"
+#BSUB -J "ntn_missing[1-9]%10"
 #BSUB -W 12:00
 #BSUB -n 16
 #BSUB -R "rusage[mem=3GB]"
@@ -14,22 +14,18 @@
 source .venv/bin/activate
 
 declare -a COMBINATIONS=(
-    # LMPO2TypeI (11 datasets)
-    "lmpo2_typei breast"
-    "lmpo2_typei car_evaluation"
-    "lmpo2_typei obesity"
-    "lmpo2_typei seoulBike"
-    "lmpo2_typei student_perf"
-    "lmpo2_typei adult"
-    "lmpo2_typei appliances"
-    "lmpo2_typei bank"
-    "lmpo2_typei mushrooms"
-    "lmpo2_typei popularity"
-    "lmpo2_typei student_dropout"
-    # MMPO2 (3 datasets)
-    "mmpo2 adult"
-    "mmpo2 mushrooms"
-    "mmpo2 popularity"
+    # # LMPO2TypeI (11 datasets)
+    # "lmpo2_typei breast"
+    # "lmpo2_typei car_evaluation"
+    # "lmpo2_typei obesity"
+    # "lmpo2_typei seoulBike"
+    # "lmpo2_typei student_perf"
+    # "lmpo2_typei adult"
+    # "lmpo2_typei appliances"
+    # "lmpo2_typei bank"
+    # "lmpo2_typei mushrooms"
+    # "lmpo2_typei popularity"
+    # "lmpo2_typei student_dropout"
     # MMPO2TypeI (4 datasets)
     "mmpo2_typei adult"
     "mmpo2_typei bank"
@@ -38,6 +34,10 @@ declare -a COMBINATIONS=(
     # TNML_F (2 datasets)
     "tnml_f adult"
     "tnml_f bank"
+    # MMPO2 (3 datasets)
+    "mmpo2 adult"
+    "mmpo2 mushrooms"
+    "mmpo2 popularity"
 )
 
 NUM_COMBINATIONS=${#COMBINATIONS[@]}
