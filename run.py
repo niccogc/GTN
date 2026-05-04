@@ -312,19 +312,23 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     gpu_info_before = get_gpu_memory_info()
 
     if is_typei:
-        ntn = NTN_Ensemble(
-            tns=model.tns,
-            input_dims_list=model.input_dims_list,
-            input_labels_list=model.input_labels_list,
-            output_dims=model.output_dims,
-            loss=loss_fn,
-            X_train=data["X_train"],
-            y_train=data["y_train"],
-            X_val=data["X_val"],
-            y_val=data["y_val"],
-            batch_size=cfg.dataset.batch_size,
-            not_trainable_tags=getattr(model, "not_trainable_tags", None),
-        )
+        ntn_kwargs = {
+            "tns": model.tns,
+            "input_dims_list": model.input_dims_list,
+            "input_labels_list": model.input_labels_list,
+            "output_dims": model.output_dims,
+            "loss": loss_fn,
+            "X_train": data["X_train"],
+            "y_train": data["y_train"],
+            "X_val": data["X_val"],
+            "y_val": data["y_val"],
+            "batch_size": cfg.dataset.batch_size,
+            "not_trainable_tags": getattr(model, "not_trainable_tags", None),
+        }
+        if cfg.trainer.get("evaluate_test", False):
+            ntn_kwargs["X_test"] = data["X_test"]
+            ntn_kwargs["y_test"] = data["y_test"]
+        ntn = NTN_Ensemble(**ntn_kwargs)
         loader_val = ntn.val_data
     else:
         encoding = getattr(model, "encoding", None)
@@ -385,10 +389,16 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             "val_quality": float(compute_quality(scores_val)),
             "ridge": float(info["jitter"]),
         }
-        if evaluate_test and loader_test is not None:
-            scores_test = ntn.evaluate(eval_metrics, data_stream=loader_test)
-            metrics["test_loss"] = float(scores_test["loss"])
-            metrics["test_quality"] = float(compute_quality(scores_test))
+        if evaluate_test:
+            if is_typei:
+                scores_test = ntn.evaluate(eval_metrics, split="test")
+            elif loader_test is not None:
+                scores_test = ntn.evaluate(eval_metrics, data_stream=loader_test)
+            else:
+                scores_test = None
+            if scores_test is not None:
+                metrics["test_loss"] = float(scores_test["loss"])
+                metrics["test_quality"] = float(compute_quality(scores_test))
         metrics_log.append(metrics)
 
     # Train

@@ -97,6 +97,8 @@ class NTN_Ensemble:
         y_train: torch.Tensor,
         X_val: Optional[torch.Tensor] = None,
         y_val: Optional[torch.Tensor] = None,
+        X_test: Optional[torch.Tensor] = None,
+        y_test: Optional[torch.Tensor] = None,
         batch_size: int = 32,
         method: str = "cholesky",
         not_trainable_tags: List[str] = None,
@@ -152,6 +154,23 @@ class NTN_Ensemble:
         # Models with same input_labels can share the SAME Inputs object
         shared_train_loaders = {}
         shared_val_loaders = {}
+        shared_test_loaders = {}
+
+        if X_test is not None and y_test is not None:
+            X_test_with_bias = torch.cat(
+                [
+                    X_test,
+                    torch.ones(X_test.shape[0], 1, dtype=X_test.dtype, device=X_test.device),
+                ],
+                dim=1,
+            )
+            shared_test_inputs_with_bias = [X_test_with_bias]
+            shared_test_inputs_no_bias = [X_test]  # Direct reference to original tensor
+            shared_outputs_test = [y_test]
+        else:
+            shared_test_inputs_with_bias = None
+            shared_test_inputs_no_bias = None
+            shared_outputs_test = None
 
         for idx, (tn, input_dims, input_labels) in enumerate(
             zip(tns, input_dims_list, input_labels_list)
@@ -217,10 +236,34 @@ class NTN_Ensemble:
                     val_loader = shared_val_loaders[input_labels_key]
                 ntn.val_data = val_loader
 
+            if X_test is not None and y_test is not None:
+                if idx == 0:
+                    test_loader = Inputs(
+                        inputs=shared_test_inputs_with_bias,
+                        outputs=shared_outputs_test,
+                        outputs_labels=output_dims,
+                        input_labels=input_labels,
+                        batch_dim=self.batch_dim,
+                        batch_size=batch_size,
+                    )
+                else:
+                    if input_labels_key not in shared_test_loaders:
+                        shared_test_loaders[input_labels_key] = Inputs(
+                            inputs=shared_test_inputs_no_bias,
+                            outputs=shared_outputs_test,
+                            outputs_labels=output_dims,
+                            input_labels=input_labels,
+                            batch_dim=self.batch_dim,
+                            batch_size=batch_size,
+                        )
+                    test_loader = shared_test_loaders[input_labels_key]
+                ntn.test_data = test_loader
+
             self.ntns.append(ntn)
 
         self.train_data = self.ntns[0].train_data
         self.val_data = self.ntns[0].val_data if X_val is not None else None
+        self.test_data = self.ntns[0].test_data if X_test is not None else None
 
     def _compute_others_outputs_for_model(self, exclude_idx: int) -> List:
         """Compute sum of other models' outputs for each batch (not concatenated)."""

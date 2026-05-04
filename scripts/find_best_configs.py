@@ -82,12 +82,22 @@ def parse_results_json(path: Path) -> Optional[RunResult]:
         model_name = config.get("model", {}).get("name", "unknown")
         dataset_name = config.get("dataset", {}).get("name", "unknown")
 
+        metrics_log = data.get("metrics_log", [])
+        if metrics_log:
+            best_val_q = max(
+                (m.get("val_quality", float("-inf")) for m in metrics_log if m.get("val_quality") is not None),
+                default=float("-inf"),
+            )
+        else:
+            val_q = data.get("val_quality")
+            best_val_q = val_q if val_q is not None else float("-inf")
+
         return RunResult(
             path=path,
             trainer=trainer_type,
             model_name=model_name,
             dataset_name=dataset_name,
-            val_quality=data.get("val_quality", float("-inf")),
+            val_quality=best_val_q,
             best_epoch=data.get("best_epoch", -1),
             success=data.get("success", False),
             singular=data.get("singular", False),
@@ -102,7 +112,7 @@ def find_all_results(outputs_dir: Path) -> list[RunResult]:
     results = []
     for results_file in outputs_dir.rglob("results.json"):
         result = parse_results_json(results_file)
-        if result and result.success and not result.singular:
+        if result and result.val_quality != float("-inf"):
             results.append(result)
     return results
 
