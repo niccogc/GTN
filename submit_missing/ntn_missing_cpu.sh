@@ -11,6 +11,8 @@
 # Missing model-dataset combinations from README.md (NTN only, ignoring GTN)
 # Total: 20 combinations
 
+source .venv/bin/activate
+
 declare -a COMBINATIONS=(
     # LMPO2TypeI (11 datasets)
     "lmpo2_typei breast"
