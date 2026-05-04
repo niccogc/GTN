@@ -1,12 +1,12 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-100]%20"
+#BSUB -J "ntn_test[1-100]%20"
 #BSUB -W 8:00
 #BSUB -n 10
 #BSUB -R "rusage[mem=750MB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/%J_%I.out
-#BSUB -e logs/%J_%I.err
+#BSUB -o logs/%J_%I_TEST.out
+#BSUB -e logs/%J_%I_TEST.err
 
 MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
 
