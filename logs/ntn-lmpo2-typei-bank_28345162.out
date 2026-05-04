@@ -1,0 +1,91 @@
+[2026-05-04 13:27:30,779][HYDRA] Launching 3 jobs locally
+[2026-05-04 13:27:30,780][HYDRA] 	#0 : model.reduction_factor=0.3 trainer=ntn model=lmpo2_typei dataset=bank
+[2026-05-04 13:27:31,005][utils.tracking][INFO] - Loaded 18906 tracked runs from runs_tracking.csv
+[2026-05-04 13:27:31,007][__main__][INFO] - ▶ RUN LMPO2TypeI/bank/NTN L=3 bd=6_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/bank/LMPO2TypeI_rg5_init0.1/L3_bd6_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.69298 | quality: 0.68964
+        | Val:   loss: 0.67407 | quality: 0.68461
+
+Epoch 1 | Train: loss: 527283397710907034304512.00000 | quality: 0.60919
+        | Val:   loss: 30864219311013349031936.00000 | quality: 0.60705
+
+
+✗ Singular matrix at epoch 2 - stopping training
+[2026-05-04 13:28:12,067][__main__][WARNING] - ✗ SINGULAR LMPO2TypeI/bank/NTN L=3 bd=6_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/bank/LMPO2TypeI_rg5_init0.1/L3_bd6_seed42_rf0.3_bondmpo1 | val=0.6070
+[2026-05-04 13:28:12,070][HYDRA] 	#1 : model.reduction_factor=0.5 trainer=ntn model=lmpo2_typei dataset=bank
+[2026-05-04 13:28:12,184][__main__][INFO] - ▶ RUN LMPO2TypeI/bank/NTN L=3 bd=6_rf0.5 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/bank/LMPO2TypeI_rg5_init0.1/L3_bd6_seed42_rf0.5_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6)]
+Total nodes: 12
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.70755 | quality: 0.53932
+        | Val:   loss: 0.70994 | quality: 0.53037
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28345162: <ntn-lmpo2-typei-bank> in cluster <dcc> Exited
+
+Job <ntn-lmpo2-typei-bank> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 13:09:10 2026
+Job was executed on host(s) <4*n-62-12-23>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Mon May  4 13:27:15 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 13:27:15 2026
+Terminated at Mon May  4 15:21:56 2026
+Results reported at Mon May  4 15:21:56 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#BSUB -q gpua100
+#BSUB -J ntn-lmpo2-typei-bank
+#BSUB -W 12:00
+#BSUB -n 4
+#BSUB -gpu "num=1:mode=exclusive_process"
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/ntn-lmpo2-typei-bank_%J.out
+#BSUB -e logs/ntn-lmpo2-typei-bank_%J.err
+#BSUB -u nicci@dtu.dk
+
+export HOME=/zhome/6b/e/212868
+cd $HOME/GTN
+source .venv/bin/activate
+
+set -a && source $HOME/aim && set +a
+
+python run.py --multirun trainer=ntn model=lmpo2_typei dataset=bank
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   6860.00 sec.
+    Max Memory :                                 873 MB
+    Average Memory :                             818.14 MB
+    Total Requested Memory :                     2000.00 MB
+    Delta Memory :                               1127.00 MB
+    Max Swap :                                   -
+    Max Processes :                              7
+    Max Threads :                                16
+    Run time :                                   6881 sec.
+    Turnaround time :                            7966 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/ntn-lmpo2-typei-bank_28345162.err> for stderr output of this job.
+

@@ -1,0 +1,79 @@
+[2026-05-04 09:43:23,253][HYDRA] Launching 30 jobs locally
+[2026-05-04 09:43:23,253][HYDRA] 	#0 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2 dataset=popularity
+[2026-05-04 09:43:24,135][utils.tracking][INFO] - Loaded 18906 tracked runs from runs_tracking.csv
+[2026-05-04 09:43:24,138][__main__][INFO] - ▶ RUN MMPO2/popularity/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/popularity/MMPO2_rg5_init0.1/L4_bd12_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['0_MPS', '1_MPS', '2_MPS', '3_MPS', '2_MPS', '1_MPS']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 133653952514703.10938 | quality: -1120407.50800
+        | Val:   loss: 1562131710508.92651 | quality: -6749.49018
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28343153: <ntn_popularity_mmpo2> in cluster <dcc> Exited
+
+Job <ntn_popularity_mmpo2> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 09:43:10 2026
+Job was executed on host(s) <6*n-62-21-92>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 09:43:11 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 09:43:11 2026
+Terminated at Mon May  4 15:39:35 2026
+Results reported at Mon May  4 15:39:35 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_popularity_mmpo2"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_popularity_mmpo2.out
+#BSUB -e logs/%J_popularity_mmpo2.err
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=uci_ntn_sweep \
+    model=mmpo2 \
+    dataset=popularity
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   125891.10 sec.
+    Max Memory :                                 36359 MB
+    Average Memory :                             26928.95 MB
+    Total Requested Memory :                     49152.00 MB
+    Delta Memory :                               12793.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                29
+    Run time :                                   21384 sec.
+    Turnaround time :                            21385 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28343153_popularity_mmpo2.err> for stderr output of this job.
+

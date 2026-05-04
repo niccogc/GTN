@@ -1,0 +1,81 @@
+[2026-05-04 09:43:28,349][HYDRA] Launching 90 jobs locally
+[2026-05-04 09:43:28,350][HYDRA] 	#0 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=obesity
+[2026-05-04 09:43:28,871][utils.tracking][INFO] - Loaded 18906 tracked runs from runs_tracking.csv
+[2026-05-04 09:43:28,873][__main__][INFO] - ▶ RUN LMPO2TypeI/obesity/NTN L=4 bd=12_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/obesity/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 12.00769 | quality: -2.15079
+        | Val:   loss: 11.41280 | quality: -2.17079
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28343148: <ntn_obesity_lmpo2_typei> in cluster <dcc> Exited
+
+Job <ntn_obesity_lmpo2_typei> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 09:43:09 2026
+Job was executed on host(s) <6*n-62-11-52>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 09:43:10 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 09:43:10 2026
+Terminated at Mon May  4 09:44:05 2026
+Results reported at Mon May  4 09:44:05 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_obesity_lmpo2_typei"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_obesity_lmpo2_typei.out
+#BSUB -e logs/%J_obesity_lmpo2_typei.err
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=uci_ntn_sweep \
+    model=lmpo2_typei \
+    dataset=obesity
+
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   100.00 sec.
+    Max Memory :                                 49152 MB
+    Average Memory :                             253.33 MB
+    Total Requested Memory :                     49152.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              8
+    Max Threads :                                43
+    Run time :                                   55 sec.
+    Turnaround time :                            56 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28343148_obesity_lmpo2_typei.err> for stderr output of this job.
+

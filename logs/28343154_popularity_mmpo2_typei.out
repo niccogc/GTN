@@ -1,0 +1,73 @@
+[2026-05-04 09:44:30,328][HYDRA] Launching 30 jobs locally
+[2026-05-04 09:44:30,328][HYDRA] 	#0 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2_typei dataset=popularity
+[2026-05-04 09:44:31,424][utils.tracking][INFO] - Loaded 18906 tracked runs from runs_tracking.csv
+[2026-05-04 09:44:31,427][__main__][INFO] - ▶ RUN MMPO2TypeI/popularity/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/popularity/MMPO2TypeI_rg5_init0.1/L4_bd12_seed42
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28343154: <ntn_popularity_mmpo2_typei> in cluster <dcc> Exited
+
+Job <ntn_popularity_mmpo2_typei> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 09:43:11 2026
+Job was executed on host(s) <6*n-62-21-89>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 09:43:12 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 09:43:12 2026
+Terminated at Mon May  4 15:39:35 2026
+Results reported at Mon May  4 15:39:35 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_popularity_mmpo2_typei"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=8GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_popularity_mmpo2_typei.out
+#BSUB -e logs/%J_popularity_mmpo2_typei.err
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=uci_ntn_sweep \
+    model=mmpo2_typei \
+    dataset=popularity
+
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 143.
+
+Resource usage summary:
+
+    CPU time :                                   127465.00 sec.
+    Max Memory :                                 34439 MB
+    Average Memory :                             31344.69 MB
+    Total Requested Memory :                     49152.00 MB
+    Delta Memory :                               14713.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                20
+    Run time :                                   21383 sec.
+    Turnaround time :                            21384 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28343154_popularity_mmpo2_typei.err> for stderr output of this job.
+

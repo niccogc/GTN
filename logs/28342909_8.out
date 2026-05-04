@@ -11,3 +11,106 @@ Early stopping: patience=10, min_delta=0.001
 Init    | Train: loss: 2.55675 | quality: 0.20433
         | Val:   loss: 2.85408 | quality: 0.21171
 
+Epoch 1 | Train: loss: 142038229979921590206896130750660044461703168.00000 | quality: 0.12340
+        | Val:   loss: 191665590259065361607112914699190124880592896.00000 | quality: 0.12735
+
+
+✗ NaN loss at epoch 2 - stopping training
+[2026-05-04 13:50:59,414][__main__][WARNING] - ✗ SINGULAR MMPO2TypeI/adult/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MMPO2TypeI_rg5_init0.1/L4_bd12_seed42 | val=0.1274
+[2026-05-04 13:50:59,419][HYDRA] 	#1 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2_typei dataset=adult
+[2026-05-04 13:50:59,579][__main__][INFO] - ▶ RUN MMPO2TypeI/adult/NTN L=4 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MMPO2TypeI_rg5_init0.1/L4_bd12_seed10090
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28342909[8]: <ntn_grid_full[1-110]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_full[1-110]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 07:33:04 2026
+Job was executed on host(s) <6*n-62-29-10>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 07:33:06 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 07:33:06 2026
+Terminated at Mon May  4 15:33:47 2026
+Results reported at Mon May  4 15:33:47 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-110]%20"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=5GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+DATASETS=(
+    "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+    "car_evaluation" "concrete" "energy_efficiency" "hearth"
+    "iris" "mushrooms" "obesity" "popularity" "realstate"
+    "seoulBike" "student_dropout" "student_perf" "wine"
+    "winequalityc"
+)
+
+COMPLETED_DATASETS=(
+    "abalone" "ai4i" "hearth" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
+    "iris" "realstate" )
+
+# Filter datasets
+FILTERED_DATASETS=()
+for ds in "${DATASETS[@]}"; do
+    skip=false
+    for completed in "${COMPLETED_DATASETS[@]}"; do
+        if [[ "$ds" == "$completed" ]]; then
+            skip=true
+            break
+        fi
+    done
+
+    if ! $skip; then
+        FILTERED_DATASETS+=("$ds")
+    fi
+done
+
+DATASETS=("${FILTERED_DATASETS[@]}")
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   171905.00 sec.
+    Max Memory :                                 19799 MB
+    Average Memory :                             9519.65 MB
+    Total Requested Memory :                     30720.00 MB
+    Delta Memory :                               10921.00 MB
+    Max Swap :                                   -
+    Max Processes :                              12
+    Max Threads :                                65
+    Run time :                                   28841 sec.
+    Turnaround time :                            28843 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28342909_8.err> for stderr output of this job.
+

@@ -1,0 +1,95 @@
+Task 10: Model=lmpo2_typei, Dataset=popularity
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28348572[10]: <ntn_missing[1-20]%10> in cluster <dcc> Exited
+
+Job <ntn_missing[1-20]%10> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 19:28:50 2026
+Job was executed on host(s) <16*n-62-21-61>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 19:28:51 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 19:28:51 2026
+Terminated at Mon May  4 19:28:52 2026
+Results reported at Mon May  4 19:28:52 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_missing[1-20]%10"
+#BSUB -W 12:00
+#BSUB -n 16
+#BSUB -R "rusage[mem=3GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I.out
+#BSUB -e logs/%J_%I.err
+
+# Missing model-dataset combinations from README.md (NTN only, ignoring GTN)
+# Total: 20 combinations
+
+declare -a COMBINATIONS=(
+    # LMPO2TypeI (11 datasets)
+    "lmpo2_typei breast"
+    "lmpo2_typei car_evaluation"
+    "lmpo2_typei obesity"
+    "lmpo2_typei seoulBike"
+    "lmpo2_typei student_perf"
+    "lmpo2_typei adult"
+    "lmpo2_typei appliances"
+    "lmpo2_typei bank"
+    "lmpo2_typei mushrooms"
+    "lmpo2_typei popularity"
+    "lmpo2_typei student_dropout"
+    # MMPO2 (3 datasets)
+    "mmpo2 adult"
+    "mmpo2 mushrooms"
+    "mmpo2 popularity"
+    # MMPO2TypeI (4 datasets)
+    "mmpo2_typei adult"
+    "mmpo2_typei bank"
+    "mmpo2_typei mushrooms"
+    "mmpo2_typei popularity"
+    # TNML_F (2 datasets)
+    "tnml_f adult"
+    "tnml_f bank"
+)
+
+NUM_COMBINATIONS=${#COMBINATIONS[@]}
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+    echo "Total combinations: $NUM_COMBINATIONS"
+    echo ""
+
+    for ((i=1; i<=NUM_COMBINATIONS; i++)); do
+        IDX=$((i - 1))
+
+(... more ...)
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   0.46 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     49152.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   1 sec.
+    Turnaround time :                            2 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28348572_10.err> for stderr output of this job.
+
