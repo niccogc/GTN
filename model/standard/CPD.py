@@ -82,6 +82,7 @@ class CPDA:
             shape = (phys_dim, output_dim)
             inds = ("x0", "out")
             data = torch.randn(*shape) * base_init
+            data = data / torch.norm(data)
             tensor = qt.Tensor(data=data, inds=inds, tags={"Node0"})
             tensors.append(tensor)
         else:
