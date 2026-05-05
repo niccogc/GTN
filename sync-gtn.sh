@@ -3,24 +3,35 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 REL_TARGET="outputs"
+OTHER_FOLDER="/work3/aveno/repos/GTN"
+
 TARGET="$SCRIPT_DIR/$REL_TARGET"
+
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
 sync_host () {
   local HOST="$1"
-  local TMPDIR="$TMP/$HOST"
 
+  local TMPDIR="$TMP/$HOST"
   mkdir -p "$TMPDIR"
 
-  echo "Fetching from $HOST..."
-    ssh "$HOST" "tar -I zstd -cf - -C ~/GTN \"$REL_TARGET\"" \
-    | tar -I zstd -xf - -C "$TMPDIR"
+  echo "Fetching ~/GTN/$REL_TARGET from $HOST..."
+  ssh "$HOST" "
+    tar -I zstd -cf - -C ~/GTN \"$REL_TARGET\"
+  " | tar -I zstd -xf - -C "$TMPDIR"
 
-  echo "Merging from $HOST..."
+  echo "Fetching $OTHER_FOLDER/$REL_TARGET from $HOST..."
+  ssh "$HOST" "
+    tar -I zstd -cf - -C \"$OTHER_FOLDER\" \"$REL_TARGET\"
+  " | tar -I zstd -xf - -C "$TMPDIR"
 
-  rsync -a "$TMPDIR/outputs/" "$TARGET/"
+  mkdir -p "$TARGET"
+
+  echo "Merging outputs from $HOST..."
+  rsync -a "$TMPDIR/$REL_TARGET/" "$TARGET/"
 }
 
 # sync_host titans &
