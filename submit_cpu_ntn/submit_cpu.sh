@@ -1,9 +1,9 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-110]%20"
+#BSUB -J "ntn_grid_full[1-210]%20"
 #BSUB -W 8:00
-#BSUB -n 6
-#BSUB -R "rusage[mem=5GB]"
+#BSUB -n 16
+#BSUB -R "rusage[mem=500MB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I.out
 #BSUB -e logs/%J_%I.err
@@ -18,9 +18,9 @@ DATASETS=(
     "winequalityc"
 )
 
-COMPLETED_DATASETS=(
-    "abalone" "ai4i" "hearth" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
-    "iris" "realstate" )
+# COMPLETED_DATASETS=(
+#     "abalone" "ai4i" "hearth" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
+#     "iris" "realstate" )
 
 # Filter datasets
 FILTERED_DATASETS=()
