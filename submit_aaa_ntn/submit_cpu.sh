@@ -3,7 +3,7 @@
 #BSUB -J "ntn_grid_full[1-70]%20"
 #BSUB -W 6:00
 #BSUB -n 6
-#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "rusage[mem=1GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_cpu_newntn.out
 #BSUB -e logs/%J_%I_cpu_newntn.err
@@ -20,15 +20,15 @@ DATASETS=(
     "wine"
     #medium
     # "winequalityc"
-    # "abalone"
-    # "appliances"
-    # "bank"
+    "abalone"
+    "appliances"
+    "bank"
+    "hearth"
+    "student_perf"
+    # BIG MAYBE?
     # "bike"
-    # "hearth"
     # "obesity"
     # "student_dropout"
-    # "student_perf"
-    # BIG MAYBE?
     # "adult"
     # "seoulBike"
     # "ai4i"
