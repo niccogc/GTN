@@ -1,0 +1,756 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28350165[12]: <ntn_test[1-100]%20> in cluster <dcc> Done
+
+Job <ntn_test[1-100]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 21:19:02 2026
+Job was executed on host(s) <10*n-62-21-90>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 21:19:03 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 21:19:03 2026
+Terminated at Mon May  4 21:23:19 2026
+Results reported at Mon May  4 21:23:19 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_test[1-100]%20"
+#BSUB -W 8:00
+#BSUB -n 10
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_TEST.out
+#BSUB -e logs/%J_%I_TEST.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+# DATASETS=(
+#     "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+#     "car_evaluation" "concrete" "energy_efficiency" "hearth"
+#     "iris" "mushrooms" "obesity" "popularity" "realstate"
+#     "seoulBike" "student_dropout" "student_perf" "wine"
+#     "winequalityc"
+# )
+
+DATASETS=(
+    "abalone" "ai4i" "hearth" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
+    "iris" "realstate" )
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+    for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        MODEL_IDX=$((IDV % NUM_MODELS))
+        DATASET_IDX=$((IDV / NUM_MODELS))
+
+        echo "Index $i: Dataset=${DATASETS[$DATASET_IDX]}, Model=${MODELS[$MODEL_IDX]}"
+    done
+    exit 0
+fi
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   1322.00 sec.
+    Max Memory :                                 471 MB
+    Average Memory :                             228.25 MB
+    Total Requested Memory :                     7500.00 MB
+    Delta Memory :                               7029.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                45
+    Run time :                                   256 sec.
+    Turnaround time :                            257 sec.
+
+The output (if any) follows:
+
+Task 12: Dataset=ai4i, Model=cpda_typei, Experiment=test_ntn
+[2026-05-04 21:19:12,243][HYDRA] Launching 10 jobs locally
+[2026-05-04 21:19:12,244][HYDRA] 	#0 : seed=836578142 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:19:12,420][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:19:12,503][utils.tracking][INFO] - Loaded 19006 tracked runs from runs_tracking.csv
+[2026-05-04 21:19:12,505][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_836578142
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.21496 | quality: -5.33960
+        | Val:   loss: 0.20939 | quality: -5.49837
+
+Epoch 1 | Train: loss: 0.02870 | quality: 0.15347
+        | Val:   loss: 0.02641 | quality: 0.18047
+ *
+Epoch 2 | Train: loss: 0.02481 | quality: 0.26832
+        | Val:   loss: 0.02275 | quality: 0.29410
+ *
+Epoch 3 | Train: loss: 0.02382 | quality: 0.29755
+        | Val:   loss: 0.02184 | quality: 0.32205
+ *
+Epoch 4 | Train: loss: 0.02272 | quality: 0.33006
+        | Val:   loss: 0.02114 | quality: 0.34386
+ *
+Epoch 5 | Train: loss: 0.02176 | quality: 0.35819
+        | Val:   loss: 0.02088 | quality: 0.35212
+ *
+Epoch 6 | Train: loss: 0.02031 | quality: 0.40092
+        | Val:   loss: 0.02137 | quality: 0.33666
+
+Epoch 7 | Train: loss: 0.01937 | quality: 0.42860
+        | Val:   loss: 0.02151 | quality: 0.33247
+
+Epoch 8 | Train: loss: 0.01912 | quality: 0.43619
+        | Val:   loss: 0.02131 | quality: 0.33870
+
+Epoch 9 | Train: loss: 0.01896 | quality: 0.44083
+        | Val:   loss: 0.02093 | quality: 0.35049
+
+Epoch 10 | Train: loss: 0.01875 | quality: 0.44700
+        | Val:   loss: 0.02044 | quality: 0.36575
+ *
+Epoch 11 | Train: loss: 0.01851 | quality: 0.45402
+        | Val:   loss: 0.01999 | quality: 0.37953
+ *
+Epoch 12 | Train: loss: 0.01835 | quality: 0.45879
+        | Val:   loss: 0.01975 | quality: 0.38709
+ *
+Epoch 13 | Train: loss: 0.01825 | quality: 0.46164
+        | Val:   loss: 0.01967 | quality: 0.38956
+ *
+Epoch 14 | Train: loss: 0.01819 | quality: 0.46340
+        | Val:   loss: 0.01965 | quality: 0.39019
+ *
+Epoch 15 | Train: loss: 0.01815 | quality: 0.46458
+        | Val:   loss: 0.01966 | quality: 0.38992
+ *
+Epoch 16 | Train: loss: 0.01813 | quality: 0.46545
+        | Val:   loss: 0.01968 | quality: 0.38928
+
+Epoch 17 | Train: loss: 0.01810 | quality: 0.46613
+        | Val:   loss: 0.01970 | quality: 0.38857
+
+Epoch 18 | Train: loss: 0.01808 | quality: 0.46667
+        | Val:   loss: 0.01972 | quality: 0.38794
+
+Epoch 19 | Train: loss: 0.01807 | quality: 0.46712
+        | Val:   loss: 0.01974 | quality: 0.38741
+
+Epoch 20 | Train: loss: 0.01806 | quality: 0.46750
+        | Val:   loss: 0.01975 | quality: 0.38698
+
+
+Best epoch: 15 (val_quality=0.389921)
+[2026-05-04 21:19:49,222][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_836578142 | val=0.3899
+[2026-05-04 21:19:49,225][HYDRA] 	#1 : seed=895435625 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:19:49,397][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:19:49,398][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=895435625 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_895435625
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.19357 | quality: -4.70880
+        | Val:   loss: 0.19111 | quality: -4.93109
+
+Epoch 1 | Train: loss: 0.02643 | quality: 0.22042
+        | Val:   loss: 0.02439 | quality: 0.24303
+ *
+Epoch 2 | Train: loss: 0.02431 | quality: 0.28314
+        | Val:   loss: 0.02252 | quality: 0.30098
+ *
+Epoch 3 | Train: loss: 0.02277 | quality: 0.32841
+        | Val:   loss: 0.02132 | quality: 0.33843
+ *
+Epoch 4 | Train: loss: 0.02174 | quality: 0.35876
+        | Val:   loss: 0.02087 | quality: 0.35233
+ *
+Epoch 5 | Train: loss: 0.02077 | quality: 0.38748
+        | Val:   loss: 0.02072 | quality: 0.35683
+ *
+Epoch 6 | Train: loss: 0.01985 | quality: 0.41473
+        | Val:   loss: 0.02130 | quality: 0.33889
+
+Epoch 7 | Train: loss: 0.01887 | quality: 0.44351
+        | Val:   loss: 0.02257 | quality: 0.29945
+
+Epoch 8 | Train: loss: 0.01843 | quality: 0.45660
+        | Val:   loss: 0.02280 | quality: 0.29251
+
+Epoch 9 | Train: loss: 0.01814 | quality: 0.46501
+        | Val:   loss: 0.02291 | quality: 0.28905
+
+Epoch 10 | Train: loss: 0.01796 | quality: 0.47041
+        | Val:   loss: 0.02264 | quality: 0.29734
+
+Epoch 11 | Train: loss: 0.01782 | quality: 0.47432
+        | Val:   loss: 0.02227 | quality: 0.30884
+
+Epoch 12 | Train: loss: 0.01772 | quality: 0.47728
+        | Val:   loss: 0.02206 | quality: 0.31524
+
+Epoch 13 | Train: loss: 0.01765 | quality: 0.47957
+        | Val:   loss: 0.02204 | quality: 0.31601
+
+Epoch 14 | Train: loss: 0.01758 | quality: 0.48146
+        | Val:   loss: 0.02212 | quality: 0.31360
+
+Epoch 15 | Train: loss: 0.01753 | quality: 0.48310
+        | Val:   loss: 0.02224 | quality: 0.30972
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.356834)
+[2026-05-04 21:20:08,573][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=895435625 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_895435625 | val=0.3568
+[2026-05-04 21:20:08,577][HYDRA] 	#2 : seed=2631647123 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:20:08,770][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:20:08,771][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=2631647123 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_2631647123
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.18379 | quality: -4.42029
+        | Val:   loss: 0.18410 | quality: -4.71351
+
+Epoch 1 | Train: loss: 0.02768 | quality: 0.18378
+        | Val:   loss: 0.02503 | quality: 0.22307
+ *
+Epoch 2 | Train: loss: 0.02485 | quality: 0.26723
+        | Val:   loss: 0.02256 | quality: 0.29977
+ *
+Epoch 3 | Train: loss: 0.02370 | quality: 0.30111
+        | Val:   loss: 0.02215 | quality: 0.31265
+ *
+Epoch 4 | Train: loss: 0.02254 | quality: 0.33531
+        | Val:   loss: 0.02136 | quality: 0.33705
+ *
+Epoch 5 | Train: loss: 0.02170 | quality: 0.36012
+        | Val:   loss: 0.02109 | quality: 0.34542
+ *
+Epoch 6 | Train: loss: 0.02060 | quality: 0.39246
+        | Val:   loss: 0.02050 | quality: 0.36394
+ *
+Epoch 7 | Train: loss: 0.01984 | quality: 0.41495
+        | Val:   loss: 0.01999 | quality: 0.37960
+ *
+Epoch 8 | Train: loss: 0.01944 | quality: 0.42669
+        | Val:   loss: 0.01979 | quality: 0.38575
+ *
+Epoch 9 | Train: loss: 0.01918 | quality: 0.43434
+        | Val:   loss: 0.01966 | quality: 0.38994
+ *
+Epoch 10 | Train: loss: 0.01898 | quality: 0.44013
+        | Val:   loss: 0.01954 | quality: 0.39366
+ *
+Epoch 11 | Train: loss: 0.01883 | quality: 0.44468
+        | Val:   loss: 0.01943 | quality: 0.39699
+ *
+Epoch 12 | Train: loss: 0.01872 | quality: 0.44804
+        | Val:   loss: 0.01933 | quality: 0.40017
+ *
+Epoch 13 | Train: loss: 0.01863 | quality: 0.45059
+        | Val:   loss: 0.01922 | quality: 0.40360
+ *
+Epoch 14 | Train: loss: 0.01856 | quality: 0.45265
+        | Val:   loss: 0.01912 | quality: 0.40674
+ *
+Epoch 15 | Train: loss: 0.01850 | quality: 0.45445
+        | Val:   loss: 0.01904 | quality: 0.40916
+ *
+Epoch 16 | Train: loss: 0.01844 | quality: 0.45610
+        | Val:   loss: 0.01899 | quality: 0.41069
+ *
+Epoch 17 | Train: loss: 0.01839 | quality: 0.45763
+        | Val:   loss: 0.01897 | quality: 0.41136
+ *
+Epoch 18 | Train: loss: 0.01834 | quality: 0.45907
+        | Val:   loss: 0.01897 | quality: 0.41135
+ *
+Epoch 19 | Train: loss: 0.01830 | quality: 0.46041
+        | Val:   loss: 0.01899 | quality: 0.41081
+ *
+Epoch 20 | Train: loss: 0.01825 | quality: 0.46165
+        | Val:   loss: 0.01901 | quality: 0.40988
+ *
+
+Best epoch: 20 (val_quality=0.409882)
+[2026-05-04 21:20:33,650][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=2631647123 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_2631647123 | val=0.4099
+[2026-05-04 21:20:33,672][HYDRA] 	#3 : seed=2487125586 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:20:34,968][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:20:35,005][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=2487125586 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_2487125586
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.07709 | quality: -1.27351
+        | Val:   loss: 0.07899 | quality: -1.45129
+
+Epoch 1 | Train: loss: 0.02668 | quality: 0.21324
+        | Val:   loss: 0.02452 | quality: 0.23898
+ *
+Epoch 2 | Train: loss: 0.02465 | quality: 0.27291
+        | Val:   loss: 0.02250 | quality: 0.30162
+ *
+Epoch 3 | Train: loss: 0.02384 | quality: 0.29678
+        | Val:   loss: 0.02194 | quality: 0.31912
+ *
+Epoch 4 | Train: loss: 0.02306 | quality: 0.31991
+        | Val:   loss: 0.02161 | quality: 0.32929
+ *
+Epoch 5 | Train: loss: 0.02241 | quality: 0.33912
+        | Val:   loss: 0.02162 | quality: 0.32905
+ *
+Epoch 6 | Train: loss: 0.02135 | quality: 0.37033
+        | Val:   loss: 0.02412 | quality: 0.25147
+
+Epoch 7 | Train: loss: 0.02079 | quality: 0.38701
+        | Val:   loss: 0.02396 | quality: 0.25654
+
+Epoch 8 | Train: loss: 0.02046 | quality: 0.39674
+        | Val:   loss: 0.02302 | quality: 0.28556
+
+Epoch 9 | Train: loss: 0.02018 | quality: 0.40482
+        | Val:   loss: 0.02217 | quality: 0.31199
+
+Epoch 10 | Train: loss: 0.02001 | quality: 0.40978
+        | Val:   loss: 0.02181 | quality: 0.32306
+
+Epoch 11 | Train: loss: 0.01992 | quality: 0.41241
+        | Val:   loss: 0.02170 | quality: 0.32670
+
+Epoch 12 | Train: loss: 0.01986 | quality: 0.41417
+        | Val:   loss: 0.02167 | quality: 0.32738
+
+Epoch 13 | Train: loss: 0.01982 | quality: 0.41555
+        | Val:   loss: 0.02168 | quality: 0.32704
+
+Epoch 14 | Train: loss: 0.01978 | quality: 0.41674
+        | Val:   loss: 0.02171 | quality: 0.32629
+
+Epoch 15 | Train: loss: 0.01974 | quality: 0.41788
+        | Val:   loss: 0.02173 | quality: 0.32552
+
+
+Early stopping at epoch 15 (best was epoch 5)
+
+Best epoch: 5 (val_quality=0.329048)
+[2026-05-04 21:20:54,197][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=2487125586 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_2487125586 | val=0.3290
+[2026-05-04 21:20:54,201][HYDRA] 	#4 : seed=3323088614 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:20:54,369][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:20:54,370][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=3323088614 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_3323088614
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.16913 | quality: -3.98784
+        | Val:   loss: 0.16208 | quality: -4.03004
+
+Epoch 1 | Train: loss: 0.03366 | quality: 0.00734
+        | Val:   loss: 0.03203 | quality: 0.00611
+ *
+Epoch 2 | Train: loss: 0.02620 | quality: 0.22732
+        | Val:   loss: 0.02410 | quality: 0.25198
+ *
+Epoch 3 | Train: loss: 0.02459 | quality: 0.27476
+        | Val:   loss: 0.02262 | quality: 0.29809
+ *
+Epoch 4 | Train: loss: 0.02376 | quality: 0.29939
+        | Val:   loss: 0.02210 | quality: 0.31414
+ *
+Epoch 5 | Train: loss: 0.02307 | quality: 0.31969
+        | Val:   loss: 0.02160 | quality: 0.32966
+ *
+Epoch 6 | Train: loss: 0.02249 | quality: 0.33664
+        | Val:   loss: 0.02117 | quality: 0.34306
+ *
+Epoch 7 | Train: loss: 0.02226 | quality: 0.34345
+        | Val:   loss: 0.02114 | quality: 0.34405
+ *
+Epoch 8 | Train: loss: 0.02216 | quality: 0.34632
+        | Val:   loss: 0.02111 | quality: 0.34483
+ *
+Epoch 9 | Train: loss: 0.02204 | quality: 0.34988
+        | Val:   loss: 0.02114 | quality: 0.34395
+ *
+Epoch 10 | Train: loss: 0.02185 | quality: 0.35574
+        | Val:   loss: 0.02128 | quality: 0.33954
+
+Epoch 11 | Train: loss: 0.02159 | quality: 0.36318
+        | Val:   loss: 0.02170 | quality: 0.32653
+
+Epoch 12 | Train: loss: 0.02135 | quality: 0.37043
+        | Val:   loss: 0.02190 | quality: 0.32024
+
+Epoch 13 | Train: loss: 0.02116 | quality: 0.37608
+        | Val:   loss: 0.02190 | quality: 0.32050
+
+Epoch 14 | Train: loss: 0.02102 | quality: 0.38021
+        | Val:   loss: 0.02188 | quality: 0.32094
+
+Epoch 15 | Train: loss: 0.02090 | quality: 0.38348
+        | Val:   loss: 0.02186 | quality: 0.32162
+
+Epoch 16 | Train: loss: 0.02081 | quality: 0.38630
+        | Val:   loss: 0.02182 | quality: 0.32275
+
+Epoch 17 | Train: loss: 0.02072 | quality: 0.38894
+        | Val:   loss: 0.02177 | quality: 0.32428
+
+Epoch 18 | Train: loss: 0.02063 | quality: 0.39159
+        | Val:   loss: 0.02172 | quality: 0.32605
+
+Epoch 19 | Train: loss: 0.02054 | quality: 0.39434
+        | Val:   loss: 0.02165 | quality: 0.32805
+
+
+Early stopping at epoch 19 (best was epoch 9)
+
+Best epoch: 9 (val_quality=0.343945)
+[2026-05-04 21:21:17,995][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=3323088614 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_3323088614 | val=0.3439
+[2026-05-04 21:21:17,998][HYDRA] 	#5 : seed=3313309148 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:21:18,169][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:21:18,170][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=3313309148 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_3313309148
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.08134 | quality: -1.39879
+        | Val:   loss: 0.07692 | quality: -1.38707
+
+Epoch 1 | Train: loss: 0.02953 | quality: 0.12919
+        | Val:   loss: 0.02740 | quality: 0.14974
+ *
+Epoch 2 | Train: loss: 0.02506 | quality: 0.26082
+        | Val:   loss: 0.02300 | quality: 0.28612
+ *
+Epoch 3 | Train: loss: 0.02392 | quality: 0.29451
+        | Val:   loss: 0.02200 | quality: 0.31728
+ *
+Epoch 4 | Train: loss: 0.02294 | quality: 0.32333
+        | Val:   loss: 0.02141 | quality: 0.33545
+ *
+Epoch 5 | Train: loss: 0.02245 | quality: 0.33793
+        | Val:   loss: 0.02142 | quality: 0.33538
+ *
+Epoch 6 | Train: loss: 0.02169 | quality: 0.36036
+        | Val:   loss: 0.02129 | quality: 0.33929
+ *
+Epoch 7 | Train: loss: 0.02074 | quality: 0.38835
+        | Val:   loss: 0.02148 | quality: 0.33337
+
+Epoch 8 | Train: loss: 0.02009 | quality: 0.40748
+        | Val:   loss: 0.02259 | quality: 0.29893
+
+Epoch 9 | Train: loss: 0.01965 | quality: 0.42039
+        | Val:   loss: 0.02315 | quality: 0.28141
+
+Epoch 10 | Train: loss: 0.01927 | quality: 0.43177
+        | Val:   loss: 0.02290 | quality: 0.28931
+
+Epoch 11 | Train: loss: 0.01900 | quality: 0.43956
+        | Val:   loss: 0.02258 | quality: 0.29919
+
+Epoch 12 | Train: loss: 0.01886 | quality: 0.44391
+        | Val:   loss: 0.02251 | quality: 0.30131
+
+Epoch 13 | Train: loss: 0.01876 | quality: 0.44670
+        | Val:   loss: 0.02244 | quality: 0.30367
+
+Epoch 14 | Train: loss: 0.01868 | quality: 0.44897
+        | Val:   loss: 0.02230 | quality: 0.30784
+
+Epoch 15 | Train: loss: 0.01861 | quality: 0.45116
+        | Val:   loss: 0.02213 | quality: 0.31307
+
+Epoch 16 | Train: loss: 0.01853 | quality: 0.45355
+        | Val:   loss: 0.02195 | quality: 0.31886
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.339290)
+[2026-05-04 21:21:38,520][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=3313309148 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_3313309148 | val=0.3393
+[2026-05-04 21:21:38,523][HYDRA] 	#6 : seed=3300558450 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:21:38,691][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:21:38,692][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=3300558450 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_3300558450
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.11823 | quality: -2.48668
+        | Val:   loss: 0.12372 | quality: -2.83958
+
+Epoch 1 | Train: loss: 0.02706 | quality: 0.20206
+        | Val:   loss: 0.02492 | quality: 0.22667
+ *
+Epoch 2 | Train: loss: 0.02521 | quality: 0.25644
+        | Val:   loss: 0.02310 | quality: 0.28324
+ *
+Epoch 3 | Train: loss: 0.02413 | quality: 0.28830
+        | Val:   loss: 0.02223 | quality: 0.31004
+ *
+Epoch 4 | Train: loss: 0.02312 | quality: 0.31819
+        | Val:   loss: 0.02166 | quality: 0.32786
+ *
+Epoch 5 | Train: loss: 0.02210 | quality: 0.34813
+        | Val:   loss: 0.02133 | quality: 0.33790
+ *
+Epoch 6 | Train: loss: 0.02089 | quality: 0.38402
+        | Val:   loss: 0.02135 | quality: 0.33750
+ *
+Epoch 7 | Train: loss: 0.01992 | quality: 0.41249
+        | Val:   loss: 0.02251 | quality: 0.30126
+
+Epoch 8 | Train: loss: 0.01915 | quality: 0.43527
+        | Val:   loss: 0.02321 | quality: 0.27954
+
+Epoch 9 | Train: loss: 0.01878 | quality: 0.44625
+        | Val:   loss: 0.02419 | quality: 0.24935
+
+Epoch 10 | Train: loss: 0.01853 | quality: 0.45365
+        | Val:   loss: 0.02461 | quality: 0.23616
+
+Epoch 11 | Train: loss: 0.01834 | quality: 0.45918
+        | Val:   loss: 0.02463 | quality: 0.23568
+
+Epoch 12 | Train: loss: 0.01819 | quality: 0.46350
+        | Val:   loss: 0.02447 | quality: 0.24066
+
+Epoch 13 | Train: loss: 0.01807 | quality: 0.46705
+        | Val:   loss: 0.02421 | quality: 0.24874
+
+Epoch 14 | Train: loss: 0.01797 | quality: 0.46998
+        | Val:   loss: 0.02388 | quality: 0.25881
+
+Epoch 15 | Train: loss: 0.01789 | quality: 0.47239
+        | Val:   loss: 0.02354 | quality: 0.26938
+
+Epoch 16 | Train: loss: 0.01782 | quality: 0.47434
+        | Val:   loss: 0.02323 | quality: 0.27918
+
+
+Early stopping at epoch 16 (best was epoch 6)
+
+Best epoch: 6 (val_quality=0.337499)
+[2026-05-04 21:21:59,906][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=3300558450 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_3300558450 | val=0.3375
+[2026-05-04 21:21:59,909][HYDRA] 	#7 : seed=4053540165 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:22:00,074][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:22:00,075][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=4053540165 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_4053540165
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.17664 | quality: -4.20939
+        | Val:   loss: 0.17574 | quality: -4.45392
+
+Epoch 1 | Train: loss: 0.02650 | quality: 0.21846
+        | Val:   loss: 0.02467 | quality: 0.23446
+ *
+Epoch 2 | Train: loss: 0.02456 | quality: 0.27581
+        | Val:   loss: 0.02241 | quality: 0.30444
+ *
+Epoch 3 | Train: loss: 0.02361 | quality: 0.30364
+        | Val:   loss: 0.02170 | quality: 0.32652
+ *
+Epoch 4 | Train: loss: 0.02248 | quality: 0.33689
+        | Val:   loss: 0.02095 | quality: 0.34978
+ *
+Epoch 5 | Train: loss: 0.02169 | quality: 0.36036
+        | Val:   loss: 0.02106 | quality: 0.34653
+
+Epoch 6 | Train: loss: 0.02026 | quality: 0.40235
+        | Val:   loss: 0.02308 | quality: 0.28386
+
+Epoch 7 | Train: loss: 0.01956 | quality: 0.42319
+        | Val:   loss: 0.02374 | quality: 0.26316
+
+Epoch 8 | Train: loss: 0.01936 | quality: 0.42895
+        | Val:   loss: 0.02326 | quality: 0.27799
+
+Epoch 9 | Train: loss: 0.01925 | quality: 0.43229
+        | Val:   loss: 0.02292 | quality: 0.28857
+
+Epoch 10 | Train: loss: 0.01916 | quality: 0.43496
+        | Val:   loss: 0.02268 | quality: 0.29610
+
+Epoch 11 | Train: loss: 0.01908 | quality: 0.43737
+        | Val:   loss: 0.02251 | quality: 0.30156
+
+Epoch 12 | Train: loss: 0.01900 | quality: 0.43968
+        | Val:   loss: 0.02237 | quality: 0.30587
+
+Epoch 13 | Train: loss: 0.01892 | quality: 0.44198
+        | Val:   loss: 0.02225 | quality: 0.30960
+
+Epoch 14 | Train: loss: 0.01884 | quality: 0.44434
+        | Val:   loss: 0.02213 | quality: 0.31324
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.349779)
+[2026-05-04 21:22:18,051][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=4053540165 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_4053540165 | val=0.3498
+[2026-05-04 21:22:18,054][HYDRA] 	#8 : seed=2318036890 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:22:18,222][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:22:18,223][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=2318036890 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_2318036890
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.15681 | quality: -3.62448
+        | Val:   loss: 0.15349 | quality: -3.76353
+
+Epoch 1 | Train: loss: 0.03041 | quality: 0.10312
+        | Val:   loss: 0.02797 | quality: 0.13187
+ *
+Epoch 2 | Train: loss: 0.02511 | quality: 0.25952
+        | Val:   loss: 0.02287 | quality: 0.29039
+ *
+Epoch 3 | Train: loss: 0.02401 | quality: 0.29197
+        | Val:   loss: 0.02205 | quality: 0.31554
+ *
+Epoch 4 | Train: loss: 0.02269 | quality: 0.33069
+        | Val:   loss: 0.02138 | quality: 0.33646
+ *
+Epoch 5 | Train: loss: 0.02124 | quality: 0.37347
+        | Val:   loss: 0.02154 | quality: 0.33145
+
+Epoch 6 | Train: loss: 0.02005 | quality: 0.40857
+        | Val:   loss: 0.02505 | quality: 0.22260
+
+Epoch 7 | Train: loss: 0.01940 | quality: 0.42799
+        | Val:   loss: 0.02501 | quality: 0.22397
+
+Epoch 8 | Train: loss: 0.01906 | quality: 0.43795
+        | Val:   loss: 0.02524 | quality: 0.21681
+
+Epoch 9 | Train: loss: 0.01879 | quality: 0.44577
+        | Val:   loss: 0.02532 | quality: 0.21432
+
+Epoch 10 | Train: loss: 0.01860 | quality: 0.45136
+        | Val:   loss: 0.02527 | quality: 0.21562
+
+Epoch 11 | Train: loss: 0.01845 | quality: 0.45588
+        | Val:   loss: 0.02521 | quality: 0.21756
+
+Epoch 12 | Train: loss: 0.01832 | quality: 0.45981
+        | Val:   loss: 0.02516 | quality: 0.21928
+
+Epoch 13 | Train: loss: 0.01820 | quality: 0.46333
+        | Val:   loss: 0.02512 | quality: 0.22053
+
+Epoch 14 | Train: loss: 0.01809 | quality: 0.46648
+        | Val:   loss: 0.02504 | quality: 0.22282
+
+
+Early stopping at epoch 14 (best was epoch 4)
+
+Best epoch: 4 (val_quality=0.336458)
+[2026-05-04 21:22:36,700][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=2318036890 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_2318036890 | val=0.3365
+[2026-05-04 21:22:36,702][HYDRA] 	#9 : seed=4234260150 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=cpda_typei dataset=ai4i
+[2026-05-04 21:22:36,862][__main__][INFO] - Using best config for CPDATypeI/ai4i: L=4, bond_dim=4
+[2026-05-04 21:22:36,862][__main__][INFO] - ▶ RUN CPDATypeI/ai4i/NTN L=4 bd=4 seed=4234260150 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_4234260150
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 0.08838 | quality: -1.60649
+        | Val:   loss: 0.08735 | quality: -1.71074
+
+Epoch 1 | Train: loss: 0.02900 | quality: 0.14465
+        | Val:   loss: 0.02702 | quality: 0.16136
+ *
+Epoch 2 | Train: loss: 0.02509 | quality: 0.26001
+        | Val:   loss: 0.02285 | quality: 0.29073
+ *
+Epoch 3 | Train: loss: 0.02385 | quality: 0.29653
+        | Val:   loss: 0.02237 | quality: 0.30562
+ *
+Epoch 4 | Train: loss: 0.02258 | quality: 0.33400
+        | Val:   loss: 0.02179 | quality: 0.32363
+ *
+Epoch 5 | Train: loss: 0.02140 | quality: 0.36893
+        | Val:   loss: 0.02086 | quality: 0.35272
+ *
+Epoch 6 | Train: loss: 0.02044 | quality: 0.39707
+        | Val:   loss: 0.02036 | quality: 0.36811
+ *
+Epoch 7 | Train: loss: 0.01983 | quality: 0.41529
+        | Val:   loss: 0.02024 | quality: 0.37197
+ *
+Epoch 8 | Train: loss: 0.01943 | quality: 0.42712
+        | Val:   loss: 0.02004 | quality: 0.37801
+ *
+Epoch 9 | Train: loss: 0.01912 | quality: 0.43613
+        | Val:   loss: 0.02005 | quality: 0.37769
+ *
+Epoch 10 | Train: loss: 0.01887 | quality: 0.44346
+        | Val:   loss: 0.02008 | quality: 0.37689
+ *
+Epoch 11 | Train: loss: 0.01863 | quality: 0.45042
+        | Val:   loss: 0.01999 | quality: 0.37961
+ *
+Epoch 12 | Train: loss: 0.01844 | quality: 0.45618
+        | Val:   loss: 0.01989 | quality: 0.38278
+ *
+Epoch 13 | Train: loss: 0.01829 | quality: 0.46045
+        | Val:   loss: 0.01992 | quality: 0.38176
+
+Epoch 14 | Train: loss: 0.01819 | quality: 0.46350
+        | Val:   loss: 0.02008 | quality: 0.37695
+
+Epoch 15 | Train: loss: 0.01811 | quality: 0.46580
+        | Val:   loss: 0.02030 | quality: 0.37015
+
+Epoch 16 | Train: loss: 0.01805 | quality: 0.46767
+        | Val:   loss: 0.02054 | quality: 0.36261
+
+Epoch 17 | Train: loss: 0.01799 | quality: 0.46930
+        | Val:   loss: 0.02077 | quality: 0.35535
+
+Epoch 18 | Train: loss: 0.01794 | quality: 0.47082
+        | Val:   loss: 0.02097 | quality: 0.34916
+
+Epoch 19 | Train: loss: 0.01789 | quality: 0.47230
+        | Val:   loss: 0.02111 | quality: 0.34497
+
+Epoch 20 | Train: loss: 0.01784 | quality: 0.47378
+        | Val:   loss: 0.02120 | quality: 0.34207
+
+
+Best epoch: 12 (val_quality=0.382776)
+[2026-05-04 21:23:02,018][__main__][INFO] - ✓ DONE CPDATypeI/ai4i/NTN L=4 bd=4 seed=4234260150 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/CPDATypeI/ai4i/seed_4234260150 | val=0.3828
+
+
+PS:
+
+Read file <logs/28350165_12_TEST.err> for stderr output of this job.
+

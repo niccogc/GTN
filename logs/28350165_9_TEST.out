@@ -1,0 +1,734 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28350165[9]: <ntn_test[1-100]%20> in cluster <dcc> Done
+
+Job <ntn_test[1-100]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 21:19:02 2026
+Job was executed on host(s) <10*n-62-29-18>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 21:19:03 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 21:19:03 2026
+Terminated at Mon May  4 21:23:50 2026
+Results reported at Mon May  4 21:23:50 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_test[1-100]%20"
+#BSUB -W 8:00
+#BSUB -n 10
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_TEST.out
+#BSUB -e logs/%J_%I_TEST.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+# DATASETS=(
+#     "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+#     "car_evaluation" "concrete" "energy_efficiency" "hearth"
+#     "iris" "mushrooms" "obesity" "popularity" "realstate"
+#     "seoulBike" "student_dropout" "student_perf" "wine"
+#     "winequalityc"
+# )
+
+DATASETS=(
+    "abalone" "ai4i" "hearth" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
+    "iris" "realstate" )
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+    for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        MODEL_IDX=$((IDV % NUM_MODELS))
+        DATASET_IDX=$((IDV / NUM_MODELS))
+
+        echo "Index $i: Dataset=${DATASETS[$DATASET_IDX]}, Model=${MODELS[$MODEL_IDX]}"
+    done
+    exit 0
+fi
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+MODEL_IDX=$((IDV % NUM_MODELS))
+
+(... more ...)
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   2295.00 sec.
+    Max Memory :                                 535 MB
+    Average Memory :                             266.00 MB
+    Total Requested Memory :                     7500.00 MB
+    Delta Memory :                               6965.00 MB
+    Max Swap :                                   -
+    Max Processes :                              16
+    Max Threads :                                46
+    Run time :                                   287 sec.
+    Turnaround time :                            288 sec.
+
+The output (if any) follows:
+
+Task 9: Dataset=abalone, Model=tnml_f, Experiment=test_ntn
+[2026-05-04 21:19:12,063][HYDRA] Launching 10 jobs locally
+[2026-05-04 21:19:12,063][HYDRA] 	#0 : seed=836578142 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:19:12,220][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:19:12,293][utils.tracking][INFO] - Loaded 19006 tracked runs from runs_tracking.csv
+[2026-05-04 21:19:12,295][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_836578142
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 109.82304 | quality: -9.47273
+        | Val:   loss: 104.92600 | quality: -9.45820
+Epoch 1 | Train: loss: 58.45954 | quality: -4.57471
+        | Val:   loss: 58.38540 | quality: -4.81940
+ *
+Epoch 2 | Train: loss: 47.07599 | quality: -3.48917
+        | Val:   loss: 47.71939 | quality: -3.75629
+ *
+Epoch 3 | Train: loss: 42.22420 | quality: -3.02650
+        | Val:   loss: 42.64997 | quality: -3.25101
+ *
+Epoch 4 | Train: loss: 38.46886 | quality: -2.66839
+        | Val:   loss: 41.44687 | quality: -3.13110
+ *
+Epoch 5 | Train: loss: 34.79356 | quality: -2.31792
+        | Val:   loss: 37.99137 | quality: -2.78668
+ *
+Epoch 6 | Train: loss: 31.59627 | quality: -2.01302
+        | Val:   loss: 34.78277 | quality: -2.46687
+ *
+Epoch 7 | Train: loss: 30.05277 | quality: -1.86583
+        | Val:   loss: 35.76621 | quality: -2.56489
+
+Epoch 8 | Train: loss: 29.22218 | quality: -1.78663
+        | Val:   loss: 36.84711 | quality: -2.67263
+
+Epoch 9 | Train: loss: 27.62360 | quality: -1.63419
+        | Val:   loss: 37.37420 | quality: -2.72517
+
+Epoch 10 | Train: loss: 26.66437 | quality: -1.54272
+        | Val:   loss: 37.89339 | quality: -2.77692
+
+Epoch 11 | Train: loss: 25.93732 | quality: -1.47338
+        | Val:   loss: 38.29336 | quality: -2.81678
+
+Epoch 12 | Train: loss: 25.44017 | quality: -1.42598
+        | Val:   loss: 39.17444 | quality: -2.90460
+
+Epoch 13 | Train: loss: 25.28233 | quality: -1.41093
+        | Val:   loss: 39.36906 | quality: -2.92400
+
+Epoch 14 | Train: loss: 25.14232 | quality: -1.39757
+        | Val:   loss: 39.58517 | quality: -2.94554
+
+Epoch 15 | Train: loss: 25.05816 | quality: -1.38955
+        | Val:   loss: 39.71239 | quality: -2.95822
+
+Epoch 16 | Train: loss: 25.00878 | quality: -1.38484
+        | Val:   loss: 39.82040 | quality: -2.96898
+
+
+⏸ Early stopping at epoch 16 (best was epoch 6)
+[2026-05-04 21:19:55,451][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_836578142 | val=-2.4669
+[2026-05-04 21:19:55,454][HYDRA] 	#1 : seed=895435625 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:19:55,652][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:19:55,653][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=895435625 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_895435625
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 106.24965 | quality: -9.13197
+        | Val:   loss: 99.66631 | quality: -8.93395
+Epoch 1 | Train: loss: 60.45423 | quality: -4.76492
+        | Val:   loss: 59.52095 | quality: -4.93258
+ *
+Epoch 2 | Train: loss: 47.83546 | quality: -3.56159
+        | Val:   loss: 48.82707 | quality: -3.86670
+ *
+Epoch 3 | Train: loss: 42.93562 | quality: -3.09434
+        | Val:   loss: 43.57459 | quality: -3.34317
+ *
+Epoch 4 | Train: loss: 38.08524 | quality: -2.63181
+        | Val:   loss: 40.29942 | quality: -3.01673
+ *
+Epoch 5 | Train: loss: 33.57103 | quality: -2.20134
+        | Val:   loss: 36.93497 | quality: -2.68139
+ *
+Epoch 6 | Train: loss: 31.32141 | quality: -1.98681
+        | Val:   loss: 35.44741 | quality: -2.53312
+ *
+Epoch 7 | Train: loss: 30.21805 | quality: -1.88159
+        | Val:   loss: 34.93556 | quality: -2.48210
+ *
+Epoch 8 | Train: loss: 29.17324 | quality: -1.78196
+        | Val:   loss: 34.15672 | quality: -2.40447
+ *
+Epoch 9 | Train: loss: 27.19538 | quality: -1.59335
+        | Val:   loss: 36.77154 | quality: -2.66510
+
+Epoch 10 | Train: loss: 26.55548 | quality: -1.53233
+        | Val:   loss: 38.27154 | quality: -2.81461
+
+Epoch 11 | Train: loss: 25.92221 | quality: -1.47194
+        | Val:   loss: 39.26351 | quality: -2.91348
+
+Epoch 12 | Train: loss: 25.50125 | quality: -1.43180
+        | Val:   loss: 39.91731 | quality: -2.97864
+
+Epoch 13 | Train: loss: 25.32448 | quality: -1.41494
+        | Val:   loss: 40.29962 | quality: -3.01675
+
+Epoch 14 | Train: loss: 25.21747 | quality: -1.40474
+        | Val:   loss: 40.44591 | quality: -3.03133
+
+Epoch 15 | Train: loss: 25.10190 | quality: -1.39372
+        | Val:   loss: 40.55029 | quality: -3.04173
+
+Epoch 16 | Train: loss: 25.04322 | quality: -1.38812
+        | Val:   loss: 40.63062 | quality: -3.04974
+
+Epoch 17 | Train: loss: 25.00879 | quality: -1.38484
+        | Val:   loss: 40.68413 | quality: -3.05507
+
+Epoch 18 | Train: loss: 24.98555 | quality: -1.38262
+        | Val:   loss: 40.72329 | quality: -3.05898
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-05-04 21:20:20,585][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=895435625 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_895435625 | val=-2.4045
+[2026-05-04 21:20:20,588][HYDRA] 	#2 : seed=2631647123 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:20:20,739][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:20:20,740][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=2631647123 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_2631647123
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 108.83607 | quality: -9.37861
+        | Val:   loss: 103.83196 | quality: -9.34915
+Epoch 1 | Train: loss: 61.92178 | quality: -4.90487
+        | Val:   loss: 63.03985 | quality: -5.28332
+ *
+Epoch 2 | Train: loss: 49.83709 | quality: -3.75247
+        | Val:   loss: 50.91600 | quality: -4.07491
+ *
+Epoch 3 | Train: loss: 43.02751 | quality: -3.10311
+        | Val:   loss: 43.62951 | quality: -3.34865
+ *
+Epoch 4 | Train: loss: 38.63017 | quality: -2.68378
+        | Val:   loss: 40.31041 | quality: -3.01782
+ *
+Epoch 5 | Train: loss: 34.95751 | quality: -2.33355
+        | Val:   loss: 38.20863 | quality: -2.80834
+ *
+Epoch 6 | Train: loss: 32.03577 | quality: -2.05493
+        | Val:   loss: 35.95529 | quality: -2.58374
+ *
+Epoch 7 | Train: loss: 30.14885 | quality: -1.87500
+        | Val:   loss: 35.27876 | quality: -2.51631
+ *
+Epoch 8 | Train: loss: 29.46324 | quality: -1.80962
+        | Val:   loss: 35.56232 | quality: -2.54457
+
+Epoch 9 | Train: loss: 28.05027 | quality: -1.67488
+        | Val:   loss: 37.48992 | quality: -2.73670
+
+Epoch 10 | Train: loss: 27.00367 | quality: -1.57507
+        | Val:   loss: 38.08677 | quality: -2.79619
+
+Epoch 11 | Train: loss: 26.42218 | quality: -1.51962
+        | Val:   loss: 38.10576 | quality: -2.79808
+
+Epoch 12 | Train: loss: 25.98252 | quality: -1.47769
+        | Val:   loss: 38.66302 | quality: -2.85363
+
+Epoch 13 | Train: loss: 25.55444 | quality: -1.43687
+        | Val:   loss: 39.55496 | quality: -2.94253
+
+Epoch 14 | Train: loss: 25.40706 | quality: -1.42282
+        | Val:   loss: 39.99383 | quality: -2.98627
+
+Epoch 15 | Train: loss: 25.31761 | quality: -1.41429
+        | Val:   loss: 40.31438 | quality: -3.01822
+
+Epoch 16 | Train: loss: 25.25047 | quality: -1.40789
+        | Val:   loss: 40.55456 | quality: -3.04216
+
+Epoch 17 | Train: loss: 25.19292 | quality: -1.40240
+        | Val:   loss: 40.71834 | quality: -3.05848
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-05-04 21:20:44,555][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=2631647123 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_2631647123 | val=-2.5163
+[2026-05-04 21:20:44,558][HYDRA] 	#3 : seed=2487125586 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:20:44,708][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:20:44,709][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=2487125586 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_2487125586
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 105.54533 | quality: -9.06481
+        | Val:   loss: 100.68126 | quality: -9.03512
+Epoch 1 | Train: loss: 55.97090 | quality: -4.33739
+        | Val:   loss: 56.25006 | quality: -4.60656
+ *
+Epoch 2 | Train: loss: 47.99628 | quality: -3.57693
+        | Val:   loss: 49.43616 | quality: -3.92741
+ *
+Epoch 3 | Train: loss: 42.65717 | quality: -3.06779
+        | Val:   loss: 43.07302 | quality: -3.29318
+ *
+Epoch 4 | Train: loss: 39.68296 | quality: -2.78417
+        | Val:   loss: 40.52939 | quality: -3.03965
+ *
+Epoch 5 | Train: loss: 35.28460 | quality: -2.36474
+        | Val:   loss: 37.05011 | quality: -2.69286
+ *
+Epoch 6 | Train: loss: 32.31281 | quality: -2.08135
+        | Val:   loss: 35.15012 | quality: -2.50349
+ *
+Epoch 7 | Train: loss: 30.67468 | quality: -1.92514
+        | Val:   loss: 35.05851 | quality: -2.49436
+ *
+Epoch 8 | Train: loss: 29.48392 | quality: -1.81159
+        | Val:   loss: 36.10861 | quality: -2.59902
+
+Epoch 9 | Train: loss: 27.63183 | quality: -1.63497
+        | Val:   loss: 38.33194 | quality: -2.82063
+
+Epoch 10 | Train: loss: 26.46049 | quality: -1.52327
+        | Val:   loss: 38.93458 | quality: -2.88069
+
+Epoch 11 | Train: loss: 25.79452 | quality: -1.45977
+        | Val:   loss: 39.35525 | quality: -2.92262
+
+Epoch 12 | Train: loss: 25.48277 | quality: -1.43004
+        | Val:   loss: 40.00657 | quality: -2.98754
+
+Epoch 13 | Train: loss: 25.24838 | quality: -1.40769
+        | Val:   loss: 40.66324 | quality: -3.05299
+
+Epoch 14 | Train: loss: 25.11130 | quality: -1.39462
+        | Val:   loss: 41.00020 | quality: -3.08658
+
+Epoch 15 | Train: loss: 25.03828 | quality: -1.38765
+        | Val:   loss: 41.14806 | quality: -3.10131
+
+Epoch 16 | Train: loss: 24.99309 | quality: -1.38334
+        | Val:   loss: 41.19727 | quality: -3.10622
+
+Epoch 17 | Train: loss: 24.95945 | quality: -1.38013
+        | Val:   loss: 41.20687 | quality: -3.10718
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-05-04 21:21:08,480][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=2487125586 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_2487125586 | val=-2.4944
+[2026-05-04 21:21:08,483][HYDRA] 	#4 : seed=3323088614 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:21:08,640][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:21:08,641][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=3323088614 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_3323088614
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 108.45256 | quality: -9.34204
+        | Val:   loss: 104.49958 | quality: -9.41570
+Epoch 1 | Train: loss: 62.51160 | quality: -4.96111
+        | Val:   loss: 62.44947 | quality: -5.22447
+ *
+Epoch 2 | Train: loss: 49.88294 | quality: -3.75684
+        | Val:   loss: 50.71875 | quality: -4.05525
+ *
+Epoch 3 | Train: loss: 42.34295 | quality: -3.03783
+        | Val:   loss: 42.62799 | quality: -3.24882
+ *
+Epoch 4 | Train: loss: 38.32132 | quality: -2.65432
+        | Val:   loss: 39.86487 | quality: -2.97342
+ *
+Epoch 5 | Train: loss: 35.45384 | quality: -2.38088
+        | Val:   loss: 38.35737 | quality: -2.82316
+ *
+Epoch 6 | Train: loss: 32.21330 | quality: -2.07186
+        | Val:   loss: 36.18114 | quality: -2.60625
+ *
+Epoch 7 | Train: loss: 30.39304 | quality: -1.89828
+        | Val:   loss: 34.45596 | quality: -2.43430
+ *
+Epoch 8 | Train: loss: 29.23236 | quality: -1.78760
+        | Val:   loss: 34.00617 | quality: -2.38947
+ *
+Epoch 9 | Train: loss: 28.39138 | quality: -1.70740
+        | Val:   loss: 35.46504 | quality: -2.53488
+
+Epoch 10 | Train: loss: 26.64560 | quality: -1.54093
+        | Val:   loss: 37.92550 | quality: -2.78012
+
+Epoch 11 | Train: loss: 25.90444 | quality: -1.47025
+        | Val:   loss: 39.11441 | quality: -2.89862
+
+Epoch 12 | Train: loss: 25.65596 | quality: -1.44655
+        | Val:   loss: 39.65579 | quality: -2.95258
+
+Epoch 13 | Train: loss: 25.32672 | quality: -1.41516
+        | Val:   loss: 40.30698 | quality: -3.01748
+
+Epoch 14 | Train: loss: 25.14429 | quality: -1.39776
+        | Val:   loss: 40.31938 | quality: -3.01872
+
+Epoch 15 | Train: loss: 25.06561 | quality: -1.39026
+        | Val:   loss: 40.35737 | quality: -3.02250
+
+Epoch 16 | Train: loss: 25.01930 | quality: -1.38584
+        | Val:   loss: 40.41299 | quality: -3.02805
+
+Epoch 17 | Train: loss: 24.98699 | quality: -1.38276
+        | Val:   loss: 40.47704 | quality: -3.03443
+
+Epoch 18 | Train: loss: 24.96246 | quality: -1.38042
+        | Val:   loss: 40.54388 | quality: -3.04109
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-05-04 21:21:33,699][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=3323088614 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_3323088614 | val=-2.3895
+[2026-05-04 21:21:33,703][HYDRA] 	#5 : seed=3313309148 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:21:33,869][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:21:33,870][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=3313309148 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_3313309148
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 111.32429 | quality: -9.61589
+        | Val:   loss: 106.16920 | quality: -9.58211
+Epoch 1 | Train: loss: 60.10415 | quality: -4.73154
+        | Val:   loss: 58.63568 | quality: -4.84434
+ *
+Epoch 2 | Train: loss: 49.14417 | quality: -3.68639
+        | Val:   loss: 49.19976 | quality: -3.90384
+ *
+Epoch 3 | Train: loss: 43.26756 | quality: -3.12600
+        | Val:   loss: 43.08057 | quality: -3.29393
+ *
+Epoch 4 | Train: loss: 39.26906 | quality: -2.74470
+        | Val:   loss: 40.84257 | quality: -3.07087
+ *
+Epoch 5 | Train: loss: 36.78956 | quality: -2.50826
+        | Val:   loss: 40.49055 | quality: -3.03578
+ *
+Epoch 6 | Train: loss: 33.30378 | quality: -2.17585
+        | Val:   loss: 36.50137 | quality: -2.63817
+ *
+Epoch 7 | Train: loss: 30.52969 | quality: -1.91131
+        | Val:   loss: 36.43208 | quality: -2.63126
+ *
+Epoch 8 | Train: loss: 29.56957 | quality: -1.81976
+        | Val:   loss: 36.77345 | quality: -2.66529
+
+Epoch 9 | Train: loss: 28.26218 | quality: -1.69508
+        | Val:   loss: 37.25345 | quality: -2.71313
+
+Epoch 10 | Train: loss: 26.99239 | quality: -1.57400
+        | Val:   loss: 37.62543 | quality: -2.75021
+
+Epoch 11 | Train: loss: 26.34177 | quality: -1.51195
+        | Val:   loss: 38.25172 | quality: -2.81263
+
+Epoch 12 | Train: loss: 25.75438 | quality: -1.45594
+        | Val:   loss: 39.78065 | quality: -2.96502
+
+Epoch 13 | Train: loss: 25.52190 | quality: -1.43377
+        | Val:   loss: 40.40654 | quality: -3.02741
+
+Epoch 14 | Train: loss: 25.38900 | quality: -1.42110
+        | Val:   loss: 40.89356 | quality: -3.07595
+
+Epoch 15 | Train: loss: 25.30290 | quality: -1.41289
+        | Val:   loss: 41.16487 | quality: -3.10299
+
+Epoch 16 | Train: loss: 25.22893 | quality: -1.40583
+        | Val:   loss: 41.30401 | quality: -3.11686
+
+Epoch 17 | Train: loss: 25.15650 | quality: -1.39893
+        | Val:   loss: 41.31761 | quality: -3.11821
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-05-04 21:21:57,967][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=3313309148 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_3313309148 | val=-2.6313
+[2026-05-04 21:21:57,970][HYDRA] 	#6 : seed=3300558450 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:21:58,122][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:21:58,123][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=3300558450 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_3300558450
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 112.03789 | quality: -9.68394
+        | Val:   loss: 107.19997 | quality: -9.68485
+Epoch 1 | Train: loss: 54.29136 | quality: -4.17723
+        | Val:   loss: 55.23212 | quality: -4.50510
+ *
+Epoch 2 | Train: loss: 48.40978 | quality: -3.61636
+        | Val:   loss: 48.99317 | quality: -3.88325
+ *
+Epoch 3 | Train: loss: 43.62724 | quality: -3.16030
+        | Val:   loss: 44.36772 | quality: -3.42222
+ *
+Epoch 4 | Train: loss: 41.01308 | quality: -2.91101
+        | Val:   loss: 42.84530 | quality: -3.27048
+ *
+Epoch 5 | Train: loss: 36.59575 | quality: -2.48977
+        | Val:   loss: 39.12688 | quality: -2.89986
+ *
+Epoch 6 | Train: loss: 34.39414 | quality: -2.27983
+        | Val:   loss: 39.05742 | quality: -2.89294
+ *
+Epoch 7 | Train: loss: 31.01068 | quality: -1.95718
+        | Val:   loss: 36.36446 | quality: -2.62452
+ *
+Epoch 8 | Train: loss: 29.04195 | quality: -1.76944
+        | Val:   loss: 36.79376 | quality: -2.66731
+
+Epoch 9 | Train: loss: 27.70349 | quality: -1.64181
+        | Val:   loss: 38.67743 | quality: -2.85506
+
+Epoch 10 | Train: loss: 26.45045 | quality: -1.52232
+        | Val:   loss: 39.02126 | quality: -2.88933
+
+Epoch 11 | Train: loss: 25.88173 | quality: -1.46808
+        | Val:   loss: 40.11101 | quality: -2.99795
+
+Epoch 12 | Train: loss: 25.59740 | quality: -1.44097
+        | Val:   loss: 40.24885 | quality: -3.01169
+
+Epoch 13 | Train: loss: 25.28789 | quality: -1.41145
+        | Val:   loss: 40.52446 | quality: -3.03916
+
+Epoch 14 | Train: loss: 25.12891 | quality: -1.39629
+        | Val:   loss: 40.84452 | quality: -3.07106
+
+Epoch 15 | Train: loss: 25.05434 | quality: -1.38918
+        | Val:   loss: 41.02985 | quality: -3.08953
+
+Epoch 16 | Train: loss: 25.00839 | quality: -1.38480
+        | Val:   loss: 41.13476 | quality: -3.09999
+
+Epoch 17 | Train: loss: 24.97498 | quality: -1.38162
+        | Val:   loss: 41.19759 | quality: -3.10625
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-05-04 21:22:22,668][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=3300558450 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_3300558450 | val=-2.6245
+[2026-05-04 21:22:22,671][HYDRA] 	#7 : seed=4053540165 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:22:22,821][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:22:22,822][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=4053540165 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_4053540165
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 110.05154 | quality: -9.49452
+        | Val:   loss: 105.01641 | quality: -9.46721
+Epoch 1 | Train: loss: 61.65634 | quality: -4.87955
+        | Val:   loss: 59.13156 | quality: -4.89377
+ *
+Epoch 2 | Train: loss: 48.18355 | quality: -3.59479
+        | Val:   loss: 48.09546 | quality: -3.79378
+ *
+Epoch 3 | Train: loss: 41.57037 | quality: -2.96415
+        | Val:   loss: 41.65840 | quality: -3.15218
+ *
+Epoch 4 | Train: loss: 38.58025 | quality: -2.67902
+        | Val:   loss: 41.01754 | quality: -3.08831
+ *
+Epoch 5 | Train: loss: 32.97621 | quality: -2.14461
+        | Val:   loss: 35.65535 | quality: -2.55384
+ *
+Epoch 6 | Train: loss: 31.03721 | quality: -1.95971
+        | Val:   loss: 34.51672 | quality: -2.44035
+ *
+Epoch 7 | Train: loss: 29.64963 | quality: -1.82739
+        | Val:   loss: 34.37588 | quality: -2.42632
+ *
+Epoch 8 | Train: loss: 28.77929 | quality: -1.74439
+        | Val:   loss: 34.31211 | quality: -2.41996
+ *
+Epoch 9 | Train: loss: 27.28930 | quality: -1.60231
+        | Val:   loss: 37.06058 | quality: -2.69391
+
+Epoch 10 | Train: loss: 26.49029 | quality: -1.52612
+        | Val:   loss: 37.98769 | quality: -2.78631
+
+Epoch 11 | Train: loss: 25.75870 | quality: -1.45635
+        | Val:   loss: 38.74985 | quality: -2.86228
+
+Epoch 12 | Train: loss: 25.44367 | quality: -1.42631
+        | Val:   loss: 39.20998 | quality: -2.90814
+
+Epoch 13 | Train: loss: 25.32908 | quality: -1.41538
+        | Val:   loss: 39.47630 | quality: -2.93469
+
+Epoch 14 | Train: loss: 25.23856 | quality: -1.40675
+        | Val:   loss: 39.76314 | quality: -2.96328
+
+Epoch 15 | Train: loss: 25.18748 | quality: -1.40188
+        | Val:   loss: 39.92824 | quality: -2.97973
+
+Epoch 16 | Train: loss: 25.14561 | quality: -1.39789
+        | Val:   loss: 40.05239 | quality: -2.99211
+
+Epoch 17 | Train: loss: 25.10479 | quality: -1.39399
+        | Val:   loss: 40.16219 | quality: -3.00305
+
+Epoch 18 | Train: loss: 25.06085 | quality: -1.38980
+        | Val:   loss: 40.27305 | quality: -3.01410
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-05-04 21:22:47,969][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=4053540165 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_4053540165 | val=-2.4200
+[2026-05-04 21:22:47,971][HYDRA] 	#8 : seed=2318036890 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:22:48,123][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:22:48,124][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=2318036890 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_2318036890
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 113.32504 | quality: -9.80668
+        | Val:   loss: 108.02761 | quality: -9.76734
+Epoch 1 | Train: loss: 53.26397 | quality: -4.07926
+        | Val:   loss: 54.53833 | quality: -4.43595
+ *
+Epoch 2 | Train: loss: 46.96308 | quality: -3.47840
+        | Val:   loss: 47.75153 | quality: -3.75950
+ *
+Epoch 3 | Train: loss: 42.84684 | quality: -3.08588
+        | Val:   loss: 43.38395 | quality: -3.32417
+ *
+Epoch 4 | Train: loss: 39.62239 | quality: -2.77839
+        | Val:   loss: 41.25941 | quality: -3.11241
+ *
+Epoch 5 | Train: loss: 34.60669 | quality: -2.30010
+        | Val:   loss: 38.42709 | quality: -2.83011
+ *
+Epoch 6 | Train: loss: 31.20862 | quality: -1.97606
+        | Val:   loss: 35.32774 | quality: -2.52119
+ *
+Epoch 7 | Train: loss: 30.16202 | quality: -1.87625
+        | Val:   loss: 35.97091 | quality: -2.58530
+
+Epoch 8 | Train: loss: 28.79878 | quality: -1.74625
+        | Val:   loss: 34.48357 | quality: -2.43705
+ *
+Epoch 9 | Train: loss: 27.75827 | quality: -1.64703
+        | Val:   loss: 36.07612 | quality: -2.59578
+
+Epoch 10 | Train: loss: 26.65656 | quality: -1.54197
+        | Val:   loss: 37.45325 | quality: -2.73305
+
+Epoch 11 | Train: loss: 25.95907 | quality: -1.47546
+        | Val:   loss: 38.58277 | quality: -2.84563
+
+Epoch 12 | Train: loss: 25.67305 | quality: -1.44818
+        | Val:   loss: 39.42076 | quality: -2.92915
+
+Epoch 13 | Train: loss: 25.40141 | quality: -1.42228
+        | Val:   loss: 40.22051 | quality: -3.00886
+
+Epoch 14 | Train: loss: 25.22446 | quality: -1.40541
+        | Val:   loss: 40.50204 | quality: -3.03692
+
+Epoch 15 | Train: loss: 25.14380 | quality: -1.39771
+        | Val:   loss: 40.61260 | quality: -3.04794
+
+Epoch 16 | Train: loss: 25.08484 | quality: -1.39209
+        | Val:   loss: 40.68417 | quality: -3.05508
+
+Epoch 17 | Train: loss: 25.02619 | quality: -1.38650
+        | Val:   loss: 40.74236 | quality: -3.06088
+
+Epoch 18 | Train: loss: 24.98906 | quality: -1.38296
+        | Val:   loss: 40.80712 | quality: -3.06733
+
+
+⏸ Early stopping at epoch 18 (best was epoch 8)
+[2026-05-04 21:23:13,222][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=2318036890 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_2318036890 | val=-2.4371
+[2026-05-04 21:23:13,224][HYDRA] 	#9 : seed=4234260150 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=abalone
+[2026-05-04 21:23:13,392][__main__][INFO] - Using best config for TNML_F/abalone: L=3, bond_dim=12
+[2026-05-04 21:23:13,393][__main__][INFO] - ▶ RUN TNML_F/abalone/NTN L=3 bd=12 seed=4234260150 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_4234260150
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 111.43212 | quality: -9.62617
+        | Val:   loss: 105.80406 | quality: -9.54572
+Epoch 1 | Train: loss: 64.92219 | quality: -5.19098
+        | Val:   loss: 63.53861 | quality: -5.33303
+ *
+Epoch 2 | Train: loss: 49.66266 | quality: -3.73583
+        | Val:   loss: 49.30251 | quality: -3.91409
+ *
+Epoch 3 | Train: loss: 43.09162 | quality: -3.10922
+        | Val:   loss: 42.80935 | quality: -3.26690
+ *
+Epoch 4 | Train: loss: 39.47078 | quality: -2.76394
+        | Val:   loss: 40.84960 | quality: -3.07157
+ *
+Epoch 5 | Train: loss: 37.54009 | quality: -2.57982
+        | Val:   loss: 40.20535 | quality: -3.00735
+ *
+Epoch 6 | Train: loss: 34.64357 | quality: -2.30361
+        | Val:   loss: 37.23674 | quality: -2.71147
+ *
+Epoch 7 | Train: loss: 30.80137 | quality: -1.93722
+        | Val:   loss: 36.37244 | quality: -2.62532
+ *
+Epoch 8 | Train: loss: 29.52612 | quality: -1.81561
+        | Val:   loss: 36.49929 | quality: -2.63796
+
+Epoch 9 | Train: loss: 28.12947 | quality: -1.68243
+        | Val:   loss: 37.13011 | quality: -2.70084
+
+Epoch 10 | Train: loss: 26.76806 | quality: -1.55260
+        | Val:   loss: 38.30507 | quality: -2.81795
+
+Epoch 11 | Train: loss: 26.10769 | quality: -1.48963
+        | Val:   loss: 38.70659 | quality: -2.85797
+
+Epoch 12 | Train: loss: 25.60999 | quality: -1.44217
+        | Val:   loss: 39.96320 | quality: -2.98322
+
+Epoch 13 | Train: loss: 25.26463 | quality: -1.40924
+        | Val:   loss: 40.21189 | quality: -3.00800
+
+Epoch 14 | Train: loss: 25.12568 | quality: -1.39599
+        | Val:   loss: 40.26930 | quality: -3.01373
+
+Epoch 15 | Train: loss: 25.05410 | quality: -1.38916
+        | Val:   loss: 40.28731 | quality: -3.01552
+
+Epoch 16 | Train: loss: 25.00340 | quality: -1.38433
+        | Val:   loss: 40.29949 | quality: -3.01674
+
+Epoch 17 | Train: loss: 24.96324 | quality: -1.38050
+        | Val:   loss: 40.30801 | quality: -3.01758
+
+
+⏸ Early stopping at epoch 17 (best was epoch 7)
+[2026-05-04 21:23:37,691][__main__][INFO] - ✓ DONE TNML_F/abalone/NTN L=3 bd=12 seed=4234260150 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/abalone/seed_4234260150 | val=-2.6253
+
+
+PS:
+
+Read file <logs/28350165_9_TEST.err> for stderr output of this job.
+

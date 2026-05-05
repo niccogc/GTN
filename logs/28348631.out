@@ -1,0 +1,69 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28348631: <ntn_mmpo2_adult> in cluster <dcc> Exited
+
+Job <ntn_mmpo2_adult> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 20:07:20 2026
+Job was executed on host(s) <16*n-62-21-50>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 20:07:22 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 20:07:22 2026
+Terminated at Tue May  5 08:08:30 2026
+Results reported at Tue May  5 08:08:30 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_mmpo2_adult"
+#BSUB -W 12:00
+#BSUB -n 16
+#BSUB -R "rusage[mem=1273MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J.out
+#BSUB -e logs/%J.err
+
+source .venv/bin/activate
+
+mkdir -p logs
+
+echo "Model=mmpo2, Dataset=adult"
+
+export OMP_NUM_THREADS=16
+export MKL_NUM_THREADS=16
+export OPENBLAS_NUM_THREADS=16
+export NUMEXPR_NUM_THREADS=16
+
+python run.py --multirun \
+    +experiment=uci_ntn_sweep \
+    model=mmpo2 \
+    dataset=adult
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   491199.00 sec.
+    Max Memory :                                 18968 MB
+    Average Memory :                             7295.21 MB
+    Total Requested Memory :                     20368.00 MB
+    Delta Memory :                               1400.00 MB
+    Max Swap :                                   -
+    Max Processes :                              22
+    Max Threads :                                325
+    Run time :                                   43268 sec.
+    Turnaround time :                            43270 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28348631.err> for stderr output of this job.
+

@@ -1,0 +1,68 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28348632: <ntn_mmpo2_popularity> in cluster <dcc> Exited
+
+Job <ntn_mmpo2_popularity> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Mon May  4 20:07:23 2026
+Job was executed on host(s) <16*n-62-21-51>, in queue <hpc>, as user <nicci> in cluster <dcc> at Mon May  4 20:07:24 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Mon May  4 20:07:24 2026
+Terminated at Tue May  5 06:49:38 2026
+Results reported at Tue May  5 06:49:38 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_mmpo2_popularity"
+#BSUB -W 12:00
+#BSUB -n 16
+#BSUB -R "rusage[mem=2528MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J.out
+#BSUB -e logs/%J.err
+
+source .venv/bin/activate
+
+mkdir -p logs
+
+echo "Model=mmpo2, Dataset=popularity"
+
+export OMP_NUM_THREADS=16
+export MKL_NUM_THREADS=16
+export OPENBLAS_NUM_THREADS=16
+export NUMEXPR_NUM_THREADS=16
+
+python run.py --multirun \
+    +experiment=uci_ntn_sweep \
+    model=mmpo2 \
+    dataset=popularity
+
+------------------------------------------------------------
+
+Exited with exit code 120.
+
+Resource usage summary:
+
+    CPU time :                                   606160.00 sec.
+    Max Memory :                                 37279 MB
+    Average Memory :                             27334.52 MB
+    Total Requested Memory :                     40448.00 MB
+    Delta Memory :                               3169.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                66
+    Run time :                                   38534 sec.
+    Turnaround time :                            38535 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28348632.err> for stderr output of this job.
+
