@@ -91,19 +91,19 @@ class MPO2:
 
         self.tn = qt.TensorNetwork(tensors)
 
-        if use_tn_normalization:
-            if sample_inputs is not None:
-                print("normalized")
-                normalize_tn_output(
-                    self.tn,
-                    sample_inputs,
-                    output_dims=["out"],
-                    batch_dim="s",
-                    target_std=tn_target_std,
-                )
-            else:
-                target_norm = np.sqrt(L * bond_dim * phys_dim)
-                normalize_tn_frobenius(self.tn, target_norm=target_norm)
+        # if use_tn_normalization:
+        #     if sample_inputs is not None:
+        #         print("normalized")
+        #         normalize_tn_output(
+        #             self.tn,
+        #             sample_inputs,
+        #             output_dims=["out"],
+        #             batch_dim="s",
+        #             target_std=tn_target_std,
+        #         )
+        #     else:
+        #         target_norm = np.sqrt(L * bond_dim * phys_dim)
+        #         normalize_tn_frobenius(self.tn, target_norm=target_norm)
 
         self.input_labels = [f"x{i}" for i in range(L)]
         self.input_dims = [f"x{i}" for i in range(L)]
