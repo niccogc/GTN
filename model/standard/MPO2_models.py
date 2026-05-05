@@ -220,10 +220,12 @@ class LMPO2:
         # Special case for L=1: no bond dimensions needed
         if L == 1:
             mpo_data = torch.randn(phys_dim, reduced_dim) * base_init
+            mpo_data = mpo_data / torch.norm(mpo_data)
             mpo_tensor = qt.Tensor(data=mpo_data, inds=("0_in", "0_reduced"), tags={"0_MPO"})
             tensors.append(mpo_tensor)
 
             mps_data = torch.randn(reduced_dim, output_dim) * base_init
+            mps_data = mps_data / torch.norm(mps_data)
             mps_tensor = qt.Tensor(data=mps_data, inds=("0_reduced", "out"), tags={"0_MPS"})
             tensors.append(mps_tensor)
         else:
@@ -241,7 +243,7 @@ class LMPO2:
                     data = torch.randn(bond_dim_mpo, phys_dim, reduced_dim, bond_dim_mpo) * base_init
                     inds = (f"b_mpo_{i - 1}", f"{i}_in", f"{i}_reduced", f"b_mpo_{i}")
                     tags = {f"{i}_MPO"}
-
+                data = data / torch.norm(data)
                 tensors.append(qt.Tensor(data=data, inds=inds, tags=tags))
 
             # Create MPS tensors
@@ -264,23 +266,10 @@ class LMPO2:
                     inds = inds + ("out",)
 
                 data = torch.randn(*shape) * base_init
+                data = data / torch.norm(data)
                 tensors.append(qt.Tensor(data=data, inds=inds, tags=tags))
 
         self.tn = qt.TensorNetwork(tensors)
-
-        if use_tn_normalization:
-            if sample_inputs is not None:
-                normalize_tn_output(
-                    self.tn,
-                    sample_inputs,
-                    output_dims=["out"],
-                    batch_dim="s",
-                    target_std=tn_target_std,
-                )
-            else:
-                target_norm = np.sqrt(L * bond_dim * phys_dim)
-                normalize_tn_frobenius(self.tn, target_norm=target_norm)
-
         self.input_labels = [f"{i}_in" for i in range(L)]
         self.input_dims = [f"{i}_in" for i in range(L)]
         self.output_dims = ["out"]
@@ -329,8 +318,9 @@ class MMPO2:
             tensors.append(mask_tensor)
 
             mps_data = torch.randn(phys_dim, output_dim) * base_init
+            mps_data = mps_data / torch.norm(mps_data)
             mps_tensor = qt.Tensor(data=mps_data, inds=("0_masked", "out"), tags={"0_MPS"})
-            tensors.append(mps_tensor)
+            tensors.append(mps_tensor) 
         else:
             H = torch.zeros(phys_dim, phys_dim)
             for i in range(phys_dim):
@@ -374,7 +364,7 @@ class MMPO2:
                         f"b_mask_{site_idx}",
                     )
                     tags = {f"{site_idx}_Mask", "NT"}
-
+                
                 tensors.append(qt.Tensor(data=data, inds=inds, tags=tags))
 
             # Create MPS tensors
@@ -397,23 +387,10 @@ class MMPO2:
                     inds = inds + ("out",)
 
                 data = torch.randn(*shape) * base_init
+                data = data / torch.norm(data)
                 tensors.append(qt.Tensor(data=data, inds=inds, tags=tags))
 
         self.tn = qt.TensorNetwork(tensors)
-
-        if use_tn_normalization:
-            if sample_inputs is not None:
-                normalize_tn_output(
-                    self.tn,
-                    sample_inputs,
-                    output_dims=["out"],
-                    batch_dim="s",
-                    target_std=tn_target_std,
-                )
-            else:
-                target_norm = np.sqrt(L * bond_dim * phys_dim)
-                normalize_tn_frobenius(self.tn, target_norm=target_norm)
-
         self.input_labels = [f"{i}_in" for i in range(L)]
         self.input_dims = [f"{i}_in" for i in range(L)]
         self.output_dims = ["out"]

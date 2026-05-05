@@ -40,6 +40,7 @@ class TNML_P:
             shape = (self.phys_dim, output_dim)
             inds = ("x0", "out")
             data = torch.randn(*shape) * base_init
+            data = data / torch.norm(data)
             tensor = qt.Tensor(data=data, inds=inds, tags={"Node0"})
             tensors.append(tensor)
         else:
@@ -59,24 +60,11 @@ class TNML_P:
                     inds = inds + ("out",)
 
                 data = torch.randn(*shape) * base_init
+                data = data / torch.norm(data)
                 tensor = qt.Tensor(data=data, inds=inds, tags={f"Node{i}"})
                 tensors.append(tensor)
 
         self.tn = qt.TensorNetwork(tensors)
-
-        if use_tn_normalization:
-            if sample_inputs is not None:
-                normalize_tn_output(
-                    self.tn,
-                    sample_inputs,
-                    output_dims=["out"],
-                    batch_dim="s",
-                    target_std=tn_target_std,
-                )
-            else:
-                target_norm = np.sqrt(n_sites * bond_dim * self.phys_dim)
-                normalize_tn_frobenius(self.tn, target_norm=target_norm)
-
         self.input_labels = [f"x{i}" for i in range(n_sites)]
         self.input_dims = [f"x{i}" for i in range(n_sites)]
         self.output_dims = ["out"]
@@ -113,6 +101,8 @@ class TNML_F:
             shape = (self.phys_dim, output_dim)
             inds = ("x0", "out")
             data = torch.randn(*shape) * base_init
+            data = data / torch.norm(data)
+
             tensor = qt.Tensor(data=data, inds=inds, tags={"Node0"})
             tensors.append(tensor)
         else:
@@ -132,23 +122,11 @@ class TNML_F:
                     inds = inds + ("out",)
 
                 data = torch.randn(*shape) * base_init
+                data = data / torch.norm(data)
                 tensor = qt.Tensor(data=data, inds=inds, tags={f"Node{i}"})
                 tensors.append(tensor)
 
         self.tn = qt.TensorNetwork(tensors)
-
-        if use_tn_normalization:
-            if sample_inputs is not None:
-                normalize_tn_output(
-                    self.tn,
-                    sample_inputs,
-                    output_dims=["out"],
-                    batch_dim="s",
-                    target_std=tn_target_std,
-                )
-            else:
-                target_norm = np.sqrt(n_sites * bond_dim * self.phys_dim)
-                normalize_tn_frobenius(self.tn, target_norm=target_norm)
 
         self.input_labels = [f"x{i}" for i in range(n_sites)]
         self.input_dims = [f"x{i}" for i in range(n_sites)]

@@ -96,23 +96,9 @@ class CPDA:
                     inds = (f"x{i}", "r")
 
                 data = torch.randn(*shape) * base_init
+                data = data / torch.norm(data)
                 tensor = qt.Tensor(data=data, inds=inds, tags={f"Node{i}"})
                 tensors.append(tensor)
-
-        self.tn = qt.TensorNetwork(tensors)
-
-        if use_tn_normalization:
-            if sample_inputs is not None:
-                normalize_tn_output(
-                    self.tn,
-                    sample_inputs,
-                    output_dims=["out"],
-                    batch_dim="s",
-                    target_std=tn_target_std,
-                )
-            else:
-                target_norm = np.sqrt(L * bond_dim * phys_dim)
-                normalize_tn_frobenius(self.tn, target_norm=target_norm)
 
         self.input_labels = [f"x{i}" for i in range(L)]
         self.input_dims = [f"x{i}" for i in range(L)]
