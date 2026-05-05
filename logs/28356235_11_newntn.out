@@ -1,0 +1,124 @@
+Task 11: Dataset=adult, Model=cpda, Experiment=cpda_ntn_sweep
+[2026-05-05 11:13:14,533][HYDRA] Launching 30 jobs locally
+[2026-05-05 11:13:14,533][HYDRA] 	#0 : model.L=4 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda dataset=adult
+[2026-05-05 11:13:14,970][utils.tracking][INFO] - Loaded 9933 tracked runs from runs_tracking.csv
+[2026-05-05 11:13:14,972][__main__][INFO] - ▶ RUN CPDA/adult/NTN L=4 bd=32 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDA_rg5_init0.1/L4_bd32_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.38658 | quality: 0.22428
+        | Val:   loss: 1.38663 | quality: 0.23246
+Epoch 1 | Train: loss: 1.04169 | quality: 0.54860
+        | Val:   loss: 1.05317 | quality: 0.54286
+ *
+Epoch 2 | Train: loss: 0.96135 | quality: 0.56463
+        | Val:   loss: 0.97469 | quality: 0.55774
+ *
+Epoch 3 | Train: loss: 0.95165 | quality: 0.56621
+        | Val:   loss: 0.96698 | quality: 0.56211
+ *
+Epoch 4 | Train: loss: 0.94685 | quality: 0.56691
+        | Val:   loss: 0.96721 | quality: 0.56211
+
+Epoch 5 | Train: loss: 0.94339 | quality: 0.56805
+        | Val:   loss: 0.97004 | quality: 0.56170
+ *
+Epoch 6 | Train: loss: 0.94023 | quality: 0.56919
+        | Val:   loss: 0.97474 | quality: 0.56211
+ *
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28356235[11]: <ntn_grid_full[1-210]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_full[1-210]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue May  5 11:07:15 2026
+Job was executed on host(s) <6*n-62-28-34>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue May  5 11:13:03 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue May  5 11:13:03 2026
+Terminated at Tue May  5 11:23:32 2026
+Results reported at Tue May  5 11:23:32 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-210]%20"
+#BSUB -W 4:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_newntn.out
+#BSUB -e logs/%J_%I_newntn.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+DATASETS=(
+    "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+    "car_evaluation" "concrete" "energy_efficiency" "hearth"
+    "iris" "mushrooms" "obesity" "popularity" "realstate"
+    "seoulBike" "student_dropout" "student_perf" "wine"
+    "winequalityc"
+)
+# COMPLETED_DATASETS=(
+#     "abalone" "ai4i" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
+#     "iris" "realstate" )
+
+# Filter datasets
+# FILTERED_DATASETS=()
+# for ds in "${DATASETS[@]}"; do
+#     skip=false
+#     for completed in "${COMPLETED_DATASETS[@]}"; do
+#         if [[ "$ds" == "$completed" ]]; then
+#             skip=true
+#             break
+#         fi
+#     done
+
+#     if ! $skip; then
+#         FILTERED_DATASETS+=("$ds")
+#     fi
+# done
+
+# DATASETS=("${FILTERED_DATASETS[@]}")
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+    for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   2719.00 sec.
+    Max Memory :                                 1616 MB
+    Average Memory :                             689.67 MB
+    Total Requested Memory :                     4500.00 MB
+    Delta Memory :                               2884.00 MB
+    Max Swap :                                   -
+    Max Processes :                              6
+    Max Threads :                                29
+    Run time :                                   629 sec.
+    Turnaround time :                            977 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28356235_11_newntn.err> for stderr output of this job.
+

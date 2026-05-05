@@ -1,0 +1,108 @@
+Task 54: Dataset=car_evaluation, Model=lmpo2_typei, Experiment=uci_ntn_sweep
+[2026-05-05 12:30:29,791][HYDRA] Launching 90 jobs locally
+[2026-05-05 12:30:29,791][HYDRA] 	#0 : model.reduction_factor=0.3 model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=lmpo2_typei dataset=car_evaluation
+[2026-05-05 12:30:30,271][utils.tracking][INFO] - Loaded 13074 tracked runs from runs_tracking.csv
+[2026-05-05 12:30:30,272][__main__][INFO] - ▶ RUN LMPO2TypeI/car_evaluation/NTN L=4 bd=12_rf0.3 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/car_evaluation/LMPO2TypeI_rg5_init0.1/L4_bd12_seed42_rf0.3_bondmpo1
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 2), (2, 4), (3, 6), (4, 8)]
+Total nodes: 20
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.38709 | quality: 0.23904
+        | Val:   loss: 1.39339 | quality: 0.21236
+
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28358285[54]: <ntn_grid_full[1-120]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_full[1-120]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue May  5 12:26:57 2026
+Job was executed on host(s) <6*n-62-21-99>, in queue <hpc>, as user <nicci> in cluster <dcc> at Tue May  5 12:30:11 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue May  5 12:30:11 2026
+Terminated at Tue May  5 12:31:00 2026
+Results reported at Tue May  5 12:31:00 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-120]%20"
+#BSUB -W 6:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_cpu_newntn.out
+#BSUB -e logs/%J_%I_cpu_newntn.err
+
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+
+DATASETS=(
+    "iris"
+    "realstate"
+    "concrete"
+    "energy_efficiency"
+    "breast"
+    "car_evaluation"
+    "wine"
+    #medium
+    # "winequalityc"
+    "abalone"
+    "appliances"
+    "bank"
+    "hearth"
+    "student_perf"
+    # BIG MAYBE?
+    # "bike"
+    # "obesity"
+    # "student_dropout"
+    # "adult"
+    # "seoulBike"
+    # "ai4i"
+    # "mushrooms"
+    # "popularity"
+)
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+    for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        MODEL_IDX=$((IDV % NUM_MODELS))
+        DATASET_IDX=$((IDV / NUM_MODELS))
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   59.00 sec.
+    Max Memory :                                 6144 MB
+    Average Memory :                             256.33 MB
+    Total Requested Memory :                     6144.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              8
+    Max Threads :                                43
+    Run time :                                   49 sec.
+    Turnaround time :                            243 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28358285_54_cpu_newntn.err> for stderr output of this job.
+
