@@ -11,10 +11,13 @@
 MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
 
 DATASETS=(
-    "iris"
-    "realstate"
-    "concrete"
-    "energy_efficiency"
+    # COMPLETED
+    # 
+    # "iris"
+    # "realstate"
+    # "concrete"
+    # "energy_efficiency"
+    # 
     "breast"
     "car_evaluation"
     "wine"
