@@ -1,9 +1,9 @@
 #!/bin/bash
 #BSUB -q hpc
 #BSUB -J "ntn_grid_full[1-210]%20"
-#BSUB -W 8:00
-#BSUB -n 10
-#BSUB -R "rusage[mem=500MB]"
+#BSUB -W 4:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=750MB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_newntn.out
 #BSUB -e logs/%J_%I_newntn.err
@@ -78,10 +78,10 @@ fi
 
 echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL, Experiment=$EXPERIMENT"
 
-export OMP_NUM_THREADS=10
-export MKL_NUM_THREADS=10
-export OPENBLAS_NUM_THREADS=10
-export NUMEXPR_NUM_THREADS=10
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
 
 python run.py --multirun \
     +experiment=$EXPERIMENT \
