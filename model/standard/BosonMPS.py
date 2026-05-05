@@ -26,13 +26,16 @@ class BosonMPS(nn.Module):
         self.phys_dim = phys_dim
         self.output_dim = output_dim
         self.output_site = output_site if output_site is not None else 0
-
+        data = torch.randn(bond_dim, phys_dim, bond_dim) * init_strength
+        data = data /torch.norm(data)
         self.block = nn.Parameter(
-            torch.randn(bond_dim, phys_dim, bond_dim) * init_strength
+            data.clone()
         )
         
+        data = torch.randn(bond_dim, phys_dim, bond_dim, output_dim) * init_strength
+        data = data /torch.norm(data)
         self.block_out = nn.Parameter(
-            torch.randn(bond_dim, phys_dim, bond_dim, output_dim) * init_strength
+            data.clone()
         )
 
         self.input_dims = ["x0"]
