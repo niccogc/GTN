@@ -4,21 +4,21 @@
 
 ## Overall Progress
 
-**Total:** 18,197 / 19,110 (95.2%)
+**Total:** 18,208 / 19,110 (95.3%)
 
 | Status | Count |
 |--------|------:|
-| Success | 16,420 |
-| Singular | 1,777 |
-| OOM | 216 |
+| Success | 16,428 |
+| Singular | 1,780 |
+| OOM | 209 |
 | Failed | 0 |
-| Missing | 913 |
+| Missing | 902 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 8,327 | 9,240 | 90.1% | 6,550 | 1,777 | 216 | 0 |
+| NTN | 8,338 | 9,240 | 90.2% | 6,558 | 1,780 | 209 | 0 |
 | GTN | 9,870 | 9,870 | 100.0% | 9,870 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
@@ -29,12 +29,12 @@
 | LMPO2 | 1890/1890 (100.0%) | 1890/1890 (100.0%) |
 | MMPO2 | 592/630 (94.0%) | 630/630 (100.0%) |
 | MPO2TypeI | 630/630 (100.0%) | 630/630 (100.0%) |
-| LMPO2TypeI | 1125/1890 (59.5%) | 1890/1890 (100.0%) |
-| MMPO2TypeI | 538/630 (85.4%) | 630/630 (100.0%) |
+| LMPO2TypeI | 1126/1890 (59.6%) | 1890/1890 (100.0%) |
+| MMPO2TypeI | 542/630 (86.0%) | 630/630 (100.0%) |
 | CPDA | 840/840 (100.0%) | 840/840 (100.0%) |
 | CPDATypeI | 840/840 (100.0%) | 840/840 (100.0%) |
 | TNML_P | 630/630 (100.0%) | 630/630 (100.0%) |
-| TNML_F | 612/630 (97.1%) | 630/630 (100.0%) |
+| TNML_F | 618/630 (98.1%) | 630/630 (100.0%) |
 | BosonMPS | 0/0 (0.0%) | 630/630 (100.0%) |
 
 ## By Dataset Size
@@ -42,8 +42,8 @@
 | Size | NTN | GTN | Missing |
 |------|-----|-----|--------:|
 | Small | 1700/1760 (96.6%) | 1880/1880 (100.0%) | 60 |
-| Medium | 3762/3960 (95.0%) | 4230/4230 (100.0%) | 198 |
-| Large | 2865/3520 (81.4%) | 3760/3760 (100.0%) | 655 |
+| Medium | 3763/3960 (95.0%) | 4230/4230 (100.0%) | 197 |
+| Large | 2875/3520 (81.7%) | 3760/3760 (100.0%) | 645 |
 
 ## By Dataset
 
@@ -51,15 +51,15 @@
 
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
-| adult | 747 | 910 | 82.1% |
+| adult | 751 | 910 | 82.5% |
 | appliances | 848 | 910 | 93.2% |
-| bank | 795 | 910 | 87.4% |
+| bank | 800 | 910 | 87.9% |
 | breast | 850 | 910 | 93.4% |
 | car_evaluation | 850 | 910 | 93.4% |
-| mushrooms | 790 | 910 | 86.8% |
+| mushrooms | 791 | 910 | 86.9% |
 | obesity | 840 | 910 | 92.3% |
 | popularity | 805 | 910 | 88.5% |
-| seoulBike | 902 | 910 | 99.1% |
+| seoulBike | 903 | 910 | 99.2% |
 | student_dropout | 820 | 910 | 90.1% |
 | student_perf | 850 | 910 | 93.4% |
 
@@ -67,36 +67,35 @@
 
 | Model | Dataset | Trainer | Progress |
 |-------|---------|---------|----------|
-| TNML_F | bank | NTN | 28/30 (93.3%) |
-| LMPO2TypeI | seoulBike | NTN | 82/90 (91.1%) |
+| LMPO2TypeI | seoulBike | NTN | 83/90 (92.2%) |
 | MMPO2 | popularity | NTN | 20/30 (66.7%) |
 | MMPO2TypeI | popularity | NTN | 20/30 (66.7%) |
-| TNML_F | adult | NTN | 14/30 (46.7%) |
+| TNML_F | adult | NTN | 18/30 (60.0%) |
 | LMPO2TypeI | breast | NTN | 30/90 (33.3%) |
 | LMPO2TypeI | car_evaluation | NTN | 30/90 (33.3%) |
 | LMPO2TypeI | student_perf | NTN | 30/90 (33.3%) |
+| MMPO2TypeI | bank | NTN | 10/30 (33.3%) |
 | LMPO2TypeI | appliances | NTN | 28/90 (31.1%) |
-| MMPO2TypeI | bank | NTN | 7/30 (23.3%) |
 | LMPO2TypeI | obesity | NTN | 20/90 (22.2%) |
 | MMPO2 | adult | NTN | 2/30 (6.7%) |
 | LMPO2TypeI | popularity | NTN | 5/90 (5.6%) |
 | MMPO2TypeI | adult | NTN | 1/30 (3.3%) |
+| MMPO2TypeI | mushrooms | NTN | 1/30 (3.3%) |
 | LMPO2TypeI | adult | NTN | 0/90 (0.0%) |
 | LMPO2TypeI | bank | NTN | 0/90 (0.0%) |
 | LMPO2TypeI | mushrooms | NTN | 0/90 (0.0%) |
 | LMPO2TypeI | student_dropout | NTN | 0/90 (0.0%) |
-| MMPO2TypeI | mushrooms | NTN | 0/30 (0.0%) |
 
-## Singular Matrix Failures (1777)
+## Singular Matrix Failures (1780)
 
 | Experiment | Count |
 |------------|------:|
-| ntn | 1777 |
+| ntn | 1780 |
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 913
-- **Experiments with missing runs:** 19
+- **Runs remaining:** 902
+- **Experiments with missing runs:** 18
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
 
@@ -110,15 +109,15 @@
 
 ### Medium
 
-**NTN** (4 experiments, 198 runs missing):
+**NTN** (4 experiments, 197 runs missing):
 
 - LMPO2TypeI: car_evaluation, obesity, seoulBike, student_perf
 
 ### Large
 
-**NTN** (14 experiments, 655 runs missing):
+**NTN** (13 experiments, 645 runs missing):
 
 - LMPO2TypeI: adult, appliances, bank, mushrooms, popularity, student_dropout
 - MMPO2: adult, popularity
 - MMPO2TypeI: adult, bank, mushrooms, popularity
-- TNML_F: adult, bank
+- TNML_F: adult

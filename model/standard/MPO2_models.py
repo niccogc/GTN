@@ -85,6 +85,7 @@ class MPO2:
                     inds = inds + ("out",)
 
                 data = torch.randn(*shape) * base_init
+                data = data/torch.norm(data)
                 tensor = qt.Tensor(data=data, inds=inds, tags={f"Node{i}"})
                 tensors.append(tensor)
 
@@ -92,6 +93,7 @@ class MPO2:
 
         if use_tn_normalization:
             if sample_inputs is not None:
+                print("normalized")
                 normalize_tn_output(
                     self.tn,
                     sample_inputs,
