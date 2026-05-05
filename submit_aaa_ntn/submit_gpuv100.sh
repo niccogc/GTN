@@ -5,6 +5,7 @@
 #BSUB -n 6
 #BSUB -R "rusage[mem=750MB]"
 #BSUB -R "span[hosts=1]"
+#BSUB -gpu "num=1:mode=exclusive_process"
 #BSUB -o logs/%J_%I_gpuv_newntn.out
 #BSUB -e logs/%J_%I_gpuv_newntn.err
 
