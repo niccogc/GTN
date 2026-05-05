@@ -17,10 +17,9 @@ DATASETS=(
     "seoulBike" "student_dropout" "student_perf" "wine"
     "winequalityc"
 )
-
-COMPLETED_DATASETS=(
-    "abalone" "ai4i" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
-    "iris" "realstate" )
+# COMPLETED_DATASETS=(
+#     "abalone" "ai4i" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
+#     "iris" "realstate" )
 
 # Filter datasets
 FILTERED_DATASETS=()
