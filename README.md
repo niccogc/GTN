@@ -4,37 +4,37 @@
 
 ## Overall Progress
 
-**Total:** 13,393 / 18,270 (73.3%)
+**Total:** 13,820 / 18,270 (75.6%)
 
 | Status | Count |
 |--------|------:|
-| Success | 11,638 |
-| Singular | 1,755 |
+| Success | 11,963 |
+| Singular | 1,857 |
 | OOM | 0 |
 | Failed | 0 |
-| Missing | 4,877 |
+| Missing | 4,450 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 3,943 | 8,820 | 44.7% | 2,188 | 1,755 | 0 | 0 |
+| NTN | 4,370 | 8,820 | 49.5% | 2,513 | 1,857 | 0 | 0 |
 | GTN | 9,450 | 9,450 | 100.0% | 9,450 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
 
 | Model | NTN | GTN |
 |-------|-----|-----|
-| MPO2 | 294/630 (46.7%) | 630/630 (100.0%) |
-| LMPO2 | 1020/1890 (54.0%) | 1890/1890 (100.0%) |
-| MMPO2 | 270/630 (42.9%) | 630/630 (100.0%) |
-| MPO2TypeI | 286/630 (45.4%) | 630/630 (100.0%) |
-| LMPO2TypeI | 524/1890 (27.7%) | 1890/1890 (100.0%) |
+| MPO2 | 347/630 (55.1%) | 630/630 (100.0%) |
+| LMPO2 | 1142/1890 (60.4%) | 1890/1890 (100.0%) |
+| MMPO2 | 272/630 (43.2%) | 630/630 (100.0%) |
+| MPO2TypeI | 340/630 (54.0%) | 630/630 (100.0%) |
+| LMPO2TypeI | 564/1890 (29.8%) | 1890/1890 (100.0%) |
 | MMPO2TypeI | 267/630 (42.4%) | 630/630 (100.0%) |
-| CPDA | 380/630 (60.3%) | 630/630 (100.0%) |
-| CPDATypeI | 348/630 (55.2%) | 630/630 (100.0%) |
-| TNML_P | 280/630 (44.4%) | 630/630 (100.0%) |
-| TNML_F | 274/630 (43.5%) | 630/630 (100.0%) |
+| CPDA | 408/630 (64.8%) | 630/630 (100.0%) |
+| CPDATypeI | 408/630 (64.8%) | 630/630 (100.0%) |
+| TNML_P | 314/630 (49.8%) | 630/630 (100.0%) |
+| TNML_F | 308/630 (48.9%) | 630/630 (100.0%) |
 | BosonMPS | 0/0 (0.0%) | 630/630 (100.0%) |
 
 ## By Dataset Size
@@ -42,8 +42,8 @@
 | Size | NTN | GTN | Missing |
 |------|-----|-----|--------:|
 | Small | 1530/1680 (91.1%) | 1800/1800 (100.0%) | 150 |
-| Medium | 1873/3780 (49.6%) | 4050/4050 (100.0%) | 1,907 |
-| Large | 540/3360 (16.1%) | 3600/3600 (100.0%) | 2,820 |
+| Medium | 2132/3780 (56.4%) | 4050/4050 (100.0%) | 1,648 |
+| Large | 708/3360 (21.1%) | 3600/3600 (100.0%) | 2,652 |
 
 ## By Dataset
 
@@ -51,12 +51,12 @@
 
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
-| abalone | 823 | 870 | 94.6% |
+| abalone | 840 | 870 | 96.6% |
 | adult | 450 | 870 | 51.7% |
 | ai4i | 491 | 870 | 56.4% |
-| appliances | 502 | 870 | 57.7% |
-| bank | 524 | 870 | 60.2% |
-| bike | 597 | 870 | 68.6% |
+| appliances | 574 | 870 | 66.0% |
+| bank | 603 | 870 | 69.3% |
+| bike | 600 | 870 | 69.0% |
 | breast | 780 | 870 | 89.7% |
 | car_evaluation | 777 | 870 | 89.3% |
 | hearth | 840 | 870 | 96.6% |
@@ -65,39 +65,40 @@
 | popularity | 450 | 870 | 51.7% |
 | seoulBike | 450 | 870 | 51.7% |
 | student_dropout | 450 | 870 | 51.7% |
-| student_perf | 480 | 870 | 55.2% |
+| student_perf | 713 | 870 | 82.0% |
 | wine | 840 | 870 | 96.6% |
-| winequalityc | 559 | 870 | 64.3% |
+| winequalityc | 582 | 870 | 66.9% |
 
 ## Incomplete Experiments
 
 | Model | Dataset | Trainer | Progress |
 |-------|---------|---------|----------|
-| LMPO2 | bike | NTN | 87/90 (96.7%) |
+| CPDA | appliances | NTN | 28/30 (93.3%) |
 | MMPO2TypeI | car_evaluation | NTN | 27/30 (90.0%) |
+| CPDATypeI | appliances | NTN | 26/30 (86.7%) |
+| MPO2 | bank | NTN | 23/30 (76.7%) |
+| TNML_P | student_perf | NTN | 23/30 (76.7%) |
+| MPO2TypeI | bank | NTN | 20/30 (66.7%) |
+| LMPO2TypeI | abalone | NTN | 60/90 (66.7%) |
 | LMPO2TypeI | hearth | NTN | 60/90 (66.7%) |
 | LMPO2TypeI | wine | NTN | 60/90 (66.7%) |
+| MPO2 | appliances | NTN | 17/30 (56.7%) |
+| MPO2TypeI | appliances | NTN | 17/30 (56.7%) |
 | CPDA | ai4i | NTN | 16/30 (53.3%) |
-| CPDA | bank | NTN | 16/30 (53.3%) |
-| CPDATypeI | bank | NTN | 16/30 (53.3%) |
 | CPDATypeI | winequalityc | NTN | 15/30 (50.0%) |
-| LMPO2TypeI | abalone | NTN | 43/90 (47.8%) |
-| CPDA | appliances | NTN | 14/30 (46.7%) |
-| MPO2 | bank | NTN | 11/30 (36.7%) |
-| CPDATypeI | appliances | NTN | 10/30 (33.3%) |
+| TNML_P | bank | NTN | 14/30 (46.7%) |
+| LMPO2 | bank | NTN | 34/90 (37.8%) |
+| LMPO2TypeI | winequalityc | NTN | 23/90 (25.6%) |
 | MPO2 | ai4i | NTN | 7/30 (23.3%) |
-| MPO2TypeI | bank | NTN | 7/30 (23.3%) |
+| LMPO2 | appliances | NTN | 21/90 (23.3%) |
 | CPDATypeI | ai4i | NTN | 7/30 (23.3%) |
-| TNML_P | bank | NTN | 7/30 (23.3%) |
-| MPO2 | appliances | NTN | 6/30 (20.0%) |
-| MPO2TypeI | appliances | NTN | 6/30 (20.0%) |
-| LMPO2 | bank | NTN | 16/90 (17.8%) |
+| TNML_P | appliances | NTN | 7/30 (23.3%) |
+| TNML_F | appliances | NTN | 7/30 (23.3%) |
 | CPDA | winequalityc | NTN | 4/30 (13.3%) |
-| LMPO2 | appliances | NTN | 10/90 (11.1%) |
 | MPO2TypeI | ai4i | NTN | 3/30 (10.0%) |
-| TNML_P | appliances | NTN | 3/30 (10.0%) |
-| TNML_F | appliances | NTN | 3/30 (10.0%) |
 | LMPO2 | ai4i | NTN | 7/90 (7.8%) |
+| MMPO2 | appliances | NTN | 1/30 (3.3%) |
+| MMPO2 | bank | NTN | 1/30 (3.3%) |
 | TNML_F | bank | NTN | 1/30 (3.3%) |
 | LMPO2TypeI | ai4i | NTN | 1/90 (1.1%) |
 | MPO2 | adult | NTN | 0/30 (0.0%) |
@@ -107,7 +108,6 @@
 | MPO2 | popularity | NTN | 0/30 (0.0%) |
 | MPO2 | seoulBike | NTN | 0/30 (0.0%) |
 | MPO2 | student_dropout | NTN | 0/30 (0.0%) |
-| MPO2 | student_perf | NTN | 0/30 (0.0%) |
 | MPO2 | winequalityc | NTN | 0/30 (0.0%) |
 | LMPO2 | adult | NTN | 0/90 (0.0%) |
 | LMPO2 | mushrooms | NTN | 0/90 (0.0%) |
@@ -115,11 +115,8 @@
 | LMPO2 | popularity | NTN | 0/90 (0.0%) |
 | LMPO2 | seoulBike | NTN | 0/90 (0.0%) |
 | LMPO2 | student_dropout | NTN | 0/90 (0.0%) |
-| LMPO2 | student_perf | NTN | 0/90 (0.0%) |
 | MMPO2 | adult | NTN | 0/30 (0.0%) |
 | MMPO2 | ai4i | NTN | 0/30 (0.0%) |
-| MMPO2 | appliances | NTN | 0/30 (0.0%) |
-| MMPO2 | bank | NTN | 0/30 (0.0%) |
 | MMPO2 | bike | NTN | 0/30 (0.0%) |
 | MMPO2 | mushrooms | NTN | 0/30 (0.0%) |
 | MMPO2 | obesity | NTN | 0/30 (0.0%) |
@@ -135,7 +132,6 @@
 | MPO2TypeI | popularity | NTN | 0/30 (0.0%) |
 | MPO2TypeI | seoulBike | NTN | 0/30 (0.0%) |
 | MPO2TypeI | student_dropout | NTN | 0/30 (0.0%) |
-| MPO2TypeI | student_perf | NTN | 0/30 (0.0%) |
 | MPO2TypeI | winequalityc | NTN | 0/30 (0.0%) |
 | LMPO2TypeI | adult | NTN | 0/90 (0.0%) |
 | LMPO2TypeI | appliances | NTN | 0/90 (0.0%) |
@@ -149,7 +145,6 @@
 | LMPO2TypeI | seoulBike | NTN | 0/90 (0.0%) |
 | LMPO2TypeI | student_dropout | NTN | 0/90 (0.0%) |
 | LMPO2TypeI | student_perf | NTN | 0/90 (0.0%) |
-| LMPO2TypeI | winequalityc | NTN | 0/90 (0.0%) |
 | MMPO2TypeI | adult | NTN | 0/30 (0.0%) |
 | MMPO2TypeI | ai4i | NTN | 0/30 (0.0%) |
 | MMPO2TypeI | appliances | NTN | 0/30 (0.0%) |
@@ -174,7 +169,6 @@
 | CPDATypeI | popularity | NTN | 0/30 (0.0%) |
 | CPDATypeI | seoulBike | NTN | 0/30 (0.0%) |
 | CPDATypeI | student_dropout | NTN | 0/30 (0.0%) |
-| CPDATypeI | student_perf | NTN | 0/30 (0.0%) |
 | TNML_P | adult | NTN | 0/30 (0.0%) |
 | TNML_P | ai4i | NTN | 0/30 (0.0%) |
 | TNML_P | bike | NTN | 0/30 (0.0%) |
@@ -183,7 +177,6 @@
 | TNML_P | popularity | NTN | 0/30 (0.0%) |
 | TNML_P | seoulBike | NTN | 0/30 (0.0%) |
 | TNML_P | student_dropout | NTN | 0/30 (0.0%) |
-| TNML_P | student_perf | NTN | 0/30 (0.0%) |
 | TNML_P | winequalityc | NTN | 0/30 (0.0%) |
 | TNML_F | adult | NTN | 0/30 (0.0%) |
 | TNML_F | ai4i | NTN | 0/30 (0.0%) |
@@ -193,19 +186,18 @@
 | TNML_F | popularity | NTN | 0/30 (0.0%) |
 | TNML_F | seoulBike | NTN | 0/30 (0.0%) |
 | TNML_F | student_dropout | NTN | 0/30 (0.0%) |
-| TNML_F | student_perf | NTN | 0/30 (0.0%) |
 | TNML_F | winequalityc | NTN | 0/30 (0.0%) |
 
-## Singular Matrix Failures (1755)
+## Singular Matrix Failures (1857)
 
 | Experiment | Count |
 |------------|------:|
-| ntn | 1755 |
+| ntn | 1857 |
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 4,877
-- **Experiments with missing runs:** 122
+- **Runs remaining:** 4,450
+- **Experiments with missing runs:** 114
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
 
@@ -219,25 +211,25 @@
 
 ### Medium
 
-**NTN** (48 experiments, 1,907 runs missing):
+**NTN** (42 experiments, 1,648 runs missing):
 
 - CPDA: obesity, seoulBike, winequalityc
-- CPDATypeI: obesity, seoulBike, student_perf, winequalityc
-- LMPO2: bike, obesity, seoulBike, student_perf
+- CPDATypeI: obesity, seoulBike, winequalityc
+- LMPO2: obesity, seoulBike
 - LMPO2TypeI: bike, car_evaluation, obesity, seoulBike, student_perf, winequalityc
 - MMPO2: bike, obesity, seoulBike, student_perf, winequalityc
 - MMPO2TypeI: bike, car_evaluation, obesity, seoulBike, student_perf, winequalityc
-- MPO2: bike, obesity, seoulBike, student_perf, winequalityc
-- MPO2TypeI: bike, obesity, seoulBike, student_perf, winequalityc
-- TNML_F: bike, obesity, seoulBike, student_perf, winequalityc
+- MPO2: bike, obesity, seoulBike, winequalityc
+- MPO2TypeI: bike, obesity, seoulBike, winequalityc
+- TNML_F: bike, obesity, seoulBike, winequalityc
 - TNML_P: bike, obesity, seoulBike, student_perf, winequalityc
 
 ### Large
 
-**NTN** (71 experiments, 2,820 runs missing):
+**NTN** (69 experiments, 2,652 runs missing):
 
-- CPDA: adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
-- CPDATypeI: adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
+- CPDA: adult, ai4i, appliances, mushrooms, popularity, student_dropout
+- CPDATypeI: adult, ai4i, appliances, mushrooms, popularity, student_dropout
 - LMPO2: adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
 - LMPO2TypeI: abalone, adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout
 - MMPO2: adult, ai4i, appliances, bank, mushrooms, popularity, student_dropout

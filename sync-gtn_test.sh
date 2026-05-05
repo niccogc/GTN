@@ -20,7 +20,7 @@ sync_host () {
 
   echo "Merging from $HOST..."
 
-  rsync -a "$TMPDIR/outputs/" "$TARGET/"
+  rsync -a "$TMPDIR/$REL_TARGET/" "$TARGET/"
 }
 
 # sync_host titans &

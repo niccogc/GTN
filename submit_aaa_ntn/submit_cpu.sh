@@ -1,9 +1,9 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-120]%20"
+#BSUB -J "ntn_grid_full[1-40]%20"
 #BSUB -W 6:00
 #BSUB -n 6
-#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "rusage[mem=2GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_cpu_newntn.out
 #BSUB -e logs/%J_%I_cpu_newntn.err
@@ -18,24 +18,24 @@ DATASETS=(
     # "concrete"
     # "energy_efficiency"
     # 
-    "breast"
-    "car_evaluation"
-    "wine"
+    # "breast"
+    # "car_evaluation"
+    # "wine"
     #medium
     # "winequalityc"
-    "abalone"
-    "appliances"
-    "bank"
-    "hearth"
-    "student_perf"
+    # "abalone"
+    # "appliances"
+    # "bank"
+    # "hearth"
+    # "student_perf"
+    "ai4i"
+    "mushrooms"
+    "seoulBike"
+    "student_dropout"
     # BIG MAYBE?
     # "bike"
     # "obesity"
-    # "student_dropout"
     # "adult"
-    # "seoulBike"
-    # "ai4i"
-    # "mushrooms"
     # "popularity"
 )
 
