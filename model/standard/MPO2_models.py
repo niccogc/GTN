@@ -85,7 +85,7 @@ class MPO2:
                     inds = inds + ("out",)
 
                 data = torch.randn(*shape) * base_init
-                data = data/torch.norm(data)
+                # data = data/torch.norm(data)
                 tensor = qt.Tensor(data=data, inds=inds, tags={f"Node{i}"})
                 tensors.append(tensor)
 
