@@ -5,8 +5,8 @@
 #BSUB -n 16
 #BSUB -R "rusage[mem=500MB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/%J_%I.out
-#BSUB -e logs/%J_%I.err
+#BSUB -o logs/%J_%I_newntn.out
+#BSUB -e logs/%J_%I_newntn.err
 
 MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
 
