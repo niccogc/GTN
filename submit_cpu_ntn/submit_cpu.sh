@@ -22,22 +22,22 @@ DATASETS=(
 #     "iris" "realstate" )
 
 # Filter datasets
-FILTERED_DATASETS=()
-for ds in "${DATASETS[@]}"; do
-    skip=false
-    for completed in "${COMPLETED_DATASETS[@]}"; do
-        if [[ "$ds" == "$completed" ]]; then
-            skip=true
-            break
-        fi
-    done
+# FILTERED_DATASETS=()
+# for ds in "${DATASETS[@]}"; do
+#     skip=false
+#     for completed in "${COMPLETED_DATASETS[@]}"; do
+#         if [[ "$ds" == "$completed" ]]; then
+#             skip=true
+#             break
+#         fi
+#     done
 
-    if ! $skip; then
-        FILTERED_DATASETS+=("$ds")
-    fi
-done
+#     if ! $skip; then
+#         FILTERED_DATASETS+=("$ds")
+#     fi
+# done
 
-DATASETS=("${FILTERED_DATASETS[@]}")
+# DATASETS=("${FILTERED_DATASETS[@]}")
 
 NUM_MODELS=${#MODELS[@]}
 NUM_DATASETS=${#DATASETS[@]}
