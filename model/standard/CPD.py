@@ -8,14 +8,9 @@ CPDA Structure:
 - One node (output_site) has additional output index: (phys_dim, bond_dim, out)
 - Contraction produces output via elementwise multiplication over the bond_dim dimension
 """
-
-import numpy as np
 import torch
 import quimb.tensor as qt
 from typing import Optional
-
-from model.initialization import normalize_tn_frobenius, normalize_tn_output
-
 
 class CPDA:
     """

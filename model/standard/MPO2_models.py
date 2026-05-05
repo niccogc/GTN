@@ -11,9 +11,6 @@ import torch
 import quimb.tensor as qt
 from typing import Optional
 
-from model.initialization import normalize_tn_frobenius, normalize_tn_output
-
-
 class MPO2:
     """
     Simple MPS with output dimension.
