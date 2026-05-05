@@ -100,6 +100,7 @@ class CPDA:
                 tensor = qt.Tensor(data=data, inds=inds, tags={f"Node{i}"})
                 tensors.append(tensor)
 
+        self.tn = qt.TensorNetwork(tensors)
         self.input_labels = [f"x{i}" for i in range(L)]
         self.input_dims = [f"x{i}" for i in range(L)]
         self.output_dims = ["out"]
