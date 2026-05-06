@@ -1,9 +1,9 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_test[1-100]%20"
+#BSUB -J "ntn_test[1-90]%20"
 #BSUB -W 8:00
-#BSUB -n 10
-#BSUB -R "rusage[mem=750MB]"
+#BSUB -n 6
+#BSUB -R "rusage[mem=1GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_TEST.out
 #BSUB -e logs/%J_%I_TEST.err
@@ -19,7 +19,7 @@ MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "m
 # )
 
 DATASETS=(
-    "abalone" "ai4i" "hearth" "wine" "winequalityc" "bike" "concrete" "energy_efficiency"
+    "abalone" "ai4i" "hearth" "wine" "winequalityc" "concrete" "energy_efficiency"
     "iris" "realstate" )
 
 NUM_MODELS=${#MODELS[@]}
@@ -56,10 +56,10 @@ EXPERIMENT=test_ntn
 
 echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL, Experiment=$EXPERIMENT"
 
-export OMP_NUM_THREADS=10
-export MKL_NUM_THREADS=10
-export OPENBLAS_NUM_THREADS=10
-export NUMEXPR_NUM_THREADS=10
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
 
 python run.py --multirun \
     +experiment=$EXPERIMENT \
