@@ -1,0 +1,571 @@
+#!/usr/bin/env python3
+import argparse
+import json
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Optional
+import statistics
+
+DATASET_INFO = {
+    "adult": ("AD", "Adult", "Classification"),
+    "bank": ("BA", "Bank Marketing", "Classification"),
+    "mushrooms": ("MU", "Mushrooms", "Classification"),
+    "winequalityc": ("WQ", "Wine Quality", "Classification"),
+    "student_dropout": ("SD", "Students' Dropout", "Classification"),
+    "car_evaluation": ("CE", "Car Evaluation", "Classification"),
+    "breast": ("BR", "Breast Cancer Wisconsin", "Classification"),
+    "hearth": ("HE", "Heart Disease", "Classification"),
+    "wine": ("WI", "Wine", "Classification"),
+    "iris": ("IR", "Iris", "Classification"),
+    "popularity": ("PO", "Online News Popularity", "Regression"),
+    "appliances": ("AP", "Appliances Energy Prediction", "Regression"),
+    "bike": ("BK", "Bike Sharing", "Regression"),
+    "ai4i": ("AI", "AI4I", "Regression"),
+    "seoulBike": ("SB", "Seoul Bike Sharing", "Regression"),
+    "abalone": ("AB", "Abalone", "Regression"),
+    "obesity": ("OB", "Obesity Levels", "Regression"),
+    "concrete": ("CO", "Concrete Compressive Strength", "Regression"),
+    "energy_efficiency": ("EE", "Energy Efficiency", "Regression"),
+    "student_perf": ("SP", "Student Performance", "Regression"),
+    "realstate": ("RE", "Real Estate Valuation", "Regression"),
+}
+
+MODEL_GROUPS = {
+    "MPO2": ["MPO2", "MPO2TypeI"],
+    "LMPO2": ["LMPO2", "LMPO2TypeI"],
+    "MMPO2": ["MMPO2", "MMPO2TypeI"],
+    "CPDA": ["CPDA", "CPDATypeI"],
+    "TNML_P": ["TNML_P"],
+    "TNML_F": ["TNML_F"],
+    "BosonMPS": ["BosonMPS"],
+}
+
+MODEL_ORDER = ["MPO2", "LMPO2", "MMPO2", "CPDA", "TNML_P", "TNML_F", "BosonMPS"]
+
+MODEL_LATEX_NAMES = {
+    "MPO2": r"\textbf{(MPO)}$\bm{^2}$",
+    "LMPO2": r"\textbf{(LMPO)}$\bm{^2}$",
+    "MMPO2": r"\textbf{(MMPO)}$\bm{^2}$",
+    "CPDA": r"\textbf{CPD-A}",
+    "TNML_P": r"\textbf{TNML-P}",
+    "TNML_F": r"\textbf{TNML-F}",
+    "BosonMPS": r"\textbf{BosonMPS}",
+}
+
+CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "breast", "adult", 
+                           "bank", "wine", "car_evaluation", "student_dropout", "mushrooms"]
+
+REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "student_perf",
+                       "obesity", "abalone", "seoulBike", "ai4i", "bike", "popularity"]
+
+
+@dataclass
+class SeedResult:
+    seed: int
+    best_val_quality: float
+    test_quality_at_best_val: float
+    best_epoch: int
+
+
+@dataclass
+class ModelDatasetResult:
+    model: str
+    dataset: str
+    trainer: str
+    seed_results: list[SeedResult] = field(default_factory=list)
+    
+    @property
+    def n_seeds(self) -> int:
+        return len(self.seed_results)
+    
+    @property
+    def mean_test_quality(self) -> float:
+        if not self.seed_results:
+            return float('nan')
+        return statistics.mean(r.test_quality_at_best_val for r in self.seed_results)
+    
+    @property
+    def std_test_quality(self) -> float:
+        if len(self.seed_results) < 2:
+            return 0.0
+        return statistics.stdev(r.test_quality_at_best_val for r in self.seed_results)
+
+
+def parse_results_json(path: Path, use_val_loss: bool = False) -> Optional[SeedResult]:
+    try:
+        with open(path) as f:
+            data = json.load(f)
+        
+        metrics_log = data.get("metrics_log", [])
+        if not metrics_log:
+            return None
+        
+        best_epoch = -1
+        test_quality_at_best = float('nan')
+        
+        if use_val_loss:
+            best_val = float('inf')
+            for entry in metrics_log:
+                val_loss = entry.get("val_loss")
+                if val_loss is not None and val_loss <= best_val:
+                    best_val = val_loss
+                    best_epoch = entry.get("epoch", -1)
+                    test_quality_at_best = entry.get("test_quality", float('nan'))
+        else:
+            best_val = float('-inf')
+            for entry in metrics_log:
+                val_q = entry.get("val_quality")
+                if val_q is not None and val_q >= best_val:
+                    best_val = val_q
+                    best_epoch = entry.get("epoch", -1)
+                    test_quality_at_best = entry.get("test_quality", float('nan'))
+        
+        if best_epoch < 0:
+            return None
+        
+        config = data.get("config", {})
+        seed = config.get("seed", 0)
+        
+        return SeedResult(
+            seed=seed,
+            best_val_quality=best_val,
+            test_quality_at_best_val=test_quality_at_best,
+            best_epoch=best_epoch,
+        )
+    except (json.JSONDecodeError, KeyError, OSError) as e:
+        print(f"Warning: Failed to parse {path}: {e}")
+        return None
+
+
+def collect_results(test_outputs_dir: Path, trainer: str, use_val_loss: bool = False) -> dict[tuple[str, str], ModelDatasetResult]:
+    trainer_dir = test_outputs_dir / trainer
+    if not trainer_dir.exists():
+        print(f"Warning: {trainer_dir} does not exist")
+        return {}
+    
+    results: dict[tuple[str, str], ModelDatasetResult] = {}
+    
+    for model_dir in trainer_dir.iterdir():
+        if not model_dir.is_dir():
+            continue
+        model_name = model_dir.name
+        
+        for dataset_dir in model_dir.iterdir():
+            if not dataset_dir.is_dir():
+                continue
+            dataset_name = dataset_dir.name
+            
+            key = (model_name, dataset_name)
+            if key not in results:
+                results[key] = ModelDatasetResult(
+                    model=model_name,
+                    dataset=dataset_name,
+                    trainer=trainer,
+                )
+            
+            for seed_dir in dataset_dir.iterdir():
+                if not seed_dir.is_dir() or not seed_dir.name.startswith("seed_"):
+                    continue
+                
+                results_file = seed_dir / "results.json"
+                if results_file.exists():
+                    seed_result = parse_results_json(results_file, use_val_loss=use_val_loss)
+                    if seed_result:
+                        results[key].seed_results.append(seed_result)
+    
+    return results
+
+
+def get_best_variant_result(
+    results: dict[tuple[str, str], ModelDatasetResult],
+    unified_model: str,
+    dataset: str,
+) -> Optional[ModelDatasetResult]:
+    variants = MODEL_GROUPS.get(unified_model, [unified_model])
+    
+    best_result = None
+    best_mean = float('-inf')
+    
+    for variant in variants:
+        key = (variant, dataset)
+        if key in results and results[key].n_seeds > 0:
+            mean_q = results[key].mean_test_quality
+            if mean_q > best_mean:
+                best_mean = mean_q
+                best_result = results[key]
+    
+    return best_result
+
+
+def find_best_per_column(
+    results: dict[tuple[str, str], ModelDatasetResult],
+    datasets: list[str],
+) -> dict[str, float]:
+    best_per_col = {}
+    for dataset in datasets:
+        best = float('-inf')
+        for unified_model in MODEL_ORDER:
+            result = get_best_variant_result(results, unified_model, dataset)
+            if result and result.n_seeds > 0:
+                if result.mean_test_quality > best:
+                    best = result.mean_test_quality
+        best_per_col[dataset] = best
+    return best_per_col
+
+
+def format_mean_value(mean: float, is_best: bool, is_second_best: bool) -> str:
+    val_str = f"{mean * 100:.2f}"
+    
+    if is_best:
+        return f"\\underline{{\\textbf{{{val_str}}}}}"
+    elif is_second_best:
+        return f"\\underline{{{val_str}}}"
+    return val_str
+
+
+def format_std_value(std: float) -> str:
+    return f"$\\pm${std * 100:.2f}"
+
+
+def compute_row_average(
+    results: dict[tuple[str, str], ModelDatasetResult],
+    unified_model: str,
+    datasets: list[str],
+) -> tuple[float, float]:
+    means = []
+    for dataset in datasets:
+        result = get_best_variant_result(results, unified_model, dataset)
+        if result and result.n_seeds > 0:
+            means.append(result.mean_test_quality)
+    if not means:
+        return float('nan'), float('nan')
+    avg = statistics.mean(means)
+    return avg, 0.0
+
+
+def find_second_best_per_column(
+    results: dict[tuple[str, str], ModelDatasetResult],
+    datasets: list[str],
+    best_per_col: dict[str, float],
+) -> dict[str, float]:
+    second_best = {}
+    for dataset in datasets:
+        values = []
+        for unified_model in MODEL_ORDER:
+            result = get_best_variant_result(results, unified_model, dataset)
+            if result and result.n_seeds > 0:
+                values.append(result.mean_test_quality)
+        values_below_best = [v for v in values if v < best_per_col[dataset] - 1e-9]
+        second_best[dataset] = max(values_below_best) if values_below_best else float('-inf')
+    return second_best
+
+
+def get_available_datasets(
+    results: dict[tuple[str, str], ModelDatasetResult],
+    datasets: list[str],
+) -> list[str]:
+    available = []
+    for dataset in datasets:
+        for unified_model in MODEL_ORDER:
+            result = get_best_variant_result(results, unified_model, dataset)
+            if result and result.n_seeds > 0:
+                available.append(dataset)
+                break
+    return available
+
+
+def generate_table(
+    results: dict[tuple[str, str], ModelDatasetResult],
+    datasets: list[str],
+    task: str,
+    trainer: str,
+) -> str:
+    datasets = get_available_datasets(results, datasets)
+    if not datasets:
+        return ""
+    
+    is_classification = (task == "Classification")
+    dataset_codes = [DATASET_INFO[d][0] for d in datasets if d in DATASET_INFO]
+    n_cols = len(datasets) + 1
+    
+    lines = [
+        r"\begin{table}[!htbp]",
+        r"\centering",
+        r"\scriptsize",
+        r"\begin{tabular}{l" + "r" * n_cols + "}",
+        r"\toprule",
+        " & " + " & ".join(dataset_codes) + r" & Avg \\",
+        r"\midrule",
+    ]
+    
+    best_per_col = find_best_per_column(results, datasets)
+    second_best_per_col = find_second_best_per_column(results, datasets, best_per_col)
+    
+    all_avgs = {}
+    for unified_model in MODEL_ORDER:
+        avg, _ = compute_row_average(results, unified_model, datasets)
+        all_avgs[unified_model] = avg
+    valid_avgs = [v for v in all_avgs.values() if not (v != v)]
+    best_avg = max(valid_avgs) if valid_avgs else float('-inf')
+    second_best_avg = max([v for v in valid_avgs if v < best_avg - 1e-9], default=float('-inf'))
+    
+    for unified_model in MODEL_ORDER:
+        model_latex = MODEL_LATEX_NAMES.get(unified_model, f"\\textbf{{{unified_model}}}")
+        
+        mean_values = []
+        std_values = []
+        
+        for dataset in datasets:
+            result = get_best_variant_result(results, unified_model, dataset)
+            if result is None or result.n_seeds == 0:
+                mean_values.append("--")
+                std_values.append("--")
+            else:
+                mean = result.mean_test_quality
+                std = result.std_test_quality
+                is_best = abs(mean - best_per_col[dataset]) < 1e-9
+                is_second = abs(mean - second_best_per_col[dataset]) < 1e-9 and not is_best
+                mean_values.append(format_mean_value(mean, is_best, is_second))
+                std_values.append(format_std_value(std))
+        
+        avg, _ = compute_row_average(results, unified_model, datasets)
+        if avg != avg:
+            mean_values.append("--")
+            std_values.append("")
+        else:
+            is_best_avg = abs(avg - best_avg) < 1e-9
+            is_second_avg = abs(avg - second_best_avg) < 1e-9 and not is_best_avg
+            mean_values.append(format_mean_value(avg, is_best_avg, is_second_avg))
+            std_values.append("")
+        
+        lines.append(f"{model_latex} & " + " & ".join(mean_values) + r" \\")
+        lines.append(" & " + " & ".join(std_values) + r" \\")
+        lines.append(r"\midrule")
+    
+    lines.pop()
+    lines.append(r"\bottomrule")
+    lines.append(r"\end{tabular}")
+    lines.append(r"\end{table}")
+    
+    return "\n".join(lines)
+
+
+def generate_combined_table(
+    results: dict[tuple[str, str], ModelDatasetResult],
+    reg_datasets: list[str],
+    class_datasets: list[str],
+    trainer: str,
+) -> str:
+    reg_datasets = get_available_datasets(results, reg_datasets)
+    class_datasets = get_available_datasets(results, class_datasets)
+    
+    if not reg_datasets and not class_datasets:
+        return ""
+    
+    reg_codes = [DATASET_INFO[d][0] for d in reg_datasets if d in DATASET_INFO]
+    class_codes = [DATASET_INFO[d][0] for d in class_datasets if d in DATASET_INFO]
+    
+    n_reg = len(reg_datasets)
+    n_class = len(class_datasets)
+    
+    col_spec = "l"
+    if n_reg > 0:
+        col_spec += "r" * n_reg + "r"
+    if n_reg > 0 and n_class > 0:
+        col_spec += "||"
+    if n_class > 0:
+        col_spec += "r" * n_class + "r"
+    
+    header_parts = []
+    if n_reg > 0:
+        header_parts.append(" & ".join(reg_codes) + r" & Avg")
+    if n_class > 0:
+        header_parts.append(" & ".join(class_codes) + r" & Avg")
+    header = " & " + " & ".join(header_parts) + r" \\"
+    
+    lines = [
+        r"\begin{table*}[!htbp]",
+        r"\centering",
+        r"\small",
+        r"\begin{tabular}{" + col_spec + "}",
+        r"\toprule",
+        header,
+        r"\midrule",
+    ]
+    
+    best_reg = find_best_per_column(results, reg_datasets) if reg_datasets else {}
+    second_best_reg = find_second_best_per_column(results, reg_datasets, best_reg) if reg_datasets else {}
+    best_class = find_best_per_column(results, class_datasets) if class_datasets else {}
+    second_best_class = find_second_best_per_column(results, class_datasets, best_class) if class_datasets else {}
+    
+    reg_avgs = {}
+    class_avgs = {}
+    for unified_model in MODEL_ORDER:
+        if reg_datasets:
+            reg_avgs[unified_model], _ = compute_row_average(results, unified_model, reg_datasets)
+        if class_datasets:
+            class_avgs[unified_model], _ = compute_row_average(results, unified_model, class_datasets)
+    
+    valid_reg_avgs = [v for v in reg_avgs.values() if not (v != v)]
+    best_reg_avg = max(valid_reg_avgs) if valid_reg_avgs else float('-inf')
+    second_best_reg_avg = max([v for v in valid_reg_avgs if v < best_reg_avg - 1e-9], default=float('-inf'))
+    
+    valid_class_avgs = [v for v in class_avgs.values() if not (v != v)]
+    best_class_avg = max(valid_class_avgs) if valid_class_avgs else float('-inf')
+    second_best_class_avg = max([v for v in valid_class_avgs if v < best_class_avg - 1e-9], default=float('-inf'))
+    
+    for unified_model in MODEL_ORDER:
+        model_latex = MODEL_LATEX_NAMES.get(unified_model, f"\\textbf{{{unified_model}}}")
+        
+        mean_values = []
+        std_values = []
+        
+        for dataset in reg_datasets:
+            result = get_best_variant_result(results, unified_model, dataset)
+            if result is None or result.n_seeds == 0:
+                mean_values.append("--")
+                std_values.append("--")
+            else:
+                mean = result.mean_test_quality
+                std = result.std_test_quality
+                is_best = abs(mean - best_reg[dataset]) < 1e-9
+                is_second = abs(mean - second_best_reg[dataset]) < 1e-9 and not is_best
+                mean_values.append(format_mean_value(mean, is_best, is_second))
+                std_values.append(format_std_value(std))
+        
+        if reg_datasets:
+            avg = reg_avgs[unified_model]
+            if avg != avg:
+                mean_values.append("--")
+                std_values.append("")
+            else:
+                is_best = abs(avg - best_reg_avg) < 1e-9
+                is_second = abs(avg - second_best_reg_avg) < 1e-9 and not is_best
+                mean_values.append(format_mean_value(avg, is_best, is_second))
+                std_values.append("")
+        
+        for dataset in class_datasets:
+            result = get_best_variant_result(results, unified_model, dataset)
+            if result is None or result.n_seeds == 0:
+                mean_values.append("--")
+                std_values.append("--")
+            else:
+                mean = result.mean_test_quality
+                std = result.std_test_quality
+                is_best = abs(mean - best_class[dataset]) < 1e-9
+                is_second = abs(mean - second_best_class[dataset]) < 1e-9 and not is_best
+                mean_values.append(format_mean_value(mean, is_best, is_second))
+                std_values.append(format_std_value(std))
+        
+        if class_datasets:
+            avg = class_avgs[unified_model]
+            if avg != avg:
+                mean_values.append("--")
+                std_values.append("")
+            else:
+                is_best = abs(avg - best_class_avg) < 1e-9
+                is_second = abs(avg - second_best_class_avg) < 1e-9 and not is_best
+                mean_values.append(format_mean_value(avg, is_best, is_second))
+                std_values.append("")
+        
+        lines.append(f"{model_latex} & " + " & ".join(mean_values) + r" \\")
+        lines.append(" & " + " & ".join(std_values) + r" \\")
+        lines.append(r"\midrule")
+    
+    lines.pop()
+    lines.append(r"\bottomrule")
+    lines.append(r"\end{tabular}")
+    lines.append(r"\end{table*}")
+    
+    return "\n".join(lines)
+
+
+def print_summary(results: dict[tuple[str, str], ModelDatasetResult], trainer: str):
+    print(f"\n{'=' * 80}")
+    print(f"Summary for {trainer.upper()}")
+    print(f"{'=' * 80}")
+    
+    for unified_model in MODEL_ORDER:
+        print(f"\n{unified_model}:")
+        for dataset in CLASSIFICATION_DATASETS + REGRESSION_DATASETS:
+            result = get_best_variant_result(results, unified_model, dataset)
+            if result and result.n_seeds > 0:
+                code = DATASET_INFO.get(dataset, (dataset, "", ""))[0]
+                variant_info = f" (from {result.model})" if result.model != unified_model else ""
+                print(f"  {code:3s}: {result.mean_test_quality:7.4f} ± {result.std_test_quality:.4f} "
+                      f"(n={result.n_seeds}){variant_info}")
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--test-outputs-dir",
+        type=Path,
+        default=Path("test_outputs"),
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("paper_scripts/tables"),
+    )
+    parser.add_argument(
+        "--trainer",
+        choices=["ntn", "gtn", "both"],
+        default="both",
+    )
+    parser.add_argument(
+        "--combined",
+        action="store_true",
+        help="Generate combined table with regression and classification side by side",
+    )
+    parser.add_argument(
+        "--use-val-loss",
+        action="store_true",
+        help="Use val_loss (lower is better) instead of val_quality (higher is better) to select best epoch",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+    )
+    
+    args = parser.parse_args()
+    
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    
+    trainers = ["ntn", "gtn"] if args.trainer == "both" else [args.trainer]
+    
+    for trainer in trainers:
+        print(f"\nProcessing {trainer.upper()}...")
+        results = collect_results(args.test_outputs_dir, trainer, use_val_loss=args.use_val_loss)
+        print(f"  Found {len(results)} model-dataset combinations")
+        
+        if args.verbose:
+            print_summary(results, trainer)
+        
+        available_class = [d for d in CLASSIFICATION_DATASETS if d in DATASET_INFO]
+        available_reg = [d for d in REGRESSION_DATASETS if d in DATASET_INFO]
+        
+        if args.combined:
+            combined_table = generate_combined_table(results, available_reg, available_class, trainer)
+            combined_file = args.output_dir / f"combined_{trainer}.tex"
+            with open(combined_file, "w") as f:
+                f.write(combined_table)
+            print(f"  Written: {combined_file}")
+        else:
+            class_table = generate_table(results, available_class, "Classification", trainer)
+            class_file = args.output_dir / f"classification_{trainer}.tex"
+            with open(class_file, "w") as f:
+                f.write(class_table)
+            print(f"  Written: {class_file}")
+            
+            reg_table = generate_table(results, available_reg, "Regression", trainer)
+            reg_file = args.output_dir / f"regression_{trainer}.tex"
+            with open(reg_file, "w") as f:
+                f.write(reg_table)
+            print(f"  Written: {reg_file}")
+    
+    print("\nDone!")
+
+
+if __name__ == "__main__":
+    main()

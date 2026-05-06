@@ -8,7 +8,9 @@
 #BSUB -o logs/%J_%I_TEST.out
 #BSUB -e logs/%J_%I_TEST.err
 
-MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+MODELS=(
+# "cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p"
+"bosonmps")
 
 # DATASETS=(
 #     "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
