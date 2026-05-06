@@ -105,6 +105,15 @@ class CMPO3:
         self.input_dims = [str(i) for i in range(L)]
         self.output_dims = ["out"]
 
+# The CRING models follow the idea of CMPO2 where the networks are indipendently attached to the different inputs dimensions.  BUT YOU ONLY NEED ONE input. since check the BosonMPS, we contract the input, the power, then the trace. So in the following after we contract all input dimensions, we are left with left ranks labels, right ranks labels, to be merged into one using quimb To obtain a matrix, then we do the power of that matrix.
+# 
+# TODO: The C2Ring_GTN, is just two BosonMPS, as defined in /home/nicci/Desktop/remote/GTN/model/standard/BosonMPS.py, one for the patches and one for the pixels
+# class CRing_GTN(nn.Module):
+    # return
+
+# TODO: The C3Ring_GTN, is just two BosonMPS, as defined in /home/nicci/Desktop/remote/GTN/model/standard/BosonMPS.py, one for the patches and one for the pixels and one for the channels
+# class C3Ring_GTN(nn.Module):
+    # return
 
 class CMPO2_GTN(nn.Module):
     def __init__(self, cmpo2: CMPO2):

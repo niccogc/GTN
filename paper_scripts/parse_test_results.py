@@ -148,14 +148,10 @@ def get_baseline_results(test_outputs_dir: Path, datasets: list[str]) -> dict[st
     for ds in datasets:
         path = test_outputs_dir / "mean_baseline" / ds / "results.json"
         if path.exists():
-            try:
-                with open(path) as f:
-                    data = json.load(f)
-                    raw_val = data.get("test_quality", float('nan'))
-                    is_class = DATASET_INFO.get(ds, ["", "", ""])[2] == "Classification"
-                    # Rule: Classification baseline already in %, Regression needs *100
-                    baselines[ds] = raw_val if is_class else raw_val * 100
-            except: continue
+            with open(path) as f:
+                data = json.load(f)
+                raw_val = data.get("test_quality", float('nan'))
+                baselines[ds] = raw_val
     return baselines
 
 
@@ -243,9 +239,10 @@ def generate_table(results, datasets, task, trainer, test_outputs_dir):
         lines.append(" & " + " & ".join(stds + [""]) + r" \\")
         lines.append(r"\midrule")
 
+    print("OOOOOOOH")
     # Baseline Row
     bs = get_baseline_results(test_outputs_dir, datasets)
-    base_row = [f"{bs[d]:.2f}" if d in bs else "--" for d in datasets]
+    base_row = [f"{bs[d]*100:.2f}" if d in bs else "--" for d in datasets]
     avg_b = statistics.mean([bs[d] for d in datasets if d in bs]) if bs else 0.0
     lines.append(r"\textbf{Mean} & " + " & ".join(base_row + [f"{avg_b:.2f}"]) + r" \\")
     
@@ -295,9 +292,9 @@ def generate_combined_table(results, reg_ds, class_ds, trainer, test_outputs_dir
     for ds in [reg_ds, class_ds]:
         if not ds: continue
         bs = get_baseline_results(test_outputs_dir, ds)
-        base_vals.extend([f"{bs[d]:.2f}" if d in bs else "--" for d in ds])
+        base_vals.extend([f"{bs[d]*100:.2f}" if d in bs else "--" for d in ds])
         avg_b = statistics.mean([bs[d] for d in ds if d in bs]) if bs else 0.0
-        base_vals.append(f"{avg_b:.2f}")
+        base_vals.append(f"{avg_b*100:.2f}")
     lines.append(r"\textbf{Mean} & " + " & ".join(base_vals) + r" \\")
 
     lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table*}"])
