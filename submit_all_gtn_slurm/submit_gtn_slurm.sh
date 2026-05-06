@@ -3,21 +3,23 @@
 #SBATCH --output=/home/nicci/GTN/logs/gtn_%A_%a.out
 #SBATCH --error=/home/nicci/GTN/logs/gtn_%A_%a.err
 #SBATCH --partition=titans
-#SBATCH --time=2:00:00
+#SBATCH --time=1:00:00
 #SBATCH --mem=2gb
 #SBATCH --gres=gpu
 #SBATCH --cpus-per-task=2
-#SBATCH --array=1-210%15
+#SBATCH --array=1-220%10
 
-MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p" "bosonmps")
 
 DATASETS=(
-    "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+    "abalone" "adult" "ai4i" "bank" "bike" "breast"
     "car_evaluation" "concrete" "energy_efficiency" "hearth"
     "iris" "mushrooms" "obesity" "popularity" "realstate"
     "seoulBike" "student_dropout" "student_perf" "wine"
     "winequalityc"
 )
+
+# "appliances" 
 
 NUM_MODELS=${#MODELS[@]}
 NUM_DATASETS=${#DATASETS[@]}

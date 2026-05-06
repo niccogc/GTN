@@ -22,7 +22,6 @@ DATASETS=(
     #medium
     "winequalityc"
     "abalone"
-    "appliances"
     "bank"
     "hearth"
     "student_perf"
