@@ -1400,11 +1400,13 @@ def generate_bash_arrays(data: dict) -> str:
                 missing_combos.append((model, dataset))
 
         missing_combos.sort(key=lambda x: (x[0], x[1]))
-
+        i = 0
         by_model = defaultdict(list)
         for model, dataset in missing_combos:
             by_model[model].append(dataset)
+            i += 1
 
+        lines.append(f"# {i} Experiments")
         lines.append(f"declare -a {var_name}=(")
 
         for model in sorted(by_model.keys()):
