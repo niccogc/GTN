@@ -1373,30 +1373,22 @@ def write_readme(data: dict, verbose: bool = False) -> None:
 
 
 def generate_bash_arrays(data: dict) -> str:
-    """Generate bash declare -a arrays for missing experiments.
-
-    Outputs two arrays: COMBINATIONS_NTN and COMBINATIONS_GTN,
-    each containing "model dataset" strings for missing experiment combinations.
-    Models are converted to lowercase with underscores (e.g., LMPO2TypeI -> lmpo2_typei).
-    """
+    """Generate bash declare -a arrays for missing experiments."""
+    MODEL_TO_VAR = {
+        "MPO2": "mpo2",
+        "LMPO2": "lmpo2",
+        "MMPO2": "mmpo2",
+        "MPO2TypeI": "mpo2_typei",
+        "LMPO2TypeI": "lmpo2_typei",
+        "MMPO2TypeI": "mmpo2_typei",
+        "CPDA": "cpda",
+        "CPDATypeI": "cpda_typei",
+        "TNML_P": "tnml_p",
+        "TNML_F": "tnml_f",
+        "BosonMPS": "bosonmps",
+    }
     stats = data["stats"]
     lines = []
-
-    def model_to_var(model: str) -> str:
-        if model.endswith("TypeI"):
-            base = model[:-5]
-            result = base[0]
-            for c in base[1:]:
-                if c.isupper() and not result[-1].isupper() and result[-1] != "_":
-                    result += "_"
-                result += c
-            return result.lower() + "_typei"
-        result = model[0]
-        for c in model[1:]:
-            if c.isupper() and not result[-1].isupper() and result[-1] != "_":
-                result += "_"
-            result += c
-        return result.lower()
 
     for trainer in ["ntn", "gtn"]:
         trainer_upper = trainer.upper()
@@ -1410,24 +1402,20 @@ def generate_bash_arrays(data: dict) -> str:
         missing_combos.sort(key=lambda x: (x[0], x[1]))
 
         by_model = defaultdict(list)
-        i = 0
         for model, dataset in missing_combos:
             by_model[model].append(dataset)
-            i += 1
-        lines.append(f"# {i} Experiments for {trainer}")
+
         lines.append(f"declare -a {var_name}=(")
 
         for model in sorted(by_model.keys()):
             datasets = sorted(by_model[model])
-            model_var = model_to_var(model)
+            model_var = MODEL_TO_VAR.get(model, model.lower())
             lines.append(f"    # {model} ({len(datasets)} datasets)")
             for dataset in datasets:
                 lines.append(f'    "{model_var} {dataset}"')
 
         lines.append(")")
         lines.append("")
-
-        print()
 
     return "\n".join(lines).rstrip() + "\n"
 
