@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "Gtn_test[1-90]%20"
+#BSUB -J "Gtn_test[1-9]%20"
 #BSUB -W 8:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=500MB]"
