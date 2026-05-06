@@ -1,0 +1,87 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28365573[15]: <ntn_grid_full[1-24]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_full[1-24]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Wed May  6 08:52:45 2026
+Job was executed on host(s) <6*n-62-29-31>, in queue <hpc>, as user <nicci> in cluster <dcc> at Wed May  6 08:52:46 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Wed May  6 08:52:46 2026
+Terminated at Wed May  6 08:53:16 2026
+Results reported at Wed May  6 08:53:16 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_grid_full[1-24]%20"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=4GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_cpu_newntn.out
+#BSUB -e logs/%J_%I_cpu_newntn.err
+
+cd "~/GTN"
+source .venv/bin/activate
+source missing.env
+
+NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+read MODEL DATASET <<< "${COMBINATIONS_NTN[$IDV]}"
+echo "NTN: $MODEL $DATASET"
+
+if [[ "$MODEL" == "cpda" || "$MODEL" == "cpda_typei" ]]; then
+    EXPERIMENT="cpda_ntn_sweep"
+else
+    EXPERIMENT="uci_ntn_sweep"
+fi
+
+echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=$EXPERIMENT \
+    model=$MODEL \
+    dataset=$DATASET
+
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   32.44 sec.
+    Max Memory :                                 24576 MB
+    Average Memory :                             16512.67 MB
+    Total Requested Memory :                     24576.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                15
+    Run time :                                   30 sec.
+    Turnaround time :                            31 sec.
+
+The output (if any) follows:
+
+NTN: mmpo2 popularity
+Task 15: Dataset=popularity, Model=mmpo2, Experiment=uci_ntn_sweep
+[2026-05-06 08:53:01,656][HYDRA] Launching 30 jobs locally
+[2026-05-06 08:53:01,656][HYDRA] 	#0 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2 dataset=popularity
+[2026-05-06 08:53:02,079][utils.tracking][INFO] - Loaded 15160 tracked runs from runs_tracking.csv
+[2026-05-06 08:53:02,080][__main__][INFO] - ▶ RUN MMPO2/popularity/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/popularity/MMPO2_rg5_init0.1/L4_bd12_seed42
+
+
+PS:
+
+Read file <logs/28365573_15_cpu_newntn.err> for stderr output of this job.
+
