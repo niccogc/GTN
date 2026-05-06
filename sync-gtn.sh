@@ -23,11 +23,13 @@ sync_host () {
     tar -I zstd -cf - -C ~/GTN \"$REL_TARGET\"
   " | tar -I zstd -xf - -C "$TMPDIR"
 
-  echo "Fetching $OTHER_FOLDER/$REL_TARGET from $HOST..."
-  ssh "$HOST" "
-    tar -I zstd -cf - -C \"$OTHER_FOLDER\" \"$REL_TARGET\"
-  " | tar -I zstd -xf - -C "$TMPDIR"
-
+  if [[ "$HOST" != "titans" ]]; then
+    echo "Fetching $OTHER_FOLDER/$REL_TARGET from $HOST..."
+    ssh "$HOST" "
+      tar -I zstd -cf - -C \"$OTHER_FOLDER\" \"$REL_TARGET\"
+    " | tar -I zstd -xf - -C "$TMPDIR"
+  fi
+  
   mkdir -p "$TARGET"
 
   echo "Merging outputs from $HOST..."
