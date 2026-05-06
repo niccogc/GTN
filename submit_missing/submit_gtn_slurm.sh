@@ -7,7 +7,7 @@
 #SBATCH --mem=2gb
 #SBATCH --gres=gpu
 #SBATCH --cpus-per-task=2
-#SBATCH --array=1-64%10
+#SBATCH --array=1-26%10
 
 export HOME=/home/nicci
 cd $HOME/GTN
