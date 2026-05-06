@@ -1134,20 +1134,6 @@ def generate_report(data: dict, verbose: bool = False) -> str:
                 out(f"    {model}: {', '.join(sorted(datasets))}")
 
     out()
-    # out("Suggested commands:")
-    # for size in SIZES:
-    #     ntn_jobs = jobs_by_size_trainer[size]["ntn"]
-    #     gtn_jobs = jobs_by_size_trainer[size]["gtn"]
-    #     if ntn_jobs:
-    #         out(
-    #             f"  cd submit_ntn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
-    #         )
-    #     if gtn_jobs:
-    #         out(
-    #             f"  cd submit_gtn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
-    #         )
-    # out()
-
     return "\n".join(lines)
 
 
@@ -1376,24 +1362,6 @@ def generate_markdown_report(data: dict, verbose: bool = False) -> str:
                 out(f"- {model}: {', '.join(sorted(datasets))}")
             out()
 
-    # Suggested commands
-    # out("## Suggested Commands")
-    # out()
-    # out("```bash")
-    # for size in SIZES:
-    #     ntn_jobs = jobs_by_size_trainer[size]["ntn"]
-    #     gtn_jobs = jobs_by_size_trainer[size]["gtn"]
-    #     if ntn_jobs:
-    #         out(
-    #             f"cd submit_ntn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
-    #         )
-    #     if gtn_jobs:
-    #         out(
-    #             f"cd submit_gtn && bash submit_{size}_slurm.sh  # or submit_{size}_hpc.sh"
-    #         )
-    # out("```")
-    # out()
-
     return "\n".join(lines)
 
 
@@ -1402,6 +1370,66 @@ def write_readme(data: dict, verbose: bool = False) -> None:
     readme_path = Path("README.md")
     content = generate_markdown_report(data, verbose=verbose)
     readme_path.write_text(content)
+
+
+def generate_bash_arrays(data: dict) -> str:
+    """Generate bash declare -a arrays for missing experiments.
+
+    Outputs two arrays: COMBINATIONS_NTN and COMBINATIONS_GTN,
+    each containing "model dataset" strings for missing experiment combinations.
+    Models are converted to lowercase with underscores (e.g., LMPO2TypeI -> lmpo2_typei).
+    """
+    stats = data["stats"]
+    lines = []
+
+    def model_to_var(model: str) -> str:
+        if model.endswith("TypeI"):
+            base = model[:-5]
+            result = base[0]
+            for c in base[1:]:
+                if c.isupper() and not result[-1].isupper() and result[-1] != "_":
+                    result += "_"
+                result += c
+            return result.lower() + "_typei"
+        result = model[0]
+        for c in model[1:]:
+            if c.isupper() and not result[-1].isupper() and result[-1] != "_":
+                result += "_"
+            result += c
+        return result.lower()
+
+    for trainer in ["ntn", "gtn"]:
+        trainer_upper = trainer.upper()
+        var_name = f"COMBINATIONS_{trainer_upper}"
+
+        missing_combos = []
+        for (model, dataset, combo_trainer), combo_s in stats["by_combo"].items():
+            if combo_trainer == trainer and combo_s["done"] < combo_s["total"]:
+                missing_combos.append((model, dataset))
+
+        missing_combos.sort(key=lambda x: (x[0], x[1]))
+
+        by_model = defaultdict(list)
+        i = 0
+        for model, dataset in missing_combos:
+            by_model[model].append(dataset)
+            i += 1
+        lines.append(f"# {i} Experiments for {trainer}")
+        lines.append(f"declare -a {var_name}=(")
+
+        for model in sorted(by_model.keys()):
+            datasets = sorted(by_model[model])
+            model_var = model_to_var(model)
+            lines.append(f"    # {model} ({len(datasets)} datasets)")
+            for dataset in datasets:
+                lines.append(f'    "{model_var} {dataset}"')
+
+        lines.append(")")
+        lines.append("")
+
+        print()
+
+    return "\n".join(lines).rstrip() + "\n"
 
 
 def main():
@@ -1426,6 +1454,11 @@ def main():
     )
     parser.add_argument(
         "--oom-json", action="store_true", help="Output OOM details as JSON"
+    )
+    parser.add_argument(
+        "--bash",
+        action="store_true",
+        help="Print missing experiments as bash declare -a COMBINATIONS arrays",
     )
     args = parser.parse_args()
 
@@ -1465,6 +1498,10 @@ def main():
                 print(run)
         except BrokenPipeError:
             pass
+        return
+
+    if args.bash:
+        print(generate_bash_arrays(data))
         return
 
     report = generate_report(data, verbose=args.verbose)
