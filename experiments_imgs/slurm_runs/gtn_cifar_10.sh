@@ -5,7 +5,7 @@
 #SBATCH --partition=titans
 #SBATCH --time=24:00:00
 #SBATCH --mem=2gb
-#SBATCH --gres=gpu:Ampere:1
+#SBATCH --gres=gpu
 #SBATCH --cpus-per-task=1
 #SBATCH --mail-user=nicci@dtu.dk
 #SBATCH --mail-type=FAIL

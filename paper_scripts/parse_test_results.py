@@ -47,7 +47,7 @@ MODEL_GROUPS = {
     "GP": ["GP"],
 }
 
-MODEL_ORDER = ["MPO2", "LMPO2", "MMPO2", "CPDA", "CPD-S", "TNML_P", "TNML_F", "Ring"]
+MODEL_ORDER = ["MPO2", "LMPO2", "MMPO2", "Ring", "CPDA", "CPD-S", "TNML_P", "TNML_F"]
 
 # External baseline models from CSV files
 EXTERNAL_MODEL_ORDER = ["MLP", "XGBoost", "GP"]
@@ -82,11 +82,15 @@ ALL_MODE_LATEX_NAMES = {
     "GP": r"\textbf{GP}",
 }
 
-CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "breast", "adult", 
-                           "bank", "wine", "car_evaluation", "student_dropout", "mushrooms"]
+# CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "breast", "adult", 
+#                            "bank", "wine", "car_evaluation", "student_dropout", "mushrooms"]
 
-REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "student_perf",
-                       "obesity", "abalone", "seoulBike", "ai4i", "bike", "popularity"]
+# REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "student_perf",
+#                        "obesity", "abalone", "seoulBike", "ai4i", "bike", "popularity"]
+
+CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "wine"]
+
+REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "abalone","ai4i"]
 
 
 @dataclass
@@ -358,11 +362,12 @@ def format_mean_value(mean, is_best_overall, is_best_tn):
     return val_str
 
 
-def generate_table(results, datasets, task, trainer, test_outputs_dir, include_external=False):
+def generate_table(results, datasets, task, trainer, test_outputs_dir, include_external=False, show_avg=False):
     order = get_filtered_model_order(trainer, include_external)
     datasets = get_mpo2_datasets(results, datasets)
     if not datasets: return ""
     
+    n_cols = len(datasets) + (1 if show_avg else 0)
     dataset_codes = [DATASET_INFO[d][0] for d in datasets]
     best_overall = find_best_per_column(results, datasets, trainer, include_external)
     best_tn = find_best_tn_per_column(results, datasets, trainer)
@@ -372,15 +377,14 @@ def generate_table(results, datasets, task, trainer, test_outputs_dir, include_e
                 for m in order if any(get_best_variant_result(results, m, d) for d in datasets)}
     
     tn_order = get_filtered_model_order(trainer, include_external=False)
-    tn_avgs = [row_avgs[m] for m in tn_order if m in row_avgs and row_avgs[m] == row_avgs[m]]
-    best_tn_avg = max(tn_avgs) if tn_avgs else float('-inf')
     
-    all_avgs = [v for v in row_avgs.values() if v == v]
-    best_overall_avg = max(all_avgs) if all_avgs else float('-inf')
-
     lines = [r"\begin{table}[!htbp]", r"\centering", r"\scriptsize", 
-             r"\begin{tabular}{l" + "r" * (len(datasets) + 1) + "}", r"\toprule",
-             " & " + " & ".join(dataset_codes) + r" & Avg \\", r"\midrule"]
+             r"\begin{tabular}{l" + "r" * n_cols + "}", r"\toprule"]
+    header = " & ".join(dataset_codes)
+    if show_avg:
+        header += r" & Avg"
+    lines.append(header + r" \\")
+    lines.append(r"\midrule")
 
     for m in order:
         model_latex = MODEL_LATEX_NAMES.get(m, f"\\textbf{{{m}}}")
@@ -396,39 +400,47 @@ def generate_table(results, datasets, task, trainer, test_outputs_dir, include_e
                 means.append(format_mean_value(res.mean_test_quality, is_best_overall, is_best_tn))
                 stds.append(f"$\\pm${res.std_test_quality*100:.2f}")
         
-        avg = row_avgs.get(m, float('nan'))
-        if avg == avg:
-            is_best_overall_avg = abs(avg - best_overall_avg) < 1e-9
-            is_best_tn_avg = is_tn_model and abs(avg - best_tn_avg) < 1e-9
-            means.append(format_mean_value(avg, is_best_overall_avg, is_best_tn_avg))
-        else:
-            means.append("--")
+        if show_avg:
+            avg = row_avgs.get(m, float('nan'))
+            means.append(f"{avg*100:.2f}" if avg == avg else "--")
+        
         lines.append(f"{model_latex} & " + " & ".join(means) + r" \\")
         has_nonzero_std = any(s not in ("--", "", "$\\pm$0.00") for s in stds)
         if has_nonzero_std:
-            lines.append(" & " + " & ".join(stds + [""]) + r" \\")
+            stds_extra = stds + ([""] if show_avg else [])
+            lines.append(" & " + " & ".join(stds_extra) + r" \\")
         lines.append(r"\midrule")
 
     bs = get_baseline_results(test_outputs_dir, datasets)
     base_row = [f"{bs[d]*100:.2f}" if d in bs else "--" for d in datasets]
-    avg_b = statistics.mean([bs[d] for d in datasets if d in bs]) if bs else 0.0
-    lines.append(r"\textbf{Mean} & " + " & ".join(base_row + [f"{avg_b:.2f}"]) + r" \\")
+    if show_avg:
+        avg_b = statistics.mean([bs[d] for d in datasets if d in bs]) if bs else 0.0
+        base_row.append(f"{avg_b*100:.2f}")
+    lines.append(r"\textbf{Mean} & " + " & ".join(base_row) + r" \\")
     
     lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}"])
     return "\n".join(lines)
 
 
-def generate_combined_table(results, reg_ds, class_ds, trainer, test_outputs_dir, include_external=False):
+def generate_combined_table(results, reg_ds, class_ds, trainer, test_outputs_dir, include_external=False, show_avg=False):
     order = get_filtered_model_order(trainer, include_external)
     tn_order = get_filtered_model_order(trainer, include_external=False)
     reg_ds = get_mpo2_datasets(results, reg_ds)
     class_ds = get_mpo2_datasets(results, class_ds)
     if not reg_ds and not class_ds: return ""
 
-    col_spec = "l" + ("r" * (len(reg_ds)+1) if reg_ds else "") + ("||" if reg_ds and class_ds else "") + ("r" * (len(class_ds)+1) if class_ds else "")
+    def n_cols(ds):
+        return len(ds) + (1 if show_avg else 0)
+    col_spec = "l" + ("r" * n_cols(reg_ds) if reg_ds else "") + ("||" if reg_ds and class_ds else "") + ("r" * n_cols(class_ds) if class_ds else "")
     lines = [r"\begin{table*}[!htbp]", r"\centering", r"\scriptsize", r"\begin{tabular}{" + col_spec + "}", r"\toprule"]
     
-    h = [" & ".join([DATASET_INFO[d][0] for d in ds] + ["Avg"]) for ds in [reg_ds, class_ds] if ds]
+    h = []
+    for ds in [reg_ds, class_ds]:
+        if not ds: continue
+        parts = [DATASET_INFO[d][0] for d in ds]
+        if show_avg:
+            parts.append("Avg")
+        h.append(" & ".join(parts))
     lines.append(" & " + " & ".join(h) + r" \\")
     lines.append(r"\midrule")
 
@@ -454,8 +466,10 @@ def generate_combined_table(results, reg_ds, class_ds, trainer, test_outputs_dir
                     means.append(format_mean_value(res.mean_test_quality, is_best_overall, is_best_tn))
                     stds.append(f"$\\pm${res.std_test_quality*100:.2f}"); cur_vals.append(res.mean_test_quality)
             
-            avg = statistics.mean(cur_vals) if cur_vals else float('nan')
-            means.append(f"{avg*100:.2f}" if avg==avg else "--"); stds.append("")
+            if show_avg:
+                avg = statistics.mean(cur_vals) if cur_vals else float('nan')
+                means.append(f"{avg*100:.2f}" if avg==avg else "--")
+                stds.append("")
         
         lines.append(f"{model_latex} & " + " & ".join(means) + r" \\")
         has_nonzero_std = any(s not in ("--", "", "$\\pm$0.00") for s in stds)
@@ -468,8 +482,9 @@ def generate_combined_table(results, reg_ds, class_ds, trainer, test_outputs_dir
         if not ds: continue
         bs = get_baseline_results(test_outputs_dir, ds)
         base_vals.extend([f"{bs[d]*100:.2f}" if d in bs else "--" for d in ds])
-        avg_b = statistics.mean([bs[d] for d in ds if d in bs]) if bs else 0.0
-        base_vals.append(f"{avg_b*100:.2f}")
+        if show_avg:
+            avg_b = statistics.mean([bs[d] for d in ds if d in bs]) if bs else 0.0
+            base_vals.append(f"{avg_b*100:.2f}")
     lines.append(r"\textbf{Mean} & " + " & ".join(base_vals) + r" \\")
 
     lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table*}"])
@@ -489,7 +504,7 @@ def get_all_mode_model_order(include_external=False):
     return order
 
 
-def generate_all_table(ntn_results, gtn_results, reg_ds, class_ds, test_outputs_dir, include_external=False):
+def generate_all_table(ntn_results, gtn_results, reg_ds, class_ds, test_outputs_dir, include_external=False, show_avg=False):
     combined_results = {}
     for key, val in ntn_results.items():
         if key[0] in EXTERNAL_MODEL_ORDER:
@@ -511,21 +526,32 @@ def generate_all_table(ntn_results, gtn_results, reg_ds, class_ds, test_outputs_
     
     order = get_all_mode_model_order(include_external)
     
-    col_spec = "l" + ("r" * (len(reg_ds)+1) if reg_ds else "") + ("||" if reg_ds and class_ds else "") + ("r" * (len(class_ds)+1) if class_ds else "")
+    def n_cols(ds):
+        return len(ds) + (1 if show_avg else 0)
+    col_spec = "l" + ("r" * n_cols(reg_ds) if reg_ds else "") + ("||" if reg_ds and class_ds else "") + ("r" * n_cols(class_ds) if class_ds else "")
     lines = [r"\begin{table*}[!htbp]", r"\centering", r"\scriptsize", r"\begin{tabular}{" + col_spec + "}", r"\toprule"]
     
-    h = [" & ".join([DATASET_INFO[d][0] for d in ds] + ["Avg"]) for ds in [reg_ds, class_ds] if ds]
+    h = []
+    for ds in [reg_ds, class_ds]:
+        if not ds: continue
+        parts = [DATASET_INFO[d][0] for d in ds]
+        if show_avg:
+            parts.append("Avg")
+        h.append(" & ".join(parts))
     lines.append(" & " + " & ".join(h) + r" \\")
     lines.append(r"\midrule")
     
     def get_result_for_all_mode(model_key, dataset):
         if model_key == "TEMPO":
+            best_res, best_mean = None, float('-inf')
             for var in ["CPD-S", "CPD-S-TypeI"]:
                 for prefix in ["N-", "G-"]:
                     key = (f"{prefix}{var}", dataset)
                     if key in combined_results and combined_results[key].n_seeds > 0:
-                        return combined_results[key]
-            return None
+                        if combined_results[key].mean_test_quality > best_mean:
+                            best_mean = combined_results[key].mean_test_quality
+                            best_res = combined_results[key]
+            return best_res
         
         if model_key.startswith("N-") or model_key.startswith("G-"):
             prefix = model_key[:2]
@@ -593,9 +619,10 @@ def generate_all_table(ntn_results, gtn_results, reg_ds, class_ds, test_outputs_
                     stds.append(f"$\\pm${res.std_test_quality*100:.2f}")
                     cur_vals.append(res.mean_test_quality)
             
-            avg = statistics.mean(cur_vals) if cur_vals else float('nan')
-            means.append(f"{avg*100:.2f}" if avg == avg else "--")
-            stds.append("")
+            if show_avg:
+                avg = statistics.mean(cur_vals) if cur_vals else float('nan')
+                means.append(f"{avg*100:.2f}" if avg == avg else "--")
+                stds.append("")
         
         lines.append(f"{model_latex} & " + " & ".join(means) + r" \\")
         has_nonzero_std = any(s not in ("--", "", "$\\pm$0.00") for s in stds)
@@ -609,8 +636,9 @@ def generate_all_table(ntn_results, gtn_results, reg_ds, class_ds, test_outputs_
             continue
         bs = get_baseline_results(test_outputs_dir, ds)
         base_vals.extend([f"{bs[d]*100:.2f}" if d in bs else "--" for d in ds])
-        avg_b = statistics.mean([bs[d] for d in ds if d in bs]) if bs else 0.0
-        base_vals.append(f"{avg_b*100:.2f}")
+        if show_avg:
+            avg_b = statistics.mean([bs[d] for d in ds if d in bs]) if bs else 0.0
+            base_vals.append(f"{avg_b*100:.2f}")
     lines.append(r"\textbf{Mean} & " + " & ".join(base_vals) + r" \\")
     
     lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table*}"])
@@ -628,8 +656,10 @@ def main():
     parser.add_argument("--use-val-loss", action="store_true")
     parser.add_argument("--external-csv-dir", type=Path, default=Path("oldResults"),
                         help="Directory containing external baseline CSVs (test_results_mlp.csv, etc.)")
-    parser.add_argument("--include-external", action="store_true",
-                        help="Include external baseline models (MLP, XGBoost, GP) in the tables")
+    parser.add_argument("--exclude-external", action="store_true",
+                        help="Exclude external baseline models (MLP, XGBoost, GP) from the tables")
+    parser.add_argument("--average-column", action="store_true",
+                        help="Add an Average column to the table")
     
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -644,16 +674,18 @@ def main():
             else:
                 external_results[key] = val
     
+    include_external = not args.exclude_external
+    
     if getattr(args, 'all'):
         ntn_res = collect_results(args.test_outputs_dir, "ntn", args.use_val_loss)
         ntn_res.update(cpd_s_results)
         gtn_res = collect_results(args.test_outputs_dir, "gtn", args.use_val_loss)
         gtn_res.update(cpd_s_results)
-        if args.include_external:
+        if include_external:
             ntn_res.update(external_results)
             gtn_res.update(external_results)
         tbl = generate_all_table(ntn_res, gtn_res, REGRESSION_DATASETS, CLASSIFICATION_DATASETS, 
-                                  args.test_outputs_dir, args.include_external)
+                                  args.test_outputs_dir, include_external, show_avg=args.average_column)
         with open(args.output_dir / "combined_all.tex", "w") as f:
             f.write(tbl)
         return
@@ -663,14 +695,14 @@ def main():
     for tr in trainers:
         res = collect_results(args.test_outputs_dir, tr, args.use_val_loss)
         res.update(cpd_s_results)
-        if args.include_external:
+        if include_external:
             res.update(external_results)
         if args.combined:
-            tbl = generate_combined_table(res, REGRESSION_DATASETS, CLASSIFICATION_DATASETS, tr, args.test_outputs_dir, args.include_external)
+            tbl = generate_combined_table(res, REGRESSION_DATASETS, CLASSIFICATION_DATASETS, tr, args.test_outputs_dir, include_external, show_avg=args.average_column)
             with open(args.output_dir / f"combined_{tr}.tex", "w") as f: f.write(tbl)
         else:
             for task, ds_list in [("classification", CLASSIFICATION_DATASETS), ("regression", REGRESSION_DATASETS)]:
-                tbl = generate_table(res, ds_list, task, tr, args.test_outputs_dir, args.include_external)
+                tbl = generate_table(res, ds_list, task, tr, args.test_outputs_dir, include_external, show_avg=args.average_column)
                 if tbl:
                     with open(args.output_dir / f"{task}_{tr}.tex", "w") as f: f.write(tbl)
 
