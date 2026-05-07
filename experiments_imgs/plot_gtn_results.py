@@ -10,8 +10,37 @@ from collections import defaultdict
 
 GTN_DIR = Path("/home/nicci/Desktop/remote/GTN/experiments_imgs/outputs/gtn")
 
+
+def parse_run_dir_name(name: str) -> dict:
+    """Parse run directory name like 'L3_bd4_seed42' or 'L4_bd12_seed10090_rf0.3_bondmpo1'."""
+    parts = name.split("_")
+    result = {}
+    for part in parts:
+        if part.startswith("L") and part[1:].isdigit():
+            result["L"] = int(part[1:])
+        elif part.startswith("bd") and part[2:].isdigit():
+            result["bd"] = int(part[2:])
+        elif part.startswith("seed"):
+            try:
+                result["seed"] = int(part[4:])
+            except ValueError:
+                pass
+        elif part.startswith("rf"):
+            try:
+                result["rf"] = float(part[2:])
+            except ValueError:
+                pass
+        elif part.startswith("rp") and part[2:].isdigit():
+            result["rp"] = int(part[2:])
+        elif part.startswith("rpa") and part[3:].isdigit():
+            result["rpa"] = int(part[3:])
+    return result
+
+
 def make_plots():
-    datasets = defaultdict(list)
+    grouped = defaultdict(list)
+    param_map = {}
+    
     for dataset_dir in sorted(GTN_DIR.iterdir()):
         if not dataset_dir.is_dir():
             continue
@@ -27,29 +56,21 @@ def make_plots():
                     continue
                 with open(results_file) as f:
                     data = json.load(f)
-                if not data.get("success", False):
+                
+                test_acc = data.get("test_accuracy")
+                n_params = data.get("n_parameters")
+                if test_acc is None or n_params is None:
                     continue
-                datasets[dataset_name].append((data["n_parameters"], data["test_accuracy"]))
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-    colors = plt.cm.tab10.colors
-
-    for i, ds in enumerate(sorted(datasets.keys())):
-        points = sorted(datasets[ds], key=lambda x: x[0])
-        xs = [p[0] for p in points]
-        ys = [p[1] for p in points]
-        ax.plot(xs, ys, "o-", markersize=4, linewidth=1.2, color=colors[i], label=ds, alpha=0.8)
-
-    ax.set_xlabel("Number of Parameters")
-    ax.set_ylabel("Test Accuracy")
-    ax.set_title("GTN Test Accuracy vs Number of Parameters")
-    ax.legend(fontsize=10)
-    ax.grid(True, alpha=0.3)
-    fig.tight_layout()
-    out = GTN_DIR.parent / "gtn_test_accuracy_vs_nparams.png"
-    fig.savefig(str(out), dpi=150)
-    plt.close(fig)
-    print(f"Saved: {out}")
+                
+                run_info = parse_run_dir_name(run_dir.name)
+                L = run_info.get("L", 0)
+                bd = run_info.get("bd", 0)
+                rp = run_info.get("rp", 0)
+                rpa = run_info.get("rpa", 0)
+                
+                key = (dataset_name, model_dir.name, bd, L, rp, rpa)
+                grouped[key].append(test_acc)
+                param_map[key] = n_params
 
     datasets = defaultdict(list)
     for key, accs in grouped.items():
@@ -76,20 +97,26 @@ def make_plots():
                      markersize=5, linewidth=1.5, color=color, label=ds,
                      alpha=0.8, markeredgewidth=0.5, markeredgecolor="black")
 
+    ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
     ax.set_xlabel("Number of Parameters", fontsize=12)
     ax.set_ylabel("Test Accuracy", fontsize=12)
     ax.set_title("GTN Test Accuracy vs Number of Parameters", fontsize=14)
     ax.legend(fontsize=10)
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
-    fig.savefig(str(GTN_DIR.parent / "gtn_test_accuracy_vs_nparams.png"), dpi=150)
+    fig.savefig(str(GTN_DIR.parent / "gtn_test_accuracy_vs_nparams.pdf"), dpi=150)
     plt.close(fig)
-    print(f"Saved: {GTN_DIR.parent / 'gtn_test_accuracy_vs_nparams.png'}")
+    print(f"Saved: {GTN_DIR.parent / 'gtn_test_accuracy_vs_nparams.pdf'}")
 
-    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-    axes = axes.flatten()
+    if len(dataset_names) >= 4:
+        fig, axes = plt.subplots(2, 2, figsize=(14, 10))
+        axes = axes.flatten()
+    else:
+        fig, axes = plt.subplots(1, max(1, len(dataset_names)), figsize=(6 * len(dataset_names), 6))
+        if len(dataset_names) == 1:
+            axes = [axes]
 
-    for idx, ds in enumerate(dataset_names):
+    for idx, ds in enumerate(dataset_names[:len(axes)]):
         ax = axes[idx]
         points = datasets[ds]
         l_groups = defaultdict(list)
@@ -106,6 +133,7 @@ def make_plots():
             ys = [p[1] for p in pts]
             ax.plot(xs, ys, "o-", markersize=5, linewidth=1.5, label=f"L={l_val}")
 
+        ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
         ax.set_xlabel("Number of Parameters")
         ax.set_ylabel("Test Accuracy")
         ax.set_title(ds)

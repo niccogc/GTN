@@ -23,7 +23,7 @@ sync_host () {
 }
 
 sync_host titans &
-sync_host transfer.gbar.dtu.dk &
+# sync_host transfer.gbar.dtu.dk &
 
 wait
 echo "Done."
