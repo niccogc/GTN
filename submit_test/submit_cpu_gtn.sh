@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "Gtn_test[1-9]%20"
+#BSUB -J "Gtn_test[1-22]%20"
 #BSUB -W 8:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=500MB]"
@@ -9,7 +9,7 @@
 #BSUB -e logs/%J_%I_TEST.err
 
 MODELS=(
-# "cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p"
+"cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p"
 "bosonmps")
 
 # DATASETS=(
@@ -20,8 +20,9 @@ MODELS=(
 #     "winequalityc"
 # )
 DATASETS=(
-    "abalone" "ai4i" "hearth" "wine" "winequalityc" "concrete" "energy_efficiency"
-    "iris" "realstate" )
+    "bike" "seoulBike"
+    # "abalone" "ai4i"  "hearth" "wine" "winequalityc" "concrete" "energy_efficiency"  "iris" "realstate"
+    )
 
 NUM_MODELS=${#MODELS[@]}
 NUM_DATASETS=${#DATASETS[@]}

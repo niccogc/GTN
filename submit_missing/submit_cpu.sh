@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-22]%20"
+#BSUB -J "ntn_grid_full[1-17]%20"
 #BSUB -W 8:00
 #BSUB -n 10
 #BSUB -R "rusage[mem=4GB]"

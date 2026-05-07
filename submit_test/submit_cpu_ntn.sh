@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_test[1-90]%20"
+#BSUB -J "ntn_test[1-20]%20"
 #BSUB -W 8:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=1GB]"
@@ -8,7 +8,9 @@
 #BSUB -o logs/%J_%I_TEST.out
 #BSUB -e logs/%J_%I_TEST.err
 
-MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p")
+MODELS=(
+"cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p"
+)
 
 # DATASETS=(
 #     "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
@@ -17,10 +19,11 @@ MODELS=("cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "m
 #     "seoulBike" "student_dropout" "student_perf" "wine"
 #     "winequalityc"
 # )
-
 DATASETS=(
-    "abalone" "ai4i" "hearth" "wine" "winequalityc" "concrete" "energy_efficiency"
-    "iris" "realstate" )
+    "bike" "seoulBike"
+    # "abalone" "ai4i"  "hearth" "wine" "winequalityc" "concrete" "energy_efficiency"  "iris" "realstate"
+    )
+
 
 NUM_MODELS=${#MODELS[@]}
 NUM_DATASETS=${#DATASETS[@]}
