@@ -85,6 +85,7 @@ def make_plots():
 
     fig, ax = plt.subplots(figsize=(10, 6))
     colors = plt.cm.tab10.colors
+    markers = ['o', 's', '^', 'D', 'v', 'p', 'h', '*']
     dataset_names = sorted(datasets.keys())
 
     for i, ds in enumerate(dataset_names):
@@ -93,8 +94,9 @@ def make_plots():
         ys = [p[1] for p in points]
         yerrs = [p[2] for p in points]
         color = colors[i % len(colors)]
-        ax.errorbar(xs, ys, yerr=yerrs, fmt="o-", capsize=3, capthick=1,
-                     markersize=5, linewidth=1.5, color=color, label=ds,
+        marker = markers[i % len(markers)]
+        ax.errorbar(xs, ys, yerr=yerrs, fmt=f"{marker}-", capsize=3, capthick=1,
+                     markersize=6, linewidth=1.5, color=color, label=ds,
                      alpha=0.8, markeredgewidth=0.5, markeredgecolor="black")
 
     ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
