@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q gpua100
-#BSUB -J "ntn_grid_missing[1-17]%20"
+#BSUB -J "ntn_grid_missing[1-18]%20"
 #BSUB -W 12:00
 #BSUB -n 12
 #BSUB -R "rusage[mem=750MB]"
