@@ -3,11 +3,11 @@
 #SBATCH --output=/home/nicci/GTN/logs/gtn_%A_%a.out
 #SBATCH --error=/home/nicci/GTN/logs/gtn_%A_%a.err
 #SBATCH --partition=titans
-#SBATCH --time=12:00:00
-#SBATCH --mem=2gb
+#SBATCH --time=24:00:00
+#SBATCH --mem=4gb
 #SBATCH --gres=gpu
-#SBATCH --cpus-per-task=4
-#SBATCH --array=1-10%10
+#SBATCH --cpus-per-task=8
+#SBATCH --array=1-3%3
 
 export HOME=/home/nicci
 cd $HOME/GTN
@@ -29,10 +29,10 @@ fi
 
 echo "Task $SLURM_ARRAY_TASK_ID: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
 
-export OMP_NUM_THREADS=4
-export MKL_NUM_THREADS=4
-export OPENBLAS_NUM_THREADS=4
-export NUMEXPR_NUM_THREADS=4
+export OMP_NUM_THREADS=8
+export MKL_NUM_THREADS=8
+export OPENBLAS_NUM_THREADS=8
+export NUMEXPR_NUM_THREADS=8
 
 python run.py --multirun \
     +experiment=$EXPERIMENT \
