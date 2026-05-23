@@ -1,0 +1,145 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28495266[1]: <ntn_grid_missing[1-17]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_missing[1-17]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Sat May 23 11:04:18 2026
+Job was executed on host(s) <12*n-62-18-9>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Sat May 23 11:04:18 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Sat May 23 11:04:18 2026
+Terminated at Sat May 23 11:07:46 2026
+Results reported at Sat May 23 11:07:46 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -J "ntn_grid_missing[1-17]%20"
+#BSUB -W 24:00
+#BSUB -n 12
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_gpua_newntn.out
+#BSUB -e logs/%J_%I_gpua_newntn.err
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+cd "~/GTN"
+source .venv/bin/activate
+source missing.env
+
+NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+read MODEL DATASET <<< "${COMBINATIONS_NTN[$IDV]}"
+echo "NTN: $MODEL $DATASET"
+
+if [[ "$MODEL" == "cpda" || "$MODEL" == "cpda_typei" ]]; then
+    EXPERIMENT="cpda_ntn_sweep"
+else
+    EXPERIMENT="uci_ntn_sweep"
+fi
+
+echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+
+export OMP_NUM_THREADS=12
+export MKL_NUM_THREADS=12
+export OPENBLAS_NUM_THREADS=12
+export NUMEXPR_NUM_THREADS=12
+
+python run.py --multirun \
+    +experiment=$EXPERIMENT \
+    model=$MODEL \
+    dataset=$DATASET
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   21.00 sec.
+    Max Memory :                                 413 MB
+    Average Memory :                             295.00 MB
+    Total Requested Memory :                     9000.00 MB
+    Delta Memory :                               8587.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                30
+    Run time :                                   208 sec.
+    Turnaround time :                            208 sec.
+
+The output (if any) follows:
+
+NTN: cpda_typei adult
+Task 1: Dataset=adult, Model=cpda_typei, Experiment=cpda_ntn_sweep
+[2026-05-23 11:07:13,721][HYDRA] Launching 30 jobs locally
+[2026-05-23 11:07:13,722][HYDRA] 	#0 : model.L=4 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:14,569][utils.tracking][INFO] - Loaded 19170 tracked runs from runs_tracking.csv
+[2026-05-23 11:07:14,584][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=32 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd32_seed42 | previous run failed with singular matrix (permanent) val=0.2412
+[2026-05-23 11:07:14,588][HYDRA] 	#1 : model.L=4 model.bond_dim=32 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:14,726][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=32 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd32_seed10090 | previous run failed with singular matrix (permanent) val=0.1638
+[2026-05-23 11:07:14,728][HYDRA] 	#2 : model.L=4 model.bond_dim=32 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:14,856][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=32 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd32_seed32874 | previous run failed with singular matrix (permanent) val=0.2129
+[2026-05-23 11:07:14,858][HYDRA] 	#3 : model.L=4 model.bond_dim=32 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:14,987][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=32 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd32_seed47311 | previous run failed with singular matrix (permanent) val=0.1637
+[2026-05-23 11:07:14,989][HYDRA] 	#4 : model.L=4 model.bond_dim=32 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:15,118][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=32 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd32_seed47303 | previous run failed with singular matrix (permanent) val=0.0900
+[2026-05-23 11:07:15,120][HYDRA] 	#5 : model.L=4 model.bond_dim=16 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:15,245][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=16 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd16_seed42 | previous run failed with singular matrix (permanent) val=0.0931
+[2026-05-23 11:07:15,246][HYDRA] 	#6 : model.L=4 model.bond_dim=16 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:15,372][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=16 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd16_seed10090 | previous run failed with singular matrix (permanent) val=0.1403
+[2026-05-23 11:07:15,374][HYDRA] 	#7 : model.L=4 model.bond_dim=16 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:15,501][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=16 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd16_seed32874 | already completed successfully (val_quality=0.5625170625170626) val=0.5625
+[2026-05-23 11:07:15,503][HYDRA] 	#8 : model.L=4 model.bond_dim=16 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:15,625][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=16 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd16_seed47311 | previous run failed with singular matrix (permanent) val=0.5565
+[2026-05-23 11:07:15,627][HYDRA] 	#9 : model.L=4 model.bond_dim=16 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:15,751][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=16 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd16_seed47303 | previous run failed with singular matrix (permanent) val=0.1555
+[2026-05-23 11:07:15,754][HYDRA] 	#10 : model.L=4 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:15,899][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd8_seed42 | previous run failed with singular matrix (permanent) val=0.1592
+[2026-05-23 11:07:15,900][HYDRA] 	#11 : model.L=4 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:16,022][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd8_seed10090 | already completed successfully (val_quality=0.5608790608790609) val=0.5609
+[2026-05-23 11:07:16,023][HYDRA] 	#12 : model.L=4 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:16,149][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd8_seed32874 | previous run failed with singular matrix (permanent) val=0.2699
+[2026-05-23 11:07:16,151][HYDRA] 	#13 : model.L=4 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:16,280][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd8_seed47311 | previous run failed with singular matrix (permanent) val=0.1503
+[2026-05-23 11:07:16,282][HYDRA] 	#14 : model.L=4 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:16,408][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=4 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L4_bd8_seed47303 | previous run failed with singular matrix (permanent) val=0.4586
+[2026-05-23 11:07:16,410][HYDRA] 	#15 : model.L=3 model.bond_dim=32 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:16,618][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=32 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd32_seed42 | previous run failed with singular matrix (permanent) val=0.1986
+[2026-05-23 11:07:16,620][HYDRA] 	#16 : model.L=3 model.bond_dim=32 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:16,764][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=32 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd32_seed10090 | already completed successfully (val_quality=0.5626535626535627) val=0.5627
+[2026-05-23 11:07:16,766][HYDRA] 	#17 : model.L=3 model.bond_dim=32 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:16,896][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=32 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd32_seed32874 | previous run failed with singular matrix (permanent) val=0.1690
+[2026-05-23 11:07:16,898][HYDRA] 	#18 : model.L=3 model.bond_dim=32 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:17,028][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=32 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd32_seed47311 | previous run failed with singular matrix (permanent) val=0.1892
+[2026-05-23 11:07:17,030][HYDRA] 	#19 : model.L=3 model.bond_dim=32 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:17,163][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=32 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd32_seed47303 | previous run failed with singular matrix (permanent) val=0.2341
+[2026-05-23 11:07:17,165][HYDRA] 	#20 : model.L=3 model.bond_dim=16 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:17,320][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=16 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd16_seed42 | previous run failed with singular matrix (permanent) val=0.2065
+[2026-05-23 11:07:17,322][HYDRA] 	#21 : model.L=3 model.bond_dim=16 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:17,449][__main__][INFO] - ▶ RUN CPDATypeI/adult/NTN L=3 bd=16 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd16_seed10090
+[2026-05-23 11:07:19,394][HYDRA] 	#22 : model.L=3 model.bond_dim=16 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:19,536][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=16 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd16_seed32874 | previous run failed with singular matrix (permanent) val=0.5599
+[2026-05-23 11:07:19,538][HYDRA] 	#23 : model.L=3 model.bond_dim=16 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:19,689][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=16 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd16_seed47311 | already completed successfully (val_quality=0.5625170625170626) val=0.5625
+[2026-05-23 11:07:19,691][HYDRA] 	#24 : model.L=3 model.bond_dim=16 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:19,819][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=16 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd16_seed47303 | previous run failed with singular matrix (permanent) val=0.1541
+[2026-05-23 11:07:19,821][HYDRA] 	#25 : model.L=3 model.bond_dim=8 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:19,952][__main__][INFO] - ▶ RUN CPDATypeI/adult/NTN L=3 bd=8 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd8_seed42
+[2026-05-23 11:07:20,319][HYDRA] 	#26 : model.L=3 model.bond_dim=8 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:20,624][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=8 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd8_seed10090 | previous run failed with singular matrix (permanent) val=0.3677
+[2026-05-23 11:07:20,626][HYDRA] 	#27 : model.L=3 model.bond_dim=8 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:20,793][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=8 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd8_seed32874 | previous run failed with singular matrix (permanent) val=0.4995
+[2026-05-23 11:07:20,795][HYDRA] 	#28 : model.L=3 model.bond_dim=8 seed=47311 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:20,936][__main__][INFO] - ⏭ SKIP CPDATypeI/adult/NTN L=3 bd=8 seed=47311 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd8_seed47311 | previous run failed with singular matrix (permanent) val=0.3542
+[2026-05-23 11:07:20,938][HYDRA] 	#29 : model.L=3 model.bond_dim=8 seed=47303 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=cpda_ntn_sweep model=cpda_typei dataset=adult
+[2026-05-23 11:07:21,061][__main__][INFO] - ▶ RUN CPDATypeI/adult/NTN L=3 bd=8 seed=47303 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/CPDATypeI_rg5_init0.1/L3_bd8_seed47303
+
+
+PS:
+
+Read file <logs/28495266_1_gpua_newntn.err> for stderr output of this job.
+
