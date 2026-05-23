@@ -1,0 +1,101 @@
+Task 2: Dataset=bike, Model=cpda_typei, Experiment=test_gtn
+[2026-05-07 09:22:08,005][HYDRA] Launching 10 jobs locally
+[2026-05-07 09:22:08,006][HYDRA] 	#0 : seed=836578142 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=cpda_typei dataset=bike
+[2026-05-07 09:22:08,196][__main__][INFO] - Using best config for CPDATypeI/bike: L=4, bond_dim=32
+[2026-05-07 09:22:08,302][utils.tracking][INFO] - Loaded 17246 tracked runs from runs_tracking.csv
+[2026-05-07 09:22:08,305][__main__][INFO] - ▶ RUN CPDATypeI/bike/GTN L=4 bd=32 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/CPDATypeI/bike/seed_836578142
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28380845[2]: <Gtn_test[1-22]%20> in cluster <dcc> Exited
+
+Job <Gtn_test[1-22]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu May  7 09:21:41 2026
+Job was executed on host(s) <6*n-62-31-8>, in queue <hpc>, as user <nicci> in cluster <dcc> at Thu May  7 09:21:43 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu May  7 09:21:43 2026
+Terminated at Thu May  7 09:23:13 2026
+Results reported at Thu May  7 09:23:13 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "Gtn_test[1-22]%20"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_TEST.out
+#BSUB -e logs/%J_%I_TEST.err
+
+MODELS=(
+"cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p"
+"bosonmps")
+
+# DATASETS=(
+#     "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+#     "car_evaluation" "concrete" "energy_efficiency" "hearth"
+#     "iris" "mushrooms" "obesity" "popularity" "realstate"
+#     "seoulBike" "student_dropout" "student_perf" "wine"
+#     "winequalityc"
+# )
+DATASETS=(
+    "bike" "seoulBike"
+    # "abalone" "ai4i"  "hearth" "wine" "winequalityc" "concrete" "energy_efficiency"  "iris" "realstate"
+    )
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+    for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        MODEL_IDX=$((IDV % NUM_MODELS))
+        DATASET_IDX=$((IDV / NUM_MODELS))
+
+        echo "Index $i: Dataset=${DATASETS[$DATASET_IDX]}, Model=${MODELS[$MODEL_IDX]}"
+    done
+    exit 0
+fi
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   70.51 sec.
+    Max Memory :                                 481 MB
+    Average Memory :                             378.67 MB
+    Total Requested Memory :                     3000.00 MB
+    Delta Memory :                               2519.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                20
+    Run time :                                   90 sec.
+    Turnaround time :                            92 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28380845_2_TEST.err> for stderr output of this job.
+

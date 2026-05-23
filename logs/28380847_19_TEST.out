@@ -1,0 +1,113 @@
+Task 19: Dataset=seoulBike, Model=tnml_f, Experiment=test_ntn
+[2026-05-07 09:22:08,059][HYDRA] Launching 10 jobs locally
+[2026-05-07 09:22:08,060][HYDRA] 	#0 : seed=836578142 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_f dataset=seoulBike
+[2026-05-07 09:22:08,254][__main__][INFO] - Using best config for TNML_F/seoulBike: L=3, bond_dim=4
+[2026-05-07 09:22:08,373][utils.tracking][INFO] - Loaded 17246 tracked runs from runs_tracking.csv
+[2026-05-07 09:22:08,375][__main__][INFO] - ▶ RUN TNML_F/seoulBike/NTN L=3 bd=4 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_F/seoulBike/seed_836578142
+Starting Fit: 20 epochs.
+Sweep Order: ['Node0', 'Node1', 'Node2', 'Node3', 'Node4', 'Node5', 'Node6', 'Node7', 'Node8', 'Node9', 'Node10', 'Node11', 'Node12', 'Node13', 'Node14', 'Node15', 'Node16', 'Node15', 'Node14', 'Node13', 'Node12', 'Node11', 'Node10', 'Node9', 'Node8', 'Node7', 'Node6', 'Node5', 'Node4', 'Node3', 'Node2', 'Node1']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 917943.87443 | quality: -1.19283
+        | Val:   loss: 901659.02207 | quality: -1.17267
+Epoch 1 | Train: loss: 906286.95505 | quality: -1.16499
+        | Val:   loss: 891555.46895 | quality: -1.14833
+ *
+Epoch 2 | Train: loss: 878683.23217 | quality: -1.09905
+        | Val:   loss: 881671.00375 | quality: -1.12451
+ *
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28380847[19]: <ntn_test[1-20]%20> in cluster <dcc> Exited
+
+Job <ntn_test[1-20]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Thu May  7 09:21:44 2026
+Job was executed on host(s) <6*n-62-21-69>, in queue <hpc>, as user <nicci> in cluster <dcc> at Thu May  7 09:21:45 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu May  7 09:21:45 2026
+Terminated at Thu May  7 09:23:21 2026
+Results reported at Thu May  7 09:23:21 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "ntn_test[1-20]%20"
+#BSUB -W 8:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_TEST.out
+#BSUB -e logs/%J_%I_TEST.err
+
+MODELS=(
+"cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p"
+)
+
+# DATASETS=(
+#     "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
+#     "car_evaluation" "concrete" "energy_efficiency" "hearth"
+#     "iris" "mushrooms" "obesity" "popularity" "realstate"
+#     "seoulBike" "student_dropout" "student_perf" "wine"
+#     "winequalityc"
+# )
+DATASETS=(
+    "bike" "seoulBike"
+    # "abalone" "ai4i"  "hearth" "wine" "winequalityc" "concrete" "energy_efficiency"  "iris" "realstate"
+    )
+
+
+NUM_MODELS=${#MODELS[@]}
+NUM_DATASETS=${#DATASETS[@]}
+NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
+
+if [ "$1" == "test" ]; then
+    echo "SIMULATING ARRAY:"
+    echo "-----------------"
+
+    for ((i=1; i<=NUM_EXPERIMENTS; i++)); do
+        IDV=$((i - 1))
+        MODEL_IDX=$((IDV % NUM_MODELS))
+        DATASET_IDX=$((IDV / NUM_MODELS))
+
+        echo "Index $i: Dataset=${DATASETS[$DATASET_IDX]}, Model=${MODELS[$MODEL_IDX]}"
+    done
+    exit 0
+fi
+
+export HOME=/zhome/6b/e/212868
+cd "$HOME/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+(... more ...)
+------------------------------------------------------------
+
+TERM_OWNER: job killed by owner.
+Exited with exit code 130.
+
+Resource usage summary:
+
+    CPU time :                                   188.28 sec.
+    Max Memory :                                 673 MB
+    Average Memory :                             107.00 MB
+    Total Requested Memory :                     6144.00 MB
+    Delta Memory :                               5471.00 MB
+    Max Swap :                                   -
+    Max Processes :                              12
+    Max Threads :                                65
+    Run time :                                   96 sec.
+    Turnaround time :                            97 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28380847_19_TEST.err> for stderr output of this job.
+

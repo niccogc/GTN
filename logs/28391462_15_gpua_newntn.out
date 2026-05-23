@@ -1,0 +1,85 @@
+NTN:  
+Task 15: Dataset=, Model=, Experiment=uci_ntn_sweep
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28391462[15]: <ntn_grid_missing[1-17]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_missing[1-17]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri May  8 10:10:51 2026
+Job was executed on host(s) <12*n-62-12-20>, in queue <gpua100>, as user <nicci> in cluster <dcc> at Fri May 15 06:14:26 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri May 15 06:14:26 2026
+Terminated at Fri May 15 06:16:37 2026
+Results reported at Fri May 15 06:16:37 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpua100
+#BSUB -J "ntn_grid_missing[1-17]%20"
+#BSUB -W 12:00
+#BSUB -n 12
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_gpua_newntn.out
+#BSUB -e logs/%J_%I_gpua_newntn.err
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+cd "~/GTN"
+source .venv/bin/activate
+source missing.env
+
+NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+read MODEL DATASET <<< "${COMBINATIONS_NTN[$IDV]}"
+echo "NTN: $MODEL $DATASET"
+
+if [[ "$MODEL" == "cpda" || "$MODEL" == "cpda_typei" ]]; then
+    EXPERIMENT="cpda_ntn_sweep"
+else
+    EXPERIMENT="uci_ntn_sweep"
+fi
+
+echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=$EXPERIMENT \
+    model=$MODEL \
+    dataset=$DATASET
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   7.00 sec.
+    Max Memory :                                 41 MB
+    Average Memory :                             36.00 MB
+    Total Requested Memory :                     9000.00 MB
+    Delta Memory :                               8959.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                12
+    Run time :                                   131 sec.
+    Turnaround time :                            590746 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28391462_15_gpua_newntn.err> for stderr output of this job.
+
