@@ -1,7 +1,7 @@
 #!/bin/bash
 #BSUB -q gpua100
-#BSUB -J "ntn_grid_missing[1-18]%20"
-#BSUB -W 12:00
+#BSUB -J "ntn_grid_missing[1-17]%20"
+#BSUB -W 24:00
 #BSUB -n 12
 #BSUB -R "rusage[mem=750MB]"
 #BSUB -R "span[hosts=1]"
@@ -29,10 +29,10 @@ fi
 
 echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
 
-export OMP_NUM_THREADS=6
-export MKL_NUM_THREADS=6
-export OPENBLAS_NUM_THREADS=6
-export NUMEXPR_NUM_THREADS=6
+export OMP_NUM_THREADS=12
+export MKL_NUM_THREADS=12
+export OPENBLAS_NUM_THREADS=12
+export NUMEXPR_NUM_THREADS=12
 
 python run.py --multirun \
     +experiment=$EXPERIMENT \
