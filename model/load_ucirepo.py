@@ -1,4 +1,17 @@
 import torch
+import ssl
+
+_original_create_default_context = ssl.create_default_context
+
+def _create_unverified_context(*args, **kwargs):
+    ctx = _original_create_default_context(*args, **kwargs)
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+    return ctx
+
+ssl.create_default_context = _create_unverified_context
+ssl._create_default_https_context = _create_unverified_context
+
 from ucimlrepo import fetch_ucirepo
 import pandas as pd
 from sklearn.model_selection import train_test_split
