@@ -57,6 +57,9 @@ from model.utils import (
     encode_fourier,
 )
 
+import pandas as pd
+import quimb
+
 torch.set_default_dtype(torch.float64)
 log = logging.getLogger(__name__)
 
@@ -483,6 +486,11 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         result["test_loss"] = best_test_loss
         result["test_quality"] = best_test_quality
 
+    result["_ntn"] = ntn
+    result["_loader_val"] = loader_val
+    result["_loader_test"] = loader_test
+    result["_is_typei"] = is_typei
+
     return result
 
 
@@ -749,6 +757,11 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         result["test_loss"] = float(best_test_loss) if best_test_loss is not None else None
         result["test_quality"] = float(best_test_quality) if best_test_quality is not None else None
 
+    result["_gtn_model"] = gtn_model
+    result["_val_loader"] = val_loader
+    result["_test_loader"] = test_loader
+    result["_prepare_input"] = prepare_input
+
     return result
 
 
@@ -852,7 +865,27 @@ def _main_impl(cfg: DictConfig):
     else:
         raise ValueError(f"Unknown trainer type: {cfg.trainer.type}")
 
-    # Save results
+    if cfg.get("save_model", False) and result.get("success", False):
+        try:
+            if cfg.trainer.type == "ntn":
+                ntn = result["_ntn"]
+                is_typei = result["_is_typei"]
+                if is_typei:
+                    tns = [ntn_i.tn for ntn_i in ntn.ntns]
+                    quimb.save_to_disk(tns, output_dir / "model.joblib")
+                else:
+                    quimb.save_to_disk(ntn.tn, output_dir / "model.joblib")
+            else:
+                gtn_model = result["_gtn_model"]
+                torch.save(gtn_model.state_dict(), output_dir / "model.pt")
+            log.info(f"Saved model to {output_dir}")
+        except Exception as e:
+            log.warning(f"Failed to save model: {e}")
+
+    private_keys = [k for k in result.keys() if k.startswith("_")]
+    for k in private_keys:
+        del result[k]
+
     result_file = output_dir / "results.json"
     result["config"] = OmegaConf.to_container(cfg, resolve=True)
     result["dataset_info"] = dataset_info

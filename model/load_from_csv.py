@@ -48,7 +48,7 @@ def get_csvdata(csv_path, task="regression", device="cpu", cap=None):
         )
 
     df = pd.read_csv(full_path)
-
+    # TODO: the target column should be the target one. and assert proper formjatting of csv.
     target_col = df.columns[-1]
     y = df[target_col]
     X = df.drop(columns=[target_col])
