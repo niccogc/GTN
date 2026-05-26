@@ -824,7 +824,11 @@ def _main_impl(cfg: DictConfig):
 
     # Load dataset
     log.info(f"▶ RUN {run_summary}")
-    data, dataset_info = load_dataset(cfg.dataset.name)
+    data, dataset_info = load_dataset(
+        cfg.dataset.name,
+        csv_path=cfg.dataset.get("csv_path"),
+        task=cfg.dataset.get("task"),
+    )
     data = move_data_to_device(data)
 
     raw_feature_count = data["X_train"].shape[1]
