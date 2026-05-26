@@ -40,6 +40,7 @@ def run_fold(fold_idx: int, fold_csv: Path, hydra_args: list[str], task: str, sw
         f"hydra.sweep.dir={sweep_dir}",
         f"hydra.run.dir={run_dir}",
         "skip_completed=false",
+        "trainer.evaluate_test=true",
         f"save_model={str(save_model).lower()}",
     ]
     
@@ -108,24 +109,14 @@ def main():
     with tempfile.TemporaryDirectory() as tmpdir:
         tmpdir = Path(tmpdir)
         
-        for fold_idx, (train_val_idx, test_idx) in enumerate(kf.split(X)):
-            n_train_val = len(train_val_idx)
-            n_val = int(n_train_val * 0.2)
-            
-            np.random.seed(known_args.seed + fold_idx)
-            np.random.shuffle(train_val_idx)
-            
-            val_idx = train_val_idx[:n_val]
-            train_idx = train_val_idx[n_val:]
-            
+        for fold_idx, (train_idx, test_idx) in enumerate(kf.split(X)):
             train_df = df.iloc[train_idx]
-            val_df = df.iloc[val_idx]
             test_df = df.iloc[test_idx]
             
-            print(f"\nFold {fold_idx + 1}: train={len(train_df)}, val={len(val_df)}, test={len(test_df)}")
+            print(f"\nFold {fold_idx + 1}: train={len(train_df)}, test={len(test_df)}")
             
             fold_csv = tmpdir / f"fold_{fold_idx}.csv"
-            fold_df = pd.concat([train_df, val_df, test_df], ignore_index=True)
+            fold_df = pd.concat([train_df, test_df], ignore_index=True)
             fold_df.to_csv(fold_csv, index=False)
             
             fold_result = run_fold(fold_idx, fold_csv, hydra_args, known_args.task, sweep_dir, known_args.save_model)
@@ -144,23 +135,23 @@ def main():
             print(f"  Fold {r.get('fold', '?')}: {r.get('error', 'Unknown error')}")
         sys.exit(1)
     
+    test_qualities = [r["test_quality"] for r in successful if r.get("test_quality") is not None]
     val_qualities = [r["val_quality"] for r in successful if r.get("val_quality") is not None]
-    val_losses = [r["val_loss"] for r in successful if r.get("val_loss") is not None]
     train_qualities = [r["train_quality"] for r in successful if r.get("train_quality") is not None]
     
     print(f"\nSuccessful folds: {len(successful)}/{len(results)}")
-    print(f"\nPer-fold validation quality:")
+    print(f"\nPer-fold test quality:")
     for r in results:
         status = "✓" if r.get("success") else "✗"
-        vq = r.get("val_quality", "N/A")
-        vq_str = f"{vq:.4f}" if isinstance(vq, float) else str(vq)
+        tq = r.get("test_quality", "N/A")
+        tq_str = f"{tq:.4f}" if isinstance(tq, float) else str(tq)
         singular = " (singular)" if r.get("singular") else ""
-        print(f"  Fold {r.get('fold', '?')}: {status} val_quality={vq_str}{singular}")
+        print(f"  Fold {r.get('fold', '?')}: {status} test_quality={tq_str}{singular}")
     
-    if val_qualities:
+    if test_qualities:
         print(f"\nAggregated Results:")
+        print(f"  Test Quality:  {np.mean(test_qualities):.4f} ± {np.std(test_qualities):.4f}")
         print(f"  Val Quality:   {np.mean(val_qualities):.4f} ± {np.std(val_qualities):.4f}")
-        print(f"  Val Loss:      {np.mean(val_losses):.4f} ± {np.std(val_losses):.4f}")
         print(f"  Train Quality: {np.mean(train_qualities):.4f} ± {np.std(train_qualities):.4f}")
     
     output_file = sweep_dir / "cv_results.json"
