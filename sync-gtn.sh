@@ -23,7 +23,7 @@ sync_host () {
     tar -I zstd -cf - -C ~/GTN \"$REL_TARGET\"
   " | tar -I zstd -xf - -C "$TMPDIR"
 
-  if [[ "$HOST" != "titans" ]]; then
+  if [[ "$HOST" == "anders" ]]; then
     echo "Fetching $OTHER_FOLDER/$REL_TARGET from $HOST..."
     ssh "$HOST" "
       tar -I zstd -cf - -C \"$OTHER_FOLDER\" \"$REL_TARGET\"
@@ -36,7 +36,7 @@ sync_host () {
   rsync -a "$TMPDIR/$REL_TARGET/" "$TARGET/"
 }
 
-sync_host titans &
+# sync_host titans &
 sync_host hpc &
 
 wait
