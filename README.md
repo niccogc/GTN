@@ -4,21 +4,21 @@
 
 ## Overall Progress
 
-**Total:** 16,771 / 17,400 (96.4%)
+**Total:** 16,772 / 17,400 (96.4%)
 
 | Status | Count |
 |--------|------:|
 | Success | 15,095 |
-| Singular | 1,676 |
+| Singular | 1,677 |
 | OOM | 290 |
 | Failed | 0 |
-| Missing | 629 |
+| Missing | 628 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 7,771 | 8,400 | 92.5% | 6,095 | 1,676 | 290 | 0 |
+| NTN | 7,772 | 8,400 | 92.5% | 6,095 | 1,677 | 290 | 0 |
 | GTN | 9,000 | 9,000 | 100.0% | 9,000 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
@@ -29,7 +29,7 @@
 | LMPO2 | 1800/1800 (100.0%) | 1800/1800 (100.0%) |
 | MMPO2 | 573/600 (95.5%) | 600/600 (100.0%) |
 | MPO2TypeI | 600/600 (100.0%) | 600/600 (100.0%) |
-| LMPO2TypeI | 1232/1800 (68.4%) | 1800/1800 (100.0%) |
+| LMPO2TypeI | 1233/1800 (68.5%) | 1800/1800 (100.0%) |
 | MMPO2TypeI | 571/600 (95.2%) | 600/600 (100.0%) |
 | CPDA | 600/600 (100.0%) | 600/600 (100.0%) |
 | CPDATypeI | 600/600 (100.0%) | 600/600 (100.0%) |
@@ -43,7 +43,7 @@
 |------|-----|-----|--------:|
 | Small | 1623/1680 (96.6%) | 1800/1800 (100.0%) | 57 |
 | Medium | 3620/3780 (95.8%) | 4050/4050 (100.0%) | 160 |
-| Large | 2528/2940 (86.0%) | 3150/3150 (100.0%) | 412 |
+| Large | 2529/2940 (86.0%) | 3150/3150 (100.0%) | 411 |
 
 ## By Dataset
 
@@ -52,7 +52,7 @@
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
 | adult | 731 | 870 | 84.0% |
-| bank | 792 | 870 | 91.0% |
+| bank | 793 | 870 | 91.1% |
 | breast | 813 | 870 | 93.4% |
 | car_evaluation | 810 | 870 | 93.1% |
 | mushrooms | 820 | 870 | 94.3% |
@@ -72,21 +72,21 @@
 | LMPO2TypeI | breast | NTN | 33/90 (36.7%) |
 | LMPO2TypeI | car_evaluation | NTN | 30/90 (33.3%) |
 | LMPO2TypeI | popularity | NTN | 30/90 (33.3%) |
-| LMPO2TypeI | bank | NTN | 17/90 (18.9%) |
+| LMPO2TypeI | bank | NTN | 18/90 (20.0%) |
 | MMPO2 | adult | NTN | 3/30 (10.0%) |
 | LMPO2TypeI | adult | NTN | 7/90 (7.8%) |
 | LMPO2TypeI | student_dropout | NTN | 5/90 (5.6%) |
 | MMPO2TypeI | adult | NTN | 1/30 (3.3%) |
 
-## Singular Matrix Failures (1676)
+## Singular Matrix Failures (1677)
 
 | Experiment | Count |
 |------------|------:|
-| ntn | 1676 |
+| ntn | 1677 |
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 629
+- **Runs remaining:** 628
 - **Experiments with missing runs:** 12
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
@@ -107,7 +107,7 @@
 
 ### Large
 
-**NTN** (8 experiments, 412 runs missing):
+**NTN** (8 experiments, 411 runs missing):
 
 - LMPO2TypeI: adult, bank, mushrooms, popularity, student_dropout
 - MMPO2: adult
