@@ -14,9 +14,10 @@ from model.exceptions import SingularMatrixError
 from model.losses import HuberLoss, MAELoss, MSELoss
 from model.utils import REGRESSION_METRICS, compute_quality, print_metrics
 
+qt.set_contract_strategy("optimal")
+
 NOT_TRAINABLE_TAG = "NT"
 
-# Memory-optimized contraction optimizer (reusable across contractions)
 _MEMORY_OPTIMIZER = ctg.ReusableHyperOptimizer(
     minimize="combo",
     reconf_opts={},

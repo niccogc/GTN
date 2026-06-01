@@ -4,6 +4,8 @@ import torch
 import torch.nn as nn
 import quimb.tensor as qt
 
+qt.set_contract_strategy("optimal")
+
 NOT_TRAINABLE_TAG = "NT"
 
 
