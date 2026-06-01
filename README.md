@@ -4,21 +4,21 @@
 
 ## Overall Progress
 
-**Total:** 16,772 / 17,400 (96.4%)
+**Total:** 16,777 / 17,400 (96.4%)
 
 | Status | Count |
 |--------|------:|
-| Success | 15,095 |
+| Success | 15,100 |
 | Singular | 1,677 |
-| OOM | 290 |
+| OOM | 285 |
 | Failed | 0 |
-| Missing | 628 |
+| Missing | 623 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 7,772 | 8,400 | 92.5% | 6,095 | 1,677 | 290 | 0 |
+| NTN | 7,777 | 8,400 | 92.6% | 6,100 | 1,677 | 285 | 0 |
 | GTN | 9,000 | 9,000 | 100.0% | 9,000 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
@@ -34,7 +34,7 @@
 | CPDA | 600/600 (100.0%) | 600/600 (100.0%) |
 | CPDATypeI | 600/600 (100.0%) | 600/600 (100.0%) |
 | TNML_P | 600/600 (100.0%) | 600/600 (100.0%) |
-| TNML_F | 595/600 (99.2%) | 600/600 (100.0%) |
+| TNML_F | 600/600 (100.0%) | 600/600 (100.0%) |
 | BosonMPS | 0/0 (0.0%) | 600/600 (100.0%) |
 
 ## By Dataset Size
@@ -43,7 +43,7 @@
 |------|-----|-----|--------:|
 | Small | 1623/1680 (96.6%) | 1800/1800 (100.0%) | 57 |
 | Medium | 3620/3780 (95.8%) | 4050/4050 (100.0%) | 160 |
-| Large | 2529/2940 (86.0%) | 3150/3150 (100.0%) | 411 |
+| Large | 2534/2940 (86.2%) | 3150/3150 (100.0%) | 406 |
 
 ## By Dataset
 
@@ -52,7 +52,7 @@
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
 | adult | 731 | 870 | 84.0% |
-| bank | 793 | 870 | 91.1% |
+| bank | 798 | 870 | 91.7% |
 | breast | 813 | 870 | 93.4% |
 | car_evaluation | 810 | 870 | 93.1% |
 | mushrooms | 820 | 870 | 94.3% |
@@ -65,7 +65,6 @@
 
 | Model | Dataset | Trainer | Progress |
 |-------|---------|---------|----------|
-| TNML_F | bank | NTN | 25/30 (83.3%) |
 | LMPO2TypeI | mushrooms | NTN | 40/90 (44.4%) |
 | LMPO2TypeI | obesity | NTN | 40/90 (44.4%) |
 | LMPO2TypeI | student_perf | NTN | 40/90 (44.4%) |
@@ -86,8 +85,8 @@
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 628
-- **Experiments with missing runs:** 12
+- **Runs remaining:** 623
+- **Experiments with missing runs:** 11
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
 
@@ -107,9 +106,8 @@
 
 ### Large
 
-**NTN** (8 experiments, 411 runs missing):
+**NTN** (7 experiments, 406 runs missing):
 
 - LMPO2TypeI: adult, bank, mushrooms, popularity, student_dropout
 - MMPO2: adult
 - MMPO2TypeI: adult
-- TNML_F: bank
