@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q gpuh100
-#BSUB -J "ntn_grid_missing[1-12]%20"
+#BSUB -J "ntn_grid_missing[1-11]%20"
 #BSUB -W 20:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=750MB]"
