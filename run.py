@@ -63,7 +63,7 @@ import quimb
 torch.set_default_dtype(torch.float64)
 log = logging.getLogger(__name__)
 
-quimb.set_contract_strategy("optimal")
+quimb.tensor.set_contract_strategy("optimal")
 
 # =============================================================================
 # Run Tracking (loaded once for multirun efficiency)
