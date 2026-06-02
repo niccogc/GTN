@@ -4,21 +4,21 @@
 
 ## Overall Progress
 
-**Total:** 16,777 / 17,400 (96.4%)
+**Total:** 16,778 / 17,400 (96.4%)
 
 | Status | Count |
 |--------|------:|
 | Success | 15,100 |
-| Singular | 1,677 |
-| OOM | 285 |
+| Singular | 1,678 |
+| OOM | 284 |
 | Failed | 0 |
-| Missing | 623 |
+| Missing | 622 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 7,777 | 8,400 | 92.6% | 6,100 | 1,677 | 285 | 0 |
+| NTN | 7,778 | 8,400 | 92.6% | 6,100 | 1,678 | 284 | 0 |
 | GTN | 9,000 | 9,000 | 100.0% | 9,000 | 0 | 0 | 0 |
 
 ## Model x Trainer Matrix
@@ -29,7 +29,7 @@
 | LMPO2 | 1800/1800 (100.0%) | 1800/1800 (100.0%) |
 | MMPO2 | 573/600 (95.5%) | 600/600 (100.0%) |
 | MPO2TypeI | 600/600 (100.0%) | 600/600 (100.0%) |
-| LMPO2TypeI | 1233/1800 (68.5%) | 1800/1800 (100.0%) |
+| LMPO2TypeI | 1234/1800 (68.6%) | 1800/1800 (100.0%) |
 | MMPO2TypeI | 571/600 (95.2%) | 600/600 (100.0%) |
 | CPDA | 600/600 (100.0%) | 600/600 (100.0%) |
 | CPDATypeI | 600/600 (100.0%) | 600/600 (100.0%) |
@@ -42,7 +42,7 @@
 | Size | NTN | GTN | Missing |
 |------|-----|-----|--------:|
 | Small | 1623/1680 (96.6%) | 1800/1800 (100.0%) | 57 |
-| Medium | 3620/3780 (95.8%) | 4050/4050 (100.0%) | 160 |
+| Medium | 3621/3780 (95.8%) | 4050/4050 (100.0%) | 159 |
 | Large | 2534/2940 (86.2%) | 3150/3150 (100.0%) | 406 |
 
 ## By Dataset
@@ -54,7 +54,7 @@
 | adult | 731 | 870 | 84.0% |
 | bank | 798 | 870 | 91.7% |
 | breast | 813 | 870 | 93.4% |
-| car_evaluation | 810 | 870 | 93.1% |
+| car_evaluation | 811 | 870 | 93.2% |
 | mushrooms | 820 | 870 | 94.3% |
 | obesity | 820 | 870 | 94.3% |
 | popularity | 810 | 870 | 93.1% |
@@ -69,7 +69,7 @@
 | LMPO2TypeI | obesity | NTN | 40/90 (44.4%) |
 | LMPO2TypeI | student_perf | NTN | 40/90 (44.4%) |
 | LMPO2TypeI | breast | NTN | 33/90 (36.7%) |
-| LMPO2TypeI | car_evaluation | NTN | 30/90 (33.3%) |
+| LMPO2TypeI | car_evaluation | NTN | 31/90 (34.4%) |
 | LMPO2TypeI | popularity | NTN | 30/90 (33.3%) |
 | LMPO2TypeI | bank | NTN | 18/90 (20.0%) |
 | MMPO2 | adult | NTN | 3/30 (10.0%) |
@@ -77,15 +77,15 @@
 | LMPO2TypeI | student_dropout | NTN | 5/90 (5.6%) |
 | MMPO2TypeI | adult | NTN | 1/30 (3.3%) |
 
-## Singular Matrix Failures (1677)
+## Singular Matrix Failures (1678)
 
 | Experiment | Count |
 |------------|------:|
-| ntn | 1677 |
+| ntn | 1678 |
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 623
+- **Runs remaining:** 622
 - **Experiments with missing runs:** 11
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
@@ -100,7 +100,7 @@
 
 ### Medium
 
-**NTN** (3 experiments, 160 runs missing):
+**NTN** (3 experiments, 159 runs missing):
 
 - LMPO2TypeI: car_evaluation, obesity, student_perf
 
