@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import sys
+import time
 from collections import defaultdict
 from pathlib import Path
 
@@ -126,7 +127,12 @@ def run_gtn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> 
     patience_counter = 0
     stopped_early = False
 
+    # Time tracking
+    train_start_time = time.time()
+    cumulative_train_time = 0.0  # Only training time (excludes eval)
+
     for epoch in range(n_epochs):
+        epoch_start_time = time.time()
         model.train()
         train_loss = 0.0
 
@@ -139,9 +145,14 @@ def run_gtn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> 
             optimizer.step()
             train_loss += loss.item() * batch_data.size(0)
 
+        epoch_train_time = time.time() - epoch_start_time
+        cumulative_train_time += epoch_train_time
+
         train_loss /= len(train_loader.dataset)
         _, train_accuracy = evaluate(model, train_loader, criterion)
         val_loss, val_accuracy = evaluate(model, val_loader, criterion)
+
+        wall_time = time.time() - train_start_time
 
         metrics_log.append(
             {
@@ -150,6 +161,9 @@ def run_gtn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> 
                 "train_accuracy": float(train_accuracy),
                 "val_loss": float(val_loss),
                 "val_accuracy": float(val_accuracy),
+                "epoch_train_time": float(epoch_train_time),
+                "cumulative_train_time": float(cumulative_train_time),
+                "wall_time": float(wall_time),
             }
         )
 
@@ -167,9 +181,10 @@ def run_gtn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> 
 
         if epoch % 10 == 0 or epoch == n_epochs - 1:
             log.info(
-                f"Epoch {epoch + 1:3d} | Train Loss: {train_loss:.4f} | Train Acc: {train_accuracy:.4f} | Val Acc: {val_accuracy:.4f}"
+                f"Epoch {epoch + 1:3d} | Train Loss: {train_loss:.4f} | Train Acc: {train_accuracy:.4f} | Val Acc: {val_accuracy:.4f} | Time: {wall_time:.1f}s"
             )
 
+    total_time = time.time() - train_start_time
     test_loss, test_accuracy = evaluate(model, test_loader, criterion)
 
     return {
@@ -184,6 +199,8 @@ def run_gtn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> 
         "best_epoch": best_epoch,
         "stopped_early": stopped_early,
         "metrics_log": metrics_log,
+        "total_time": float(total_time),
+        "total_train_time": float(cumulative_train_time),
     }
 
 
@@ -239,8 +256,16 @@ def run_ntn(cfg: DictConfig, cmpo_model, data: dict, output_dir: Path) -> dict:
     )
 
     metrics_log = []
+    train_start_time = time.time()
+    last_callback_time = train_start_time
 
     def callback_epoch(epoch, scores_train, scores_val, info):
+        nonlocal last_callback_time
+        current_time = time.time()
+        wall_time = current_time - train_start_time
+        epoch_time = current_time - last_callback_time
+        last_callback_time = current_time
+
         metrics = {
             "epoch": epoch,
             "train_loss": float(scores_train["loss"]),
@@ -248,6 +273,8 @@ def run_ntn(cfg: DictConfig, cmpo_model, data: dict, output_dir: Path) -> dict:
             "val_loss": float(scores_val["loss"]),
             "val_accuracy": float(compute_quality(scores_val)),
             "ridge": float(info["jitter"]),
+            "epoch_time": float(epoch_time),
+            "wall_time": float(wall_time),
         }
         metrics_log.append(metrics)
 
@@ -283,6 +310,8 @@ def run_ntn(cfg: DictConfig, cmpo_model, data: dict, output_dir: Path) -> dict:
         singular = True
         scores_train = None
         scores_val = None
+
+    total_time = time.time() - train_start_time
 
     best_epoch = -1
     best_val_accuracy = 0.0
@@ -321,6 +350,7 @@ def run_ntn(cfg: DictConfig, cmpo_model, data: dict, output_dir: Path) -> dict:
         "test_accuracy": test_accuracy,
         "best_epoch": best_epoch,
         "metrics_log": metrics_log,
+        "total_time": float(total_time),
     }
 
 

@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - override /model: cmpo2
+  - override /dataset: mnist
+
+model:
+  L: 3
+  n_patches: 4
+  rank_pixel: 10
+  rank_patch: 10
+  init_strength: 0.01
+
+dataset:
+  batch_size: 512
+  n_train: 5000
+  n_val: 1000
+  n_test: 1000
+
+skip_completed: false
+
+hydra:
+  run:
+    dir: outputs/time_comparison/${trainer.type}/${dataset.name}/${model.name}_np${model.n_patches}_rp${model.rank_pixel}
+  sweep:
+    dir: outputs/time_comparison
+    subdir: ${trainer.type}/${dataset.name}/${model.name}_np${model.n_patches}_rp${model.rank_pixel}_seed${seed}

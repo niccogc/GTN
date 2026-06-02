@@ -466,12 +466,22 @@ class NTN:
     def _compute_weight_norm_squared(self):
         """
         Compute the squared Frobenius norm of the entire tensor network.
-        This is used for L2 regularization: ||weights||^2 = ||TN||_F^2
+        This is used for L2 regularization: ||weights||^2 = sum_i ||T_i||_F^2
+        For disconnected networks (like CMPO2), we sum norms of individual tensors.
         """
-        norm_sq = self.tn.norm(squared=True)
-        if hasattr(norm_sq, "item"):
-            norm_sq = norm_sq.item()
-        return norm_sq
+        try:
+            norm_sq = self.tn.norm(squared=True)
+            if hasattr(norm_sq, "item"):
+                norm_sq = norm_sq.item()
+            return norm_sq
+        except ValueError:
+            total = 0.0
+            for t in self.tn.tensors:
+                t_norm = (t.data ** 2).sum()
+                if hasattr(t_norm, "item"):
+                    t_norm = t_norm.item()
+                total += t_norm
+            return total
 
     def _prime_indices_tensor(
         self,
