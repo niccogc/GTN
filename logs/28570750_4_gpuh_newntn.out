@@ -1,0 +1,85 @@
+NTN: lmpo2_typei car_evaluation
+Task 4: Dataset=car_evaluation, Model=lmpo2_typei, Experiment=uci_ntn_sweep
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28570750[4]: <ntn_grid_missing[1-11]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_missing[1-11]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Jun  2 08:36:07 2026
+Job was executed on host(s) <6*n-62-12-88>, in queue <gpuh100>, as user <nicci> in cluster <dcc> at Tue Jun  2 08:36:38 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Tue Jun  2 08:36:38 2026
+Terminated at Tue Jun  2 08:36:45 2026
+Results reported at Tue Jun  2 08:36:45 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpuh100
+#BSUB -J "ntn_grid_missing[1-11]%20"
+#BSUB -W 20:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_gpuh_newntn.out
+#BSUB -e logs/%J_%I_gpuh_newntn.err
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+cd "~/GTN"
+source .venv/bin/activate
+source missing.env
+
+NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+read MODEL DATASET <<< "${COMBINATIONS_NTN[$IDV]}"
+echo "NTN: $MODEL $DATASET"
+
+if [[ "$MODEL" == "cpda" || "$MODEL" == "cpda_typei" ]]; then
+    EXPERIMENT="cpda_ntn_sweep"
+else
+    EXPERIMENT="uci_ntn_sweep"
+fi
+
+echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=$EXPERIMENT \
+    model=$MODEL \
+    dataset=$DATASET
+
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   5.22 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     4500.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   7 sec.
+    Turnaround time :                            38 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28570750_4_gpuh_newntn.err> for stderr output of this job.
+
