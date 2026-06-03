@@ -856,6 +856,9 @@ def run_ntn_image(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         for epoch in range(n_epochs)
     ]
 
+    reset_gpu_memory_stats()
+    gpu_info_before = get_gpu_memory_info()
+
     loader_train = create_inputs_image(
         data["X_train"], data["y_train"],
         model.input_labels, model.output_dims, batch_size,
@@ -878,6 +881,14 @@ def run_ntn_image(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         data_stream=loader_train,
     )
 
+    trainable_nodes = ntn._get_trainable_nodes()
+    groups = defaultdict(list)
+    for node in trainable_nodes:
+        groups[int(node.split('_')[0])].append(node)
+    indices = sorted(groups.keys())
+    sequence = indices + indices[-2:0:-1]
+    ordered_list = [node for i in sequence for node in groups[i]]
+
     metrics_log = []
     train_start_time = time.time()
     last_callback_time = train_start_time
@@ -899,18 +910,13 @@ def run_ntn_image(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             "epoch_time": float(epoch_time),
             "wall_time": float(wall_time),
         }
+        scores_test = ntn.evaluate(CLASSIFICATION_METRICS, data=loader_test)
+        metrics["test_loss"] = float(scores_test["loss"])
+        metrics["test_quality"] = float(compute_quality(scores_test))
         metrics_log.append(metrics)
 
+    oom_error = False
     try:
-        trainable_nodes = ntn._get_trainable_nodes()
-        groups = defaultdict(list)
-        for node in trainable_nodes:
-            groups[int(node.split('_')[0])].append(node)
-
-        indices = sorted(groups.keys())
-        sequence = indices + indices[-2:0:-1]
-        ordered_list = [node for i in sequence for node in groups[i]]
-
         scores_train, scores_val = ntn.fit(
             n_epochs=n_epochs,
             regularize=True,
@@ -927,45 +933,67 @@ def run_ntn_image(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         )
         success = True
         singular = ntn.singular_encountered
-    except Exception as e:
-        log.error(f"NTN training failed: {e}")
+
+    except SingularMatrixError:
         success = False
         singular = True
         scores_train = None
         scores_val = None
-
-    total_time = time.time() - train_start_time
+    except torch.OutOfMemoryError as e:
+        success = False
+        singular = False
+        oom_error = True
+        log.error(f"CUDA out of memory: {e}")
+        scores_train = None
+        scores_val = None
 
     best_epoch = -1
-    best_val_quality = 0.0
+    best_train_loss = float("inf")
+    best_train_quality = None
+    best_val_loss = float("inf")
+    best_val_quality = None
+    best_test_loss = None
+    best_test_quality = None
+
     if metrics_log:
+        best_val_q = float("-inf")
         for m in metrics_log:
-            if m["val_quality"] > best_val_quality:
-                best_val_quality = m["val_quality"]
+            if m["val_quality"] is not None and m["val_quality"] > best_val_q:
+                best_val_q = m["val_quality"]
                 best_epoch = m["epoch"]
+                best_train_loss = m["train_loss"]
+                best_train_quality = m["train_quality"]
+                best_val_loss = m["val_loss"]
+                best_val_quality = m["val_quality"]
+                best_test_loss = m.get("test_loss")
+                best_test_quality = m.get("test_quality")
 
     if success and scores_train is not None:
-        train_quality = float(compute_quality(scores_train))
-        val_quality = float(compute_quality(scores_val))
-    else:
-        train_quality = metrics_log[-1]["train_quality"] if metrics_log else 0.0
-        val_quality = best_val_quality
+        best_train_loss = float(scores_train["loss"])
+        best_train_quality = float(compute_quality(scores_train))
+        best_val_loss = float(scores_val["loss"])
+        best_val_quality = float(compute_quality(scores_val))
 
-    if success:
-        scores_test = ntn.evaluate(CLASSIFICATION_METRICS, data=loader_test)
-        test_quality = float(compute_quality(scores_test))
-    else:
-        test_quality = 0.0
+    total_time = time.time() - train_start_time
+    gpu_info_after = get_gpu_memory_info()
 
     return {
         "success": success,
         "singular": singular,
-        "train_quality": train_quality,
-        "val_quality": val_quality,
-        "test_quality": test_quality,
+        "oom_error": oom_error,
+        "train_loss": best_train_loss,
+        "train_quality": best_train_quality,
+        "val_loss": best_val_loss,
+        "val_quality": best_val_quality,
+        "test_loss": best_test_loss,
+        "test_quality": best_test_quality,
         "best_epoch": best_epoch,
         "metrics_log": metrics_log,
         "total_time": float(total_time),
+        "gpu_memory": {
+            "before": gpu_info_before,
+            "after": gpu_info_after,
+        },
     }
 
 
