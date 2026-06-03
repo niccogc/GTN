@@ -151,18 +151,31 @@ class NTN:
             )
 
     def _batch_node_derivatives(self, inputs, y_true, node_tag):
-        """
-        Worker for a single batch: Returns (Node_Grad, Node_Hess)
-        """
+        import os
+        import time as _time
+        _debug = os.environ.get("NTN_DEBUG", "0") == "1"
+        
+        if _debug:
+            _t0 = _time.perf_counter()
+            input_shapes = [inp.shape for inp in inputs] if isinstance(inputs, list) else inputs.shape
+            print(f"  [DEBUG] inputs: {input_shapes} | y_true.shape={y_true.shape}")
+        
         tn = self.tn
         env = self._batch_environment(
             inputs, tn, target_tag=node_tag, sum_over_batch=False, sum_over_output=False
         )
+        if _debug:
+            _t1 = _time.perf_counter()
+            print(f"  [DEBUG] _batch_environment: {_t1-_t0:.3f}s | env.shape={env.shape} | node={node_tag}")
+        
         target_tensor = tn[node_tag]
 
         y_pred = self.forward_from_environment(
             env, node_tag=node_tag, node_tensor=target_tensor, sum_over_batch=False
         )
+        if _debug:
+            _t2 = _time.perf_counter()
+            print(f"  [DEBUG] forward_from_environment: {_t2-_t1:.3f}s | y_pred.shape={y_pred.shape}")
 
         dL_dy, d2L_dy2 = self.loss.get_derivatives(
             y_pred,
@@ -173,10 +186,16 @@ class NTN:
             return_hessian_diagonal=False,
             total_samples=self.train_data.samples,
         )
+        if _debug:
+            _t3 = _time.perf_counter()
+            print(f"  [DEBUG] get_derivatives: {_t3-_t2:.3f}s")
 
         grad_tn = env & dL_dy
         node_inds = target_tensor.inds
         node_grad = grad_tn.contract(output_inds=node_inds)
+        if _debug:
+            _t4 = _time.perf_counter()
+            print(f"  [DEBUG] grad contract: {_t4-_t3:.3f}s | node_grad.shape={node_grad.shape}")
         
         out_inds = self.output_dimensions
 
@@ -192,7 +211,16 @@ class NTN:
         hess_out_inds = list(node_inds) + [f"{x}_prime" for x in node_inds]
 
         hess_tn = env & d2L_tensor & env_right
+        if _debug:
+            _t5 = _time.perf_counter()
+            print(f"  [DEBUG] hess_tn setup: {_t5-_t4:.3f}s | hess_tn tensors={len(list(hess_tn.tensors))}")
+        
         node_hess = hess_tn.contract(output_inds=hess_out_inds, optimize=_MEMORY_OPTIMIZER)
+        if _debug:
+            _t6 = _time.perf_counter()
+            print(f"  [DEBUG] hess contract: {_t6-_t5:.3f}s | hess.shape={node_hess.shape}")
+            print(f"  [DEBUG] TOTAL: {_t6-_t0:.3f}s")
+        
         del env, env_right, d2L_tensor, hess_tn, grad_tn, y_pred, dL_dy, d2L_dy2
 
         return node_grad, node_hess

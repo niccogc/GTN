@@ -687,6 +687,23 @@ def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     train_selection = cfg.trainer.get("train_selection", False)
     train_start_time = time.time()
 
+    init_train_loss, init_train_quality = evaluate(train_loader)
+    init_val_loss, init_val_quality = evaluate(val_loader)
+    init_metrics = {
+        "epoch": -1,
+        "train_loss": float(init_train_loss),
+        "train_quality": float(init_train_quality),
+        "val_loss": float(init_val_loss),
+        "val_quality": float(init_val_quality),
+        "epoch_time": 0.0,
+        "wall_time": 0.0,
+    }
+    if evaluate_test:
+        init_test_loss, init_test_quality = evaluate(test_loader)
+        init_metrics["test_loss"] = float(init_test_loss)
+        init_metrics["test_quality"] = float(init_test_quality)
+    metrics_log.append(init_metrics)
+
     for epoch in range(n_epochs):
         epoch_start_time = time.time()
         gtn_model.train()
@@ -910,7 +927,7 @@ def run_ntn_image(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             "epoch_time": float(epoch_time),
             "wall_time": float(wall_time),
         }
-        scores_test = ntn.evaluate(CLASSIFICATION_METRICS, data=loader_test)
+        scores_test = ntn.evaluate(CLASSIFICATION_METRICS, data_stream=loader_test)
         metrics["test_loss"] = float(scores_test["loss"])
         metrics["test_quality"] = float(compute_quality(scores_test))
         metrics_log.append(metrics)
@@ -1046,6 +1063,21 @@ def run_gtn_image(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     best_epoch = -1
     patience_counter = 0
     train_start_time = time.time()
+
+    init_train_loss, init_train_quality = evaluate_img(train_loader)
+    init_val_loss, init_val_quality = evaluate_img(val_loader)
+    init_test_loss, init_test_quality = evaluate_img(test_loader)
+    metrics_log.append({
+        "epoch": -1,
+        "train_loss": float(init_train_loss),
+        "train_quality": float(init_train_quality),
+        "val_loss": float(init_val_loss),
+        "val_quality": float(init_val_quality),
+        "test_loss": float(init_test_loss),
+        "test_quality": float(init_test_quality),
+        "epoch_time": 0.0,
+        "wall_time": 0.0,
+    })
 
     for epoch in range(n_epochs):
         epoch_start_time = time.time()

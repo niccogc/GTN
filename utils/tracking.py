@@ -63,25 +63,23 @@ DEFAULT_TRACKING_FILE = "runs_tracking.csv"
 
 
 def generate_run_id(cfg: DictConfig) -> str:
-    """Generate a deterministic run ID from config parameters.
-
-    Format: {trainer}_{dataset}_{model}_L{L}_bd{bond_dim}_rg{ridge}_init{init}_s{seed}[_rf{reduction_factor}]
-    The _rf suffix is only included for LMPO2 models which have reduction_factor in config.
-
-    Args:
-        cfg: Hydra configuration object
-
-    Returns:
-        Unique run identifier string
-    """
+    model_name = cfg.model.name
+    
+    if model_name.startswith("CMPO"):
+        bond_str = f"rpi{cfg.model.rank_pixel}_rpa{cfg.model.rank_patch}"
+        if model_name == "CMPO3":
+            bond_str += f"_rc{cfg.model.rank_channel}"
+    else:
+        bond_str = f"bd{cfg.model.bond_dim}"
+    
     base = (
-        f"{cfg.trainer.type}_{cfg.dataset.name}_{cfg.model.name}"
-        f"_L{cfg.model.L}_bd{cfg.model.bond_dim}"
+        f"{cfg.trainer.type}_{cfg.dataset.name}_{model_name}"
+        f"_L{cfg.model.L}_{bond_str}"
         f"_rg{cfg.trainer.ridge}_init{cfg.model.init_strength}"
         f"_s{cfg.seed}"
     )
     
-    if "LMPO" in cfg.model.name:
+    if "LMPO" in model_name:
         reduction_factor = cfg.model.get("reduction_factor")
         if reduction_factor is not None:
             base += f"_rf{reduction_factor}"

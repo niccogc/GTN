@@ -21,3 +21,4 @@ export NUMEXPR_NUM_THREADS=12
 
 python run.py --multirun \
     +experiment=time_comparison \
+    dataset.batch_size=2048
