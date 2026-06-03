@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -q gpuv100
+#BSUB -q gpua100
 #BSUB -J "time"
 #BSUB -W 2:00
 #BSUB -n 12
