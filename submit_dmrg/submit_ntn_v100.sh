@@ -1,7 +1,7 @@
 #!/bin/bash
 #BSUB -q gpuv100
-#BSUB -J "ntn_grid_dmrg[1-42]%20"
-#BSUB -W 10:00
+#BSUB -J "ntn_grid_dmrg[1-20]%20"
+#BSUB -W 4:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=750MB]"
 #BSUB -R "span[hosts=1]"

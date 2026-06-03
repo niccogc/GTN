@@ -127,12 +127,12 @@ class DMRG:
         self, batch_operation, data_iterator, tag_left, tag_right
     ):
         """
-        Sum gradient and Hessian over batches for 2-site update.
+        Sum gradient over batches for 2-site gradient-only update.
         
-        Returns: (grad_sum, hess_sum, fused_inds, bond_idx, left_inds, right_inds)
+        Returns: (grad_sum, None, fused_inds, bond_idx, left_inds, right_inds)
+        Hessian is always None (gradient-only mode).
         """
         grad_sum = None
-        hess_sum = None
         fused_inds = None
         bond_idx = None
         left_inds = None
@@ -147,16 +147,14 @@ class DMRG:
             
             if grad_sum is None:
                 grad_sum = grad
-                hess_sum = hess
                 fused_inds = f_inds
                 bond_idx = b_idx
                 left_inds = l_inds
                 right_inds = r_inds
             else:
                 grad_sum = grad_sum + grad
-                hess_sum = hess_sum + hess
         
-        return grad_sum, hess_sum, fused_inds, bond_idx, left_inds, right_inds
+        return grad_sum, None, fused_inds, bond_idx, left_inds, right_inds
 
     def compute_node_derivatives(
         self,
@@ -181,10 +179,11 @@ class DMRG:
 
     def _batch_node_derivatives(self, inputs, y_true, tag_left, tag_right):
         """
-        Compute gradient and Hessian for a fused 2-site tensor.
+        Compute gradient only for a fused 2-site tensor (gradient-only DMRG).
         
         The fused tensor is formed by contracting tag_left and tag_right over their
-        shared bond index. Gradient and Hessian are computed w.r.t. this fused tensor.
+        shared bond index. Only the gradient is computed w.r.t. this fused tensor;
+        the Hessian is NOT computed (pure gradient descent update).
         """
         tn = self.tn
         
@@ -202,7 +201,7 @@ class DMRG:
             env, fused_tensor, sum_over_batch=False
         )
         
-        dL_dy, d2L_dy2 = self.loss.get_derivatives(
+        dL_dy, _ = self.loss.get_derivatives(
             y_pred,
             y_true,
             backend=self.backend,
@@ -215,23 +214,9 @@ class DMRG:
         grad_tn = env & dL_dy
         node_grad = grad_tn.contract(output_inds=fused_inds)
         
-        out_inds = self.output_dimensions
-        out_row_inds = out_inds
-        out_col_inds = [x + "_prime" for x in out_inds]
+        del env, grad_tn, y_pred, dL_dy
         
-        d2L_tensor = qt.Tensor(
-            d2L_dy2.data, inds=[self.batch_dim] + out_row_inds + out_col_inds
-        )
-        env_right = self._prime_indices_tensor(env, exclude_indices=[self.batch_dim])
-        
-        hess_out_inds = list(fused_inds) + [f"{x}_prime" for x in fused_inds]
-        
-        hess_tn = env & d2L_tensor & env_right
-        node_hess = hess_tn.contract(output_inds=hess_out_inds, optimize=_MEMORY_OPTIMIZER)
-        
-        del env, env_right, d2L_tensor, hess_tn, grad_tn, y_pred, dL_dy, d2L_dy2
-        
-        return node_grad, node_hess, fused_inds, bond_idx, left_inds, right_inds
+        return node_grad, None, fused_inds, bond_idx, left_inds, right_inds
 
     def _compute_H_b(self, tag_left, tag_right):
         """
@@ -768,81 +753,48 @@ class DMRG:
         self,
         tag_left,
         tag_right,
+        learning_rate=0.01,
         regularize=True,
         jitter=1e-6,
     ):
         """
-        Solve for optimal 2-site fused tensor.
+        Gradient descent update for 2-site fused tensor.
         
-        Returns the NEW optimal fused tensor (not a delta).
+        Computes only the gradient (no Hessian), then applies:
+            new_fused = old_fused - learning_rate * gradient
+        
+        Returns the NEW fused tensor (not a delta).
         """
         grad, hess, fused_inds, bond_idx, left_inds, right_inds = self._compute_H_b(
             tag_left, tag_right
         )
+        # hess is always None in gradient-only mode
         
         variational_ind = list(fused_inds)
-        map_H = {
-            "rows": variational_ind,
-            "cols": [i + "_prime" for i in variational_ind],
-        }
         map_b = {"cols": variational_ind}
         
         fused_tensor, _, _, _ = self._fuse_two_site_tensor(tag_left, tag_right)
         var_sizes = tuple(fused_tensor.ind_size(i) for i in variational_ind)
         shape_map = {"cols": var_sizes}
         
-        hess.fuse(map_H, inplace=True)
         grad.fuse(map_b, inplace=True)
-        
-        matrix_data = hess.to_dense(["rows"], ["cols"])
         gradient_vector = grad.to_dense(["cols"])
         
-        backend, lib = self.get_backend(matrix_data)
-        if backend == "torch":
-            scale = matrix_data.diagonal().abs().mean()
-            if not torch.isfinite(scale) or scale == 0:
-                scale = torch.tensor(1.0, dtype=matrix_data.dtype)
-        elif backend == "numpy":
-            scale = lib.abs(lib.diag(matrix_data)).mean()
-            if not lib.isfinite(scale) or scale == 0:
-                scale = 1.0
-        else:
-            scale = 1.0
-        effective_jitter = jitter * scale
+        current_fused = fused_tensor.copy()
+        current_fused.fuse(map_b, inplace=True)
+        old_weight = current_fused.to_dense(["cols"])
         
         if regularize:
-            current_fused = fused_tensor.copy()
-            current_fused.fuse(map_b, inplace=True)
-            old_weight = current_fused.to_dense(["cols"])
-            
-            scaled_jitter = 2 * effective_jitter
-            
-            if backend == "torch":
-                matrix_data.diagonal().add_(scaled_jitter)
-                gradient_vector = gradient_vector + scaled_jitter * old_weight
-            elif backend == "numpy":
-                rows, cols = lib.diag_indices_from(matrix_data)
-                matrix_data[rows, cols] += scaled_jitter
-                gradient_vector = gradient_vector + scaled_jitter * old_weight
-            elif backend == "jax":
-                d_idx = lib.arange(matrix_data.shape[0])
-                matrix_data = matrix_data.at[d_idx, d_idx].add(scaled_jitter)
-                gradient_vector = gradient_vector + scaled_jitter * old_weight
+            # L2 weight decay: add 2*jitter*old_weight to gradient
+            gradient_vector = gradient_vector + 2 * jitter * old_weight
         
-        delta_data = self.solve_linear_system(matrix_data, -gradient_vector)
-        
-        if regularize:
-            new_data = old_weight + delta_data
-        else:
-            current_fused = fused_tensor.copy()
-            current_fused.fuse(map_b, inplace=True)
-            old_weight = current_fused.to_dense(["cols"])
-            new_data = old_weight + delta_data
+        # Gradient descent: new = old - lr * g
+        new_data = old_weight - learning_rate * gradient_vector
         
         new_fused = qt.Tensor(new_data, inds=["cols"])
         new_fused.unfuse({"cols": variational_ind}, shape_map=shape_map, inplace=True)
         
-        del hess, grad, matrix_data, gradient_vector
+        del hess, grad, gradient_vector
         
         return new_fused, bond_idx, left_inds, right_inds
 
@@ -1019,20 +971,23 @@ class DMRG:
         self,
         tag_left,
         tag_right,
-        regularize,
-        jitter,
+        learning_rate=0.01,
+        regularize=True,
+        jitter=1e-6,
         max_bond: Optional[int] = None,
         cutoff: float = 1e-10,
         absorb: str = "right",
     ):
         """
-        Full 2-site DMRG update step:
-        1. Solve for optimal fused tensor
-        2. SVD split back into two tensors
-        3. Update both nodes in the TN
+        Full 2-site DMRG gradient descent update step:
+        1. Compute gradient for fused tensor
+        2. Gradient descent: new = old - lr * gradient
+        3. SVD split back into two tensors
+        4. Update both nodes in the TN
         """
         new_fused, bond_idx, left_inds, right_inds = self._get_node_update(
             tag_left, tag_right,
+            learning_rate=learning_rate,
             regularize=regularize,
             jitter=jitter,
         )
@@ -1071,6 +1026,7 @@ class DMRG:
     def fit(
         self,
         n_epochs=1,
+        learning_rate=0.01,
         regularize=True,
         jitter=1e-6,
         verbose=True,
@@ -1085,10 +1041,10 @@ class DMRG:
         cutoff: float = 1e-10,
     ):
         """
-        2-site DMRG training loop.
+        2-site DMRG training loop with gradient-only updates.
         
         Sweeps through adjacent node pairs, optimizing the fused 2-site tensor
-        and splitting back with SVD (optionally truncating bond dimension).
+        with gradient descent and splitting back with SVD.
         """
         self.val_data = val_data
         self.test_data = test_data
@@ -1104,8 +1060,9 @@ class DMRG:
         backward_sweep = pairs[::-1]
         
         if verbose:
-            print(f"Starting 2-site DMRG: {n_epochs} epochs")
+            print(f"Starting 2-site DMRG (gradient-only): {n_epochs} epochs")
             print(f"Node pairs: {len(pairs)}")
+            print(f"Learning rate: {learning_rate}")
             if max_bond:
                 print(f"Max bond dimension: {max_bond}")
         
@@ -1137,6 +1094,7 @@ class DMRG:
                     for tag_left, tag_right in sweep:
                         self.update_tn_node(
                             tag_left, tag_right,
+                            learning_rate=learning_rate,
                             regularize=regularize,
                             jitter=jitter[epoch],
                             max_bond=max_bond,

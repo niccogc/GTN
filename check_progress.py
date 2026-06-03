@@ -39,7 +39,7 @@ TRAINERS = ["ntn", "gtn"]
 SIZES = ["small", "medium", "large"]
 
 # DMRG-specific: only TNML models use the DMRG trainer
-DMRG_MODELS = ["TNML_F", "TNML_P"]
+DMRG_MODELS = ["TNML_F"]
 
 CONF_DIR = Path("conf")
 
