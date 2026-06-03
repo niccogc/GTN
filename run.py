@@ -38,6 +38,7 @@ from utils.tracking import (
 from model.base.GTN import GTN
 from model.base.NTN import NTN
 from model.base.NTN_Ensemble import NTN_Ensemble
+from model.base.DMRG import DMRG
 from model.exceptions import SingularMatrixError
 from model.losses import CrossEntropyLoss, MSELoss
 from model.standard import CPDA, LMPO2, MMPO2, MPO2, TNML_P, TNML_F, BosonMPS
@@ -519,6 +520,160 @@ def run_ntn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     result["_is_typei"] = is_typei
 
     return result
+
+
+def run_dmrg(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
+    """Run 2-site DMRG training for TNML models."""
+    task = cfg.dataset.task
+    
+    if task == "regression":
+        loss_fn = MSELoss()
+        eval_metrics = REGRESSION_METRICS
+    else:
+        loss_fn = CrossEntropyLoss()
+        eval_metrics = CLASSIFICATION_METRICS
+    
+    n_epochs = cfg.trainer.n_epochs
+    ridge_schedule = [
+        max(cfg.trainer.ridge * (cfg.trainer.ridge_decay**epoch), cfg.trainer.ridge_min)
+        for epoch in range(n_epochs)
+    ]
+    
+    move_tn_to_device(model.tn)
+    reset_gpu_memory_stats()
+    gpu_info_before = get_gpu_memory_info()
+    
+    encoding = getattr(model, "encoding", None)
+    poly_degree = getattr(model, "poly_degree", None) if encoding == "polynomial" else None
+    
+    loader_train = create_inputs(
+        X=data["X_train"],
+        y=data["y_train"],
+        input_labels=model.input_labels,
+        output_labels=model.output_dims,
+        batch_size=cfg.dataset.batch_size,
+        append_bias=False,
+        encoding=encoding,
+        poly_degree=poly_degree,
+    )
+    loader_val = create_inputs(
+        X=data["X_val"],
+        y=data["y_val"],
+        input_labels=model.input_labels,
+        output_labels=model.output_dims,
+        batch_size=cfg.dataset.batch_size,
+        append_bias=False,
+        encoding=encoding,
+        poly_degree=poly_degree,
+    )
+    
+    dmrg = DMRG(
+        tn=model.tn,
+        output_dims=model.output_dims,
+        input_dims=model.input_dims,
+        loss=loss_fn,
+        data_stream=loader_train,
+    )
+    
+    max_bond = cfg.trainer.get("max_bond", None)
+    if max_bond is None:
+        max_bond=model.bond_dim
+    cutoff = cfg.trainer.get("cutoff", 1e-10)
+    
+    metrics_log = []
+    train_start_time = time.time()
+    last_callback_time = train_start_time
+    
+    def callback_epoch(epoch, scores_train, scores_val, info):
+        nonlocal last_callback_time
+        current_time = time.time()
+        wall_time = current_time - train_start_time
+        epoch_time = current_time - last_callback_time
+        last_callback_time = current_time
+        
+        metrics = {
+            "epoch": epoch,
+            "train_loss": float(scores_train["loss"]),
+            "train_quality": float(compute_quality(scores_train)),
+            "val_loss": float(scores_val["loss"]),
+            "val_quality": float(compute_quality(scores_val)),
+            "ridge": float(info["jitter"]),
+            "epoch_time": float(epoch_time),
+            "wall_time": float(wall_time),
+        }
+        metrics_log.append(metrics)
+    
+    oom_error = False
+    try:
+        scores_train, scores_val = dmrg.fit(
+            n_epochs=n_epochs,
+            regularize=True,
+            jitter=ridge_schedule,
+            verbose=True,
+            eval_metrics=eval_metrics,
+            val_data=loader_val,
+            callback_epoch=callback_epoch,
+            patience=cfg.trainer.patience,
+            min_delta=cfg.trainer.min_delta,
+            max_bond=max_bond,
+            cutoff=cutoff,
+        )
+        success = True
+        singular = dmrg.singular_encountered
+    except SingularMatrixError:
+        success = False
+        singular = True
+        scores_train = None
+        scores_val = None
+    except torch.OutOfMemoryError as e:
+        success = False
+        singular = False
+        oom_error = True
+        log.error(f"CUDA out of memory: {e}")
+        scores_train = None
+        scores_val = None
+    
+    best_epoch = -1
+    best_train_loss = float("inf")
+    best_train_quality = None
+    best_val_loss = float("inf")
+    best_val_quality = None
+    
+    if metrics_log:
+        best_val_q = float("-inf")
+        for m in metrics_log:
+            if m["val_quality"] is not None and m["val_quality"] > best_val_q:
+                best_val_q = m["val_quality"]
+                best_epoch = m["epoch"]
+                best_train_loss = m["train_loss"]
+                best_train_quality = m["train_quality"]
+                best_val_loss = m["val_loss"]
+                best_val_quality = m["val_quality"]
+    
+    if success and scores_train is not None:
+        best_train_loss = float(scores_train["loss"])
+        best_train_quality = float(compute_quality(scores_train))
+        best_val_loss = float(scores_val["loss"])
+        best_val_quality = float(compute_quality(scores_val))
+    
+    total_time = time.time() - train_start_time
+    gpu_info_after = get_gpu_memory_info()
+    
+    return {
+        "success": success,
+        "singular": singular,
+        "oom_error": oom_error,
+        "train_loss": best_train_loss,
+        "train_quality": best_train_quality,
+        "val_loss": best_val_loss,
+        "val_quality": best_val_quality,
+        "best_epoch": best_epoch,
+        "metrics_log": metrics_log,
+        "total_time": float(total_time),
+        "gpu_memory": {"before": gpu_info_before, "after": gpu_info_after},
+        "_dmrg": dmrg,
+        "_loader_val": loader_val,
+    }
 
 
 def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
@@ -1254,6 +1409,12 @@ def _main_impl(cfg: DictConfig):
             result = run_ntn(cfg, model, data, output_dir)
         elif cfg.trainer.type == "gtn":
             result = run_gtn(cfg, model, data, output_dir)
+        elif cfg.trainer.type == "dmrg":
+            if not cfg.model.name.startswith("TNML"):
+                raise ValueError(
+                    f"DMRG trainer only supports TNML models, got {cfg.model.name}"
+                )
+            result = run_dmrg(cfg, model, data, output_dir)
         else:
             raise ValueError(f"Unknown trainer type: {cfg.trainer.type}")
 
