@@ -11,15 +11,15 @@
 
 cd "~/GTN"
 source .venv/bin/activate
-source dmrg.env
+source missing.env
 
-NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
+NUM_EXPERIMENTS=${#COMBINATIONS_DMRG[@]}
 
 mkdir -p logs
 
 IDV=$((LSB_JOBINDEX - 1))
-read MODEL DATASET <<< "${COMBINATIONS_NTN[$IDV]}"
-echo "NTN: $MODEL $DATASET"
+read MODEL DATASET <<< "${COMBINATIONS_DMRG[$IDV]}"
+echo "DMRG: $MODEL $DATASET"
 
 echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
 

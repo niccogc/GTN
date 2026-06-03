@@ -38,6 +38,9 @@ MODELS = [
 TRAINERS = ["ntn", "gtn"]
 SIZES = ["small", "medium", "large"]
 
+# DMRG-specific: only TNML models use the DMRG trainer
+DMRG_MODELS = ["TNML_F", "TNML_P"]
+
 CONF_DIR = Path("conf")
 
 
@@ -257,6 +260,7 @@ BOND_DIM_CPDA = _CPDA_CONFIG["bond_dim_values"]
 RIDGE_VALUES = {
     "ntn": load_trainer_config("ntn").get("ridge", 5),
     "gtn": load_trainer_config("gtn").get("ridge", 0.005),
+    "dmrg": load_trainer_config("dmrg").get("ridge", 5),
 }
 INIT_STRENGTH = load_model_base_config().get("init_strength", 0.1)
 
@@ -303,6 +307,16 @@ def get_expected_subdirs(model: str) -> list[str]:
                 else:
                     subdirs.append(f"L{L}_bd{bd}_seed{seed}")
     return subdirs
+
+
+def get_trainers(model: str) -> list[str]:
+    """Get applicable trainers for a model.
+    
+    DMRG is only applicable for TNML_F and TNML_P models.
+    """
+    if model in DMRG_MODELS:
+        return TRAINERS + ["dmrg"]
+    return list(TRAINERS)
 
 
 def count_runs_for_model(model: str) -> int:
@@ -453,7 +467,7 @@ def collect_stats():
         expected_subdirs = get_expected_subdirs(model)
 
         for dataset in DATASETS:
-            for trainer in TRAINERS:
+            for trainer in get_trainers(model):
                 if model == "BosonMPS" and trainer == "ntn":
                     continue
                 exp_dir = get_experiment_path(model, dataset, trainer)
@@ -573,7 +587,7 @@ def collect_oom_details() -> list[dict]:
         expected_subdirs = get_expected_subdirs(model)
 
         for dataset in DATASETS:
-            for trainer in TRAINERS:
+            for trainer in get_trainers(model):
                 if model == "BosonMPS" and trainer == "ntn":
                     continue
                 exp_dir = get_experiment_path(model, dataset, trainer)
@@ -947,7 +961,7 @@ def generate_report(data: dict, verbose: bool = False) -> str:
     # By trainer
     out("BY TRAINER")
     out("-" * 80)
-    for trainer in TRAINERS:
+    for trainer in TRAINERS + ["dmrg"]:
         s = stats["by_trainer"][trainer]
         out(
             print_progress_bar(
@@ -962,7 +976,7 @@ def generate_report(data: dict, verbose: bool = False) -> str:
     # Model x Trainer matrix
     out("MODEL x TRAINER MATRIX")
     out("-" * 80)
-    out(f"{'Model':<12s} | {'NTN':^20s} | {'GTN':^20s}")
+    out(f"{'Model':<12s} | {'NTN':^20s} | {'GTN':^20s} | {'DMRG':^20s}")
     out("-" * 80)
     for model in MODELS:
         ntn_s = stats["by_model_trainer"][(model, "ntn")]
@@ -971,25 +985,35 @@ def generate_report(data: dict, verbose: bool = False) -> str:
         gtn_pct = gtn_s["done"] / gtn_s["total"] * 100 if gtn_s["total"] > 0 else 0
         ntn_str = f"{ntn_s['done']:4d}/{ntn_s['total']:4d} ({ntn_pct:5.1f}%)"
         gtn_str = f"{gtn_s['done']:4d}/{gtn_s['total']:4d} ({gtn_pct:5.1f}%)"
-        out(f"{model:<12s} | {ntn_str:^20s} | {gtn_str:^20s}")
+        if model in DMRG_MODELS:
+            dmrg_s = stats["by_model_trainer"][(model, "dmrg")]
+            dmrg_pct = dmrg_s["done"] / dmrg_s["total"] * 100 if dmrg_s["total"] > 0 else 0
+            dmrg_str = f"{dmrg_s['done']:4d}/{dmrg_s['total']:4d} ({dmrg_pct:5.1f}%)"
+        else:
+            dmrg_str = "         N/A          "
+        out(f"{model:<12s} | {ntn_str:^20s} | {gtn_str:^20s} | {dmrg_str:^20s}")
     out()
 
     # Size x Trainer matrix (WHAT TO RUN)
     out("BY DATASET SIZE (for job submission)")
     out("-" * 80)
-    out(f"{'Size':<8s} | {'NTN':^24s} | {'GTN':^24s} | {'Total Missing':^14s}")
+    out(f"{'Size':<8s} | {'NTN':^24s} | {'GTN':^24s} | {'DMRG':^24s} | {'Total Missing':^14s}")
     out("-" * 80)
     for size in SIZES:
         ntn_s = stats["by_size_trainer"][(size, "ntn")]
         gtn_s = stats["by_size_trainer"][(size, "gtn")]
+        dmrg_s = stats["by_size_trainer"][(size, "dmrg")]
         ntn_missing = ntn_s["total"] - ntn_s["done"]
         gtn_missing = gtn_s["total"] - gtn_s["done"]
-        total_missing = ntn_missing + gtn_missing
+        dmrg_missing = dmrg_s["total"] - dmrg_s["done"]
+        total_missing = ntn_missing + gtn_missing + dmrg_missing
         ntn_pct = ntn_s["done"] / ntn_s["total"] * 100 if ntn_s["total"] > 0 else 0
         gtn_pct = gtn_s["done"] / gtn_s["total"] * 100 if gtn_s["total"] > 0 else 0
+        dmrg_pct = dmrg_s["done"] / dmrg_s["total"] * 100 if dmrg_s["total"] > 0 else 0
         ntn_str = f"{ntn_s['done']:4d}/{ntn_s['total']:4d} ({ntn_pct:5.1f}%)"
         gtn_str = f"{gtn_s['done']:4d}/{gtn_s['total']:4d} ({gtn_pct:5.1f}%)"
-        out(f"{size:<8s} | {ntn_str:^24s} | {gtn_str:^24s} | {total_missing:^14d}")
+        dmrg_str = f"{dmrg_s['done']:4d}/{dmrg_s['total']:4d} ({dmrg_pct:5.1f}%)"
+        out(f"{size:<8s} | {ntn_str:^24s} | {gtn_str:^24s} | {dmrg_str:^24s} | {total_missing:^14d}")
     out()
 
     # By dataset
@@ -1088,7 +1112,7 @@ def generate_report(data: dict, verbose: bool = False) -> str:
     out("=" * 80)
 
     # Group incomplete experiments by size and trainer
-    jobs_by_size_trainer = {size: {"ntn": [], "gtn": []} for size in SIZES}
+    jobs_by_size_trainer = {size: {"ntn": [], "gtn": [], "dmrg": []} for size in SIZES}
 
     for (model, dataset, trainer), combo_s in stats["by_combo"].items():
         if combo_s["done"] < combo_s["total"]:
@@ -1107,8 +1131,9 @@ def generate_report(data: dict, verbose: bool = False) -> str:
     for size in SIZES:
         ntn_jobs = jobs_by_size_trainer[size]["ntn"]
         gtn_jobs = jobs_by_size_trainer[size]["gtn"]
+        dmrg_jobs = jobs_by_size_trainer[size]["dmrg"]
 
-        if not ntn_jobs and not gtn_jobs:
+        if not ntn_jobs and not gtn_jobs and not dmrg_jobs:
             out(f"\n{size.upper()}: All complete!")
             continue
 
@@ -1129,6 +1154,15 @@ def generate_report(data: dict, verbose: bool = False) -> str:
             out(f"  GTN ({len(gtn_jobs)} experiments, {gtn_missing} runs missing):")
             by_model = defaultdict(list)
             for job in gtn_jobs:
+                by_model[job["model"]].append(job["dataset"])
+            for model, datasets in sorted(by_model.items()):
+                out(f"    {model}: {', '.join(sorted(datasets))}")
+
+        if dmrg_jobs:
+            dmrg_missing = sum(j["missing"] for j in dmrg_jobs)
+            out(f"  DMRG ({len(dmrg_jobs)} experiments, {dmrg_missing} runs missing):")
+            by_model = defaultdict(list)
+            for job in dmrg_jobs:
                 by_model[job["model"]].append(job["dataset"])
             for model, datasets in sorted(by_model.items()):
                 out(f"    {model}: {', '.join(sorted(datasets))}")
@@ -1184,7 +1218,7 @@ def generate_markdown_report(data: dict, verbose: bool = False) -> str:
     out()
     out("| Trainer | Done | Total | % | Success | Singular | OOM | Failed |")
     out("|---------|-----:|------:|--:|--------:|---------:|----:|-------:|")
-    for trainer in TRAINERS:
+    for trainer in TRAINERS + ["dmrg"]:
         s = stats["by_trainer"][trainer]
         pct = s["done"] / s["total"] * 100 if s["total"] > 0 else 0
         out(
@@ -1195,8 +1229,8 @@ def generate_markdown_report(data: dict, verbose: bool = False) -> str:
     # Model x Trainer matrix
     out("## Model x Trainer Matrix")
     out()
-    out("| Model | NTN | GTN |")
-    out("|-------|-----|-----|")
+    out("| Model | NTN | GTN | DMRG |")
+    out("|-------|-----|-----|------|")
     for model in MODELS:
         ntn_s = stats["by_model_trainer"][(model, "ntn")]
         gtn_s = stats["by_model_trainer"][(model, "gtn")]
@@ -1204,25 +1238,35 @@ def generate_markdown_report(data: dict, verbose: bool = False) -> str:
         gtn_pct = gtn_s["done"] / gtn_s["total"] * 100 if gtn_s["total"] > 0 else 0
         ntn_str = f"{ntn_s['done']}/{ntn_s['total']} ({ntn_pct:.1f}%)"
         gtn_str = f"{gtn_s['done']}/{gtn_s['total']} ({gtn_pct:.1f}%)"
-        out(f"| {model} | {ntn_str} | {gtn_str} |")
+        if model in DMRG_MODELS:
+            dmrg_s = stats["by_model_trainer"][(model, "dmrg")]
+            dmrg_pct = dmrg_s["done"] / dmrg_s["total"] * 100 if dmrg_s["total"] > 0 else 0
+            dmrg_str = f"{dmrg_s['done']}/{dmrg_s['total']} ({dmrg_pct:.1f}%)"
+        else:
+            dmrg_str = "N/A"
+        out(f"| {model} | {ntn_str} | {gtn_str} | {dmrg_str} |")
     out()
 
     # Size x Trainer matrix
     out("## By Dataset Size")
     out()
-    out("| Size | NTN | GTN | Missing |")
-    out("|------|-----|-----|--------:|")
+    out("| Size | NTN | GTN | DMRG | Missing |")
+    out("|------|-----|-----|------|--------:|")
     for size in SIZES:
         ntn_s = stats["by_size_trainer"][(size, "ntn")]
         gtn_s = stats["by_size_trainer"][(size, "gtn")]
+        dmrg_s = stats["by_size_trainer"][(size, "dmrg")]
         ntn_missing = ntn_s["total"] - ntn_s["done"]
         gtn_missing = gtn_s["total"] - gtn_s["done"]
-        total_missing = ntn_missing + gtn_missing
+        dmrg_missing = dmrg_s["total"] - dmrg_s["done"]
+        total_missing = ntn_missing + gtn_missing + dmrg_missing
         ntn_pct = ntn_s["done"] / ntn_s["total"] * 100 if ntn_s["total"] > 0 else 0
         gtn_pct = gtn_s["done"] / gtn_s["total"] * 100 if gtn_s["total"] > 0 else 0
+        dmrg_pct = dmrg_s["done"] / dmrg_s["total"] * 100 if dmrg_s["total"] > 0 else 0
         ntn_str = f"{ntn_s['done']}/{ntn_s['total']} ({ntn_pct:.1f}%)"
         gtn_str = f"{gtn_s['done']}/{gtn_s['total']} ({gtn_pct:.1f}%)"
-        out(f"| {size.capitalize()} | {ntn_str} | {gtn_str} | {total_missing:,} |")
+        dmrg_str = f"{dmrg_s['done']}/{dmrg_s['total']} ({dmrg_pct:.1f}%)"
+        out(f"| {size.capitalize()} | {ntn_str} | {gtn_str} | {dmrg_str} | {total_missing:,} |")
     out()
 
     # By dataset
@@ -1311,7 +1355,7 @@ def generate_markdown_report(data: dict, verbose: bool = False) -> str:
     out("## Jobs to Run")
     out()
 
-    jobs_by_size_trainer = {size: {"ntn": [], "gtn": []} for size in SIZES}
+    jobs_by_size_trainer = {size: {"ntn": [], "gtn": [], "dmrg": []} for size in SIZES}
     for (model, dataset, trainer), combo_s in stats["by_combo"].items():
         if combo_s["done"] < combo_s["total"]:
             size = DATASET_SIZES.get(dataset, "unknown")
@@ -1329,8 +1373,9 @@ def generate_markdown_report(data: dict, verbose: bool = False) -> str:
     for size in SIZES:
         ntn_jobs = jobs_by_size_trainer[size]["ntn"]
         gtn_jobs = jobs_by_size_trainer[size]["gtn"]
+        dmrg_jobs = jobs_by_size_trainer[size]["dmrg"]
 
-        if not ntn_jobs and not gtn_jobs:
+        if not ntn_jobs and not gtn_jobs and not dmrg_jobs:
             out(f"### {size.capitalize()}")
             out()
             out("All complete!")
@@ -1357,6 +1402,17 @@ def generate_markdown_report(data: dict, verbose: bool = False) -> str:
             out()
             by_model = defaultdict(list)
             for job in gtn_jobs:
+                by_model[job["model"]].append(job["dataset"])
+            for model, datasets in sorted(by_model.items()):
+                out(f"- {model}: {', '.join(sorted(datasets))}")
+            out()
+
+        if dmrg_jobs:
+            dmrg_missing = sum(j["missing"] for j in dmrg_jobs)
+            out(f"**DMRG** ({len(dmrg_jobs)} experiments, {dmrg_missing:,} runs missing):")
+            out()
+            by_model = defaultdict(list)
+            for job in dmrg_jobs:
                 by_model[job["model"]].append(job["dataset"])
             for model, datasets in sorted(by_model.items()):
                 out(f"- {model}: {', '.join(sorted(datasets))}")
@@ -1390,7 +1446,7 @@ def generate_bash_arrays(data: dict) -> str:
     stats = data["stats"]
     lines = []
 
-    for trainer in ["ntn", "gtn"]:
+    for trainer in ["ntn", "gtn", "dmrg"]:
         trainer_upper = trainer.upper()
         var_name = f"COMBINATIONS_{trainer_upper}"
 
