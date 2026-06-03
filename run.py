@@ -26,7 +26,7 @@ import yaml
 from omegaconf import DictConfig, OmegaConf
 
 from utils.dataset_loader import load_dataset
-from utils.image_dataset_loader import load_image_dataset
+from utils.image_dataset_loader import load_image_dataset, load_image_dataset_cnn
 from utils.device_utils import DEVICE, move_data_to_device, move_tn_to_device
 from utils.tracking import (
     generate_run_id,
@@ -52,7 +52,7 @@ from model.typeI import (
     MPO2TypeI,
     MPO2TypeI_GTN,
 )
-from model.image_models import CMPO2, CMPO3, CMPO2_GTN, CMPO3_GTN
+from model.image_models import CMPO2, CMPO3, CMPO2_GTN, CMPO3_GTN, BaselineCNN
 from model.utils import (
     CLASSIFICATION_METRICS,
     REGRESSION_METRICS,
@@ -195,6 +195,7 @@ GTN_ONLY_MODELS = {
 IMAGE_MODELS = {
     "CMPO2": CMPO2,
     "CMPO3": CMPO3,
+    "BaselineCNN": BaselineCNN,
 }
 
 IMAGE_GTN_MODELS = {
@@ -1001,6 +1002,17 @@ def create_image_model(cfg: DictConfig, dataset_info: dict):
             output_dim=dataset_info["n_classes"],
             init_strength=cfg.model.get("init_strength", 0.01),
         )
+    elif model_name == "BaselineCNN":
+        return BaselineCNN(
+            input_channels=dataset_info["channels"],
+            image_size=dataset_info["image_size"],
+            n_classes=dataset_info["n_classes"],
+            n_conv_layers=cfg.model.n_conv_layers,
+            base_channels=cfg.model.base_channels,
+            fc_hidden_dim=cfg.model.fc_hidden_dim,
+            kernel_size=cfg.model.get("kernel_size", 3),
+            use_batchnorm=cfg.model.get("use_batchnorm", True),
+        )
     else:
         raise ValueError(f"Unknown image model: {model_name}")
 
@@ -1293,12 +1305,134 @@ def run_gtn_image(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     }
 
 
+def run_cnn(cfg: DictConfig, model: nn.Module, data: dict, output_dir: Path) -> dict:
+    model = model.float().to(DEVICE)
+    
+    criterion = nn.CrossEntropyLoss()
+    optimizer = create_optimizer(
+        cfg.trainer.get("optimizer", "adamw").lower(),
+        model.parameters(),
+        cfg.trainer.lr,
+        cfg.trainer.get("weight_decay", 0.01),
+    )
+
+    batch_size = cfg.dataset.batch_size
+    n_epochs = cfg.trainer.n_epochs
+    patience = cfg.trainer.patience
+    min_delta = cfg.trainer.min_delta
+
+    train_loader = torch.utils.data.DataLoader(
+        torch.utils.data.TensorDataset(data["X_train"], data["y_train"]),
+        batch_size=batch_size, shuffle=True,
+    )
+    val_loader = torch.utils.data.DataLoader(
+        torch.utils.data.TensorDataset(data["X_val"], data["y_val"]),
+        batch_size=batch_size, shuffle=False,
+    )
+    test_loader = torch.utils.data.DataLoader(
+        torch.utils.data.TensorDataset(data["X_test"], data["y_test"]),
+        batch_size=batch_size, shuffle=False,
+    )
+
+    def evaluate_cnn(loader):
+        model.eval()
+        total_loss, correct, total = 0, 0, 0
+        with torch.no_grad():
+            for batch_data, batch_target in loader:
+                batch_data = batch_data.to(DEVICE)
+                batch_target = batch_target.to(DEVICE)
+                output = model(batch_data)
+                loss = criterion(output, batch_target)
+                total_loss += loss.item() * batch_data.size(0)
+                pred = output.argmax(dim=1)
+                correct += (pred == batch_target).sum().item()
+                total += batch_target.size(0)
+        return total_loss / len(loader.dataset), correct / total if total > 0 else 0.0
+
+    metrics_log = []
+    best_val_quality = 0.0
+    best_epoch = -1
+    patience_counter = 0
+    best_model_state = None
+    train_start_time = time.time()
+
+    for epoch in range(n_epochs):
+        epoch_start_time = time.time()
+        model.train()
+        train_loss = 0.0
+
+        for batch_data, batch_target in train_loader:
+            batch_data = batch_data.to(DEVICE)
+            batch_target = batch_target.to(DEVICE)
+            optimizer.zero_grad()
+            output = model(batch_data)
+            loss = criterion(output, batch_target)
+            loss.backward()
+            optimizer.step()
+            train_loss += loss.item() * batch_data.size(0)
+
+        train_loss /= len(train_loader.dataset)
+        _, train_quality = evaluate_cnn(train_loader)
+        val_loss, val_quality = evaluate_cnn(val_loader)
+
+        wall_time = time.time() - train_start_time
+        epoch_time = time.time() - epoch_start_time
+
+        metrics_log.append({
+            "epoch": epoch,
+            "train_loss": float(train_loss),
+            "train_quality": float(train_quality),
+            "val_loss": float(val_loss),
+            "val_quality": float(val_quality),
+            "epoch_time": float(epoch_time),
+            "wall_time": float(wall_time),
+        })
+
+        if val_quality > best_val_quality + min_delta:
+            best_val_quality = val_quality
+            best_epoch = epoch
+            patience_counter = 0
+            best_model_state = {k: v.cpu().clone() for k, v in model.state_dict().items()}
+        else:
+            patience_counter += 1
+
+        if patience is not None and patience_counter >= patience:
+            log.info(f"Early stopping at epoch {epoch + 1}")
+            break
+
+        if epoch % 10 == 0 or epoch == n_epochs - 1:
+            log.info(f"Epoch {epoch + 1:3d} | Train: {train_quality:.4f} | Val: {val_quality:.4f} | Time: {wall_time:.1f}s")
+
+    if best_model_state is not None:
+        model.load_state_dict(best_model_state)
+        model.to(DEVICE)
+
+    total_time = time.time() - train_start_time
+    test_loss, test_quality = evaluate_cnn(test_loader)
+
+    return {
+        "success": True,
+        "singular": False,
+        "train_quality": float(train_quality),
+        "val_quality": float(best_val_quality),
+        "test_quality": float(test_quality),
+        "best_epoch": best_epoch,
+        "metrics_log": metrics_log,
+        "total_time": float(total_time),
+    }
+
+
 def _format_run_summary(cfg: DictConfig, output_dir: Path) -> str:
     model = cfg.model.name
     dataset = cfg.dataset.name
     trainer = cfg.trainer.type.upper()
     seed = cfg.seed
-    L = cfg.model.L
+    if model == "BaselineCNN":
+        nlayers = cfg.model.n_conv_layers
+        ch = cfg.model.base_channels
+        fc = cfg.model.fc_hidden_dim
+        return f"{model}/{dataset}/{trainer} nlayers={nlayers} ch={ch} fc={fc} seed={seed} -> {output_dir}"
+    L = cfg.model.get("L", "?")
     bd = cfg.model.get("bond_dim", cfg.model.get("rank_pixel", "?"))
     rf = cfg.model.get("reduction_factor", "")
     rf_str = f"_rf{rf}" if rf else ""
@@ -1365,26 +1499,38 @@ def _main_impl(cfg: DictConfig):
     log.info(f"▶ RUN {run_summary}")
 
     if is_image_model(cfg.model.name):
-        model_type = "cmpo3" if cfg.model.name == "CMPO3" else "cmpo2"
-        data, dataset_info = load_image_dataset(
-            cfg.dataset.name,
-            n_patches=cfg.model.get("n_patches", 4),
-            n_train=cfg.dataset.get("n_train"),
-            n_val=cfg.dataset.get("n_val"),
-            n_test=cfg.dataset.get("n_test"),
-            model_type=model_type,
-            data_dir=cfg.get("data_dir"),
-            bias=True,
-        )
-        data = move_data_to_device(data)
-        model = create_image_model(cfg, dataset_info)
-
-        if cfg.trainer.type == "ntn":
-            result = run_ntn_image(cfg, model, data, output_dir)
-        elif cfg.trainer.type == "gtn":
-            result = run_gtn_image(cfg, model, data, output_dir)
+        if cfg.trainer.type == "cnn":
+            data, dataset_info = load_image_dataset_cnn(
+                cfg.dataset.name,
+                n_train=cfg.dataset.get("n_train"),
+                n_val=cfg.dataset.get("n_val"),
+                n_test=cfg.dataset.get("n_test"),
+                data_dir=cfg.get("data_dir"),
+            )
+            data = {k: v.to(DEVICE) for k, v in data.items()}
+            model = create_image_model(cfg, dataset_info)
+            result = run_cnn(cfg, model, data, output_dir)
         else:
-            raise ValueError(f"Unknown trainer type: {cfg.trainer.type}")
+            model_type = "cmpo3" if cfg.model.name == "CMPO3" else "cmpo2"
+            data, dataset_info = load_image_dataset(
+                cfg.dataset.name,
+                n_patches=cfg.model.get("n_patches", 4),
+                n_train=cfg.dataset.get("n_train"),
+                n_val=cfg.dataset.get("n_val"),
+                n_test=cfg.dataset.get("n_test"),
+                model_type=model_type,
+                data_dir=cfg.get("data_dir"),
+                bias=True,
+            )
+            data = move_data_to_device(data)
+            model = create_image_model(cfg, dataset_info)
+
+            if cfg.trainer.type == "ntn":
+                result = run_ntn_image(cfg, model, data, output_dir)
+            elif cfg.trainer.type == "gtn":
+                result = run_gtn_image(cfg, model, data, output_dir)
+            else:
+                raise ValueError(f"Unknown trainer type: {cfg.trainer.type}")
     else:
         data, dataset_info = load_dataset(
             cfg.dataset.name,

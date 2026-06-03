@@ -115,6 +115,72 @@ class CMPO3:
 # class C3Ring_GTN(nn.Module):
     # return
 
+class BaselineCNN(nn.Module):
+    """
+    Baseline CNN for comparison with tensor network models.
+    Architecture: Conv blocks (with pooling) -> Flatten -> FC layers -> Output
+    """
+    def __init__(
+        self,
+        input_channels: int = 1,
+        image_size: int = 28,
+        n_classes: int = 10,
+        n_conv_layers: int = 2,
+        base_channels: int = 16,
+        fc_hidden_dim: int = 128,
+        kernel_size: int = 3,
+        use_batchnorm: bool = True,
+    ):
+        super().__init__()
+        self.n_conv_layers = n_conv_layers
+        self.base_channels = base_channels
+        
+        conv_layers = []
+        in_ch = input_channels
+        out_ch = base_channels
+        spatial_size = image_size
+        
+        for i in range(n_conv_layers):
+            conv_layers.append(nn.Conv2d(in_ch, out_ch, kernel_size, padding=kernel_size//2))
+            if use_batchnorm:
+                conv_layers.append(nn.BatchNorm2d(out_ch))
+            conv_layers.append(nn.ReLU(inplace=True))
+            conv_layers.append(nn.MaxPool2d(2, 2))
+            spatial_size = spatial_size // 2
+            in_ch = out_ch
+            out_ch = min(out_ch * 2, 256)
+        
+        self.features = nn.Sequential(*conv_layers)
+        
+        flatten_dim = in_ch * spatial_size * spatial_size
+        
+        if fc_hidden_dim > 0:
+            self.classifier = nn.Sequential(
+                nn.Linear(flatten_dim, fc_hidden_dim),
+                nn.ReLU(inplace=True),
+                nn.Dropout(0.5),
+                nn.Linear(fc_hidden_dim, n_classes),
+            )
+        else:
+            self.classifier = nn.Linear(flatten_dim, n_classes)
+        
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+            elif isinstance(m, nn.BatchNorm2d):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
+            elif isinstance(m, nn.Linear):
+                nn.init.normal_(m.weight, 0, 0.01)
+                nn.init.constant_(m.bias, 0)
+    
+    def forward(self, x):
+        x = self.features(x)
+        x = x.view(x.size(0), -1)
+        x = self.classifier(x)
+        return x
+
+
 class CMPO2_GTN(nn.Module):
     def __init__(self, cmpo2: CMPO2):
         super().__init__()

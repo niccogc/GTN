@@ -1101,7 +1101,7 @@ class DMRG:
         
         pairs = self._get_trainable_node_pairs()
         forward_sweep = pairs
-        backward_sweep = pairs[-2::-1]
+        backward_sweep = pairs[::-1]
         
         if verbose:
             print(f"Starting 2-site DMRG: {n_epochs} epochs")

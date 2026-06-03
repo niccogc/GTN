@@ -65,7 +65,14 @@ DEFAULT_TRACKING_FILE = "runs_tracking.csv"
 def generate_run_id(cfg: DictConfig) -> str:
     model_name = cfg.model.name
     
-    if model_name.startswith("CMPO"):
+    if model_name == "BaselineCNN":
+        base = (
+            f"{cfg.trainer.type}_{cfg.dataset.name}_{model_name}"
+            f"_nl{cfg.model.n_conv_layers}_ch{cfg.model.base_channels}_fc{cfg.model.fc_hidden_dim}"
+            f"_s{cfg.seed}"
+        )
+        return base
+    elif model_name.startswith("CMPO"):
         bond_str = f"rpi{cfg.model.rank_pixel}_rpa{cfg.model.rank_patch}"
         if model_name == "CMPO3":
             bond_str += f"_rc{cfg.model.rank_channel}"

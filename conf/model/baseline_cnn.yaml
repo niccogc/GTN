@@ -1,0 +1,16 @@
+# @package _global_
+
+model:
+  name: BaselineCNN
+  n_conv_layers: 2
+  base_channels: 16
+  fc_hidden_dim: 128
+  kernel_size: 3
+  use_batchnorm: true
+  init_strength: 0
+
+hydra:
+  run:
+    dir: outputs/${trainer.type}/${dataset.name}/${model.name}/nlayers${model.n_conv_layers}_ch${model.base_channels}_fc${model.fc_hidden_dim}_seed${seed}
+  sweep:
+    subdir: nlayers${model.n_conv_layers}_ch${model.base_channels}_fc${model.fc_hidden_dim}_seed${seed}

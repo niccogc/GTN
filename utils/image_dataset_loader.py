@@ -263,6 +263,84 @@ def get_valid_patch_configs(dataset_name: str):
     return configs
 
 
+def load_image_dataset_cnn(
+    dataset_name: str,
+    n_train: Optional[int] = None,
+    n_val: Optional[int] = None,
+    n_test: Optional[int] = None,
+    val_split: float = 0.15,
+    data_dir: Optional[str] = None,
+) -> Tuple[Dict[str, torch.Tensor], Dict[str, Any]]:
+    """Load image dataset in standard CNN format (batch, channels, H, W) with integer labels."""
+    if data_dir is None:
+        data_dir = os.path.join(os.path.expanduser("~"), "data")
+    
+    transform = get_image_transforms(dataset_name)
+    info = get_dataset_info(dataset_name)
+    
+    dataset_map = {
+        "MNIST": datasets.MNIST,
+        "FASHION_MNIST": datasets.FashionMNIST,
+        "CIFAR10": datasets.CIFAR10,
+        "CIFAR100": datasets.CIFAR100,
+    }
+    
+    if dataset_name not in dataset_map:
+        raise ValueError(f"Unknown dataset: {dataset_name}")
+    
+    DatasetClass = dataset_map[dataset_name]
+    train_dataset = DatasetClass(data_dir, train=True, download=True, transform=transform)
+    test_dataset = DatasetClass(data_dir, train=False, download=True, transform=transform)
+    
+    generator = torch.Generator().manual_seed(42)
+    
+    total_train = len(train_dataset)
+    n_val_actual = int(total_train * val_split) if n_val is None else n_val
+    n_train_actual = total_train - n_val_actual
+    
+    train_subset, val_subset = random_split(
+        train_dataset, [n_train_actual, n_val_actual], generator=generator
+    )
+    
+    if n_train is not None and n_train < len(train_subset):
+        train_subset = Subset(train_subset, range(n_train))
+    if n_val is not None and n_val < len(val_subset):
+        val_subset = Subset(val_subset, range(n_val))
+    if n_test is not None and n_test < len(test_dataset):
+        test_dataset = Subset(test_dataset, range(n_test))
+    
+    def load_subset(subset):
+        loader = DataLoader(subset, batch_size=len(subset), shuffle=False)
+        images, labels = next(iter(loader))
+        return images.float(), labels
+    
+    X_train, y_train = load_subset(train_subset)
+    X_val, y_val = load_subset(val_subset)
+    X_test, y_test = load_subset(test_dataset)
+    
+    data = {
+        "X_train": X_train,
+        "y_train": y_train,
+        "X_val": X_val,
+        "y_val": y_val,
+        "X_test": X_test,
+        "y_test": y_test,
+    }
+    
+    dataset_info = {
+        "name": dataset_name,
+        "task": "classification",
+        "n_classes": info["n_classes"],
+        "n_train": len(X_train),
+        "n_val": len(X_val),
+        "n_test": len(X_test),
+        "image_size": info["image_size"],
+        "channels": info["channels"],
+    }
+    
+    return data, dataset_info
+
+
 def pad_and_corner_one(x):
     x_pad = F.pad(x, (0,1) * (x.dim() - 1))
     x_pad[(slice(None),) + (-1,) * (x.dim() - 1)] = 1
