@@ -608,6 +608,7 @@ def run_dmrg(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     try:
         scores_train, scores_val = dmrg.fit(
             n_epochs=n_epochs,
+            learning_rate=cfg.trainer.lr,
             regularize=True,
             jitter=ridge_schedule,
             verbose=True,
