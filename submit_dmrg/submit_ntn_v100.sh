@@ -1,12 +1,12 @@
 #!/bin/bash
 #BSUB -q gpuv100
-#BSUB -J "ntn_grid_missing[1-42]%20"
-#BSUB -W 20:00
+#BSUB -J "ntn_grid_dmrg[1-42]%20"
+#BSUB -W 10:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=750MB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/%J_%I_gpuh_newntn.out
-#BSUB -e logs/%J_%I_gpuh_newntn.err
+#BSUB -o logs/dmrg_%J_%I.out
+#BSUB -e logs/dmrg_%J_%I.err
 #BSUB -gpu "num=1:mode=exclusive_process"
 
 cd "~/GTN"
