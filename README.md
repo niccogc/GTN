@@ -4,23 +4,23 @@
 
 ## Overall Progress
 
-**Total:** 16,784 / 18,600 (90.2%)
+**Total:** 16,815 / 18,000 (93.4%)
 
 | Status | Count |
 |--------|------:|
-| Success | 15,105 |
-| Singular | 1,679 |
+| Success | 15,107 |
+| Singular | 1,708 |
 | OOM | 278 |
 | Failed | 0 |
-| Missing | 1,816 |
+| Missing | 1,185 |
 
 ## By Trainer
 
 | Trainer | Done | Total | % | Success | Singular | OOM | Failed |
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
-| NTN | 7,784 | 8,400 | 92.7% | 6,105 | 1,679 | 278 | 0 |
+| NTN | 7,785 | 8,400 | 92.7% | 6,105 | 1,680 | 278 | 0 |
 | GTN | 9,000 | 9,000 | 100.0% | 9,000 | 0 | 0 | 0 |
-| DMRG | 0 | 1,200 | 0.0% | 0 | 0 | 0 | 0 |
+| DMRG | 30 | 600 | 5.0% | 2 | 28 | 0 | 0 |
 
 ## Model x Trainer Matrix
 
@@ -31,45 +31,46 @@
 | MMPO2 | 573/600 (95.5%) | 600/600 (100.0%) | N/A |
 | MPO2TypeI | 600/600 (100.0%) | 600/600 (100.0%) | N/A |
 | LMPO2TypeI | 1240/1800 (68.9%) | 1800/1800 (100.0%) | N/A |
-| MMPO2TypeI | 571/600 (95.2%) | 600/600 (100.0%) | N/A |
+| MMPO2TypeI | 572/600 (95.3%) | 600/600 (100.0%) | N/A |
 | CPDA | 600/600 (100.0%) | 600/600 (100.0%) | N/A |
 | CPDATypeI | 600/600 (100.0%) | 600/600 (100.0%) | N/A |
-| TNML_P | 600/600 (100.0%) | 600/600 (100.0%) | 0/600 (0.0%) |
-| TNML_F | 600/600 (100.0%) | 600/600 (100.0%) | 0/600 (0.0%) |
+| TNML_P | 600/600 (100.0%) | 600/600 (100.0%) | N/A |
+| TNML_F | 600/600 (100.0%) | 600/600 (100.0%) | 30/600 (5.0%) |
 | BosonMPS | 0/0 (0.0%) | 600/600 (100.0%) | N/A |
 
 ## By Dataset Size
 
 | Size | NTN | GTN | DMRG | Missing |
 |------|-----|-----|------|--------:|
-| Small | 1623/1680 (96.6%) | 1800/1800 (100.0%) | 0/240 (0.0%) | 297 |
-| Medium | 3627/3780 (96.0%) | 4050/4050 (100.0%) | 0/540 (0.0%) | 693 |
-| Large | 2534/2940 (86.2%) | 3150/3150 (100.0%) | 0/420 (0.0%) | 826 |
+| Small | 1623/1680 (96.6%) | 1800/1800 (100.0%) | 0/120 (0.0%) | 177 |
+| Medium | 3627/3780 (96.0%) | 4050/4050 (100.0%) | 0/270 (0.0%) | 423 |
+| Large | 2535/2940 (86.2%) | 3150/3150 (100.0%) | 30/210 (14.3%) | 585 |
 
 ## By Dataset
 
+**Complete:** ai4i
+
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
-| abalone | 870 | 930 | 93.5% |
-| adult | 731 | 930 | 78.6% |
-| ai4i | 870 | 930 | 93.5% |
-| bank | 798 | 930 | 85.8% |
-| bike | 870 | 930 | 93.5% |
-| breast | 813 | 930 | 87.4% |
-| car_evaluation | 812 | 930 | 87.3% |
-| concrete | 870 | 930 | 93.5% |
-| energy_efficiency | 870 | 930 | 93.5% |
-| hearth | 870 | 930 | 93.5% |
-| iris | 870 | 930 | 93.5% |
-| mushrooms | 820 | 930 | 88.2% |
-| obesity | 825 | 930 | 88.7% |
-| popularity | 810 | 930 | 87.1% |
-| realstate | 870 | 930 | 93.5% |
-| seoulBike | 870 | 930 | 93.5% |
-| student_dropout | 785 | 930 | 84.4% |
-| student_perf | 820 | 930 | 88.2% |
-| wine | 870 | 930 | 93.5% |
-| winequalityc | 870 | 930 | 93.5% |
+| abalone | 870 | 900 | 96.7% |
+| adult | 732 | 900 | 81.3% |
+| bank | 798 | 900 | 88.7% |
+| bike | 870 | 900 | 96.7% |
+| breast | 813 | 900 | 90.3% |
+| car_evaluation | 812 | 900 | 90.2% |
+| concrete | 870 | 900 | 96.7% |
+| energy_efficiency | 870 | 900 | 96.7% |
+| hearth | 870 | 900 | 96.7% |
+| iris | 870 | 900 | 96.7% |
+| mushrooms | 820 | 900 | 91.1% |
+| obesity | 825 | 900 | 91.7% |
+| popularity | 810 | 900 | 90.0% |
+| realstate | 870 | 900 | 96.7% |
+| seoulBike | 870 | 900 | 96.7% |
+| student_dropout | 785 | 900 | 87.2% |
+| student_perf | 820 | 900 | 91.1% |
+| wine | 870 | 900 | 96.7% |
+| winequalityc | 870 | 900 | 96.7% |
 
 ## Incomplete Experiments
 
@@ -84,30 +85,31 @@
 | LMPO2TypeI | bank | NTN | 18/90 (20.0%) |
 | MMPO2 | adult | NTN | 3/30 (10.0%) |
 | LMPO2TypeI | adult | NTN | 7/90 (7.8%) |
+| MMPO2TypeI | adult | NTN | 2/30 (6.7%) |
 | LMPO2TypeI | student_dropout | NTN | 5/90 (5.6%) |
-| MMPO2TypeI | adult | NTN | 1/30 (3.3%) |
-| TNML_P | abalone | DMRG | 0/30 (0.0%) |
-| TNML_P | adult | DMRG | 0/30 (0.0%) |
-| TNML_P | ai4i | DMRG | 0/30 (0.0%) |
-| TNML_P | bank | DMRG | 0/30 (0.0%) |
-| TNML_P | bike | DMRG | 0/30 (0.0%) |
-| TNML_P | breast | DMRG | 0/30 (0.0%) |
-| TNML_P | car_evaluation | DMRG | 0/30 (0.0%) |
-| TNML_P | concrete | DMRG | 0/30 (0.0%) |
-| TNML_P | energy_efficiency | DMRG | 0/30 (0.0%) |
+| TNML_F | abalone | DMRG | 0/30 (0.0%) |
+| TNML_F | adult | DMRG | 0/30 (0.0%) |
+| TNML_F | bank | DMRG | 0/30 (0.0%) |
+| TNML_F | bike | DMRG | 0/30 (0.0%) |
+| TNML_F | breast | DMRG | 0/30 (0.0%) |
+| TNML_F | car_evaluation | DMRG | 0/30 (0.0%) |
+| TNML_F | concrete | DMRG | 0/30 (0.0%) |
+| TNML_F | energy_efficiency | DMRG | 0/30 (0.0%) |
+| TNML_F | hearth | DMRG | 0/30 (0.0%) |
 
-*... and 31 more*
+*... and 10 more*
 
-## Singular Matrix Failures (1679)
+## Singular Matrix Failures (1708)
 
 | Experiment | Count |
 |------------|------:|
-| ntn | 1679 |
+| ntn | 1680 |
+| dmrg | 28 |
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 1,816
-- **Experiments with missing runs:** 51
+- **Runs remaining:** 1,185
+- **Experiments with missing runs:** 30
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
 
@@ -119,10 +121,9 @@
 
 - LMPO2TypeI: breast
 
-**DMRG** (8 experiments, 240 runs missing):
+**DMRG** (4 experiments, 120 runs missing):
 
 - TNML_F: breast, hearth, iris, wine
-- TNML_P: breast, hearth, iris, wine
 
 ### Medium
 
@@ -130,20 +131,18 @@
 
 - LMPO2TypeI: car_evaluation, obesity, student_perf
 
-**DMRG** (18 experiments, 540 runs missing):
+**DMRG** (9 experiments, 270 runs missing):
 
 - TNML_F: bike, car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
-- TNML_P: bike, car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
 
 ### Large
 
-**NTN** (7 experiments, 406 runs missing):
+**NTN** (7 experiments, 405 runs missing):
 
 - LMPO2TypeI: adult, bank, mushrooms, popularity, student_dropout
 - MMPO2: adult
 - MMPO2TypeI: adult
 
-**DMRG** (14 experiments, 420 runs missing):
+**DMRG** (6 experiments, 180 runs missing):
 
-- TNML_F: abalone, adult, ai4i, bank, mushrooms, popularity, student_dropout
-- TNML_P: abalone, adult, ai4i, bank, mushrooms, popularity, student_dropout
+- TNML_F: abalone, adult, bank, mushrooms, popularity, student_dropout
