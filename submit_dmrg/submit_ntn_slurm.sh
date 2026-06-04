@@ -13,6 +13,7 @@ export HOME=/home/nicci
 cd $HOME/GTN
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate gtn
+source missing.env
 
 mkdir -p logs
 
