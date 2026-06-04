@@ -19,6 +19,6 @@ cd $HOME/GTN
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate gtn
 
-python run.py --multirun +experiment=gtn_mnist model=cmpo2 dataset=_fashion_mnist trainer=gtn +data_dir=$DATA_DIR
+python run.py --multirun +experiment=_base_imgs model=cmpo2 dataset=_fashion_mnist trainer=gtn +data_dir=$DATA_DIR
 
 echo "Done: $(date +%F-%R:%S)"
