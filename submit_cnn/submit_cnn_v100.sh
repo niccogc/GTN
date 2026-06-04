@@ -19,4 +19,4 @@ export MKL_NUM_THREADS=4
 export OPENBLAS_NUM_THREADS=4
 export NUMEXPR_NUM_THREADS=4
 
-python run.py --multirun +experiment=cnn_test dataset=_mnist
+python run.py --multirun +experiment=cnn_test
