@@ -15,10 +15,10 @@ echo "Start: $(date +%F-%R:%S)"
 
 export DATA_DIR=/scratch/nicci/data
 export HOME=/home/nicci
-cd $HOME/GTN/experiments_imgs
+cd $HOME/GTN
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate gtn
 
-python run.py --multirun +experiment=gtn_mnist model=cmpo3 dataset=cifar10 trainer=gtn data_dir=$DATA_DIR
+python run.py --multirun +experiment=gtn_mnist model=cmpo3 dataset=_cifar10 trainer=gtn data_dir=$DATA_DIR
 
 echo "Done: $(date +%F-%R:%S)"
