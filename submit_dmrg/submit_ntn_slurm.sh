@@ -15,15 +15,17 @@ source $(conda info --base)/etc/profile.d/conda.sh
 conda activate gtn
 source missing.env
 
+echo "Array Job ID: $SLURM_ARRAY_JOB_ID, Task ID: $SLURM_ARRAY_TASK_ID"
+
 mkdir -p logs
 
 NUM_EXPERIMENTS=${#COMBINATIONS_DMRG[@]}
 
-IDV=$((LSB_JOBINDEX - 1))
+IDV=$((SLURM_ARRAY_TASK_ID - 1))
 read MODEL DATASET <<< "${COMBINATIONS_DMRG[$IDV]}"
 echo "DMRG: $MODEL $DATASET"
 
-echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+echo "Task $SLURM_ARRAY_TASK_ID: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
 
 export OMP_NUM_THREADS=6
 export MKL_NUM_THREADS=6
