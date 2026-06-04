@@ -1510,7 +1510,9 @@ def _main_impl(cfg: DictConfig):
             )
             data = {k: v.to(DEVICE) for k, v in data.items()}
             model = create_image_model(cfg, dataset_info)
+            n_params = sum(p.numel() for p in model.parameters())
             result = run_cnn(cfg, model, data, output_dir)
+            result["n_parameters"] = n_params
         else:
             model_type = "cmpo3" if cfg.model.name == "CMPO3" else "cmpo2"
             data, dataset_info = load_image_dataset(
