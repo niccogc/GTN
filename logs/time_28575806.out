@@ -1,0 +1,112 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28575806: <time> in cluster <dcc> Done
+
+Job <time> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Wed Jun  3 09:24:09 2026
+Job was executed on host(s) <12*n-62-20-5>, in queue <gpuv100>, as user <nicci> in cluster <dcc> at Wed Jun  3 09:31:36 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Wed Jun  3 09:31:36 2026
+Terminated at Wed Jun  3 09:38:05 2026
+Results reported at Wed Jun  3 09:38:05 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpuv100
+#BSUB -J "time"
+#BSUB -W 2:00
+#BSUB -n 12
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/time_%J.out
+#BSUB -e logs/time_%J.err
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+cd "~/GTN"
+source .venv/bin/activate
+
+mkdir -p logs
+
+export OMP_NUM_THREADS=12
+export MKL_NUM_THREADS=12
+export OPENBLAS_NUM_THREADS=12
+export NUMEXPR_NUM_THREADS=12
+
+python run.py --multirun \
+    +experiment=time_comparison \
+    dataset.batch_size=2048
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   623.00 sec.
+    Max Memory :                                 1331 MB
+    Average Memory :                             1015.40 MB
+    Total Requested Memory :                     9000.00 MB
+    Delta Memory :                               7669.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                54
+    Run time :                                   389 sec.
+    Turnaround time :                            836 sec.
+
+The output (if any) follows:
+
+[2026-06-03 09:32:07,095][HYDRA] Launching 2 jobs locally
+[2026-06-03 09:32:07,096][HYDRA] 	#0 : trainer=gtn +experiment=time_comparison dataset.batch_size=2048
+[2026-06-03 09:32:07,258][__main__][INFO] - ▶ RUN CMPO2/MNIST/GTN L=3 bd=10 seed=42 -> /zhome/6b/e/212868/GTN/outputs/time_comparison/gtn/MNIST/CMPO2_np4_rp10_seed42
+[2026-06-03 09:32:28,459][__main__][INFO] - Epoch   1 | Train: 0.9314 | Val: 0.9240 | Time: 6.1s
+[2026-06-03 09:32:37,572][__main__][INFO] - Epoch  11 | Train: 0.9861 | Val: 0.9597 | Time: 15.2s
+[2026-06-03 09:32:48,351][__main__][INFO] - Epoch  21 | Train: 0.9945 | Val: 0.9644 | Time: 26.0s
+[2026-06-03 09:32:57,681][__main__][INFO] - Epoch  31 | Train: 0.9967 | Val: 0.9639 | Time: 35.3s
+[2026-06-03 09:33:09,846][__main__][INFO] - Epoch  41 | Train: 0.9957 | Val: 0.9654 | Time: 47.5s
+[2026-06-03 09:33:20,452][__main__][INFO] - Epoch  51 | Train: 0.9959 | Val: 0.9647 | Time: 58.1s
+[2026-06-03 09:33:29,422][__main__][INFO] - Epoch  61 | Train: 0.9965 | Val: 0.9652 | Time: 67.1s
+[2026-06-03 09:33:39,936][__main__][INFO] - Epoch  71 | Train: 0.9973 | Val: 0.9678 | Time: 77.6s
+[2026-06-03 09:33:49,512][__main__][INFO] - Epoch  81 | Train: 0.9993 | Val: 0.9696 | Time: 87.1s
+[2026-06-03 09:34:01,065][__main__][INFO] - Epoch  91 | Train: 0.9984 | Val: 0.9691 | Time: 98.7s
+[2026-06-03 09:34:11,943][__main__][INFO] - Epoch 101 | Train: 0.9986 | Val: 0.9679 | Time: 109.6s
+[2026-06-03 09:34:21,635][__main__][INFO] - Epoch 111 | Train: 0.9980 | Val: 0.9647 | Time: 119.3s
+[2026-06-03 09:34:32,246][__main__][INFO] - Epoch 121 | Train: 0.9945 | Val: 0.9633 | Time: 129.9s
+[2026-06-03 09:34:40,746][__main__][INFO] - Epoch 131 | Train: 0.9974 | Val: 0.9686 | Time: 138.4s
+[2026-06-03 09:34:49,133][__main__][INFO] - Epoch 141 | Train: 0.9999 | Val: 0.9692 | Time: 146.8s
+[2026-06-03 09:34:57,374][__main__][INFO] - Epoch 151 | Train: 1.0000 | Val: 0.9724 | Time: 155.0s
+[2026-06-03 09:35:05,853][__main__][INFO] - Epoch 161 | Train: 1.0000 | Val: 0.9729 | Time: 163.5s
+[2026-06-03 09:35:14,318][__main__][INFO] - Epoch 171 | Train: 1.0000 | Val: 0.9729 | Time: 171.9s
+[2026-06-03 09:35:25,211][__main__][INFO] - Epoch 181 | Train: 1.0000 | Val: 0.9733 | Time: 182.8s
+[2026-06-03 09:35:35,010][__main__][INFO] - Epoch 191 | Train: 1.0000 | Val: 0.9736 | Time: 192.6s
+[2026-06-03 09:35:43,811][__main__][INFO] - Epoch 201 | Train: 1.0000 | Val: 0.9738 | Time: 201.4s
+[2026-06-03 09:35:54,316][__main__][INFO] - Epoch 211 | Train: 1.0000 | Val: 0.9736 | Time: 211.9s
+[2026-06-03 09:36:06,085][__main__][INFO] - Epoch 221 | Train: 1.0000 | Val: 0.9736 | Time: 223.7s
+[2026-06-03 09:36:17,632][__main__][INFO] - Epoch 231 | Train: 1.0000 | Val: 0.9734 | Time: 235.3s
+[2026-06-03 09:36:29,103][__main__][INFO] - Epoch 241 | Train: 1.0000 | Val: 0.9736 | Time: 246.7s
+[2026-06-03 09:36:41,172][__main__][INFO] - Epoch 251 | Train: 1.0000 | Val: 0.9738 | Time: 258.8s
+[2026-06-03 09:36:50,141][__main__][INFO] - Epoch 261 | Train: 1.0000 | Val: 0.9737 | Time: 267.8s
+[2026-06-03 09:37:01,672][__main__][INFO] - Epoch 271 | Train: 1.0000 | Val: 0.9734 | Time: 279.3s
+[2026-06-03 09:37:13,431][__main__][INFO] - Epoch 281 | Train: 1.0000 | Val: 0.9733 | Time: 291.1s
+[2026-06-03 09:37:25,110][__main__][INFO] - Epoch 291 | Train: 1.0000 | Val: 0.9733 | Time: 302.7s
+[2026-06-03 09:37:31,791][__main__][INFO] - Early stopping at epoch 298
+[2026-06-03 09:37:31,858][__main__][INFO] - ✓ DONE CMPO2/MNIST/GTN L=3 bd=10 seed=42 -> /zhome/6b/e/212868/GTN/outputs/time_comparison/gtn/MNIST/CMPO2_np4_rp10_seed42 | val=0.9739
+[2026-06-03 09:37:31,860][HYDRA] 	#1 : trainer=ntn +experiment=time_comparison dataset.batch_size=2048
+[2026-06-03 09:37:32,143][__main__][INFO] - ▶ RUN CMPO2/MNIST/NTN L=3 bd=10 seed=42 -> /zhome/6b/e/212868/GTN/outputs/time_comparison/ntn/MNIST/CMPO2_np4_rp10_seed42
+Starting Fit: 20 epochs.
+Sweep Order: ['0_Pi', '0_Pa', '1_Pi', '1_Pa', '2_Pi', '2_Pa', '1_Pi', '1_Pa']
+Validation: Using separate validation set for best model selection
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 2.62812 | quality: 0.11167
+        | Val:   loss: 2.62204 | quality: 0.11667
+
+✗ Exception at epoch 1: CUDA out of memory. Tried to allocate 2.89 GiB. GPU 0 has a total capacity of 15.77 GiB of which 2.09 GiB is free. Including non-PyTorch memory, this process has 13.67 GiB memory in use. Of the allocated memory 12.95 GiB is allocated by PyTorch, and 313.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+[2026-06-03 09:37:51,116][__main__][ERROR] - CUDA out of memory: CUDA out of memory. Tried to allocate 2.89 GiB. GPU 0 has a total capacity of 15.77 GiB of which 2.09 GiB is free. Including non-PyTorch memory, this process has 13.67 GiB memory in use. Of the allocated memory 12.95 GiB is allocated by PyTorch, and 313.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+[2026-06-03 09:37:51,124][__main__][WARNING] - ✗ OOM CMPO2/MNIST/NTN L=3 bd=10 seed=42 -> /zhome/6b/e/212868/GTN/outputs/time_comparison/ntn/MNIST/CMPO2_np4_rp10_seed42 | val=None
+
+
+PS:
+
+Read file <logs/time_28575806.err> for stderr output of this job.
+

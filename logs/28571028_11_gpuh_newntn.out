@@ -1,0 +1,129 @@
+NTN: mmpo2_typei adult
+Task 11: Dataset=adult, Model=mmpo2_typei, Experiment=uci_ntn_sweep
+[2026-06-04 05:15:22,742][HYDRA] Launching 30 jobs locally
+[2026-06-04 05:15:22,742][HYDRA] 	#0 : model.L=4 model.bond_dim=12 seed=42 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2_typei dataset=adult
+[2026-06-04 05:15:22,938][utils.tracking][INFO] - Loaded 19312 tracked runs from runs_tracking.csv
+[2026-06-04 05:15:22,940][__main__][INFO] - ⏭ SKIP MMPO2TypeI/adult/NTN L=4 bd=12 seed=42 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MMPO2TypeI_rg5_init0.1/L4_bd12_seed42 | previous run failed with singular matrix (permanent) val=0.5460
+[2026-06-04 05:15:22,942][HYDRA] 	#1 : model.L=4 model.bond_dim=12 seed=10090 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2_typei dataset=adult
+[2026-06-04 05:15:23,311][__main__][INFO] - ▶ RUN MMPO2TypeI/adult/NTN L=4 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MMPO2TypeI_rg5_init0.1/L4_bd12_seed10090
+Starting Ensemble Fit: 20 epochs
+Models: [(1, 1), (2, 2), (3, 3), (4, 4)]
+Total nodes: 10
+Validation: Using separate validation set
+Early stopping: patience=10, min_delta=0.001
+Init    | Train: loss: 1.45271 | quality: 0.19299
+        | Val:   loss: 1.45180 | quality: 0.19724
+
+Epoch 1 | Train: loss: 1.02193 | quality: 0.55693
+        | Val:   loss: 1.03136 | quality: 0.54791
+ *
+Epoch 2 | Train: loss: 0.97475 | quality: 0.56395
+        | Val:   loss: 0.98555 | quality: 0.55501
+ *
+Epoch 3 | Train: loss: 0.95306 | quality: 0.56641
+        | Val:   loss: 0.96759 | quality: 0.55992
+ *
+Epoch 4 | Train: loss: 0.94312 | quality: 0.56966
+        | Val:   loss: 0.96898 | quality: 0.56061
+ *
+Epoch 5 | Train: loss: 0.92837 | quality: 0.57413
+        | Val:   loss: 0.97622 | quality: 0.55747
+
+Epoch 6 | Train: loss: 0.91043 | quality: 0.58267
+        | Val:   loss: 0.99480 | quality: 0.55214
+
+Epoch 7 | Train: loss: 1.75443 | quality: 0.59057
+        | Val:   loss: 2.04095 | quality: 0.54191
+
+Epoch 8 | Train: loss: 113199158350774501147077604631106028682369547894784.00000 | quality: 0.16672
+        | Val:   loss: 151598274772996308294827692689108841263022607433728.00000 | quality: 0.16926
+
+
+✗ NaN loss at epoch 9 - stopping training
+[2026-06-04 05:16:50,486][__main__][WARNING] - ✗ SINGULAR MMPO2TypeI/adult/NTN L=4 bd=12 seed=10090 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MMPO2TypeI_rg5_init0.1/L4_bd12_seed10090 | val=0.5606
+[2026-06-04 05:16:50,490][HYDRA] 	#2 : model.L=4 model.bond_dim=12 seed=32874 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=uci_ntn_sweep model=mmpo2_typei dataset=adult
+[2026-06-04 05:16:50,608][__main__][INFO] - ▶ RUN MMPO2TypeI/adult/NTN L=4 bd=12 seed=32874 -> /zhome/6b/e/212868/GTN/outputs/ntn/adult/MMPO2TypeI_rg5_init0.1/L4_bd12_seed32874
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28571028[11]: <ntn_grid_missing[1-11]%20> in cluster <dcc> Exited
+
+Job <ntn_grid_missing[1-11]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Tue Jun  2 09:11:44 2026
+Job was executed on host(s) <6*n-62-12-81>, in queue <gpuh100>, as user <nicci> in cluster <dcc> at Thu Jun  4 05:15:05 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Thu Jun  4 05:15:05 2026
+Terminated at Fri Jun  5 01:16:52 2026
+Results reported at Fri Jun  5 01:16:52 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpuh100
+#BSUB -J "ntn_grid_missing[1-11]%20"
+#BSUB -W 20:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_gpuh_newntn.out
+#BSUB -e logs/%J_%I_gpuh_newntn.err
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+cd "~/GTN"
+source .venv/bin/activate
+source missing.env
+
+NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+read MODEL DATASET <<< "${COMBINATIONS_NTN[$IDV]}"
+echo "NTN: $MODEL $DATASET"
+
+if [[ "$MODEL" == "cpda" || "$MODEL" == "cpda_typei" ]]; then
+    EXPERIMENT="cpda_ntn_sweep"
+else
+    EXPERIMENT="uci_ntn_sweep"
+fi
+
+echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=$EXPERIMENT \
+    model=$MODEL \
+    dataset=$DATASET
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   72192.00 sec.
+    Max Memory :                                 1042 MB
+    Average Memory :                             1018.78 MB
+    Total Requested Memory :                     4500.00 MB
+    Delta Memory :                               3458.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                26
+    Run time :                                   72107 sec.
+    Turnaround time :                            230708 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28571028_11_gpuh_newntn.err> for stderr output of this job.
+

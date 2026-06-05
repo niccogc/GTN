@@ -1,0 +1,44 @@
+/zhome/6b/e/212868/.lsbatch/1780471449.28575806.shell: line 12: cd: ~/GTN: No such file or directory
+Traceback (most recent call last):
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 1001, in fit
+    self.update_tn_node(
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 855, in update_tn_node
+    delta_tensor = self._get_node_update(
+                   ^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 674, in _get_node_update
+    b, H = self._compute_H_b(node_tag)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 232, in _compute_H_b
+    J, H = self.compute_node_derivatives(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 145, in compute_node_derivatives
+    return self._sum_over_batches(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 114, in _sum_over_batches
+    batch_result = batch_operation(*inputs, *args, **kwargs)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/model/base/NTN.py", line 218, in _batch_node_derivatives
+    node_hess = hess_tn.contract(output_inds=hess_out_inds, optimize=_MEMORY_OPTIMIZER)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/tensor_core.py", line 8922, in contract
+    return tensor_contract(
+           ^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/tensor_core.py", line 319, in tensor_contract
+    data_out = array_contract(
+               ^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/quimb/tensor/contraction.py", line 285, in array_contract
+    return ctg.array_contract(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/cotengra/interface.py", line 864, in array_contract
+    return expr(*arrays, backend=backend)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/cotengra/contract.py", line 784, in __call__
+    p_array = _tensordot(l_array, r_array, arg)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/autoray/autoray.py", line 2574, in numpy_like
+    return fn(a, b, dims=axes)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/zhome/6b/e/212868/GTN/.venv/lib/python3.12/site-packages/torch/functional.py", line 1358, in tensordot
+    return _VF.tensordot(a, b, dims_a, dims_b)  # type: ignore[attr-defined]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 2.89 GiB. GPU 0 has a total capacity of 15.77 GiB of which 2.09 GiB is free. Including non-PyTorch memory, this process has 13.67 GiB memory in use. Of the allocated memory 12.95 GiB is allocated by PyTorch, and 313.75 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
