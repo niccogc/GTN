@@ -1,5 +1,5 @@
 #!/bin/bash
-#BSUB -q hpc
+#BSUB -q gpuv100
 #BSUB -J "ntn_test[1-20]%20"
 #BSUB -W 8:00
 #BSUB -n 6
@@ -7,25 +7,11 @@
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_TEST.out
 #BSUB -e logs/%J_%I_TEST.err
+#BSUB -gpu "num=1:mode=exclusive_process"
 
-MODELS=(
-"cpda" "cpda_typei" "lmpo2" "lmpo2_typei" "mpo2" "mpo2_typei" "mmpo2" "mmpo2_typei" "tnml_f" "tnml_p"
-)
+DATASETS=( "iris" "hearth" "winequalityc" "wine" "realstate" "energy_efficiency" "concrete" "abalone"  "ai4i" )
 
-# DATASETS=(
-#     "abalone" "adult" "ai4i" "appliances" "bank" "bike" "breast"
-#     "car_evaluation" "concrete" "energy_efficiency" "hearth"
-#     "iris" "mushrooms" "obesity" "popularity" "realstate"
-#     "seoulBike" "student_dropout" "student_perf" "wine"
-#     "winequalityc"
-# )
-DATASETS=(
-    "bike" "seoulBike"
-    # "abalone" "ai4i"  "hearth" "wine" "winequalityc" "concrete" "energy_efficiency"  "iris" "realstate"
-    )
-
-
-NUM_MODELS=${#MODELS[@]}
+NUM_MODELS=1
 NUM_DATASETS=${#DATASETS[@]}
 NUM_EXPERIMENTS=$((NUM_DATASETS * NUM_MODELS))
 
@@ -54,8 +40,8 @@ MODEL_IDX=$((IDV % NUM_MODELS))
 DATASET_IDX=$((IDV / NUM_MODELS))
 
 CURRENT_DATASET=${DATASETS[$DATASET_IDX]}
-CURRENT_MODEL=${MODELS[$MODEL_IDX]}
-EXPERIMENT=test_ntn
+CURRENT_MODEL=tnml_f
+EXPERIMENT=test_dmrg
 
 echo "Task $LSB_JOBINDEX: Dataset=$CURRENT_DATASET, Model=$CURRENT_MODEL, Experiment=$EXPERIMENT"
 

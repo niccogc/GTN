@@ -4,15 +4,15 @@
 
 ## Overall Progress
 
-**Total:** 16,815 / 18,000 (93.4%)
+**Total:** 17,028 / 18,000 (94.6%)
 
 | Status | Count |
 |--------|------:|
-| Success | 15,107 |
+| Success | 15,320 |
 | Singular | 1,708 |
 | OOM | 278 |
 | Failed | 0 |
-| Missing | 1,185 |
+| Missing | 972 |
 
 ## By Trainer
 
@@ -20,7 +20,7 @@
 |---------|-----:|------:|--:|--------:|---------:|----:|-------:|
 | NTN | 7,785 | 8,400 | 92.7% | 6,105 | 1,680 | 278 | 0 |
 | GTN | 9,000 | 9,000 | 100.0% | 9,000 | 0 | 0 | 0 |
-| DMRG | 30 | 600 | 5.0% | 2 | 28 | 0 | 0 |
+| DMRG | 243 | 600 | 40.5% | 215 | 28 | 0 | 0 |
 
 ## Model x Trainer Matrix
 
@@ -35,47 +35,42 @@
 | CPDA | 600/600 (100.0%) | 600/600 (100.0%) | N/A |
 | CPDATypeI | 600/600 (100.0%) | 600/600 (100.0%) | N/A |
 | TNML_P | 600/600 (100.0%) | 600/600 (100.0%) | N/A |
-| TNML_F | 600/600 (100.0%) | 600/600 (100.0%) | 30/600 (5.0%) |
+| TNML_F | 600/600 (100.0%) | 600/600 (100.0%) | 243/600 (40.5%) |
 | BosonMPS | 0/0 (0.0%) | 600/600 (100.0%) | N/A |
 
 ## By Dataset Size
 
 | Size | NTN | GTN | DMRG | Missing |
 |------|-----|-----|------|--------:|
-| Small | 1623/1680 (96.6%) | 1800/1800 (100.0%) | 0/120 (0.0%) | 177 |
-| Medium | 3627/3780 (96.0%) | 4050/4050 (100.0%) | 0/270 (0.0%) | 423 |
-| Large | 2535/2940 (86.2%) | 3150/3150 (100.0%) | 30/210 (14.3%) | 585 |
+| Small | 1623/1680 (96.6%) | 1800/1800 (100.0%) | 60/120 (50.0%) | 117 |
+| Medium | 3627/3780 (96.0%) | 4050/4050 (100.0%) | 123/270 (45.6%) | 300 |
+| Large | 2535/2940 (86.2%) | 3150/3150 (100.0%) | 60/210 (28.6%) | 555 |
 
 ## By Dataset
 
-**Complete:** ai4i
+**Complete:** abalone, ai4i, concrete, energy_efficiency, hearth, iris, realstate
 
 | Dataset | Done | Total | % |
 |---------|-----:|------:|--:|
-| abalone | 870 | 900 | 96.7% |
 | adult | 732 | 900 | 81.3% |
 | bank | 798 | 900 | 88.7% |
-| bike | 870 | 900 | 96.7% |
+| bike | 875 | 900 | 97.2% |
 | breast | 813 | 900 | 90.3% |
 | car_evaluation | 812 | 900 | 90.2% |
-| concrete | 870 | 900 | 96.7% |
-| energy_efficiency | 870 | 900 | 96.7% |
-| hearth | 870 | 900 | 96.7% |
-| iris | 870 | 900 | 96.7% |
 | mushrooms | 820 | 900 | 91.1% |
 | obesity | 825 | 900 | 91.7% |
 | popularity | 810 | 900 | 90.0% |
-| realstate | 870 | 900 | 96.7% |
 | seoulBike | 870 | 900 | 96.7% |
 | student_dropout | 785 | 900 | 87.2% |
 | student_perf | 820 | 900 | 91.1% |
 | wine | 870 | 900 | 96.7% |
-| winequalityc | 870 | 900 | 96.7% |
+| winequalityc | 898 | 900 | 99.8% |
 
 ## Incomplete Experiments
 
 | Model | Dataset | Trainer | Progress |
 |-------|---------|---------|----------|
+| TNML_F | winequalityc | DMRG | 28/30 (93.3%) |
 | LMPO2TypeI | obesity | NTN | 45/90 (50.0%) |
 | LMPO2TypeI | mushrooms | NTN | 40/90 (44.4%) |
 | LMPO2TypeI | student_perf | NTN | 40/90 (44.4%) |
@@ -83,21 +78,20 @@
 | LMPO2TypeI | car_evaluation | NTN | 32/90 (35.6%) |
 | LMPO2TypeI | popularity | NTN | 30/90 (33.3%) |
 | LMPO2TypeI | bank | NTN | 18/90 (20.0%) |
+| TNML_F | bike | DMRG | 5/30 (16.7%) |
 | MMPO2 | adult | NTN | 3/30 (10.0%) |
 | LMPO2TypeI | adult | NTN | 7/90 (7.8%) |
 | MMPO2TypeI | adult | NTN | 2/30 (6.7%) |
 | LMPO2TypeI | student_dropout | NTN | 5/90 (5.6%) |
-| TNML_F | abalone | DMRG | 0/30 (0.0%) |
 | TNML_F | adult | DMRG | 0/30 (0.0%) |
 | TNML_F | bank | DMRG | 0/30 (0.0%) |
-| TNML_F | bike | DMRG | 0/30 (0.0%) |
 | TNML_F | breast | DMRG | 0/30 (0.0%) |
 | TNML_F | car_evaluation | DMRG | 0/30 (0.0%) |
-| TNML_F | concrete | DMRG | 0/30 (0.0%) |
-| TNML_F | energy_efficiency | DMRG | 0/30 (0.0%) |
-| TNML_F | hearth | DMRG | 0/30 (0.0%) |
+| TNML_F | mushrooms | DMRG | 0/30 (0.0%) |
+| TNML_F | obesity | DMRG | 0/30 (0.0%) |
+| TNML_F | popularity | DMRG | 0/30 (0.0%) |
 
-*... and 10 more*
+*... and 4 more*
 
 ## Singular Matrix Failures (1708)
 
@@ -108,8 +102,8 @@
 
 ## Remaining Work Summary
 
-- **Runs remaining:** 1,185
-- **Experiments with missing runs:** 30
+- **Runs remaining:** 972
+- **Experiments with missing runs:** 24
 - **Missing NTN runs:** 0
 - **Missing GTN runs:** 0
 
@@ -121,9 +115,9 @@
 
 - LMPO2TypeI: breast
 
-**DMRG** (4 experiments, 120 runs missing):
+**DMRG** (2 experiments, 60 runs missing):
 
-- TNML_F: breast, hearth, iris, wine
+- TNML_F: breast, wine
 
 ### Medium
 
@@ -131,9 +125,9 @@
 
 - LMPO2TypeI: car_evaluation, obesity, student_perf
 
-**DMRG** (9 experiments, 270 runs missing):
+**DMRG** (6 experiments, 147 runs missing):
 
-- TNML_F: bike, car_evaluation, concrete, energy_efficiency, obesity, realstate, seoulBike, student_perf, winequalityc
+- TNML_F: bike, car_evaluation, obesity, seoulBike, student_perf, winequalityc
 
 ### Large
 
@@ -143,6 +137,6 @@
 - MMPO2: adult
 - MMPO2TypeI: adult
 
-**DMRG** (6 experiments, 180 runs missing):
+**DMRG** (5 experiments, 150 runs missing):
 
-- TNML_F: abalone, adult, bank, mushrooms, popularity, student_dropout
+- TNML_F: adult, bank, mushrooms, popularity, student_dropout
