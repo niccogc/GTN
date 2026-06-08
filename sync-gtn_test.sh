@@ -23,8 +23,8 @@ sync_host () {
   rsync -a "$TMPDIR/$REL_TARGET/" "$TARGET/"
 }
 
-# sync_host titans &
-sync_host hpc &
+sync_host titans &
+# sync_host hpc &
 
 wait
 echo "Done."

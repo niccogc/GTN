@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q gpuv100
-#BSUB -J "ntn_test[1-20]%20"
+#BSUB -J "ntn_test[1-2]%20"
 #BSUB -W 8:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=1GB]"
@@ -9,7 +9,7 @@
 #BSUB -e logs/%J_%I_TEST.err
 #BSUB -gpu "num=1:mode=exclusive_process"
 
-DATASETS=( "iris" "hearth" "winequalityc" "wine" "realstate" "energy_efficiency" "concrete" "abalone"  "ai4i" )
+DATASETS=( "winequalityc" "wine" )
 
 NUM_MODELS=1
 NUM_DATASETS=${#DATASETS[@]}
