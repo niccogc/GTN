@@ -568,6 +568,20 @@ def run_dmrg(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         poly_degree=poly_degree,
     )
     
+    evaluate_test = cfg.trainer.get("evaluate_test", False)
+    loader_test = None
+    if evaluate_test:
+        loader_test = create_inputs(
+            X=data["X_test"],
+            y=data["y_test"],
+            input_labels=model.input_labels,
+            output_labels=model.output_dims,
+            batch_size=cfg.dataset.batch_size,
+            append_bias=False,
+            encoding=encoding,
+            poly_degree=poly_degree,
+        )
+    
     dmrg = DMRG(
         tn=model.tn,
         output_dims=model.output_dims,
@@ -602,6 +616,10 @@ def run_dmrg(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
             "epoch_time": float(epoch_time),
             "wall_time": float(wall_time),
         }
+        if evaluate_test and loader_test is not None:
+            scores_test = dmrg.evaluate(eval_metrics, data_stream=loader_test)
+            metrics["test_loss"] = float(scores_test["loss"])
+            metrics["test_quality"] = float(compute_quality(scores_test))
         metrics_log.append(metrics)
     
     oom_error = False
@@ -640,6 +658,8 @@ def run_dmrg(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     best_train_quality = None
     best_val_loss = float("inf")
     best_val_quality = None
+    best_test_loss = None
+    best_test_quality = None
     
     if metrics_log:
         best_val_q = float("-inf")
@@ -651,6 +671,8 @@ def run_dmrg(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
                 best_train_quality = m["train_quality"]
                 best_val_loss = m["val_loss"]
                 best_val_quality = m["val_quality"]
+                best_test_loss = m.get("test_loss")
+                best_test_quality = m.get("test_quality")
     
     if success and scores_train is not None:
         best_train_loss = float(scores_train["loss"])
@@ -661,7 +683,7 @@ def run_dmrg(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
     total_time = time.time() - train_start_time
     gpu_info_after = get_gpu_memory_info()
     
-    return {
+    result = {
         "success": success,
         "singular": singular,
         "oom_error": oom_error,
@@ -676,6 +698,12 @@ def run_dmrg(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:
         "_dmrg": dmrg,
         "_loader_val": loader_val,
     }
+    
+    if evaluate_test:
+        result["test_loss"] = best_test_loss
+        result["test_quality"] = best_test_quality
+    
+    return result
 
 
 def run_gtn(cfg: DictConfig, model, data: dict, output_dir: Path) -> dict:

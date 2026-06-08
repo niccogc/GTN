@@ -3,10 +3,10 @@ import json
 from pathlib import Path
 import matplotlib.pyplot as plt
 
-BASE_DIR = Path("/home/nicci/Desktop/remote/GTN/outputs/time_comparison")
+BASE_DIR = Path(__file__).parent.parent / "outputs" / "time_comparison"
 NTN_FILE = BASE_DIR / "ntn/MNIST/CMPO2_np4_rp10_seed42/results.json"
 GTN_FILE = BASE_DIR / "gtn/MNIST/CMPO2_np4_rp10_seed42/results.json"
-OUTPUT_PATH = Path("/home/nicci/Desktop/remote/GTN/paper_scripts/images/cmpo2_val_quality_vs_time.pdf")
+OUTPUT_PATH = Path(__file__).parent / "images" / "cmpo2_val_quality_vs_time.pdf"
 
 with open(NTN_FILE) as f:
     ntn_data = json.load(f)
