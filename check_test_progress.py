@@ -10,6 +10,7 @@ Usage:
     python check_test_progress.py --verbose    # Show all incomplete experiments
     python check_test_progress.py --missing    # List all missing run paths
     python check_test_progress.py --json       # Output as JSON
+    python check_test_progress.py --bash       # Generate bash arrays for missing experiments
 """
 
 import argparse
@@ -64,6 +65,60 @@ TEST_SEEDS = [
 
 CONF_DIR = Path("conf")
 TEST_OUTPUTS_DIR = Path("test_outputs")
+
+# Models that use per-dataset best trainer from conf/best_conf/tnml/
+TNML_MODELS = ["TNML_F", "TNML_P"]
+
+
+def load_tnml_best_trainers() -> dict[str, dict[str, str]]:
+    """Load best trainer per dataset for TNML models from conf/best_conf/tnml/*.yaml.
+    
+    Returns:
+        Dict mapping model name -> {dataset: trainer}
+    """
+    best_trainers: dict[str, dict[str, str]] = {}
+    tnml_dir = CONF_DIR / "best_conf" / "tnml"
+    
+    if not tnml_dir.exists():
+        return best_trainers
+    
+    for yaml_file in tnml_dir.glob("*.yaml"):
+        if yaml_file.stem.startswith("_"):
+            continue
+        
+        model_name = yaml_file.stem.upper().replace("_", "_")  # tnml_f -> TNML_F
+        # Map filename to model name
+        model_map = {
+            "tnml_f": "TNML_F",
+            "tnml_p": "TNML_P",
+        }
+        model = model_map.get(yaml_file.stem, yaml_file.stem.upper())
+        
+        try:
+            content = yaml_file.read_text()
+            best_trainers[model] = {}
+            
+            # Parse YAML manually - look for dataset entries with trainer field
+            current_dataset = None
+            for line in content.split("\n"):
+                # Match dataset name (indented key ending with :)
+                dataset_match = re.match(r"^\s{2}(\w+):\s*$", line)
+                if dataset_match:
+                    current_dataset = dataset_match.group(1)
+                    continue
+                
+                # Match trainer field
+                trainer_match = re.match(r"^\s+trainer:\s*(\w+)", line)
+                if trainer_match and current_dataset:
+                    best_trainers[model][current_dataset] = trainer_match.group(1)
+        except Exception:
+            pass
+    
+    return best_trainers
+
+
+# Load TNML best trainers at module load time
+TNML_BEST_TRAINERS = load_tnml_best_trainers()
 
 
 def load_datasets_from_conf() -> tuple[list[str], dict[str, str]]:
@@ -131,9 +186,28 @@ DATASETS, DATASET_SIZES = load_datasets_from_conf()
 
 
 def get_models_for_trainer(trainer: str) -> list[str]:
+    """Get models that can run with this trainer (excluding TNML which is per-dataset)."""
     if trainer == "ntn":
-        return MODELS_NTN
-    return MODELS_GTN
+        return [m for m in MODELS_NTN if m not in TNML_MODELS]
+    return [m for m in MODELS_GTN if m not in TNML_MODELS]
+
+
+def should_run_tnml(model: str, dataset: str, trainer: str) -> bool:
+    """Check if a TNML model should run on this dataset/trainer combo.
+    
+    TNML models only run on their best trainer per dataset.
+    """
+    if model not in TNML_MODELS:
+        return True
+    
+    best_trainers = TNML_BEST_TRAINERS.get(model, {})
+    best_trainer = best_trainers.get(dataset)
+    
+    # If no best config found, don't expect this run
+    if best_trainer is None:
+        return False
+    
+    return best_trainer == trainer
 
 
 def get_experiment_path(trainer: str, model: str, dataset: str) -> Path:
@@ -243,9 +317,17 @@ def collect_stats():
 
     # Iterate through all expected combinations
     for trainer in TRAINERS:
+        # Regular models (non-TNML)
         models = get_models_for_trainer(trainer)
-        for model in models:
+        
+        # Add TNML models - they will be filtered per-dataset
+        all_models = models + TNML_MODELS
+        
+        for model in all_models:
             for dataset in DATASETS:
+                # Skip TNML models that shouldn't run on this trainer for this dataset
+                if model in TNML_MODELS and not should_run_tnml(model, dataset, trainer):
+                    continue
                 exp_dir = get_experiment_path(trainer, model, dataset)
                 exp_path_str = f"{trainer}/{model}/{dataset}"
 
@@ -552,6 +634,56 @@ def generate_report(data: dict, verbose: bool = False) -> str:
     return "\n".join(lines)
 
 
+def generate_bash_arrays(data: dict) -> str:
+    """Generate bash declare -a arrays for missing test experiments."""
+    MODEL_TO_VAR = {
+        "MPO2": "mpo2",
+        "LMPO2": "lmpo2",
+        "MMPO2": "mmpo2",
+        "MPO2TypeI": "mpo2_typei",
+        "LMPO2TypeI": "lmpo2_typei",
+        "MMPO2TypeI": "mmpo2_typei",
+        "CPDA": "cpda",
+        "CPDATypeI": "cpda_typei",
+        "TNML_P": "tnml_p",
+        "TNML_F": "tnml_f",
+        "BosonMPS": "bosonmps",
+    }
+    stats = data["stats"]
+    lines = []
+
+    for trainer in TRAINERS:
+        trainer_upper = trainer.upper()
+        var_name = f"COMBINATIONS_{trainer_upper}"
+
+        missing_combos = []
+        for (model, dataset, combo_trainer), combo_s in stats["by_combo"].items():
+            if combo_trainer == trainer and combo_s["done"] < combo_s["total"]:
+                missing_combos.append((model, dataset))
+
+        missing_combos.sort(key=lambda x: (x[0], x[1]))
+        i = 0
+        by_model = defaultdict(list)
+        for model, dataset in missing_combos:
+            by_model[model].append(dataset)
+            i += 1
+
+        lines.append(f"# {i} Experiments")
+        lines.append(f"declare -a {var_name}=(")
+
+        for model in sorted(by_model.keys()):
+            datasets = sorted(by_model[model])
+            model_var = MODEL_TO_VAR.get(model, model.lower())
+            lines.append(f"    # {model} ({len(datasets)} datasets)")
+            for dataset in datasets:
+                lines.append(f'    "{model_var} {dataset}"')
+
+        lines.append(")")
+        lines.append("")
+
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def main():
     parser = argparse.ArgumentParser(description="Check test experiment progress")
     parser.add_argument(
@@ -561,6 +693,11 @@ def main():
         "--missing", "-m", action="store_true", help="List all missing run paths"
     )
     parser.add_argument("--json", "-j", action="store_true", help="Output as JSON")
+    parser.add_argument(
+        "--bash",
+        action="store_true",
+        help="Print missing experiments as bash declare -a COMBINATIONS arrays",
+    )
     args = parser.parse_args()
 
     data = collect_stats()
@@ -587,6 +724,14 @@ def main():
                 print(run)
         except BrokenPipeError:
             pass
+        return
+
+    if args.bash:
+        bash_content = generate_bash_arrays(data)
+        print(bash_content)
+        # Also save to missing_test.env
+        Path("missing_test.env").write_text(bash_content)
+        print("missing_test.env updated.", file=sys.stderr)
         return
 
     report = generate_report(data, verbose=args.verbose)
