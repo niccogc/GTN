@@ -20,6 +20,8 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+import pandas as pd
+
 MODELS_NTN = [
     "CPDA",
     "CPDATypeI",
@@ -65,6 +67,7 @@ TEST_SEEDS = [
 
 CONF_DIR = Path("conf")
 TEST_OUTPUTS_DIR = Path("test_outputs")
+TRACKING_FILE = Path("runs_tracking.csv")
 
 # Models that use per-dataset best trainer from conf/best_conf/tnml/
 TNML_MODELS = ["TNML_F", "TNML_P"]
@@ -119,6 +122,139 @@ def load_tnml_best_trainers() -> dict[str, dict[str, str]]:
 
 # Load TNML best trainers at module load time
 TNML_BEST_TRAINERS = load_tnml_best_trainers()
+
+
+def load_tracking_file() -> pd.DataFrame:
+    """Load the tracking CSV file (filtered to test_outputs only)."""
+    if not TRACKING_FILE.exists():
+        return pd.DataFrame()
+    
+    try:
+        df = pd.read_csv(TRACKING_FILE)
+        # Filter to test_outputs only
+        df = df[df["output_path"].str.startswith("test_outputs", na=False)]
+        return df
+    except Exception as e:
+        print(f"Warning: Could not load tracking file: {e}", file=sys.stderr)
+        return pd.DataFrame()
+
+
+def load_best_configs() -> dict[str, dict[str, dict]]:
+    """Load best L/bond_dim configs for each trainer/model/dataset.
+    
+    Returns:
+        Dict[trainer][model][dataset] -> {"L": int, "bond_dim": int}
+    """
+    best_configs: dict[str, dict[str, dict]] = {}
+    best_conf_dir = CONF_DIR / "best_conf"
+    
+    for trainer_dir in best_conf_dir.iterdir():
+        if not trainer_dir.is_dir():
+            continue
+        trainer = trainer_dir.name
+        best_configs[trainer] = {}
+        
+        for yaml_file in trainer_dir.glob("*.yaml"):
+            if yaml_file.stem.startswith("_"):
+                continue
+            
+            # Map filename to model name
+            model_map = {
+                "tnml_f": "TNML_F",
+                "tnml_p": "TNML_P",
+                "mpo2": "MPO2",
+                "lmpo2": "LMPO2",
+                "mmpo2": "MMPO2",
+                "cpda": "CPDA",
+                "mpo2typei": "MPO2TypeI",
+                "lmpo2typei": "LMPO2TypeI",
+                "mmpo2typei": "MMPO2TypeI",
+                "cpdatypei": "CPDATypeI",
+                "bosonmps": "BosonMPS",
+            }
+            model = model_map.get(yaml_file.stem, yaml_file.stem.upper())
+            
+            try:
+                content = yaml_file.read_text()
+                best_configs[trainer][model] = {}
+                
+                current_dataset = None
+                current_config: dict = {}
+                
+                for line in content.split("\n"):
+                    # Match dataset name
+                    dataset_match = re.match(r"^\s{2}(\w+):\s*$", line)
+                    if dataset_match:
+                        if current_dataset and current_config:
+                            best_configs[trainer][model][current_dataset] = current_config.copy()
+                        current_dataset = dataset_match.group(1)
+                        current_config = {}
+                        continue
+                    
+                    # Match L
+                    l_match = re.match(r"^\s+L:\s*(\d+)", line)
+                    if l_match and current_dataset:
+                        current_config["L"] = int(l_match.group(1))
+                    
+                    # Match bond_dim
+                    bd_match = re.match(r"^\s+bond_dim:\s*(\d+)", line)
+                    if bd_match and current_dataset:
+                        current_config["bond_dim"] = int(bd_match.group(1))
+                
+                # Don't forget last dataset
+                if current_dataset and current_config:
+                    best_configs[trainer][model][current_dataset] = current_config.copy()
+                    
+            except Exception:
+                pass
+    
+    return best_configs
+
+
+# Load best configs at module load time
+BEST_CONFIGS = load_best_configs()
+
+
+def get_test_ridge(trainer: str) -> float:
+    """Get ridge value for test experiments."""
+    # From conf/experiment/test_ntn.yaml and test_gtn.yaml
+    if trainer == "ntn":
+        return 5.0
+    elif trainer == "gtn":
+        return 0.005
+    elif trainer == "dmrg":
+        return 5.0
+    return 5.0
+
+
+def get_test_init_strength() -> float:
+    """Get init_strength for test experiments."""
+    return 0.1
+
+
+def generate_test_run_id(trainer: str, model: str, dataset: str, seed: int) -> str:
+    """Generate run_id for a test experiment run.
+    
+    Format matches what run.py generates via utils/tracking.py
+    """
+    # Get best config for this combo
+    best = BEST_CONFIGS.get(trainer, {}).get(model, {}).get(dataset)
+    if not best:
+        return None
+    
+    L = best["L"]
+    bond_dim = best["bond_dim"]
+    ridge = get_test_ridge(trainer)
+    init_strength = get_test_init_strength()
+    
+    run_id = (
+        f"{trainer}_{dataset}_{model}"
+        f"_L{L}_bd{bond_dim}"
+        f"_rg{ridge}_init{init_strength}"
+        f"_s{seed}"
+    )
+    
+    return run_id
 
 
 def load_datasets_from_conf() -> tuple[list[str], dict[str, str]]:
@@ -218,7 +354,33 @@ def get_expected_subdirs() -> list[str]:
     return [f"seed_{seed}" for seed in TEST_SEEDS]
 
 
+def check_result_from_tracking(tracking_df: pd.DataFrame, trainer: str, model: str, dataset: str, seed: int) -> dict:
+    """Check if a run is completed based on tracking file.
+    
+    Matches by output_path pattern: test_outputs/{trainer}/{model}/{dataset}/seed_{seed}
+    """
+    if tracking_df.empty:
+        return {"status": "missing", "success": None, "singular": None, "oom_error": None}
+    
+    # Match by output_path pattern
+    expected_path = f"test_outputs/{trainer}/{model}/{dataset}/seed_{seed}"
+    matches = tracking_df[tracking_df["output_path"] == expected_path]
+    
+    if matches.empty:
+        return {"status": "missing", "success": None, "singular": None, "oom_error": None}
+    
+    row = matches.iloc[0]
+    return {
+        "status": "completed",
+        "success": bool(row.get("success", False)),
+        "singular": bool(row.get("singular", False)),
+        "oom_error": bool(row.get("oom_error", False)),
+        "val_quality": row.get("val_quality"),
+    }
+
+
 def check_result(result_path: Path, include_full_data: bool = False) -> dict:
+    """Check a results.json file and return status info (filesystem fallback)."""
     if not result_path.exists():
         return {"status": "missing", "success": None, "singular": None, "oom_error": None}
 
@@ -255,7 +417,7 @@ def print_progress_bar(completed: int, total: int, width: int = 40, prefix: str 
 
 
 def collect_stats():
-    """Collect all statistics from the test_outputs directory."""
+    """Collect all statistics from tracking file."""
     stats = {
         "by_model": defaultdict(
             lambda: {
@@ -312,8 +474,12 @@ def collect_stats():
     total_oom = 0
     total_failed = 0
 
-    expected_subdirs = get_expected_subdirs()
     expected_seeds = len(TEST_SEEDS)
+    
+    # Load tracking file
+    tracking_df = load_tracking_file()
+    if tracking_df.empty:
+        print("Warning: No tracking data found. Run: python scripts/backfill_tracking.py --outputs-dir test_outputs --append", file=sys.stderr)
 
     # Iterate through all expected combinations
     for trainer in TRAINERS:
@@ -328,7 +494,10 @@ def collect_stats():
                 # Skip TNML models that shouldn't run on this trainer for this dataset
                 if model in TNML_MODELS and not should_run_tnml(model, dataset, trainer):
                     continue
-                exp_dir = get_experiment_path(trainer, model, dataset)
+                
+                # Skip if no best config exists for this combo
+                if not BEST_CONFIGS.get(trainer, {}).get(model, {}).get(dataset):
+                    continue
                 exp_path_str = f"{trainer}/{model}/{dataset}"
 
                 combo_key = (model, dataset, trainer)
@@ -343,9 +512,10 @@ def collect_stats():
                     "missing": [],
                 }
 
-                for subdir in expected_subdirs:
-                    result_path = exp_dir / subdir / "results.json"
-                    result = check_result(result_path)
+                for seed in TEST_SEEDS:
+                    subdir = f"seed_{seed}"
+                    # Check tracking file by output_path pattern
+                    result = check_result_from_tracking(tracking_df, trainer, model, dataset, seed)
 
                     total_expected += 1
                     stats["by_model"][model]["total"] += 1
