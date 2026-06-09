@@ -7,7 +7,6 @@
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_test_gtn.out
 #BSUB -e logs/%J_%I_test_gtn.err
-#BSUB -gpu "num=1:mode=exclusive_process"
 
 cd "~/GTN"
 source .venv/bin/activate
