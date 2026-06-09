@@ -138,7 +138,7 @@ def plot_dataset(ax, cmpo2_data, cpd_data, tnml_data, cnn_data, title):
     tnml_acc = [d[3] for d in tnml_data]
     
     ax.errorbar(cmpo2_params, cmpo2_acc, yerr=cmpo2_std, fmt="o", c="#1f77b4", 
-                markersize=4, alpha=0.7, label="CMPO2", capsize=2, elinewidth=0.8)
+                markersize=4, alpha=0.7, label="G-CMPO2", capsize=2, elinewidth=0.8)
     ax.plot(cpd_params, cpd_acc, "s-", color="#ff7f0e", markersize=6, linewidth=1.5, label="TeMPO")
     ax.plot(tnml_params, tnml_acc, "^-", color="#2ca02c", markersize=6, linewidth=1.5, label="TNML-F")
     
@@ -154,7 +154,6 @@ def plot_dataset(ax, cmpo2_data, cpd_data, tnml_data, cnn_data, title):
     ax.set_xlabel("Number of Parameters", fontsize=11)
     ax.set_ylabel("Test Accuracy (%)", fontsize=11)
     ax.set_title(title, fontsize=12)
-    ax.legend(fontsize=10)
     ax.grid(True, alpha=0.3)
 
 
@@ -168,7 +167,11 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
 plot_dataset(ax1, mnist_cmpo2, cpd_mnist, tnml_mnist, mnist_cnn, "MNIST")
 plot_dataset(ax2, fashion_cmpo2, cpd_fashion, tnml_fashion, fashion_cnn, "Fashion-MNIST")
 
-plt.tight_layout()
+# Single shared legend at the bottom
+handles, labels = ax1.get_legend_handles_labels()
+fig.legend(handles, labels, loc="lower center", ncol=4, fontsize=10, bbox_to_anchor=(0.5, -0.02))
+
+plt.tight_layout(rect=[0, 0.05, 1, 1])  # Leave space for legend at bottom
 OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
 plt.savefig(OUTPUT_PATH, dpi=150, bbox_inches="tight")
 print(f"Plot saved to: {OUTPUT_PATH}")

@@ -91,27 +91,65 @@ ALL_MODE_LATEX_NAMES = {
 def load_tnml_best_configs(conf_dir: Path) -> dict[str, dict[str, str]]:
     """Load TNML best configs to know which trainer to use per dataset.
     
+    Checks conf/best_conf/tnml/ for ntn/gtn configs, and also checks
+    conf/best_conf/dmrg/ to see if dmrg has better results for any dataset.
+    
     Returns: {"TNML_P": {"realstate": "ntn", "iris": "gtn", ...}, "TNML_F": {...}}
     """
     tnml_configs = {}
     tnml_dir = conf_dir / "tnml"
+    dmrg_dir = conf_dir / "dmrg"
     
     for model in ["tnml_p", "tnml_f"]:
-        config_file = tnml_dir / f"{model}.yaml"
-        if not config_file.exists():
-            continue
-        
-        with open(config_file) as f:
-            data = yaml.safe_load(f)
-        
-        best_configs = data.get("_best_configs", {})
         model_key = model.upper()
         tnml_configs[model_key] = {}
         
-        for dataset, cfg in best_configs.items():
-            tnml_configs[model_key][dataset] = cfg.get("trainer", "gtn")
+        # Load from tnml directory (ntn/gtn configs)
+        config_file = tnml_dir / f"{model}.yaml"
+        if config_file.exists():
+            with open(config_file) as f:
+                data = yaml.safe_load(f)
+            
+            best_configs = data.get("_best_configs", {})
+            for dataset, cfg in best_configs.items():
+                trainer = cfg.get("trainer", "gtn")
+                val_quality = cfg.get("avg_val_quality", float('-inf'))
+                tnml_configs[model_key][dataset] = {
+                    "trainer": trainer,
+                    "val_quality": val_quality,
+                }
+        
+        # Check DMRG configs and override if better
+        dmrg_file = dmrg_dir / f"{model}.yaml"
+        if dmrg_file.exists():
+            with open(dmrg_file) as f:
+                dmrg_data = yaml.safe_load(f)
+            
+            dmrg_configs = dmrg_data.get("_best_configs", {})
+            for dataset, cfg in dmrg_configs.items():
+                dmrg_val = cfg.get("avg_val_quality", float('-inf'))
+                
+                # Compare with existing config
+                if dataset in tnml_configs[model_key]:
+                    existing_val = tnml_configs[model_key][dataset].get("val_quality", float('-inf'))
+                    if dmrg_val > existing_val:
+                        tnml_configs[model_key][dataset] = {
+                            "trainer": "dmrg",
+                            "val_quality": dmrg_val,
+                        }
+                else:
+                    # No existing config, use DMRG
+                    tnml_configs[model_key][dataset] = {
+                        "trainer": "dmrg",
+                        "val_quality": dmrg_val,
+                    }
     
-    return tnml_configs
+    # Flatten to just trainer strings for backward compatibility
+    result = {}
+    for model_key, datasets in tnml_configs.items():
+        result[model_key] = {ds: cfg["trainer"] for ds, cfg in datasets.items()}
+    
+    return result
 
 # CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "breast", "adult", 
 #                            "bank", "wine", "car_evaluation", "student_dropout", "mushrooms"]
@@ -181,6 +219,16 @@ def parse_results_json(path: Path, use_val_loss: bool = False) -> Optional[SeedR
                 if val_q is not None and val_q >= best_val:
                     best_val, best_epoch = val_q, entry.get("epoch", -1)
                     test_quality_at_best = entry.get("test_quality", float('nan'))
+        
+        # Fallback: if test_quality not in metrics_log, use top-level test_quality
+        if math.isnan(test_quality_at_best):
+            top_level_test = data.get("test_quality")
+            if top_level_test is not None:
+                test_quality_at_best = top_level_test
+        
+        # Skip results with no valid test_quality
+        if math.isnan(test_quality_at_best):
+            return None
         
         if best_epoch < 0: return None
         return SeedResult(seed=data.get("config", {}).get("seed", 0), 

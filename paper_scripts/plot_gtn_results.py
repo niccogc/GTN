@@ -8,7 +8,8 @@ import numpy as np
 from pathlib import Path
 from collections import defaultdict
 
-GTN_DIR = Path("/home/nicci/Desktop/remote/GTN/outputs/gtn")
+GTN_DIR = Path(__file__).parent.parent / "outputs" / "gtn"
+IMAGES_DIR = Path(__file__).parent / "images"
 
 
 def parse_run_dir_name(name: str) -> dict:
@@ -90,14 +91,27 @@ def make_plots():
 
     for i, ds in enumerate(dataset_names):
         points = datasets[ds]
-        xs = [p[0] for p in points]
-        ys = [p[1] for p in points]
-        yerrs = [p[2] for p in points]
+        xs = np.array([p[0] for p in points])
+        ys = np.array([p[1] for p in points])
+        yerrs = np.array([p[2] for p in points])
         color = colors[i % len(colors)]
         marker = markers[i % len(markers)]
-        ax.errorbar(xs, ys, yerr=yerrs, fmt=f"{marker}-", capsize=3, capthick=1,
-                     markersize=6, linewidth=1.5, color=color, label=ds,
-                     alpha=0.8, markeredgewidth=0.5, markeredgecolor="black")
+        
+        # Sort by x for proper fill_between
+        sort_idx = np.argsort(xs)
+        xs_sorted = xs[sort_idx]
+        ys_sorted = ys[sort_idx]
+        yerrs_sorted = yerrs[sort_idx]
+        
+        # Fill between for error surface
+        ax.fill_between(xs_sorted, ys_sorted - yerrs_sorted, ys_sorted + yerrs_sorted,
+                        color=color, alpha=0.2)
+        
+        # Scatter plot with error bars (no connecting line)
+        ax.errorbar(xs, ys, yerr=yerrs, fmt=marker, capsize=2, capthick=0.5,
+                    markersize=4, color=color, label=ds,
+                    alpha=0.9, markeredgewidth=0.3, markeredgecolor="black",
+                    linestyle='none')
 
     ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
     ax.set_xlabel("Number of Parameters", fontsize=12)
@@ -106,9 +120,10 @@ def make_plots():
     ax.legend(fontsize=10)
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
-    fig.savefig(str(GTN_DIR.parent / "gtn_test_accuracy_vs_nparams.pdf"), dpi=150)
+    IMAGES_DIR.mkdir(parents=True, exist_ok=True)
+    fig.savefig(str(IMAGES_DIR / "gtn_test_accuracy_vs_nparams.pdf"), dpi=150)
     plt.close(fig)
-    print(f"Saved: {GTN_DIR.parent / 'gtn_test_accuracy_vs_nparams.pdf'}")
+    print(f"Saved: {IMAGES_DIR / 'gtn_test_accuracy_vs_nparams.pdf'}")
 
     if len(dataset_names) >= 4:
         fig, axes = plt.subplots(2, 2, figsize=(14, 10))
@@ -129,11 +144,22 @@ def make_plots():
                     l_groups[l_val].append((n_params, mean_acc, std_acc))
                     break
 
-        for l_val, pts in sorted(l_groups.items()):
+        for l_idx, (l_val, pts) in enumerate(sorted(l_groups.items())):
             pts.sort(key=lambda x: x[0])
-            xs = [p[0] for p in pts]
-            ys = [p[1] for p in pts]
-            ax.plot(xs, ys, "o-", markersize=5, linewidth=1.5, label=f"L={l_val}")
+            xs = np.array([p[0] for p in pts])
+            ys = np.array([p[1] for p in pts])
+            yerrs = np.array([p[2] for p in pts])
+            color = colors[l_idx % len(colors)]
+            marker = markers[l_idx % len(markers)]
+            
+            # Fill between for error surface
+            ax.fill_between(xs, ys - yerrs, ys + yerrs, color=color, alpha=0.2)
+            
+            # Scatter plot with error bars (no connecting line)
+            ax.errorbar(xs, ys, yerr=yerrs, fmt=marker, capsize=2, capthick=0.5,
+                        markersize=4, color=color, label=f"L={l_val}",
+                        alpha=0.9, markeredgewidth=0.3, markeredgecolor="black",
+                        linestyle='none')
 
         ax.ticklabel_format(axis='x', style='scientific', scilimits=(0, 0))
         ax.set_xlabel("Number of Parameters")
@@ -144,9 +170,9 @@ def make_plots():
 
     fig.suptitle("GTN Test Accuracy vs N Params by Dataset and L", fontsize=14)
     fig.tight_layout()
-    fig.savefig(str(GTN_DIR.parent / "gtn_test_accuracy_by_L.png"), dpi=150)
+    fig.savefig(str(IMAGES_DIR / "gtn_test_accuracy_by_L.pdf"), dpi=150)
     plt.close(fig)
-    print(f"Saved: {GTN_DIR.parent / 'gtn_test_accuracy_by_L.png'}")
+    print(f"Saved: {IMAGES_DIR / 'gtn_test_accuracy_by_L.pdf'}")
 
     print("\n--- Summary ---")
     for ds in dataset_names:
