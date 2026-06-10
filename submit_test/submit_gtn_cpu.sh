@@ -3,7 +3,7 @@
 #BSUB -J "test_gtn_missing[1-2]%20"
 #BSUB -W 24:00
 #BSUB -n 6
-#BSUB -R "rusage[mem=1GB]"
+#BSUB -R "rusage[mem=3GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_test_gtn.out
 #BSUB -e logs/%J_%I_test_gtn.err

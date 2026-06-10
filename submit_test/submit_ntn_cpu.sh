@@ -1,13 +1,12 @@
 #!/bin/bash
-#BSUB -q gpuh100
+#BSUB -q hpc
 #BSUB -J "test_ntn_missing[1-78]%20"
-#BSUB -W 8:00
-#BSUB -n 6
-#BSUB -R "rusage[mem=750MB]"
+#BSUB -W 24:00
+#BSUB -n 8
+#BSUB -R "rusage[mem=1500MB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_test_ntn.out
 #BSUB -e logs/%J_%I_test_ntn.err
-#BSUB -gpu "num=1:mode=exclusive_process"
 
 cd "~/GTN"
 source .venv/bin/activate
@@ -25,10 +24,10 @@ EXPERIMENT="test_ntn"
 
 echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
 
-export OMP_NUM_THREADS=6
-export MKL_NUM_THREADS=6
-export OPENBLAS_NUM_THREADS=6
-export NUMEXPR_NUM_THREADS=6
+export OMP_NUM_THREADS=8
+export MKL_NUM_THREADS=8
+export OPENBLAS_NUM_THREADS=8
+export NUMEXPR_NUM_THREADS=8
 
 python run.py --multirun \
     +experiment=$EXPERIMENT \
