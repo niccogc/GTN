@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "test_ntn_missing[1-78]%20"
+#BSUB -J "test_ntn[1-78]%20"
 #BSUB -W 24:00
 #BSUB -n 8
 #BSUB -R "rusage[mem=1500MB]"
