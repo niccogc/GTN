@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "test_gtn_missing[1-94]%20"
+#BSUB -J "test_gtn_missing[1-2]%20"
 #BSUB -W 24:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=1GB]"
