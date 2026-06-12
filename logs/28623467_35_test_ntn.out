@@ -1,0 +1,86 @@
+Test NTN: lmpo2_typei student_dropout
+Task 35: Dataset=student_dropout, Model=lmpo2_typei, Experiment=test_ntn
+[2026-06-10 09:20:24,965][HYDRA] Launching 30 jobs locally
+[2026-06-10 09:20:24,965][HYDRA] 	#0 : model.reduction_factor=0.3 seed=836578142 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=lmpo2_typei dataset=student_dropout
+[2026-06-10 09:20:25,152][__main__][INFO] - Using best config for LMPO2TypeI/student_dropout: L=4, bond_dim=8
+[2026-06-10 09:20:25,174][utils.tracking][INFO] - Loaded 3315 tracked runs from runs_tracking.csv
+[2026-06-10 09:20:25,176][__main__][INFO] - ▶ RUN LMPO2TypeI/student_dropout/NTN L=4 bd=8_rf0.3 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/LMPO2TypeI/student_dropout/seed_836578142
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28623467[35]: <test_ntn_missing[1-78]%20> in cluster <dcc> Exited
+
+Job <test_ntn_missing[1-78]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Wed Jun 10 09:16:20 2026
+Job was executed on host(s) <8*n-62-11-53>, in queue <hpc>, as user <nicci> in cluster <dcc> at Wed Jun 10 09:20:12 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Wed Jun 10 09:20:12 2026
+Terminated at Wed Jun 10 09:20:34 2026
+Results reported at Wed Jun 10 09:20:34 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "test_ntn_missing[1-78]%20"
+#BSUB -W 24:00
+#BSUB -n 8
+#BSUB -R "rusage[mem=1500MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_test_ntn.out
+#BSUB -e logs/%J_%I_test_ntn.err
+
+cd "~/GTN"
+source .venv/bin/activate
+source missing_test.env
+
+NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+read MODEL DATASET <<< "${COMBINATIONS_NTN[$IDV]}"
+echo "Test NTN: $MODEL $DATASET"
+
+EXPERIMENT="test_ntn"
+
+echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+
+export OMP_NUM_THREADS=8
+export MKL_NUM_THREADS=8
+export OPENBLAS_NUM_THREADS=8
+export NUMEXPR_NUM_THREADS=8
+
+python run.py --multirun \
+    +experiment=$EXPERIMENT \
+    model=$MODEL \
+    dataset=$DATASET
+
+------------------------------------------------------------
+
+TERM_MEMLIMIT: job killed after reaching LSF memory usage limit.
+Exited with exit code 137.
+
+Resource usage summary:
+
+    CPU time :                                   68.16 sec.
+    Max Memory :                                 12000 MB
+    Average Memory :                             8153.00 MB
+    Total Requested Memory :                     12000.00 MB
+    Delta Memory :                               0.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                19
+    Run time :                                   22 sec.
+    Turnaround time :                            254 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28623467_35_test_ntn.err> for stderr output of this job.
+

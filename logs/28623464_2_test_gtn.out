@@ -1,0 +1,118 @@
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28623464[2]: <test_gtn_missing[1-2]%20> in cluster <dcc> Done
+
+Job <test_gtn_missing[1-2]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Wed Jun 10 09:15:30 2026
+Job was executed on host(s) <6*n-62-29-25>, in queue <hpc>, as user <nicci> in cluster <dcc> at Wed Jun 10 09:15:32 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Wed Jun 10 09:15:32 2026
+Terminated at Wed Jun 10 20:17:45 2026
+Results reported at Wed Jun 10 20:17:45 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q hpc
+#BSUB -J "test_gtn_missing[1-2]%20"
+#BSUB -W 24:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=3GB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_test_gtn.out
+#BSUB -e logs/%J_%I_test_gtn.err
+
+cd "~/GTN"
+source .venv/bin/activate
+source missing_test.env
+
+NUM_EXPERIMENTS=${#COMBINATIONS_GTN[@]}
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+read MODEL DATASET <<< "${COMBINATIONS_GTN[$IDV]}"
+echo "Test GTN: $MODEL $DATASET"
+
+EXPERIMENT="test_gtn"
+
+echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=$EXPERIMENT \
+    model=$MODEL \
+    dataset=$DATASET
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   230239.67 sec.
+    Max Memory :                                 1356 MB
+    Average Memory :                             1113.88 MB
+    Total Requested Memory :                     18432.00 MB
+    Delta Memory :                               17076.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                20
+    Run time :                                   39733 sec.
+    Turnaround time :                            39735 sec.
+
+The output (if any) follows:
+
+Test GTN: mmpo2_typei popularity
+Task 2: Dataset=popularity, Model=mmpo2_typei, Experiment=test_gtn
+[2026-06-10 09:16:01,216][HYDRA] Launching 10 jobs locally
+[2026-06-10 09:16:01,216][HYDRA] 	#0 : seed=836578142 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 09:16:01,394][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 09:16:01,434][utils.tracking][INFO] - Loaded 3315 tracked runs from runs_tracking.csv
+[2026-06-10 09:16:01,436][__main__][INFO] - ⏭ SKIP MMPO2TypeI/popularity/GTN L=3 bd=12 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_836578142 | already completed successfully (val_quality=-0.0013299421834482) val=-0.0013
+[2026-06-10 09:16:01,439][HYDRA] 	#1 : seed=895435625 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 09:16:01,591][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 09:16:01,592][__main__][INFO] - ⏭ SKIP MMPO2TypeI/popularity/GTN L=3 bd=12 seed=895435625 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_895435625 | already completed successfully (val_quality=0.002075997805413) val=0.0021
+[2026-06-10 09:16:01,594][HYDRA] 	#2 : seed=2631647123 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 09:16:01,745][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 09:16:01,746][__main__][INFO] - ⏭ SKIP MMPO2TypeI/popularity/GTN L=3 bd=12 seed=2631647123 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_2631647123 | already completed successfully (val_quality=0.0045309401099941) val=0.0045
+[2026-06-10 09:16:01,749][HYDRA] 	#3 : seed=2487125586 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 09:16:01,898][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 09:16:01,899][__main__][INFO] - ⏭ SKIP MMPO2TypeI/popularity/GTN L=3 bd=12 seed=2487125586 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_2487125586 | already completed successfully (val_quality=-0.0019116254783775) val=-0.0019
+[2026-06-10 09:16:01,902][HYDRA] 	#4 : seed=3323088614 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 09:16:02,049][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 09:16:02,050][__main__][INFO] - ⏭ SKIP MMPO2TypeI/popularity/GTN L=3 bd=12 seed=3323088614 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_3323088614 | already completed successfully (val_quality=0.0030259484724548) val=0.0030
+[2026-06-10 09:16:02,053][HYDRA] 	#5 : seed=3313309148 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 09:16:02,205][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 09:16:02,206][__main__][INFO] - ⏭ SKIP MMPO2TypeI/popularity/GTN L=3 bd=12 seed=3313309148 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_3313309148 | already completed successfully (val_quality=-0.0338598220333652) val=-0.0339
+[2026-06-10 09:16:02,208][HYDRA] 	#6 : seed=3300558450 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 09:16:02,359][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 09:16:02,360][__main__][INFO] - ▶ RUN MMPO2TypeI/popularity/GTN L=3 bd=12 seed=3300558450 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_3300558450
+[2026-06-10 12:01:16,781][__main__][INFO] - Early stopping at epoch 128 (no improvement for 100 epochs)
+[2026-06-10 12:01:16,796][__main__][INFO] - ✓ DONE MMPO2TypeI/popularity/GTN L=3 bd=12 seed=3300558450 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_3300558450 | val=-0.0107
+[2026-06-10 12:01:16,800][HYDRA] 	#7 : seed=4053540165 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 12:01:16,988][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 12:01:16,989][__main__][INFO] - ▶ RUN MMPO2TypeI/popularity/GTN L=3 bd=12 seed=4053540165 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_4053540165
+[2026-06-10 14:50:36,541][__main__][INFO] - Early stopping at epoch 126 (no improvement for 100 epochs)
+[2026-06-10 14:50:36,587][__main__][INFO] - ✓ DONE MMPO2TypeI/popularity/GTN L=3 bd=12 seed=4053540165 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_4053540165 | val=-0.0024
+[2026-06-10 14:50:36,591][HYDRA] 	#8 : seed=2318036890 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 14:50:36,748][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 14:50:36,749][__main__][INFO] - ▶ RUN MMPO2TypeI/popularity/GTN L=3 bd=12 seed=2318036890 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_2318036890
+[2026-06-10 17:50:15,139][__main__][INFO] - Early stopping at epoch 131 (no improvement for 100 epochs)
+[2026-06-10 17:50:15,154][__main__][INFO] - ✓ DONE MMPO2TypeI/popularity/GTN L=3 bd=12 seed=2318036890 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_2318036890 | val=-0.0005
+[2026-06-10 17:50:15,158][HYDRA] 	#9 : seed=4234260150 trainer.lr=0.005 trainer.ridge=0.005 trainer.optimizer=adamw +experiment=test_gtn model=mmpo2_typei dataset=popularity
+[2026-06-10 17:50:15,316][__main__][INFO] - Using best config for MMPO2TypeI/popularity: L=3, bond_dim=12
+[2026-06-10 17:50:15,317][__main__][INFO] - ▶ RUN MMPO2TypeI/popularity/GTN L=3 bd=12 seed=4234260150 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_4234260150
+[2026-06-10 20:17:44,420][__main__][INFO] - Early stopping at epoch 115 (no improvement for 100 epochs)
+[2026-06-10 20:17:44,460][__main__][INFO] - ✓ DONE MMPO2TypeI/popularity/GTN L=3 bd=12 seed=4234260150 -> /zhome/6b/e/212868/GTN/test_outputs/gtn/MMPO2TypeI/popularity/seed_4234260150 | val=0.0000
+
+
+PS:
+
+Read file <logs/28623464_2_test_gtn.err> for stderr output of this job.
+
