@@ -1,7 +1,7 @@
 #!/bin/bash
 #BSUB -q gpuh100
-#BSUB -J "test_ntn_missing[1-78]%20"
-#BSUB -W 8:00
+#BSUB -J "test_ntn_missing[1-7]%20"
+#BSUB -W 12:00
 #BSUB -n 6
 #BSUB -R "rusage[mem=750MB]"
 #BSUB -R "span[hosts=1]"
