@@ -1,6 +1,7 @@
 # type: ignore
 import importlib
 import math
+import os
 from typing import List, Dict, Optional, Tuple
 
 import cotengra as ctg
@@ -14,16 +15,65 @@ from model.exceptions import SingularMatrixError
 from model.losses import HuberLoss, MAELoss, MSELoss
 from model.utils import REGRESSION_METRICS, compute_quality, print_metrics
 
-qt.set_contract_strategy("optimal")
+# =============================================================================
+# Quimb Contraction Strategy Configuration
+# =============================================================================
+# Default: ReusableHyperOptimizer with path caching for fastest contraction execution.
+# Paths are cached to disk, so repeated contractions with same structure are instant.
+#
+# Environment variables:
+#   QUIMB_CONTRACT_STRATEGY: Override with a string strategy
+#     - "greedy"           : Super fast path-finding, decent paths
+#     - "auto"             : quimb default, balanced
+#     - "auto-hq"          : Higher quality paths
+#     - "random-greedy"    : Good for large networks
+#     - "random-greedy-128": Same but with 4x more trials  
+#     - "optimal"          : Best paths, exponential path-finding cost
+#
+#   QUIMB_CONTRACT_MINIMIZE: What to optimize for (default: "flops")
+#     - "flops"  : Fastest contraction execution (default)
+#     - "write"  : Lowest memory usage
+#     - "combo"  : Balance of both
+
+def _get_contract_strategy():
+    """Get the contraction strategy from environment or default."""
+    # Check for string strategy override
+    strategy_override = os.environ.get("QUIMB_CONTRACT_STRATEGY", "")
+    
+    if strategy_override:
+        valid_strategies = {"greedy", "auto", "auto-hq", "random-greedy", "random-greedy-128", "optimal"}
+        if strategy_override not in valid_strategies:
+            import logging
+            logging.getLogger(__name__).warning(
+                f"Unknown QUIMB_CONTRACT_STRATEGY='{strategy_override}', using default. "
+                f"Valid options: {valid_strategies}"
+            )
+        else:
+            return strategy_override
+    
+    # Default: ReusableHyperOptimizer with caching for fastest contractions
+    minimize = os.environ.get("QUIMB_CONTRACT_MINIMIZE", "flops")
+    if minimize not in {"flops", "write", "combo"}:
+        import logging
+        logging.getLogger(__name__).warning(
+            f"Unknown QUIMB_CONTRACT_MINIMIZE='{minimize}', using 'flops'. "
+            f"Valid options: flops, write, combo"
+        )
+        minimize = "flops"
+    
+    return ctg.ReusableHyperOptimizer(
+        minimize=minimize,          # Optimize for fastest contraction by default
+        reconf_opts={},             # Enable subtree reconfiguration
+        max_time="rate:1e8",        # Only spend time on hard contractions
+        hash_method="b",            # Hash up to index permutation for max reuse
+        directory=True,             # Cache paths to disk
+        progbar=False,
+    )
+
+_contract_strategy = _get_contract_strategy()
+qt.set_contract_strategy(_contract_strategy)
 
 NOT_TRAINABLE_TAG = "NT"
-
-# _MEMORY_OPTIMIZER = ctg.ReusableHyperOptimizer(
-#     minimize="combo",
-#     reconf_opts={},
-#     max_time=1,
-#     progbar=False,
-# )
 
 
 class NTN:
