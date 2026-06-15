@@ -1,9 +1,9 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "test_ntn[1-78]%20"
+#BSUB -J "test_ntn[1-7]%20"
 #BSUB -W 24:00
-#BSUB -n 8
-#BSUB -R "rusage[mem=1500MB]"
+#BSUB -n 10
+#BSUB -R "rusage[mem=4GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_test_ntn.out
 #BSUB -e logs/%J_%I_test_ntn.err

@@ -1,12 +1,12 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "ntn_grid_full[1-12]%20"
+#BSUB -J "ntn_miss_mah[1-12]%20"
 #BSUB -W 24:00
 #BSUB -n 10
 #BSUB -R "rusage[mem=8GB]"
 #BSUB -R "span[hosts=1]"
-#BSUB -o logs/%J_%I_cpu_newntn.out
-#BSUB -e logs/%J_%I_cpu_newntn.err
+#BSUB -o logs/%J_%I_test_miss.out
+#BSUB -e logs/%J_%I_test_miss.err
 
 cd "~/GTN"
 source .venv/bin/activate
