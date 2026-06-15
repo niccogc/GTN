@@ -1,0 +1,87 @@
+Test NTN: tnml_p obesity
+Task 6: Dataset=obesity, Model=tnml_p, Experiment=test_ntn
+[2026-06-12 23:34:36,282][HYDRA] Launching 10 jobs locally
+[2026-06-12 23:34:36,283][HYDRA] 	#0 : seed=836578142 trainer.ridge=5 trainer.ridge_decay=0.25 trainer.ridge_min=0.0001 +experiment=test_ntn model=tnml_p dataset=obesity
+[2026-06-12 23:34:36,430][__main__][INFO] - Using best config for TNML_P/obesity: L=3, bond_dim=12
+[2026-06-12 23:34:36,512][utils.tracking][INFO] - Loaded 4030 tracked runs from runs_tracking.csv
+[2026-06-12 23:34:36,513][__main__][INFO] - ▶ RUN TNML_P/obesity/NTN L=3 bd=12 seed=836578142 -> /zhome/6b/e/212868/GTN/test_outputs/ntn/TNML_P/obesity/seed_836578142
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 28633280[6]: <test_ntn_missing[1-7]%20> in cluster <dcc> Exited
+
+Job <test_ntn_missing[1-7]%20> was submitted from host <hpclogin1> by user <nicci> in cluster <dcc> at Fri Jun 12 10:17:24 2026
+Job was executed on host(s) <6*n-62-12-81>, in queue <gpuh100>, as user <nicci> in cluster <dcc> at Fri Jun 12 23:34:04 2026
+</zhome/6b/e/212868> was used as the home directory.
+</zhome/6b/e/212868/GTN> was used as the working directory.
+Started at Fri Jun 12 23:34:04 2026
+Terminated at Sat Jun 13 11:35:07 2026
+Results reported at Sat Jun 13 11:35:07 2026
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/bash
+#BSUB -q gpuh100
+#BSUB -J "test_ntn_missing[1-7]%20"
+#BSUB -W 12:00
+#BSUB -n 6
+#BSUB -R "rusage[mem=750MB]"
+#BSUB -R "span[hosts=1]"
+#BSUB -o logs/%J_%I_test_ntn.out
+#BSUB -e logs/%J_%I_test_ntn.err
+#BSUB -gpu "num=1:mode=exclusive_process"
+
+cd "~/GTN"
+source .venv/bin/activate
+source missing_test.env
+
+NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
+
+mkdir -p logs
+
+IDV=$((LSB_JOBINDEX - 1))
+read MODEL DATASET <<< "${COMBINATIONS_NTN[$IDV]}"
+echo "Test NTN: $MODEL $DATASET"
+
+EXPERIMENT="test_ntn"
+
+echo "Task $LSB_JOBINDEX: Dataset=$DATASET, Model=$MODEL, Experiment=$EXPERIMENT"
+
+export OMP_NUM_THREADS=6
+export MKL_NUM_THREADS=6
+export OPENBLAS_NUM_THREADS=6
+export NUMEXPR_NUM_THREADS=6
+
+python run.py --multirun \
+    +experiment=$EXPERIMENT \
+    model=$MODEL \
+    dataset=$DATASET
+
+------------------------------------------------------------
+
+TERM_RUNLIMIT: job killed after reaching LSF run time limit.
+Exited with exit code 140.
+
+Resource usage summary:
+
+    CPU time :                                   43323.00 sec.
+    Max Memory :                                 1220 MB
+    Average Memory :                             1020.90 MB
+    Total Requested Memory :                     4500.00 MB
+    Delta Memory :                               3280.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                25
+    Run time :                                   43263 sec.
+    Turnaround time :                            91063 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <logs/28633280_6_test_ntn.err> for stderr output of this job.
+
