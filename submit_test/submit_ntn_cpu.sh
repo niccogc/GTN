@@ -8,7 +8,7 @@
 #BSUB -R "rusage[mem=2GB]"
 #BSUB -R "span[hosts=1]"
 
-cd "~/GTN"
+cd ~/GTN
 source .venv/bin/activate
 source missing_test.env
 
@@ -33,4 +33,4 @@ python run.py --multirun \
     +experiment=$EXPERIMENT \
     model=$MODEL \
     dataset=$DATASET \
-    use_suggested_batch=true
+    +use_suggested_batch=true
