@@ -1,6 +1,6 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "test_ntn[1-5]%20"
+#BSUB -J "test_ntn_LASTO"
 #BSUB -o logs/%J_%I_test_ntn.out
 #BSUB -e logs/%J_%I_test_ntn.err
 #BSUB -W 24:00
