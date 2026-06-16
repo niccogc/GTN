@@ -151,15 +151,15 @@ def load_tnml_best_configs(conf_dir: Path) -> dict[str, dict[str, str]]:
     
     return result
 
-# CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "breast", "adult", 
-#                            "bank", "wine", "car_evaluation", "student_dropout", "mushrooms"]
+CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "breast", "adult", 
+                           "bank", "wine", "car_evaluation", "student_dropout", "mushrooms"]
 
-# REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "student_perf",
-#                        "obesity", "abalone", "seoulBike", "ai4i", "bike", "popularity"]
+REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "student_perf",
+                       "obesity", "abalone", "seoulBike", "ai4i", "bike", "popularity"]
 
-CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "wine"]
+# CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "wine"]
 
-REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "abalone","ai4i"]
+# REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "abalone","ai4i"]
 
 
 @dataclass
@@ -432,8 +432,21 @@ def find_best_tn_per_column(results, datasets, trainer):
     return best_tn
 
 
+def _fmt_scaled(x: float) -> str:
+    """Format x*100 as percentage, or 'F' when |x*100| > 100 (out of bound)."""
+    scaled = x * 100.0
+    if abs(scaled) > 100:
+        return "F"
+    return f"{scaled:.2f}"
+
+
+def _fmt_oob(x: float) -> str:
+    """Format an out-of-bound raw value in scientific notation."""
+    return f"{x:.2e}"
+
+
 def format_mean_value(mean, is_best_overall, is_best_tn):
-    val_str = f"{mean * 100:.2f}"
+    val_str = _fmt_scaled(mean)
     if is_best_overall:
         return f"\\textbf{{{val_str}}}"
     if is_best_tn:
@@ -585,6 +598,246 @@ def get_all_mode_model_order(include_external=False):
     if include_external:
         order.extend(EXTERNAL_MODEL_ORDER)
     return order
+
+
+def generate_unified_single_task_table(
+    ntn_results: dict,
+    gtn_results: dict,
+    dmrg_results: dict,
+    datasets: list[str],
+    task_type: str,  # "regression" or "classification"
+    test_outputs_dir: Path,
+    tnml_best_configs: dict[str, dict[str, str]],
+    include_external: bool = False,
+) -> tuple[str, list]:
+    """Generate a single-task table with unified GTN/NTN results.
+    
+    Creates one table for either classification or regression, with:
+    - All TN models showing best result across GTN/NTN
+    - TNML models using best trainer per dataset from tnml_best_configs
+    - External baselines if requested
+    
+    Returns: (table_string, oob_entries) where oob_entries is a list of
+             (model_key, dataset, mean_raw_scaled, std_raw_scaled) for
+             values where |value*100| > 100.
+    """
+    oob_entries: list = []
+    
+    # Combine results with prefixes
+    combined_results = {}
+    for key, val in ntn_results.items():
+        if key[0] in EXTERNAL_MODEL_ORDER:
+            combined_results[key] = val
+        else:
+            new_key = (f"N-{key[0]}", key[1])
+            combined_results[new_key] = val
+    for key, val in gtn_results.items():
+        if key[0] in EXTERNAL_MODEL_ORDER:
+            combined_results[key] = val
+        else:
+            new_key = (f"G-{key[0]}", key[1])
+            combined_results[new_key] = val
+    # Add DMRG results with D- prefix
+    for key, val in dmrg_results.items():
+        new_key = (f"D-{key[0]}", key[1])
+        combined_results[new_key] = val
+    
+    datasets = get_mpo2_datasets(gtn_results, datasets)
+    if not datasets:
+        return "", []
+    
+    # Define model sections:
+    # Section 1: MPO2 variants and Ring (proposed models)
+    # Section 2: CPD-A and TEMPO (other TN methods)
+    # Section 3: TNML models
+    # Section 4: External baselines (MLP, XGBoost, GP, Base)
+    section1 = ["N-MPO2", "G-MPO2", "G-Ring"]
+    section2 = ["N-CPDA", "G-CPDA", "TEMPO"]
+    section3 = ["TNML_P", "TNML_F"]
+    section4 = ["MLP", "XGBoost", "GP", "Base"] if include_external else ["Base"]
+    
+    all_sections = [section1, section2, section3, section4]
+    
+    n_cols = len(datasets)
+    
+    # Build column spec
+    col_spec = "l" + "c" * n_cols
+    
+    # Start table
+    task_title = "Classification" if task_type == "classification" else "Regression"
+    lines = [
+        r"\begin{table*}[ht]",
+        r"\centering",
+        r"\small",
+        f"\\caption{{{task_title} results.}}",
+        f"\\label{{tab:{task_type}_results}}",
+        r"\begin{tabular}{" + col_spec + "}",
+        r"\toprule",
+    ]
+    
+    # Dataset codes header
+    codes = [DATASET_INFO[d][0] for d in datasets]
+    lines.append("& " + " & ".join(codes) + r" \\")
+    lines.append(r"\midrule")
+    
+    def get_result_for_unified(model_key: str, dataset: str):
+        """Get result for a model, handling TNML special case."""
+        # Handle TNML models - use best trainer from config
+        if model_key in ("TNML_P", "TNML_F"):
+            best_trainer = tnml_best_configs.get(model_key, {}).get(dataset)
+            if best_trainer:
+                prefix = {"ntn": "N-", "gtn": "G-", "dmrg": "D-"}.get(best_trainer, "G-")
+                key = (f"{prefix}{model_key}", dataset)
+                if key in combined_results and combined_results[key].n_seeds > 0:
+                    return combined_results[key]
+            # Fallback: try all trainers and pick best
+            best_res, best_mean = None, float('-inf')
+            for prefix in ["N-", "G-", "D-"]:
+                key = (f"{prefix}{model_key}", dataset)
+                if key in combined_results and combined_results[key].n_seeds > 0:
+                    if combined_results[key].mean_test_quality > best_mean:
+                        best_mean = combined_results[key].mean_test_quality
+                        best_res = combined_results[key]
+            return best_res
+        
+        # Handle TEMPO (CPD-S)
+        if model_key == "TEMPO":
+            best_res, best_mean = None, float('-inf')
+            for var in ["CPD-S", "CPD-S-TypeI"]:
+                for prefix in ["N-", "G-"]:
+                    key = (f"{prefix}{var}", dataset)
+                    if key in combined_results and combined_results[key].n_seeds > 0:
+                        if combined_results[key].mean_test_quality > best_mean:
+                            best_mean = combined_results[key].mean_test_quality
+                            best_res = combined_results[key]
+            return best_res
+        
+        # Handle prefixed models (N-MPO2, G-MPO2, etc.)
+        if model_key.startswith(("N-", "G-")):
+            prefix = model_key[:2]
+            base_model = model_key[2:]
+            
+            if base_model == "MPO2":
+                variants = ALL_MODE_MPO2_VARIANTS
+            else:
+                variants = MODEL_GROUPS.get(base_model, [base_model])
+            
+            best_res, best_mean = None, float('-inf')
+            for var in variants:
+                key = (f"{prefix}{var}", dataset)
+                if key in combined_results and combined_results[key].n_seeds > 0:
+                    if combined_results[key].mean_test_quality > best_mean:
+                        best_mean = combined_results[key].mean_test_quality
+                        best_res = combined_results[key]
+            return best_res
+        
+        # Direct lookup for external models
+        key = (model_key, dataset)
+        if key in combined_results and combined_results[key].n_seeds > 0:
+            return combined_results[key]
+        return None
+    
+    # All TN models for highlighting
+    all_models = [m for section in all_sections for m in section]
+    tn_models = [m for m in all_models if m not in EXTERNAL_MODEL_ORDER and m != "Base"]
+    
+    def find_best_overall(ds_list):
+        best = {}
+        for ds in ds_list:
+            vals = [get_result_for_unified(m, ds).mean_test_quality 
+                    for m in all_models if m != "Base" and get_result_for_unified(m, ds)]
+            best[ds] = max(vals) if vals else float('-inf')
+        return best
+    
+    def find_best_tn(ds_list):
+        best = {}
+        for ds in ds_list:
+            vals = [get_result_for_unified(m, ds).mean_test_quality 
+                    for m in tn_models if get_result_for_unified(m, ds)]
+            best[ds] = max(vals) if vals else float('-inf')
+        return best
+    
+    best_overall = find_best_overall(datasets)
+    best_tn = find_best_tn(datasets)
+    
+    cmidrule = r"\midrule"
+    
+    def add_model_row(m: str):
+        """Add rows for a single model."""
+        if m == "Base":
+            # Handle baseline separately
+            bs = get_baseline_results(test_outputs_dir, datasets)
+            base_vals = []
+            for d in datasets:
+                if d in bs:
+                    raw = bs[d] * 100
+                    if abs(raw) > 100:
+                        oob_entries.append((m, d, raw, 0.0))
+                    base_vals.append(_fmt_scaled(bs[d]))
+                else:
+                    base_vals.append("--")
+            lines.append(r"\textbf{Base} & " + " & ".join(base_vals) + r" \\")
+            return
+        
+        model_latex = ALL_MODE_LATEX_NAMES.get(m, f"\\textbf{{{m}}}")
+        is_tn_model = m in tn_models
+        
+        means = []
+        stds = []
+        has_any_result = False
+        any_non_f_std = False
+        
+        for d in datasets:
+            res = get_result_for_unified(m, d)
+            if not res:
+                means.append("--")
+                stds.append("")
+            else:
+                has_any_result = True
+                mean_scaled = res.mean_test_quality * 100
+                std_scaled = res.std_test_quality * 100
+                is_oob = abs(mean_scaled) > 100
+                if is_oob:
+                    oob_entries.append((m, d, mean_scaled, std_scaled))
+                    means.append("F")
+                    stds.append("")
+                else:
+                    is_best_overall = abs(res.mean_test_quality - best_overall[d]) < 1e-9
+                    is_best_tn = is_tn_model and abs(res.mean_test_quality - best_tn[d]) < 1e-9
+                    means.append(format_mean_value(res.mean_test_quality, is_best_overall, is_best_tn))
+                    std_str = f"$\\pm${res.std_test_quality*100:.2f}"
+                    stds.append(std_str)
+                    if std_str != "$\\pm$0.00":
+                        any_non_f_std = True
+        
+        # Mean row
+        lines.append(f"{model_latex} & " + " & ".join(means) + r" \\")
+        
+        # Std row only for non-F, non-zero stds
+        if any_non_f_std and has_any_result:
+            lines.append(" & " + " & ".join(stds) + r" \\")
+    
+    # Generate rows for each section
+    for section_idx, section in enumerate(all_sections):
+        for model_idx, m in enumerate(section):
+            add_model_row(m)
+            
+            # Add cmidrule after each model (except last in section)
+            is_last_in_section = (model_idx == len(section) - 1)
+            is_last_section = (section_idx == len(all_sections) - 1)
+            
+            if not (is_last_section and is_last_in_section):
+                lines.append(cmidrule)
+            
+            # Add double cmidrule between sections
+            if is_last_in_section and not is_last_section:
+                lines.append(cmidrule)
+    
+    lines.append(r"\bottomrule")
+    lines.append(r"\end{tabular}")
+    lines.append(r"\end{table*}")
+    
+    return "\n".join(lines), oob_entries
 
 
 def generate_all_table(ntn_results, gtn_results, reg_ds, class_ds, test_outputs_dir, include_external=False, show_avg=False):
@@ -1023,14 +1276,60 @@ def main():
         # Load TNML best configs
         tnml_best_configs = load_tnml_best_configs(args.conf_dir)
         
-        tbl = generate_unified_table(
-            ntn_res, gtn_res, dmrg_res,
-            REGRESSION_DATASETS, CLASSIFICATION_DATASETS,
-            args.test_outputs_dir, tnml_best_configs, include_external
-        )
-        with open(args.output_dir / "unified_table.tex", "w") as f:
-            f.write(tbl)
-        print(f"Generated: {args.output_dir / 'unified_table.tex'}")
+        # Generate separate tables for classification and regression
+        all_oob: list = []
+        for task_type, datasets in [("classification", CLASSIFICATION_DATASETS), 
+                                     ("regression", REGRESSION_DATASETS)]:
+            table_str, oob_entries = generate_unified_single_task_table(
+                ntn_res, gtn_res, dmrg_res,
+                datasets, task_type,
+                args.test_outputs_dir, tnml_best_configs, include_external
+            )
+            all_oob.extend(oob_entries)
+            if table_str:
+                output_file = args.output_dir / f"unified_{task_type}.tex"
+                with open(output_file, "w") as f:
+                    f.write(table_str)
+                print(f"Generated: {output_file}")
+        
+        # Generate out-of-bound table if any extreme values found
+        if all_oob:
+            oob_models = sorted(set(e[0] for e in all_oob))
+            # Preserve original dataset order, only include those with OOB entries
+            oob_ds_set = set(e[1] for e in all_oob)
+            oob_datasets = [d for d in REGRESSION_DATASETS + CLASSIFICATION_DATASETS if d in oob_ds_set]
+            oob_lookup = {(m, d): (mv, sv) for m, d, mv, sv in all_oob}
+            oob_codes = [DATASET_INFO[d][0] for d in oob_datasets]
+            
+            oob_lines = [
+                r"\begin{table*}[ht]",
+                r"\centering",
+                r"\small",
+                r"\caption{Out-of-bound results (values where $|\text{value} \times 100| > 100$).}",
+                r"\label{tab:out_of_bound}",
+                r"\begin{tabular}{l" + "c" * len(oob_datasets) + "}",
+                r"\toprule",
+                "& " + " & ".join(oob_codes) + r" \\",
+                r"\midrule",
+            ]
+            for m in oob_models:
+                model_latex = ALL_MODE_LATEX_NAMES.get(m, f"\\textbf{{{m}}}")
+                cells = []
+                for d in oob_datasets:
+                    entry = oob_lookup.get((m, d))
+                    if entry:
+                        mv, sv = entry
+                        cells.append(f"${_fmt_oob(mv)} \\pm {_fmt_oob(sv)}$")
+                    else:
+                        cells.append("--")
+                oob_lines.append(f"{model_latex} & " + " & ".join(cells) + r" \\")
+                oob_lines.append(r"\midrule")
+            oob_lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table*}"])
+            
+            oob_file = args.output_dir / "out_of_bound_test.tex"
+            with open(oob_file, "w") as f:
+                f.write("\n".join(oob_lines))
+            print(f"Generated: {oob_file}")
         return
     
     if getattr(args, 'all'):
