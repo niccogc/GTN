@@ -1,3 +1,4 @@
+import os
 import torch
 import math
 from model.builder import Inputs
@@ -281,3 +282,58 @@ def print_metrics(metrics_result):
     out_str = " | ".join([f"{k}: {v:.5f}" for k, v in clean_metrics.items()])
     print(out_str)
     return clean_metrics
+
+
+def get_suggested_batch_size(
+    model,
+    memory_cap_gb: float = None,
+    dtype_bytes: int = 8,  # float64 = 8 bytes
+) -> int:
+    """
+    Compute the suggested max batch_size as a power of 2, based on memory constraints.
+    
+    The bottleneck in NTN is the Hessian contraction:
+        env @ d2L @ env_right
+    where env has shape (batch_size, node_dims...).
+    
+    The intermediate memory is approximately:
+        batch_size × node_size² × dtype_bytes
+    
+    where node_size = product of all dimensions of the biggest node.
+    
+    Args:
+        model: A model object with a .tn attribute (quimb TensorNetwork)
+        memory_cap_gb: Memory cap in GB. Defaults to NTN_MEMORY_CAP env var or 30 GB.
+        dtype_bytes: Bytes per element (8 for float64, 4 for float32)
+    
+    Returns:
+        Suggested batch_size as a power of 2
+    """
+    if memory_cap_gb is None:
+        memory_cap_gb = float(os.environ.get("NTN_MEMORY_CAP", "30"))
+    
+    memory_cap_bytes = memory_cap_gb * (1024 ** 3)
+    
+    # Find the biggest node in the tensor network
+    max_node_size = 1
+    for tensor in model.tn:
+        node_size = 1
+        for ind in tensor.inds:
+            node_size *= tensor.ind_size(ind)
+        max_node_size = max(max_node_size, node_size)
+    
+    # Memory for the intermediate: batch_size × node_size² × dtype_bytes
+    # Solve for batch_size: batch_size = memory_cap / (node_size² × dtype_bytes)
+    max_batch_size = memory_cap_bytes / (max_node_size ** 2 * dtype_bytes)
+    
+    # Round down to nearest power of 2
+    if max_batch_size < 1:
+        return 1
+    
+    power = int(max_batch_size).bit_length() - 1
+    suggested_batch_size = 2 ** power
+    
+    return suggested_batch_size
+
+
+

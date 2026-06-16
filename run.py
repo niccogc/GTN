@@ -61,6 +61,7 @@ from model.utils import (
     create_inputs_tnml,
     encode_polynomial,
     encode_fourier,
+    get_suggested_batch_size,
 )
 
 import pandas as pd
@@ -1640,6 +1641,12 @@ def _main_impl(cfg: DictConfig):
         model = create_model(
             cfg, input_dim, output_dim, raw_feature_count=raw_feature_count
         )
+
+        # Override batch_size with suggested value if requested
+        if cfg.get("use_suggested_batch", False) and model is not None:
+            suggested = get_suggested_batch_size(model)
+            log.info(f"Using suggested batch_size: 2^{suggested.bit_length()-1} = {suggested} (was {cfg.dataset.batch_size})")
+            cfg.dataset.batch_size = suggested
 
         if cfg.trainer.type == "ntn":
             if cfg.model.name in GTN_ONLY_MODELS:
