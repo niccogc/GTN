@@ -204,8 +204,10 @@ DMRG only supports `TNML_*` models.
 
 ## Environment Variables
 
-These control the **quimb / cotengra contraction strategy** used during tensor
-contractions. They are read once at import time in `run.py`.
+### Contraction strategy (quimb / cotengra)
+
+These control the **contraction strategy** used during tensor contractions. They are read
+once at import time in `run.py`.
 
 | Variable                   | Values                                                                 | Default | Description |
 |----------------------------|------------------------------------------------------------------------|---------|-------------|
@@ -221,6 +223,21 @@ QUIMB_CONTRACT_MINIMIZE=write python run.py
 
 # Fast path-finding, no caching
 QUIMB_CONTRACT_STRATEGY=greedy python run.py
+```
+
+### NTN runtime controls
+
+| Variable          | Values        | Default | Description |
+|-------------------|---------------|---------|-------------|
+| `NTN_DEBUG`       | `0` / `1`     | `0`     | When `1`, prints per-step timing and tensor-shape diagnostics inside the NTN node-derivative computation (`model/base/NTN.py`). Useful for profiling/debugging a slow or failing contraction; very verbose. |
+| `NTN_MEMORY_CAP`  | float (GB)    | `30`    | Memory budget (in GB) used by `get_suggested_batch_size()` (`model/utils.py`) to pick a batch size. Only takes effect when `use_suggested_batch=true` is set on the run. Lower it if you hit OOM, raise it on big-memory GPUs. |
+
+```bash
+# Verbose NTN step-by-step timing/shapes
+NTN_DEBUG=1 python run.py model=mpo2 dataset=iris
+
+# Cap the suggested batch size to a 12 GB memory budget
+NTN_MEMORY_CAP=12 python run.py use_suggested_batch=true
 ```
 
 > GPU vs CPU is selected automatically (`utils/device_utils.py`): CUDA is used when
