@@ -1,12 +1,12 @@
 #!/bin/bash
 #BSUB -q hpc
 #BSUB -J "test_ntn[1-5]%20"
-#BSUB -W 24:00
-#BSUB -n 10
-#BSUB -R "rusage[mem=1GB]"
-#BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_test_ntn.out
 #BSUB -e logs/%J_%I_test_ntn.err
+#BSUB -W 24:00
+#BSUB -n 10
+#BSUB -R "rusage[mem=2GB]"
+#BSUB -R "span[hosts=1]"
 
 cd "~/GTN"
 source .venv/bin/activate
