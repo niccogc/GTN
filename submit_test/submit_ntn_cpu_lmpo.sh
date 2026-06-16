@@ -1,16 +1,20 @@
 #!/bin/bash
 #BSUB -q hpc
-#BSUB -J "test_ntn[1-7]%20"
+#BSUB -J "test_ntn"
 #BSUB -W 24:00
 #BSUB -n 10
-#BSUB -R "rusage[mem=4GB]"
+#BSUB -R "rusage[mem=10GB]"
 #BSUB -R "span[hosts=1]"
 #BSUB -o logs/%J_%I_test_ntn.out
 #BSUB -e logs/%J_%I_test_ntn.err
 
 cd "~/GTN"
 source .venv/bin/activate
-source missing_test.env
+
+declare -a COMBINATIONS_NTN=(
+    # LMPO2TypeI (1 datasets)
+    "lmpo2_typei breast"
+)
 
 NUM_EXPERIMENTS=${#COMBINATIONS_NTN[@]}
 
