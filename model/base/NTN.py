@@ -1003,8 +1003,7 @@ class NTN:
             full_sweep_order = trainable_nodes + back_sweep
 
         if verbose:
-            print(f"Starting Fit: {n_epochs} epochs.")
-            print(f"Sweep Order: {full_sweep_order}")
+            print(f"Starting Fit: {n_epochs} epochs, {len(full_sweep_order)} node updates per epoch.")
             if self.val_data is not None:
                 print(
                     f"Validation: Using separate validation set for best model selection"
