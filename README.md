@@ -40,16 +40,24 @@ through a single entry point: **`run.py`**.
 ```bash
 # Defaults: MPO2 model, iris dataset, NTN trainer
 python run.py
+```
 
+```bash
 # Override model & dataset
 python run.py model=lmpo2 dataset=abalone
+```
 
+```bash
 # GTN (gradient) trainer with a custom learning rate
 python run.py trainer=gtn trainer.lr=0.01
+```
 
+```bash
 # Image classification
 python run.py model=cmpo2 dataset=mnist
+```
 
+```bash
 # Sweep bond dimensions (Hydra multirun)
 python run.py --multirun model.bond_dim=4,6,8
 ```
