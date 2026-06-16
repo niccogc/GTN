@@ -494,46 +494,60 @@ Image datasets (MNIST, Fashion-MNIST, CIFAR10/100) are loaded by
 ## Input Formalism (how data enters the network)
 
 A model is a quimb `TensorNetwork` (`model.tn`) with named **open indices**. To run it,
-the raw data tensor `X` is turned into one input `Tensor` per feature/site, and those are
+the raw data tensor `X` is turned into one input `Tensor` per site, and those are
 contracted against the model's open indices. This is done by the `Inputs` builder
 (`model/builder.py`) via the helper `create_inputs` (`model/utils.py`).
 
 The contract has three parts that **must agree by name**:
 
-1. **The model declares which open indices consume input** via two attributes:
-   - `input_labels` — used by the `Inputs` builder to *name the index* on each input tensor.
+1. **The model declares which open indices consume input** via these attributes:
+   - `input_labels` — used by the `Inputs` builder to *name the index* on each input tensor
+     and to decide *which* data source each site reads from.
    - `input_dims` — used by NTN/DMRG to identify the contracted input legs.
    - `output_dims` — the name(s) of the output leg (almost always `["out"]`).
 2. **The builder creates input tensors** whose indices match `input_labels`.
 3. **Contraction** pairs identical index names → the network produces an `(batch, out)` result.
 
+> **Important — sites are not features.** For the standard models the *same* feature vector
+> is fed into **every** site; the number of sites `L` is an architectural hyperparameter,
+> **independent of the feature count**. Per-feature siting only happens for the encoded
+> (TNML) models. See the styles below.
+
 There are three input styles in this repo; the style is determined by **how the model
 sets `input_labels` and whether it sets an `encoding` attribute**:
 
-### 1. Scalar inputs with a bias (default — MPO2 / LMPO2 / MMPO2 / CPDA)
+### 1. Shared full-vector inputs with a bias (default — MPO2 / LMPO2 / MMPO2 / CPDA)
 
-Each feature is a **scalar** placed on its own site. A constant `1` bias feature is
-appended, so a model with `L` sites consumes `L` scalar inputs and the dataset must have
-`L - 1` real features (`input_dim = n_features + 1`).
+The whole (bias-augmented) feature vector is fed into **every site**. There is a single
+input source `X` of shape `(batch, n_features + 1)`, and because `input_labels` are plain
+strings with one input source, the builder maps **every** site label `x{i}` to that same
+`X`. So each of the `L` sites receives an identical input tensor `(batch, phys_dim)`.
 
-- Model side: physical dimension of each site is `phys_dim = 1` per feature value, and
-  `input_labels = ["x0", "x1", ..., "x{L-1}"]` (plain strings → one index per site).
-- Runner side: `create_inputs(..., append_bias=True, encoding=None)` concatenates the
-  bias column and builds one input tensor per site with index `s, x{i}`.
+- **`L` (number of sites) is independent of the number of features.** It is just the chain
+  length / model depth; the same input is repeated `L` times.
+- Model side: every site has a physical index `x{i}` of size `phys_dim = n_features + 1`
+  (the runner passes `phys_dim = input_dim = raw_feature_count + 1`), and
+  `input_labels = ["x0", "x1", ..., "x{L-1}"]` (plain strings).
+- Runner side: `create_inputs(..., append_bias=True, encoding=None)` appends the constant
+  `1` bias column to `X`, then builds one input tensor per site, each carrying the **same**
+  full vector with index `(s, x{i})`.
 
-### 2. Encoded / feature-map inputs (TNML_P, TNML_F)
+### 2. Encoded / feature-map inputs — one site per feature (TNML_P, TNML_F)
 
-Each feature `x_i` is lifted to a **vector** via a feature map, so each site has a physical
-dimension > 1 and there is **no bias term**. The model signals this by setting
-`self.encoding`:
+This is the style where **each feature gets its own site**. Each feature `x_i` is lifted to
+a **vector** via a feature map, the encoded data is split into one tensor per feature, and
+there is **no bias term**. The model signals this by setting `self.encoding`, and the
+number of sites equals the number of features (`phys_dim` on the model = raw feature count):
 
 - `TNML_P` → `self.encoding = "polynomial"`; feature map `[1, x, x², …, x^degree]`
-  (`phys_dim = degree + 1`, where `degree = L`).
+  (physical-index size `= degree + 1`, where `degree = L`).
 - `TNML_F` → `self.encoding = "fourier"`; feature map `[cos(xπ/2), sin(xπ/2)]`
-  (`phys_dim = 2`).
+  (physical-index size `= 2`).
 
 The runner detects `getattr(model, "encoding", None)` and calls `create_inputs` with that
-encoding (no bias). Encoding functions live in `model/utils.py`
+encoding (no bias). `create_inputs` then splits the encoded tensor
+`(batch, n_features, phys_dim)` into a **list of `n_features` separate input sources**, so
+site `i` reads feature `i`. Encoding functions live in `model/utils.py`
 (`encode_polynomial`, `encode_fourier`).
 
 ### 3. Multi-source / structured inputs (image models, CMPO2/CMPO3)
@@ -597,21 +611,24 @@ Convention details that make contraction work:
 Your model's tensor shapes depend on which input style you target (see
 [Input Formalism](#input-formalism-how-data-enters-the-network)):
 
-- **Scalar + bias (like MPO2):** each site's physical index has size `phys_dim` equal to
-  the per-site input value count (the runner passes `phys_dim = n_features + 1`). The model
-  sets `input_labels = ["x0", ..., "x{L-1}"]` (plain strings) and does **not** set
-  `encoding`. Use this template:
+- **Shared full-vector + bias (like MPO2):** the same full feature vector is fed into every
+  site, so **every** site's physical index has the same size `phys_dim = n_features + 1`
+  (the runner passes `phys_dim = input_dim = raw_feature_count + 1`). `L` is the chain
+  length, **not** the feature count. The model sets `input_labels = ["x0", ..., "x{L-1}"]`
+  (plain strings) and does **not** set `encoding`. Use this template:
 
   ```python
-  # one MPS node per site, output leg "out" on output_site
-  inds = (f"b{i-1}", f"x{i}", f"b{i}")   # bond, physical, bond
+  # one MPS node per site, all sites share the same physical dim; output leg "out" on output_site
+  inds = (f"b{i-1}", f"x{i}", f"b{i}")   # bond, physical (size phys_dim), bond
   if i == output_site:
       inds += ("out",)
   ```
 
-- **Encoded feature map (like TNML):** set `self.encoding = "polynomial"` or `"fourier"`,
-  size each physical index to the feature-map dimension (`degree+1` or `2`), and create
-  **one site per feature** (no bias). The runner will feed encoded vectors automatically.
+- **Encoded feature map, one site per feature (like TNML):** set
+  `self.encoding = "polynomial"` or `"fourier"`, size each physical index to the
+  feature-map dimension (`degree+1` or `2`), and create **one site per feature** (no bias;
+  here the site count *does* equal the feature count). The runner feeds the per-feature
+  encoded vectors automatically.
 
 - **Structured / multi-index (like CMPO2):** put several open legs on a site and declare
   them with the explicit `input_labels` list form `[[src, (indA, indB)], ...]`. Register
