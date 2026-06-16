@@ -32,4 +32,5 @@ export NUMEXPR_NUM_THREADS=10
 python run.py --multirun \
     +experiment=$EXPERIMENT \
     model=$MODEL \
-    dataset=$DATASET
+    dataset=$DATASET \
+    use_suggested_batch=true
