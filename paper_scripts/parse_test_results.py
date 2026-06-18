@@ -445,6 +445,20 @@ def _fmt_oob(x: float) -> str:
     return f"{x:.2e}"
 
 
+def _fmt_oob_pair(mean_val: float, std_val: float) -> str:
+    """Format a (mean ± std) pair sharing the mean's exponent.
+    
+    Example: (-864.0, 18.7) -> "$(-8.64 \\pm 0.19)\\times 10^{2}$"
+    """
+    if mean_val == 0:
+        return f"$(0.00 \\pm {std_val:.2e})$"
+    exp = int(math.floor(math.log10(abs(mean_val))))
+    scale = 10.0 ** exp
+    scaled_mean = mean_val / scale
+    scaled_std = std_val / scale
+    return f"$({scaled_mean:.2f} \\pm {scaled_std:.2f})\\times 10^{{{exp}}}$"
+
+
 def format_mean_value(mean, is_best_overall, is_best_tn):
     val_str = _fmt_scaled(mean)
     if is_best_overall:
@@ -1299,32 +1313,36 @@ def main():
             oob_ds_set = set(e[1] for e in all_oob)
             oob_datasets = [d for d in REGRESSION_DATASETS + CLASSIFICATION_DATASETS if d in oob_ds_set]
             oob_lookup = {(m, d): (mv, sv) for m, d, mv, sv in all_oob}
-            oob_codes = [DATASET_INFO[d][0] for d in oob_datasets]
             
             oob_lines = [
-                r"\begin{table*}[ht]",
+                r"\begin{table}[ht]",
                 r"\centering",
                 r"\small",
                 r"\caption{Out-of-bound results (values where $|\text{value} \times 100| > 100$).}",
                 r"\label{tab:out_of_bound}",
-                r"\begin{tabular}{l" + "c" * len(oob_datasets) + "}",
+                r"\begin{tabular}{l" + "c" * len(oob_models) + "}",
                 r"\toprule",
-                "& " + " & ".join(oob_codes) + r" \\",
-                r"\midrule",
             ]
-            for m in oob_models:
-                model_latex = ALL_MODE_LATEX_NAMES.get(m, f"\\textbf{{{m}}}")
+            # Header row: model names as columns
+            model_headers = [ALL_MODE_LATEX_NAMES.get(m, f"\\textbf{{{m}}}") for m in oob_models]
+            oob_lines.append("& " + " & ".join(model_headers) + r" \\")
+            oob_lines.append(r"\midrule")
+            
+            # Datasets as rows
+            for d in oob_datasets:
+                ds_code = DATASET_INFO[d][0]
                 cells = []
-                for d in oob_datasets:
+                for m in oob_models:
                     entry = oob_lookup.get((m, d))
                     if entry:
                         mv, sv = entry
-                        cells.append(f"${_fmt_oob(mv)} \\pm {_fmt_oob(sv)}$")
+                        cells.append(_fmt_oob_pair(mv, sv))
                     else:
                         cells.append("--")
-                oob_lines.append(f"{model_latex} & " + " & ".join(cells) + r" \\")
+                oob_lines.append(f"{ds_code} & " + " & ".join(cells) + r" \\")
                 oob_lines.append(r"\midrule")
-            oob_lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table*}"])
+            
+            oob_lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}"])
             
             oob_file = args.output_dir / "out_of_bound_test.tex"
             with open(oob_file, "w") as f:

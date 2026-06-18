@@ -6,6 +6,7 @@ Each model (including TypeI/TypeII variants) gets its own row.
 """
 import argparse
 import json
+import math
 import statistics
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -53,14 +54,14 @@ ABLATION_MODELS = [
 
 # Model display names for LaTeX
 MODEL_LATEX_NAMES = {
-    "MPO2": r"\textbf{(MPO)}$\bm{^2}$ II",
-    "MPO2TypeI": r"\textbf{(MPO)}$\bm{^2}$ I",
-    "LMPO2": r"\textbf{(LMPO)}$\bm{^2}$ II",
-    "LMPO2TypeI": r"\textbf{(LMPO)}$\bm{^2}$ I",
-    "MMPO2": r"\textbf{(MMPO)}$\bm{^2}$ II",
-    "MMPO2TypeI": r"\textbf{(MMPO)}$\bm{^2}$ I",
-    "CPDA": r"\textbf{CPD-A} II",
-    "CPDATypeI": r"\textbf{CPD-A} I",
+    "MPO2": r"\textbf{(MPO)}$\bm{^2}$ \textbf{II}",
+    "MPO2TypeI": r"\textbf{(MPO)}$\bm{^2}$ \textbf{I}",
+    "LMPO2": r"\textbf{(LMPO)}$\bm{^2}$ \textbf{II}",
+    "LMPO2TypeI": r"\textbf{(LMPO)}$\bm{^2}$ \textbf{I}",
+    "MMPO2": r"\textbf{(MMPO)}$\bm{^2}$ \textbf{II}",
+    "MMPO2TypeI": r"\textbf{(MMPO)}$\bm{^2}$ \textbf{I}",
+    "CPDA": r"\textbf{CPD-A} \textbf{II}",
+    "CPDATypeI": r"\textbf{CPD-A} \textbf{I}",
     "TNML_P": r"\textbf{TNML-P}",
     "TNML_F": r"\textbf{TNML-F}",
     "BosonMPS": r"\textbf{Ring}",
@@ -68,22 +69,22 @@ MODEL_LATEX_NAMES = {
 
 # N-/G- prefixed names for combined table
 ALL_MODE_LATEX_NAMES = {
-    "N-MPO2": r"\textbf{N-(MPO)}$\bm{^2}$ II",
-    "G-MPO2": r"\textbf{G-(MPO)}$\bm{^2}$ II",
-    "N-MPO2TypeI": r"\textbf{N-(MPO)}$\bm{^2}$ I",
-    "G-MPO2TypeI": r"\textbf{G-(MPO)}$\bm{^2}$ I",
-    "N-LMPO2": r"\textbf{N-(LMPO)}$\bm{^2}$ II",
-    "G-LMPO2": r"\textbf{G-(LMPO)}$\bm{^2}$ II",
-    "N-LMPO2TypeI": r"\textbf{N-(LMPO)}$\bm{^2}$ I",
-    "G-LMPO2TypeI": r"\textbf{G-(LMPO)}$\bm{^2}$ I",
-    "N-MMPO2": r"\textbf{N-(MMPO)}$\bm{^2}$ II",
-    "G-MMPO2": r"\textbf{G-(MMPO)}$\bm{^2}$ II",
-    "N-MMPO2TypeI": r"\textbf{N-(MMPO)}$\bm{^2}$ I",
-    "G-MMPO2TypeI": r"\textbf{G-(MMPO)}$\bm{^2}$ I",
-    "N-CPDA": r"\textbf{N-CPD-A} II",
-    "G-CPDA": r"\textbf{G-CPD-A} II",
-    "N-CPDATypeI": r"\textbf{N-CPD-A} I",
-    "G-CPDATypeI": r"\textbf{G-CPD-A} I",
+    "N-MPO2": r"\textbf{N-(MPO)}$\bm{^2}$ \textbf{II}",
+    "G-MPO2": r"\textbf{G-(MPO)}$\bm{^2}$ \textbf{II}",
+    "N-MPO2TypeI": r"\textbf{N-(MPO)}$\bm{^2}$ \textbf{I}",
+    "G-MPO2TypeI": r"\textbf{G-(MPO)}$\bm{^2}$ \textbf{I}",
+    "N-LMPO2": r"\textbf{N-(LMPO)}$\bm{^2}$ \textbf{II}",
+    "G-LMPO2": r"\textbf{G-(LMPO)}$\bm{^2}$ \textbf{II}",
+    "N-LMPO2TypeI": r"\textbf{N-(LMPO)}$\bm{^2}$ \textbf{I}",
+    "G-LMPO2TypeI": r"\textbf{G-(LMPO)}$\bm{^2}$ \textbf{I}",
+    "N-MMPO2": r"\textbf{N-(MMPO)}$\bm{^2}$ \textbf{II}",
+    "G-MMPO2": r"\textbf{G-(MMPO)}$\bm{^2}$ \textbf{II}",
+    "N-MMPO2TypeI": r"\textbf{N-(MMPO)}$\bm{^2}$ \textbf{I}",
+    "G-MMPO2TypeI": r"\textbf{G-(MMPO)}$\bm{^2}$ \textbf{I}",
+    "N-CPDA": r"\textbf{N-CPD-A} \textbf{II}",
+    "G-CPDA": r"\textbf{G-CPD-A} \textbf{II}",
+    "N-CPDATypeI": r"\textbf{N-CPD-A} \textbf{I}",
+    "G-CPDATypeI": r"\textbf{G-CPD-A} \textbf{I}",
     "N-TNML_P": r"\textbf{N-TNML-P}",
     "G-TNML_P": r"\textbf{G-TNML-P}",
     "N-TNML_F": r"\textbf{N-TNML-F}",
@@ -92,8 +93,10 @@ ALL_MODE_LATEX_NAMES = {
 }
 
 # Same datasets as test_results script
-CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "wine"]
-REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "abalone", "ai4i"]
+CLASSIFICATION_DATASETS = ["iris", "hearth", "winequalityc", "breast", "adult",
+                           "bank", "wine", "car_evaluation", "student_dropout", "mushrooms"]
+REGRESSION_DATASETS = ["realstate", "energy_efficiency", "concrete", "student_perf",
+                       "obesity", "abalone", "seoulBike", "ai4i", "bike", "popularity"]
 
 
 @dataclass
@@ -539,6 +542,175 @@ def generate_all_table(ntn_results: dict, gtn_results: dict,
     return "\n".join(lines)
 
 
+def _fmt_oob_pair(mean_val: float, std_val: float) -> str:
+    """Format a (mean ± std) pair sharing the mean's exponent."""
+    if mean_val == 0:
+        return f"$(0.00 \\pm {std_val:.2e})$"
+    exp = int(math.floor(math.log10(abs(mean_val))))
+    scale = 10.0 ** exp
+    scaled_mean = mean_val / scale
+    scaled_std = std_val / scale
+    return f"$({scaled_mean:.2f} \\pm {scaled_std:.2f})\\times 10^{{{exp}}}$"
+
+
+def generate_unified_ablation_table(
+    ntn_results: dict,
+    gtn_results: dict,
+    datasets: list[str],
+    task_type: str,
+) -> str:
+    """Generate unified ablation table following same style as test --unified.
+
+    Creates one table for either classification or regression with:
+    - All model variants (I/II) shown as separate N-/G- rows
+    - Section breaks with double midrules
+    - Bold = best overall, underline = best among TNs
+    """
+    # Combine results with prefixes
+    combined_results = {}
+    for key, val in ntn_results.items():
+        new_key = (f"N-{key[0]}", key[1])
+        combined_results[new_key] = val
+    for key, val in gtn_results.items():
+        new_key = (f"G-{key[0]}", key[1])
+        combined_results[new_key] = val
+
+    datasets = get_available_datasets(gtn_results, datasets)
+    if not datasets:
+        return "", []
+
+    oob_entries: list = []
+
+    # Define model sections matching test --unified style
+    section1 = [
+        "N-MPO2", "G-MPO2", "N-MPO2TypeI", "G-MPO2TypeI",
+        "N-LMPO2", "G-LMPO2", "N-LMPO2TypeI", "G-LMPO2TypeI",
+        "N-MMPO2", "G-MMPO2", "N-MMPO2TypeI", "G-MMPO2TypeI",
+        "G-BosonMPS",
+    ]
+    section2 = [
+        "N-CPDA", "G-CPDA", "N-CPDATypeI", "G-CPDATypeI",
+    ]
+    section3 = [
+        "N-TNML_P", "G-TNML_P", "N-TNML_F", "G-TNML_F",
+    ]
+
+    all_sections = [section1, section2, section3]
+
+    n_cols = len(datasets)
+    col_spec = "l" + "c" * n_cols
+
+    task_title = "Classification" if task_type == "classification" else "Regression"
+    lines = [
+        r"\begin{table*}[ht]",
+        r"\centering",
+        r"\small",
+        f"\\caption{{Ablation study -- {task_title} (validation).}}",
+        f"\\label{{tab:ablation_{task_type}}}",
+        r"\begin{tabular}{" + col_spec + "}",
+        r"\toprule",
+    ]
+
+    codes = [DATASET_INFO[d][0] for d in datasets]
+    lines.append("& " + " & ".join(codes) + r" \\")
+    lines.append(r"\midrule")
+
+    def get_result(model_key: str, dataset: str):
+        """Direct lookup for prefixed models."""
+        key = (model_key, dataset)
+        if key in combined_results and combined_results[key].n_runs > 0:
+            return combined_results[key]
+        return None
+
+    all_models = [m for section in all_sections for m in section]
+    # All models in ablation are TN models
+    tn_models = list(all_models)
+
+    def find_best_overall(ds_list):
+        best = {}
+        for ds in ds_list:
+            vals = [get_result(m, ds).mean_val_quality
+                    for m in all_models if get_result(m, ds)]
+            best[ds] = max(vals) if vals else float('-inf')
+        return best
+
+    def find_best_tn(ds_list):
+        best = {}
+        for ds in ds_list:
+            vals = [get_result(m, ds).mean_val_quality
+                    for m in tn_models if get_result(m, ds)]
+            best[ds] = max(vals) if vals else float('-inf')
+        return best
+
+    best_overall = find_best_overall(datasets)
+    best_tn = find_best_tn(datasets)
+
+    cmidrule = r"\midrule"
+
+    def add_model_row(m: str):
+        model_latex = ALL_MODE_LATEX_NAMES.get(m, f"\\textbf{{{m}}}")
+
+        means = []
+        stds = []
+        has_any_result = False
+        any_nonzero_std = False
+
+        for d in datasets:
+            res = get_result(m, d)
+            if not res:
+                means.append("--")
+                stds.append("")
+            else:
+                has_any_result = True
+                mean_scaled = res.mean_val_quality * 100
+                std_scaled = res.std_val_quality * 100
+                is_oob = abs(mean_scaled) > 100
+
+                if is_oob:
+                    oob_entries.append((m, d, mean_scaled, std_scaled))
+                    means.append("F")
+                    stds.append("")
+                else:
+                    is_best_overall = abs(res.mean_val_quality - best_overall[d]) < 1e-9
+                    is_best_tn = abs(res.mean_val_quality - best_tn[d]) < 1e-9
+
+                    val_str = f"{mean_scaled:.2f}"
+                    if is_best_overall:
+                        val_str = f"\\textbf{{{val_str}}}"
+                    elif is_best_tn:
+                        val_str = f"\\underline{{{val_str}}}"
+                    means.append(val_str)
+
+                    std_str = f"$\\pm${std_scaled:.2f}"
+                    stds.append(std_str)
+                    if std_str != "$\\pm$0.00":
+                        any_nonzero_std = True
+
+        lines.append(f"{model_latex} & " + " & ".join(means) + r" \\")
+
+        if any_nonzero_std and has_any_result:
+            lines.append(" & " + " & ".join(stds) + r" \\")
+
+    for section_idx, section in enumerate(all_sections):
+        for model_idx, m in enumerate(section):
+            add_model_row(m)
+
+            is_last_in_section = (model_idx == len(section) - 1)
+            is_last_section = (section_idx == len(all_sections) - 1)
+
+            if not (is_last_section and is_last_in_section):
+                lines.append(cmidrule)
+
+            if is_last_in_section and not is_last_section:
+                lines.append(cmidrule)
+
+    lines.append(r"\bottomrule")
+    lines.append(r"\end{tabular}")
+    lines.append(r"\end{table*}")
+
+    return "\n".join(lines), oob_entries
+
+
 def main():
     parser = argparse.ArgumentParser(description="Parse ablation study results and generate LaTeX tables")
     parser.add_argument("--outputs-dir", type=Path, default=Path("outputs"),
@@ -553,10 +725,68 @@ def main():
                         help="Generate table with both NTN and GTN, prefixed as N-/G-")
     parser.add_argument("--average-column", action="store_true",
                         help="Add an Average column to the table")
-    
+    parser.add_argument("--unified", action="store_true",
+                        help="Generate unified table following test --unified style (separate tables per task)")
+
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
-    
+
+    if args.unified:
+        ntn_res = collect_results(args.outputs_dir, "ntn")
+        gtn_res = collect_results(args.outputs_dir, "gtn")
+
+        all_oob: list = []
+        for task_type, datasets in [("classification", CLASSIFICATION_DATASETS),
+                                     ("regression", REGRESSION_DATASETS)]:
+            tbl, oob_entries = generate_unified_ablation_table(ntn_res, gtn_res, datasets, task_type)
+            all_oob.extend(oob_entries)
+            if tbl:
+                out_path = args.output_dir / f"ablation_unified_{task_type}.tex"
+                with open(out_path, "w") as f:
+                    f.write(tbl)
+                print(f"Generated: {out_path}")
+
+        # Generate out-of-bound table if any extreme values found
+        if all_oob:
+            oob_models = sorted(set(e[0] for e in all_oob))
+            oob_ds_set = set(e[1] for e in all_oob)
+            oob_datasets = [d for d in REGRESSION_DATASETS + CLASSIFICATION_DATASETS if d in oob_ds_set]
+            oob_lookup = {(m, d): (mv, sv) for m, d, mv, sv in all_oob}
+
+            oob_lines = [
+                r"\begin{table}[ht]",
+                r"\centering",
+                r"\small",
+                r"\caption{Ablation out-of-bound results (values where $|\text{value} \times 100| > 100$).}",
+                r"\label{tab:ablation_out_of_bound}",
+                r"\begin{tabular}{l" + "c" * len(oob_models) + "}",
+                r"\toprule",
+            ]
+            model_headers = [ALL_MODE_LATEX_NAMES.get(m, f"\\textbf{{{m}}}") for m in oob_models]
+            oob_lines.append("& " + " & ".join(model_headers) + r" \\")
+            oob_lines.append(r"\midrule")
+
+            for d in oob_datasets:
+                ds_code = DATASET_INFO[d][0]
+                cells = []
+                for m in oob_models:
+                    entry = oob_lookup.get((m, d))
+                    if entry:
+                        mv, sv = entry
+                        cells.append(_fmt_oob_pair(mv, sv))
+                    else:
+                        cells.append("--")
+                oob_lines.append(f"{ds_code} & " + " & ".join(cells) + r" \\")
+                oob_lines.append(r"\midrule")
+
+            oob_lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}"])
+
+            oob_file = args.output_dir / "ablation_out_of_bound.tex"
+            with open(oob_file, "w") as f:
+                f.write("\n".join(oob_lines))
+            print(f"Generated: {oob_file}")
+        return
+
     if getattr(args, 'all'):
         ntn_res = collect_results(args.outputs_dir, "ntn")
         gtn_res = collect_results(args.outputs_dir, "gtn")
@@ -566,20 +796,20 @@ def main():
             f.write(tbl)
         print(f"Generated: {args.output_dir / 'ablation_all.tex'}")
         return
-    
+
     trainers = ["ntn", "gtn"] if args.trainer == "both" else [args.trainer]
-    
+
     for tr in trainers:
         res = collect_results(args.outputs_dir, tr)
         if args.combined:
-            tbl = generate_combined_table(res, REGRESSION_DATASETS, CLASSIFICATION_DATASETS, 
+            tbl = generate_combined_table(res, REGRESSION_DATASETS, CLASSIFICATION_DATASETS,
                                          tr, show_avg=args.average_column)
             out_path = args.output_dir / f"ablation_combined_{tr}.tex"
             with open(out_path, "w") as f:
                 f.write(tbl)
             print(f"Generated: {out_path}")
         else:
-            for task, ds_list in [("classification", CLASSIFICATION_DATASETS), 
+            for task, ds_list in [("classification", CLASSIFICATION_DATASETS),
                                   ("regression", REGRESSION_DATASETS)]:
                 tbl = generate_table(res, ds_list, tr, show_avg=args.average_column)
                 if tbl:

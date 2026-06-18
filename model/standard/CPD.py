@@ -24,7 +24,7 @@ class CPDA:
           \\    |    /           /
            \\   |   /           /
             \\  |  /           /
-             [r]  (shared bond_dim index)
+             [        r        ]  (shared bond_dim index)
               |
             [out] (output at output_site node)
 
