@@ -34,6 +34,28 @@ class CPDA:
     Unlike MPS where bond indices connect adjacent nodes, in CPDA all nodes
     share the same bond_dim index 'r'. The final output is computed by contracting
     all physical indices with inputs and summing over the shared bond_dim dimension.
+    
+    Quimb optimal contraction order (L=3):
+      Node0 [r, x0]
+        ⊗ I0 [s, x0]
+        contract [x0]
+        → i0 [r, s]
+      Node1 [r, x1]
+        ⊗ I1 [s, x1]
+        contract [x1]
+        → i1 [r, s]
+      Node2 [out, r, x2]
+        ⊗ I2 [s, x2]
+        contract [x2]
+        → i2 [out, r, s]
+      i0 [r, s]
+        ⊗ i1 [r, s]
+        fuse (r shared across 3 nodes, kept for later)
+        → i3 [r, s]
+      i3 [r, s]
+        ⊗ i2 [out, r, s]
+        contract [r]
+        → result [out, s]
     """
 
     def __init__(

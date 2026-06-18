@@ -19,6 +19,28 @@ class MPO2:
     - Standard MPS chain with one site containing the output dimension
     - Tags: Node{i} for each site
     - Physical indices: x{i} for each site
+    
+    Quimb optimal contraction order:
+      Node0 [b0, x0]
+        ⊗ I0 [s, x0]
+        contract [x0]
+        → i0 [b0, s]
+      Node1 [b0, b1, x1]
+        ⊗ I1 [s, x1]
+        contract [x1]
+        → i1 [b0, b1, s]
+      Node2 [b1, out, x2]
+        ⊗ I2 [s, x2]
+        contract [x2]
+        → i2 [b1, out, s]
+      i0 [b0, s]
+        ⊗ i1 [b0, b1, s]
+        contract [b0]
+        → i3 [b1, s]
+      i3 [b1, s]
+        ⊗ i2 [b1, out, s]
+        contract [b1]
+        → result [out, s]
     """
 
     def __init__(
@@ -181,8 +203,40 @@ class LMPO2:
     - MPO layer: input_dims → reduced_dims (trainable)
     - MPS layer: reduced_dims → output_dims (trainable)
     - Tags: {i}_MPO for MPO nodes, {i}_MPS for MPS nodes
-
-    The reduction factor can be specified as reduced_dim/input_dim.
+    
+    Quimb optimal contraction order (L=3):
+      0_MPO [0_in, 0_reduced, b_mpo_0]
+        ⊗ I0 [0_in, s]
+        contract [0_in]
+        → i0 [0_reduced, b_mpo_0, s]
+      1_MPO [1_in, 1_reduced, b_mpo_0, b_mpo_1]
+        ⊗ I1 [1_in, s]
+        contract [1_in]
+        → i1 [1_reduced, b_mpo_0, b_mpo_1, s]
+      1_MPS [1_reduced, b_mps_0, b_mps_1]
+        ⊗ 2_MPS [2_reduced, b_mps_1, out]
+        contract [b_mps_1]
+        → i2 [1_reduced, 2_reduced, b_mps_0, out]
+      2_MPO [2_in, 2_reduced, b_mpo_1]
+        ⊗ I2 [2_in, s]
+        contract [2_in]
+        → i3 [2_reduced, b_mpo_1, s]
+      i2 [1_reduced, 2_reduced, b_mps_0, out]
+        ⊗ 0_MPS [0_reduced, b_mps_0]
+        contract [b_mps_0]
+        → i4 [0_reduced, 1_reduced, 2_reduced, out]
+      i4 [0_reduced, 1_reduced, 2_reduced, out]
+        ⊗ i1 [1_reduced, b_mpo_0, b_mpo_1, s]
+        contract [1_reduced]
+        → i5 [0_reduced, 2_reduced, b_mpo_0, b_mpo_1, out, s]
+      i5 [0_reduced, 2_reduced, b_mpo_0, b_mpo_1, out, s]
+        ⊗ i3 [2_reduced, b_mpo_1, s]
+        contract [2_reduced, b_mpo_1]
+        → i6 [0_reduced, b_mpo_0, out, s]
+      i6 [0_reduced, b_mpo_0, out, s]
+        ⊗ i0 [0_reduced, b_mpo_0, s]
+        contract [0_reduced, b_mpo_0]
+        → result [out, s]
     For example, input_dim=10, reduced_dim=5 gives 50% reduction.
     """
 
@@ -280,6 +334,40 @@ class MMPO2:
     - MPO layer: input_dims × input_dims (NOT trainable, cumulative sum mask)
     - MPS layer: input_dims → output_dims (trainable)
     - Tags: {i}_Mask for MPO nodes (with NT tag), {i}_MPS for MPS nodes
+    
+    Quimb optimal contraction order (L=3):
+      0_Mask [0_in, 0_masked, b_mask_0]
+        ⊗ 0_MPS [0_masked, b_mps_0]
+        contract [0_masked]
+        → i0 [0_in, b_mask_0, b_mps_0]
+      2_Mask [2_in, 2_masked, b_mask_1]
+        ⊗ 2_MPS [2_masked, b_mps_1, out]
+        contract [2_masked]
+        → i1 [2_in, b_mask_1, b_mps_1, out]
+      i0 [0_in, b_mask_0, b_mps_0]
+        ⊗ 1_MPS [1_masked, b_mps_0, b_mps_1]
+        contract [b_mps_0]
+        → i2 [0_in, 1_masked, b_mask_0, b_mps_1]
+      i2 [0_in, 1_masked, b_mask_0, b_mps_1]
+        ⊗ 1_Mask [1_in, 1_masked, b_mask_0, b_mask_1]
+        contract [1_masked, b_mask_0]
+        → i3 [0_in, 1_in, b_mask_1, b_mps_1]
+      i3 [0_in, 1_in, b_mask_1, b_mps_1]
+        ⊗ i1 [2_in, b_mask_1, b_mps_1, out]
+        contract [b_mask_1, b_mps_1]
+        → i4 [0_in, 1_in, 2_in, out]
+      i4 [0_in, 1_in, 2_in, out]
+        ⊗ I0 [0_in, s]
+        contract [0_in]
+        → i5 [1_in, 2_in, out, s]
+      i5 [1_in, 2_in, out, s]
+        ⊗ I1 [1_in, s]
+        contract [1_in]
+        → i6 [2_in, out, s]
+      i6 [2_in, out, s]
+        ⊗ I2 [2_in, s]
+        contract [2_in]
+        → result [out, s]
 
     Mask is defined as: C^{i_in, i_out}_{b_left, b_right} = sum_k H_{b_left, k} * D_{k, i_in, i_out, b_right}
     where H_{ij} = theta(j-i) (Heaviside) and D is Kronecker delta

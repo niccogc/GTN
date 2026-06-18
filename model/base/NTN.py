@@ -317,6 +317,81 @@ class NTN:
             res.transpose_(*output_inds)
         return res
 
+    def print_contraction_path(self):
+        """Print the contraction path that quimb/cotengra uses for the forward pass.
+        
+        Shows step-by-step: tensor names, their full index sets,
+        and which indices are contracted at each step.
+        """
+        # Get a single batch of feature tensors only (no y-target)
+        mu = next(iter(self.data.data_mu))
+        output_inds = [self.batch_dim] + self.output_dimensions
+        
+        full_tn = self.tn & mu
+        
+        print("\n" + "="*80)
+        print("CONTRACTION PATH INFO")
+        print("="*80)
+        
+        # Get tree and symbol map
+        tree = full_tn.contract(output_inds=output_inds, get='tree')
+        symbol_map = full_tn.contract(output_inds=output_inds, get='symbol-map')
+        rev = {v: k for k, v in symbol_map.items()}  # internal symbol -> original ind
+        
+        # Map leaf nodes (original tensors) to their name and indices
+        tensors = list(full_tn.tensors)
+        leaf_info = {}  # frozenset -> (name, set_of_inds)
+        for i, sym_inds in enumerate(tree.inputs):
+            orig_inds = set(rev[s] for s in sym_inds)
+            for t in tensors:
+                if set(t.inds) == orig_inds:
+                    tag = list(t.tags)[0] if t.tags else f"tensor_{i}"
+                    leaf_info[frozenset({i})] = (tag, orig_inds)
+                    break
+        
+        print("\n=== Contraction order ===")
+        # Process internal nodes from leaves toward root
+        internal_nodes = list(tree.children.keys())
+        internal_nodes.sort(key=lambda n: (len(n), sum(n)))
+        
+        result_cache = dict(leaf_info)  # frozenset -> (name, inds)
+        step = 0
+        
+        for node_fs in internal_nodes:
+            children = tree.children[node_fs]
+            if not isinstance(children, tuple):
+                continue  # leaf nodes have no children tuple
+            
+            c1, c2 = children
+            name1, inds1 = result_cache[c1]
+            name2, inds2 = result_cache[c2]
+            
+            # Parent result indices (mapped to original names)
+            parent_sym = tree.get_inds(node_fs)
+            parent_inds = set(rev[s] for s in parent_sym)
+            
+            # Contracted = shared between children - result indices
+            contracted = (inds1 & inds2) - parent_inds
+            
+            inds1_str = ", ".join(sorted(inds1))
+            inds2_str = ", ".join(sorted(inds2))
+            result_str = ", ".join(sorted(parent_inds))
+            
+            print(f"  {step}: {name1} [{inds1_str}]")
+            print(f"       ⊗ {name2} [{inds2_str}]")
+            if contracted:
+                print(f"       contract [{', '.join(sorted(contracted))}]")
+            else:
+                print(f"       fuse (no dim contracted)")
+            print(f"       → intermediate_{step} [{result_str}]")
+            
+            result_cache[node_fs] = (f"intermediate_{step}", parent_inds)
+            step += 1
+        
+        print("="*80 + "\n")
+        
+        return tree
+
     def forward(
         self,
         tn: qt.TensorNetwork,

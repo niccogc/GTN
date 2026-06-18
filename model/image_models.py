@@ -5,6 +5,45 @@ import quimb.tensor as qt
 
 
 class CMPO2:
+    """
+    Convolutional-like MPO2: two MPS chains (pixel + patch) for image patches.
+    
+    Quimb optimal contraction order (L=3, bond names abstracted):
+      0_Pi [0_pixels, bp_0]
+        ⊗ I0 [0_patches, 0_pixels, s]
+        contract [0_pixels]
+        → i0 [0_patches, bp_0, s]
+      1_Pi [1_pixels, bp_0, bp_1]
+        ⊗ I1 [1_patches, 1_pixels, s]
+        contract [1_pixels]
+        → i1 [1_patches, bp_0, bp_1, s]
+      i0 [0_patches, bp_0, s]
+        ⊗ 0_Pa [0_patches, ba_0]
+        contract [0_patches]
+        → i2 [bp_0, ba_0, s]
+      i2 [bp_0, ba_0, s]
+        ⊗ i1 [1_patches, bp_0, bp_1, s]
+        contract [bp_0]
+        → i3 [1_patches, bp_1, ba_0, s]
+      i3 [1_patches, bp_1, ba_0, s]
+        ⊗ 1_Pa [1_patches, ba_0, ba_1]
+        contract [1_patches, ba_0]
+        → i4 [bp_1, ba_1, s]
+      i4 [bp_1, ba_1, s]
+        ⊗ 2_Pa [2_patches, ba_1]
+        contract [ba_1]
+        → i5 [2_patches, bp_1, s]
+      i5 [2_patches, bp_1, s]
+        ⊗ I2 [2_patches, 2_pixels, s]
+        contract [2_patches]
+        → i6 [2_pixels, bp_1, s]
+      i6 [2_pixels, bp_1, s]
+        ⊗ 2_Pi [2_pixels, bp_1, out]
+        contract [2_pixels, bp_1]
+        → result [out, s]
+    
+    bp: pixel bond dims | ba: patch bond dims
+    """
     def __init__(
         self,
         L: int,
